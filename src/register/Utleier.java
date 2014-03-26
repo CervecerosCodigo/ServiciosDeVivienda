@@ -1,6 +1,6 @@
 package register;
 
-import String;
+
 
 public class Utleier extends Person {
 
