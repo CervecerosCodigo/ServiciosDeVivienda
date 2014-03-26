@@ -1,4 +1,4 @@
-package register;
+package model;
 
 public class Leilighet extends Bolig {
 

@@ -1,4 +1,4 @@
-package register;
+package model;
 
 public class Megler extends Person {
 
