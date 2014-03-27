@@ -4,6 +4,6 @@ package view;
 import javax.swing.*;
 
 
-public class TopLevelGUI extends JFrame{
+public class VelkomstMainFrame extends JFrame{
 
 }

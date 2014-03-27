@@ -7,11 +7,21 @@ import view.*;
 public class Controller {
 
     private Register register;
-    private TopLevelGUI startGUI;
+    private VelkomstMainFrame startGUI;
     
-    public Controller( Register register, TopLevelGUI startGUI ){
+    public Controller( Register register, VelkomstMainFrame startGUI ){
         this.register = register;
         this.startGUI = startGUI;
+        
+    }
+    
+    private void testMetodePetter(){
+        
+    }
+    private void testMetodeLukas(){
+        
+    }
+    private void testMetodeEspen(){
         
     }
     
