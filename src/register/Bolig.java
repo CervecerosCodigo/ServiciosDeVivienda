@@ -32,4 +32,9 @@ public abstract class Bolig {
 
   private Calendar tilgjengeligForUtleie;
 
+  /** 
+   *  Det er tenkt at denne variabeln skal vise til mappen i hvilken bilder til annonsen er lagret.
+   */
+  private String pathBildemappe;
+
 }

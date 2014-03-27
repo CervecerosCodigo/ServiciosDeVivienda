@@ -6,10 +6,10 @@ public abstract class Person {
 
   private String fornavn;
 
-  private int etternavn;
+  private String etternavn;
 
-  private int epost;
+  private String epost;
 
-  private int telefon;
+  private String telefon;
 
 }
