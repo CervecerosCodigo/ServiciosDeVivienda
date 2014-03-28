@@ -13,6 +13,7 @@ public class Controller {
         this.register = register;
         this.startGUI = startGUI;
         
+        
     }
     
     private void testMetodePetter(){
