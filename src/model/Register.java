@@ -20,8 +20,8 @@ public class Register<E> {
         bolig = new HashSet<>();
         annonse = new HashSet<>();
         kontrakt = new HashSet<>();
-        soknad = new HashSet<>();   //Bør sorteres i forhold til "siste først" LinkedHashSet?
-        post = new HashSet<>(); //Bør sorteres alfabetisk på Poststed. TreeSet?
+        soknad = new LinkedHashSet<>();   //Bør sorteres i forhold til "siste først" LinkedHashSet?
+        post = new TreeSet<>(); //Bør sorteres alfabetisk på Poststed. TreeSet?
 
     }
 

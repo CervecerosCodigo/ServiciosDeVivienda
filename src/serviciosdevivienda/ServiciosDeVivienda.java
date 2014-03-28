@@ -16,7 +16,7 @@ public class ServiciosDeVivienda {
 
     public static void main(String[] args) {
 
-        TopLevelGUI oppstartsvindu = new TopLevelGUI();
+        VelkomstMainFrame oppstartsvindu = new VelkomstMainFrame();
         Register register = new Register();
         Controller controller = new Controller( register, oppstartsvindu );
         System.out.println("Hei");
