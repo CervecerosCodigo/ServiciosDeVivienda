@@ -11,8 +11,9 @@ public class Annonse {
     private int utleiepris;
     private boolean erSynlig;
     private Calendar utlopsDato;
-    private SimpleDateFormat datoFormat;
+    private SimpleDateFormat df;
     private Bolig bolig;
+    
 
     public Annonse( int depositum, int utleiepris, Calendar utlopsDato, Bolig bolig ){
         annonseID = ++teller;
@@ -21,7 +22,7 @@ public class Annonse {
         this.utleiepris = utleiepris;
         this.utlopsDato = utlopsDato;
         this.bolig = bolig;
-        datoFormat = new SimpleDateFormat("dd MM yyyy");
+        df = new SimpleDateFormat("dd-MM-yyyy");
         
     }
 
@@ -41,8 +42,8 @@ public class Annonse {
         return erSynlig;
     }
 
-    public String getUtlopsDato() {
-        return datoFormat.format( utlopsDato );
+    public Calendar getUtlopsDato() {
+        return  utlopsDato;
     }
 
     public Bolig getBolig() {
@@ -70,9 +71,12 @@ public class Annonse {
     }
 
     @Override
-    public String toString() {
-        return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", erSynlig=" + erSynlig + ", utlopsDato=" + datoFormat.format(utlopsDato) + ", bolig=" + bolig.toString() + '}';
+    public String toString(){
+        return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", utlopsDato=" + df.format(utlopsDato.getTime()) + '}';
     }
+//    public String toString() {
+//        return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", erSynlig=" + erSynlig + ", utlopsDato=" + df.format(utlopsDato) + ", bolig=" + bolig.toString() + '}';
+//    }
     
     
     

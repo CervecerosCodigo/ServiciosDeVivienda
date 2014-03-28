@@ -8,7 +8,7 @@ import java.util.*;
  */
 public class Register<E> {
 
-    private Collection<E> kunde;
+    private Collection<E> person;
     private Collection<E> bolig;
     private Collection<E> annonse;
     private Collection<E> kontrakt;
@@ -16,12 +16,12 @@ public class Register<E> {
     private Collection<E> post;
 
     public Register() {
-        kunde = new HashSet<>();
+        person = new HashSet<>();
         bolig = new HashSet<>();
         annonse = new HashSet<>();
         kontrakt = new HashSet<>();
-        soknad = new LinkedHashSet<>();   //Bør sorteres i forhold til "siste først" LinkedHashSet?
-        post = new TreeSet<>(); //Bør sorteres alfabetisk på Poststed. TreeSet?
+        soknad = new LinkedHashSet<>();
+        post = new TreeSet<>();
 
     }
 
@@ -68,6 +68,18 @@ public class Register<E> {
             return set.size();
         return -1;
     }
+    
+    public void visRegister(E e){
+        
+        Collection<E> set = finnKlasseVedRefleksjon(e);
+        if (set != null){
+            Iterator iter = set.iterator();
+            while( iter.hasNext() ){
+                System.out.println(iter.next().toString());
+            }
+        }
+            
+    }
 
     /**
      * Privat hjelpemetode klassens metoder.
@@ -77,10 +89,15 @@ public class Register<E> {
     private Collection<E> finnKlasseVedRefleksjon(E e) {
         Collection<E> retur = new HashSet<>();
         switch (e.getClass().getSimpleName()) {
-            case "Kunde":
-                return retur = kunde;
+            case "Person":
+            case "Utleier":
+            case "Leietaker":
+            case "Megler":
+                return retur = person;
             case "Bolig":
-                return retur = bolig;
+            case "Leilighet":
+            case "Enebolig":
+                return retur = bolig;  
             case "Annonse":
                 return retur = annonse;
             case "Kontrakt":
@@ -89,6 +106,7 @@ public class Register<E> {
                 return retur = soknad;
             case "Post":
                 return retur = post;
+
         }
         return null;
     }
