@@ -2,14 +2,56 @@ package model;
 
 public class Soknad {
 
-  private int soknadID;
+    private int soknadID;
+    private static int teller = 0;
+    private boolean erBehandlet;
+    private boolean erGodkjent;
+    private Annonse annonse;
+    private Leietaker leietaker;
 
-  private boolean erBehandlet;
+    public Soknad( Annonse a, Leietaker l ){
+        soknadID = ++teller;
+        erGodkjent = false;
+        erBehandlet = false;
+        annonse = a;
+        leietaker = l;
+    }
 
-  private boolean erGodkjent;
+    public int getSoknadID() {
+        return soknadID;
+    }
 
-  private Annonse annonse;
+    public boolean ErBehandlet() {
+        return erBehandlet;
+    }
 
-  private Leietaker leietaker;
+    public boolean ErGodkjent() {
+        return erGodkjent;
+    }
 
+    public Annonse getAnnonseObjekt() {
+        return annonse;
+    }
+
+    public Leietaker getLeietakerObjekt() {
+        return leietaker;
+    }
+
+    public void setErBehandlet(boolean erBehandlet) {
+        this.erBehandlet = erBehandlet;
+    }
+
+    public void setErGodkjent(boolean erGodkjent) {
+        this.erGodkjent = erGodkjent;
+    }
+
+    //Foreløpig er ikke toString riktig. Må legge inn annonse og leietakerinformasjon riktig.
+    @Override
+    public String toString() {
+        return "{ SøknadID: " + soknadID + ", Er behandlet? " + erBehandlet + ", Er godkjent? " + erGodkjent + 
+                "LeietakerID: " + leietaker.toString() + ", AnnonseID: " + annonse.toString() + "\n}";
+    }
+    
+    
+    
 }
