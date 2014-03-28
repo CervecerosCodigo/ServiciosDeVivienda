@@ -19,6 +19,7 @@ public class ServiciosDeVivienda {
         VelkomstMainFrame oppstartsvindu = new VelkomstMainFrame();
         Register register = new Register();
         Controller controller = new Controller( register, oppstartsvindu );
+
     }
 
 }
