@@ -69,8 +69,10 @@ public abstract class Bolig {
      *
      * @return String
      */
-//    @Override
-//    public String toString() {
-//        return "Bolig{" + "boligID=" + boligID + ", personID=" + personID + ", boligtype=" + boligtype + ", adresse=" + adresse + ", postnummer=" + postnummer + ", poststed=" + poststed + ", boAreal=" + boAreal + ", byggeAr=" + byggeAr + ", beskrivelse=" + beskrivelse + ", erUtleid=" + erUtleid + ", tilgjengeligForUtleie=" + tilgjengeligForUtleie + '}';
-//    }
+    @Override
+    public String toString() {
+        return "Bolig{" + "boligID=" + boligID + ", personID=" + personID + ", meglerID=" + meglerID + ", adresse=" + adresse + ", postnummer=" + postnummer + ", poststed=" + poststed + ", boAreal=" + boAreal + ", byggeAr=" + byggeAr + ", beskrivelse=" + beskrivelse + ", erUtleid=" + erUtleid + ", tilgjengeligForUtleie=" + tilgjengeligForUtleie + '}';
+    }
+
+
 }

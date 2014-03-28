@@ -17,4 +17,11 @@ public class Enebolig extends Bolig {
         this.harKjeller = harKjeller;
         this.tomtAreal = tomtAreal;
     }
+
+    @Override
+    public String toString() {
+        return "Enebolig{" + "boligtype=" + boligtype + ", antallEtasjer=" + antallEtasjer + ", harKjeller=" + harKjeller + ", tomtAreal=" + tomtAreal + '}';
+    }
+    
+    
 }

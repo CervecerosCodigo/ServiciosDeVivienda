@@ -23,4 +23,11 @@ public class Leilighet extends Bolig {
         this.harGarsje = harGarsje;
         this.harFellesvaskeri = harFellesvaskeri;
     }
+
+    @Override
+    public String toString() {
+        return "Leilighet{" + "boligtype=" + boligtype + ", etasjeNr=" + etasjeNr + ", balkongAreal=" + balkongAreal + ", bodAreal=" + bodAreal + ", harHeis=" + harHeis + ", harGarsje=" + harGarsje + ", harFellesvaskeri=" + harFellesvaskeri + '}';
+    }
+    
+    
 }
