@@ -19,6 +19,7 @@ public class ServiciosDeVivienda {
         TopLevelGUI oppstartsvindu = new TopLevelGUI();
         Register register = new Register();
         Controller controller = new Controller( register, oppstartsvindu );
+        System.out.println("Hei");
     }
 
 }
