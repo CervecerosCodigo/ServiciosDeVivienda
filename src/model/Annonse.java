@@ -42,6 +42,7 @@ public class Annonse {
         return erSynlig;
     }
 
+
     public Calendar getUtlopsDato() {
         return  utlopsDato;
     }
