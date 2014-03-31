@@ -20,6 +20,13 @@ public abstract class Bolig {
     private String pathBildemappe; //Denne variabeln skal peke til en mappe med samme navn som biligID der vi lagrer bildene om boligen. Si at boligID er 1234 da vil den peke til "img/1234". Det er ikke sikket at vi trenger denne variabeln ettersom path i hvilken alt er lagret kan vi hente opp fra boligID
 
     /**
+     * En tom kontruktør for Bolig
+     */
+    public Bolig(){
+        boligID = +teller;
+    }
+    
+    /**
      * Bolig.
      * @param personID
      * @param adresse
@@ -44,6 +51,95 @@ public abstract class Bolig {
         this.tilgjengeligForUtleie = tilgjengeligForUtleie;
     }
 
+    public int getBoligID() {
+        return boligID;
+    }
+
+    public void setBoligID(int boligID) {
+        this.boligID = boligID;
+    }
+
+    public int getPersonID() {
+        return personID;
+    }
+
+    public void setPersonID(int personID) {
+        this.personID = personID;
+    }
+
+    public int getMeglerID() {
+        return meglerID;
+    }
+
+    public void setMeglerID(int meglerID) {
+        this.meglerID = meglerID;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public String getPostnummer() {
+        return postnummer;
+    }
+
+    public void setPostnummer(String postnummer) {
+        this.postnummer = postnummer;
+    }
+
+    public String getPoststed() {
+        return poststed;
+    }
+
+    public void setPoststed(String poststed) {
+        this.poststed = poststed;
+    }
+
+    public int getBoAreal() {
+        return boAreal;
+    }
+
+    public void setBoAreal(int boAreal) {
+        this.boAreal = boAreal;
+    }
+
+    public int getByggeAr() {
+        return byggeAr;
+    }
+
+    public void setByggeAr(int byggeAr) {
+        this.byggeAr = byggeAr;
+    }
+
+    public String getBeskrivelse() {
+        return beskrivelse;
+    }
+
+    public void setBeskrivelse(String beskrivelse) {
+        this.beskrivelse = beskrivelse;
+    }
+
+    public boolean isErUtleid() {
+        return erUtleid;
+    }
+
+    public void setErUtleid(boolean erUtleid) {
+        this.erUtleid = erUtleid;
+    }
+
+    public String getPathBildemappe() {
+        return pathBildemappe;
+    }
+
+    public void setPathBildemappe(String pathBildemappe) {
+        this.pathBildemappe = pathBildemappe;
+    }
+
+    
     /**
      * Setter dato for når objektet blir tilgjengeligt for utleie.
      *
