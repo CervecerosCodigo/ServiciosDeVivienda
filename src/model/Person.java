@@ -3,14 +3,14 @@ package model;
 public abstract class Person {
 
 	private int personID;
+        private static int teller = 0;
 	private String fornavn;
 	private String etternavn;
 	private String epost;
 	private String telefon;
 
-	public Person(int personID, String fornavn, String etternavn, String epost, String telefon) {
-
-		this.personID = personID;
+	public Person(String fornavn, String etternavn, String epost, String telefon) {
+                this.personID = ++teller;
 		this.fornavn = fornavn;
 		this.etternavn = etternavn;
 		this.epost = epost;

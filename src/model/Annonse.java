@@ -51,9 +51,9 @@ public class Annonse {
         return bolig;
     }
     
-//    public int getBoligID() {
-//        return bolig.boligID;
-//    }
+    public int getBoligID() {
+        return bolig.getBoligID();
+    }
 
     public void setDepositum(int depositum) {
         this.depositum = depositum;
@@ -72,12 +72,12 @@ public class Annonse {
     }
 
     @Override  //En "mini-toString" for testing
-    public String toString(){
-        return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", utlopsDato=" + df.format(utlopsDato.getTime()) + '}';
-    }
-//    public String toString() {
-//        return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", erSynlig=" + erSynlig + ", utlopsDato=" + df.format(utlopsDato) + ", bolig=" + bolig.toString() + '}';
+//    public String toString(){
+//        return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", utlopsDato=" + df.format(utlopsDato.getTime()) + '}';
 //    }
+    public String toString() {
+        return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", erSynlig=" + erSynlig + ", utlopsDato=" + df.format(utlopsDato.getTime()) + ", boligID=" + bolig.getBoligID() + '}';
+    }
     
     
     

@@ -10,15 +10,15 @@ package model;
 public class Kontrakt {
 
     private Annonse annonse;
-    private Megler megler;
-    private Leietaker leietaker;
+    private Person megler;
+    private Person leietaker;
     private int utleiepris;
     private int depositum;
     private int leietidIMnd;
     private int kontraktID;
     private static int teller = 0;
     
-    public Kontrakt( Annonse annonse, Megler megler, Leietaker leietaker, int leietidIMnd ){
+    public Kontrakt( Annonse annonse, Person megler, Person leietaker, int leietidIMnd ){
         this.annonse = annonse;
         this.megler = megler;
         this.leietaker = leietaker;
@@ -36,14 +36,13 @@ public class Kontrakt {
     public Bolig getBoligID() {
         return annonse.getBolig();
     }
-    //Må editeres når Leietaker er klart.
-    public Leietaker getLeietakerID(){
-        return leietaker;
+
+    public int getLeietakerID(){
+        return leietaker.getPersonID();
     }
 
-    //Må editeres når Megler er klar
-    public Megler getMeglerID() {
-        return megler;
+    public int getMeglerID() {
+        return megler.getPersonID();
     }
     public int getKontraktID() {
         return kontraktID;
@@ -61,8 +60,8 @@ public class Kontrakt {
 
     @Override
     public String toString() {
-        return "Kontrakt{" + "annonse=" + annonse + ", megler=" + megler + ", leietaker=" 
-                + leietaker + ", utleiepris=" + utleiepris + ", depositum=" + depositum 
+        return "Kontrakt{" + "annonse=" + annonse.getAnnonseID() + ", megler=" + megler.getPersonID() + ", leietaker=" 
+                + leietaker.getPersonID() + ", utleiepris=" + utleiepris + ", depositum=" + depositum 
                 + ", leietidIMnd=" + leietidIMnd + ", kontraktID=" + kontraktID + '}';
     }
 

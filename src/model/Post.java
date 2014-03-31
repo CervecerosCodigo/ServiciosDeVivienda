@@ -15,12 +15,6 @@ public class Post {
     private String poststed;
     private int antallBoliger;
     
-//    public Post( String poststed){
-//        
-//        this.poststed = poststed;
-//        ++antallBoliger;
-//    }
-
     public Post( String poststed, int oppdatering){
         this.poststed = poststed;
         antallBoliger = oppdatering;

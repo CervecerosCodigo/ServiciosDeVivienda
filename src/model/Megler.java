@@ -9,16 +9,16 @@ public class Megler extends Person {
 	private int meglerID;
 	private String kontor;
 
-	public Megler(int personID, String fornavn, String etternavn, String epost, String telefon, int meglerID, String kontor) {
+	public Megler(String fornavn, String etternavn, String epost, String telefon, int meglerID, String kontor) {
 		
-		super(personID, fornavn, etternavn, epost, telefon);
+		super(fornavn, etternavn, epost, telefon);
 		this.meglerID = meglerID;
 		this.kontor = kontor;
 	}
 
     @Override
     public String toString() {
-        return "Megler{" + "meglerID=" + meglerID + ", kontor=" + kontor + "}\n";
+        return "Megler{personID " + super.getPersonID() + ", meglerID=" + meglerID + ", kontor=" + kontor + "}\n";
     }
 
         

@@ -7,9 +7,9 @@ public class Soknad {
     private boolean erBehandlet;
     private boolean erGodkjent;
     private Annonse annonse;
-    private Leietaker leietaker;
+    private Person leietaker;
 
-    public Soknad( Annonse a, Leietaker l ){
+    public Soknad(Annonse a, Person l) {
         soknadID = ++teller;
         erGodkjent = false;
         erBehandlet = false;
@@ -19,6 +19,14 @@ public class Soknad {
 
     public int getSoknadID() {
         return soknadID;
+    }
+
+    public int getLeietakerID() {
+        return leietaker.getPersonID();
+    }
+
+    public int getBoligIDFraAnnonse() {
+        return annonse.getBoligID();
     }
 
     public boolean ErBehandlet() {
@@ -34,7 +42,7 @@ public class Soknad {
     }
 
     public Leietaker getLeietakerObjekt() {
-        return leietaker;
+        return (Leietaker) leietaker;
     }
 
     public void setErBehandlet(boolean erBehandlet) {
@@ -45,16 +53,10 @@ public class Soknad {
         this.erGodkjent = erGodkjent;
     }
 
-    //Foreløpig er ikke toString riktig. Må legge inn annonse og leietakerinformasjon riktig.
     @Override
     public String toString() {
-        return "Søknad{SøknadID: " + soknadID + ", AnnonseID: " + annonse.getAnnonseID() + "}";
+        return "Søknad{SøknadID: " + soknadID + ", Er behandlet? " + erBehandlet + ", Er godkjent? " + erGodkjent
+                + ", LeietakerID: " + leietaker.getPersonID() + ", AnnonseID: " + annonse.getAnnonseID() + "}";
     }
-//    public String toString() {
-//        return "{ SøknadID: " + soknadID + ", Er behandlet? " + erBehandlet + ", Er godkjent? " + erGodkjent + 
-//                "LeietakerID: " + leietaker.toString() + ", AnnonseID: " + annonse.toString() + "\n}";
-//    }
-    
-    
-    
+
 }
