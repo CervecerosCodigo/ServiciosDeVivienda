@@ -70,7 +70,7 @@ public class Annonse {
         this.utlopsDato = utlopsDato;
     }
 
-    @Override
+    @Override  //En "mini-toString" for testing
     public String toString(){
         return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", utlopsDato=" + df.format(utlopsDato.getTime()) + '}';
     }

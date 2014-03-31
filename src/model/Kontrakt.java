@@ -65,7 +65,5 @@ public class Kontrakt {
                 + leietaker + ", utleiepris=" + utleiepris + ", depositum=" + depositum 
                 + ", leietidIMnd=" + leietidIMnd + ", kontraktID=" + kontraktID + '}';
     }
-    
-    
 
 }

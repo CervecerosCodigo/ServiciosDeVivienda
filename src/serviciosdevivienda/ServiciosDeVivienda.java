@@ -2,8 +2,9 @@
 package serviciosdevivienda;
 
 import controller.*;
-import model.*;
 import view.*;
+import register.*;
+import java.util.*;
 
 /**
  * 
@@ -17,8 +18,8 @@ public class ServiciosDeVivienda {
     public static void main(String[] args) {
 
         VelkomstMainFrame oppstartsvindu = new VelkomstMainFrame();
-        Register register = new Register();
-        Controller controller = new Controller( register, oppstartsvindu );
+        
+        Controller controller = new Controller(oppstartsvindu );
 
     }
 

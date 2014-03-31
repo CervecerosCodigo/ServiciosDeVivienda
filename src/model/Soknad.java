@@ -48,9 +48,12 @@ public class Soknad {
     //Foreløpig er ikke toString riktig. Må legge inn annonse og leietakerinformasjon riktig.
     @Override
     public String toString() {
-        return "{ SøknadID: " + soknadID + ", Er behandlet? " + erBehandlet + ", Er godkjent? " + erGodkjent + 
-                "LeietakerID: " + leietaker.toString() + ", AnnonseID: " + annonse.toString() + "\n}";
+        return "Søknad{SøknadID: " + soknadID + ", AnnonseID: " + annonse.getAnnonseID() + "}";
     }
+//    public String toString() {
+//        return "{ SøknadID: " + soknadID + ", Er behandlet? " + erBehandlet + ", Er godkjent? " + erGodkjent + 
+//                "LeietakerID: " + leietaker.toString() + ", AnnonseID: " + annonse.toString() + "\n}";
+//    }
     
     
     
