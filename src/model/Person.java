@@ -17,6 +17,8 @@ public abstract class Person {
 		this.telefon = telefon;
 	}
 
+
+
 	public int getPersonID() {
 		return personID;
 	}
@@ -82,4 +84,8 @@ public abstract class Person {
 		
 	} // end of equals method
 
+            @Override
+    public String toString() {
+        return "{" + "personID=" + personID + ", fornavn=" + fornavn + ", etternavn=" + etternavn + ", epost=" + epost + ", telefon=" + telefon + "}\n";
+    }
 } // end of class

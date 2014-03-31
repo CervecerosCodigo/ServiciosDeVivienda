@@ -15,4 +15,11 @@ public class Megler extends Person {
 		this.meglerID = meglerID;
 		this.kontor = kontor;
 	}
+
+    @Override
+    public String toString() {
+        return "Megler{" + "meglerID=" + meglerID + ", kontor=" + kontor + "}\n";
+    }
+
+        
 }

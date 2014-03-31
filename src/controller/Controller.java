@@ -55,7 +55,15 @@ public class Controller {
         Calendar tilgjengelig = new GregorianCalendar( 2014, 03, 29 );
         Calendar utlopsdato = new GregorianCalendar( 2014, 05, 26 );
         
-
+        Person megler1 = new Megler( 1, "Per", "Meglersen", "megler@serviciosdevivienda.no", "45673300", 1000, "Oslokontoret");
+        Person leietaker1 = new Leietaker(2, "Line", "Larsen", "line@gmail.com", "48009067");
+        Person utleier1 = new Utleier(3, "Hans", "Pedersen", "pedersen@boflott.no", "90006788", true, "Bo flott AS");
+        personRegister.leggTilObjekt(megler1);
+        personRegister.leggTilObjekt(leietaker1);
+        personRegister.leggTilObjekt(utleier1);
+        System.out.println( personRegister.visRegister() );
+        System.out.println("================================================");
+        
         Bolig nyLeilighet = new Leilighet(3, 0, 10, false, false, true, 10, "Gladengveien 15A", 
                 "0661", "Oslo", 65, 1972, "Flott leilighet, solvendt.", false, tilgjengelig);
         Bolig nyEnebolig = new Enebolig( Boligtype.ENEBOLIG, 2, true, 650, 11, "Ivar Aasens vei 23", 
@@ -74,11 +82,10 @@ public class Controller {
         System.out.println( annonseRegister.visRegister() );
         
         System.out.println("================================================");
-        Leietaker nyLeietaker = new Leietaker();
-        Leietaker nyLeietaker2 = new Leietaker();      
-        Soknad nySoknad = new Soknad( annonse1, nyLeietaker);
-        soknadRegister.leggTilObjekt( nySoknad );
-        System.out.println( soknadRegister.visRegister( ) );
+
+//        Soknad nySoknad = new Soknad( annonse1, nyLeietaker);
+//        soknadRegister.leggTilObjekt( nySoknad );
+//        System.out.println( soknadRegister.visRegister( ) );
     }
 
     /**

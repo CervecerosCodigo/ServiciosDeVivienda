@@ -12,4 +12,10 @@ public class Utleier extends Person {
 		this.erRepresentant = erRepresentant;
 		this.erRepresentantFor = this.erRepresentantFor;
 	}
+
+    @Override
+    public String toString() {
+        return "Utleier" + super.toString(); //To change body of generated methods, choose Tools | Templates.
+    }
+        
 }

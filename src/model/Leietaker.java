@@ -13,4 +13,11 @@ public class Leietaker extends Person {
 	public boolean isFodselsAr() {
 		return fodselsAr;
 	}
+
+    @Override
+    public String toString() {
+        return "Leietaker" +super.toString(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+        
 }
