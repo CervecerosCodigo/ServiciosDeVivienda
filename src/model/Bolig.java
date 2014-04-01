@@ -22,9 +22,9 @@ public abstract class Bolig {
     /**
      * En tom kontruktør for Bolig
      */
-    public Bolig(){
-        boligID = +teller;
-    }
+//    public Bolig(){
+//        //boligID = +teller;
+//    }
     
     /**
      * Bolig.

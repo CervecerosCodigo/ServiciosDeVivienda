@@ -15,9 +15,9 @@ public class Leilighet extends Bolig {
     /**
      * En tom konstruktør for Leilighet
      */
-    public Leilighet(){
-        //Utgår fra et teller for boligID blir oppdatert etter arv prinsippet
-    }
+//    public Leilighet(){
+//        //Utgår fra et teller for boligID blir oppdatert etter arv prinsippet
+//    }
     
     public Leilighet(int etasjeNr, int balkongAreal, int bodAreal, boolean harHeis, boolean harGarsje, boolean harFellesvaskeri, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
         super(personID, adresse, postnummer, poststed, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);

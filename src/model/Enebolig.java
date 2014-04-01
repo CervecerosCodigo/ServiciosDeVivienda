@@ -12,8 +12,8 @@ public class Enebolig extends Bolig {
     /**
      * En tom konstruktør for Enebolig.
      */
-    public Enebolig() {
-    }
+//    public Enebolig() {
+//    }
 
     
     //TODO: alle getter og setter samt toString()

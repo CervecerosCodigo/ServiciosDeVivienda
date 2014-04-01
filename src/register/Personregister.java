@@ -15,17 +15,7 @@ public class Personregister<Person> extends Register{
     }
 
 
-  
-    @Override
-    public String visRegister() {
-        Iterator iter = super.collection.iterator();
-        String info = "";
-        while( iter.hasNext() ){
-           info += iter.next().toString() ;
-        }
-        return info;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 
 
 }

@@ -11,7 +11,7 @@ import java.util.*;
  */
 public abstract class Register<T> {
 
-    protected Set<T> collection;
+    protected Collection<T> collection;
 
     public boolean leggTilObjekt(T e) {
         return collection.add(e);

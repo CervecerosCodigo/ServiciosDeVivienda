@@ -12,7 +12,7 @@ import view.*;
  * leses og skrives til registrene blir utført her.
  * @author espen
  */
-public class Controller {
+public class MainController {
 
     private Register personRegister;
     private Register boligRegister;
@@ -24,7 +24,7 @@ public class Controller {
     private VelkomstMainFrame startGUI;
     
 
-    public Controller( VelkomstMainFrame startGUI) {
+    public MainController( VelkomstMainFrame startGUI) {
         this.startGUI = startGUI;
         
         personRegister = new Personregister();
@@ -33,36 +33,18 @@ public class Controller {
         kontraktRegister = new Kontraktregister();
         soknadRegister = new Soknadregister();
         postRegister = new Postregister();        
-        testMetodeEspen();
+        testData();
         
     }
 
-    private void testMetodePetter() {
-
+    public Calendar opprettKalenderobjekt( int aar, int mnd, int dag ){
+        Calendar kalender = new GregorianCalendar( aar, mnd, dag );
+        return kalender;
     }
 
-    private void testMetodeLukas() {
+    
+    private void testData() {
 
-    }
-
-    private void testMetodeEspen() {
-
-        Post nyPost1 = new Post("Oslo", 1);
-        Post nyPost2 = new Post("Oslo", 1);
-        Post nyPost3 = new Post("Lillestrøm", 1);
-        Post nyPost4 = new Post("Askim", 1);
-        Post nyPost5 = new Post("Askim", 1);
-        Post nyPost6 = new Post("Askim", 1);
-        Post nyPost7 = new Post("Tønsberg", 1);
-        oppdaterPoststedRegister(nyPost1, 1);
-        oppdaterPoststedRegister(nyPost2, 1);
-        oppdaterPoststedRegister(nyPost3, 1);
-        oppdaterPoststedRegister(nyPost4, 1);
-        oppdaterPoststedRegister(nyPost5, 1);
-        oppdaterPoststedRegister(nyPost6, 1);
-        oppdaterPoststedRegister(nyPost7, 1);
-        System.out.println(postRegister.visRegister());
-        System.out.println("================================================");
 
         Calendar tilgjengelig = new GregorianCalendar( 2014, 03, 29 );
         Calendar utlopsdato = new GregorianCalendar( 2014, 05, 26 );
@@ -136,35 +118,6 @@ public class Controller {
         ////////////////////////////////////////////////////////////////////////        
     }
 
-    /**
-     * Hjelpemetode for å oppdatere postregisteret. Avhengig av parameteren
-     * oppdateringAvAntall vil metoden utføre forskjellige operasjoner. 
-     * @param post
-     * @param oppdateringAvAntall 
-     */
-    private void oppdaterPoststedRegister(Post post, int oppdateringAvAntall) {
-
-        if (post != null) {
-            if (!postRegister.finnesObjektet(post) && oppdateringAvAntall > 0) {
-                postRegister.leggTilObjekt(post);
-                return;
-                //System.out.println("Lagt til poststedet " + post.getPostSted());
-            } else {
-                if ((post.getAntallBoliger() + oppdateringAvAntall) <= 0) {
-                    postRegister.slettObjekt(post);
-                    //System.out.println("Poststedet har ingen boliger for utleie og har blitt slettet!");
-                    return;
-                }
-               // System.out.println(post.getPostSted() + " " + (post.getAntallBoliger() + oppdateringAvAntall));
-                
-                Post ny = new Post(post.getPostSted(), (post.getAntallBoliger() + oppdateringAvAntall) );
-                postRegister.slettObjekt(post);
-                postRegister.leggTilObjekt(ny);
-                //System.out.println("Oppdatert antall boliger for " + ny.getPostSted() + " med " + oppdateringAvAntall);
-                //System.out.println(ny.getPostSted() + " har " + ny.getAntallBoliger() + " boliger for utleie.");
-            }
-        }
-        
-    }
-
+    
+ 
 }
