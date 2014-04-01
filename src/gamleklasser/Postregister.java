@@ -22,7 +22,7 @@ public class Postregister extends Register<Post>{
 
         komp  = new Postsammenligner();
         postRegister = new TreeSet<>(komp);
-        super.collection = postRegister;
+//        super.collection = postRegister;
         Post ny = new Post("Oslo", 1);
     }
     
