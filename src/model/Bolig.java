@@ -20,10 +20,10 @@ public abstract class Bolig {
     private String pathBildemappe; //Denne variabeln skal peke til en mappe med samme navn som biligID der vi lagrer bildene om boligen. Si at boligID er 1234 da vil den peke til "img/1234". Det er ikke sikket at vi trenger denne variabeln ettersom path i hvilken alt er lagret kan vi hente opp fra boligID
 
     /**
-     * En tom kontruktør for Bolig
+     * En tom kontruktør for Bolig. Brukes egentlig ikke lengre da den bruktes sammen med generesike collections.
      */
     public Bolig(){
-        boligID = +teller;
+        boligID = ++teller;
     }
     
     /**
