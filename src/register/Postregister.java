@@ -1,10 +1,7 @@
 package register;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Klassen holder oversikt over antall boliger tilgjengelige for utleie for et
@@ -21,7 +18,8 @@ public class Postregister {
      * Initialiserer ny tom postregister med boliger.
      */
     public Postregister() {
-        poststeder_med_bolig = new HashMap<>();
+//        poststeder_med_bolig = new HashMap<>();
+        poststeder_med_bolig = new TreeMap<>();
     }
 
     /**
@@ -88,23 +86,26 @@ public class Postregister {
         }
         return -1;
     }
-    
+
     /**
      * Returnerer totalt antal postster med bolig til utleie.
-     * @return int 
+     *
+     * @return int
      */
-    public int antallPoststeder(){
+    public int antallPoststeder() {
         return poststeder_med_bolig.size();
     }
 
     /**
-     * Returnerer en streng med oversikt over alle poststeder og antall boliger til utleie.
+     * Returnerer en streng med oversikt over alle poststeder og antall boliger
+     * til utleie.
+     *
      * @return String
      */
-    public String getStatistikk(){
+    public String getStatistikk() {
         StringBuilder retur = new StringBuilder();
-        for(String poststed : poststeder_med_bolig.keySet()){
-            retur.append(poststed +"\t"+ poststeder_med_bolig.get(poststed).toString()+"\n");
+        for (String poststed : poststeder_med_bolig.keySet()) {
+            retur.append(poststed + "\t" + poststeder_med_bolig.get(poststed).toString() + "\n");
         }
         return retur.toString();
     }
