@@ -7,10 +7,10 @@ import java.util.*;
 
 public class Personregister<Person> extends Register{
 
-     protected HashSet<Person> personRegister;
+     //protected HashSet<Person> personRegister;
     
-    public Personregister(){
-        personRegister = new HashSet<>();
+    public Personregister( HashSet<Person> personRegister){
+        //personRegister = new HashSet<>();
         super.collection = personRegister;
     }
 

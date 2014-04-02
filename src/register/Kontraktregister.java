@@ -11,10 +11,10 @@ import java.util.*;
 
 public class Kontraktregister<Kontrakt> extends Register<Kontrakt>{
 
-    protected HashSet<Kontrakt> kontraktRegister;
+    //protected HashSet<Kontrakt> kontraktRegister;
     
-    public Kontraktregister(){
-        kontraktRegister = new HashSet<>();
+    public Kontraktregister( HashSet<Kontrakt> kontraktRegister ){
+        //kontraktRegister = new HashSet<>();
         super.collection = kontraktRegister;
     }
 

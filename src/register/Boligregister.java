@@ -8,13 +8,15 @@ import java.util.*;
  * @author espen
  * @param <Bolig> 
  */
-public class Boligregister<Bolig> extends Register<Bolig> {
+public class Boligregister<Bolig> extends Register {
 
-    protected HashSet<Bolig> boligRegister;
+    //protected HashSet<Bolig> boligRegister;
 
-    public Boligregister() {
-        boligRegister = new HashSet<>();
+    public Boligregister( HashSet<Bolig> boligRegister ) {
+        //boligRegister = new HashSet<>();
         super.collection = boligRegister;
+        
     }
+    
 
 }
