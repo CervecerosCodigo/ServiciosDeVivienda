@@ -88,10 +88,10 @@ public class Leilighet extends Bolig {
     
     
 
-    @Override
-    public String toString() {
-        return "Leilighet{" + "boligtype=" + boligtype + ", etasjeNr=" + etasjeNr + ", balkongAreal=" + balkongAreal + ", bodAreal=" + bodAreal + ", harHeis=" + harHeis + ", harGarsje=" + harGarsje + ", harFellesvaskeri=" + harFellesvaskeri + '}';
-    }
+//    @Override
+//    public String toString() {
+//        return super.toString() + "boligtype=" + boligtype + ", etasjeNr=" + etasjeNr + ", balkongAreal=" + balkongAreal + ", bodAreal=" + bodAreal + ", harHeis=" + harHeis + ", harGarsje=" + harGarsje + ", harFellesvaskeri=" + harFellesvaskeri + '}';
+//    }
     
     
 }

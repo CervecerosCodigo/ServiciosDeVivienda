@@ -86,6 +86,6 @@ public abstract class Person {
 
             @Override
     public String toString() {
-        return "{" + "personID=" + personID + ", fornavn=" + fornavn + ", etternavn=" + etternavn + ", epost=" + epost + ", telefon=" + telefon + "}\n";
+        return "{" + "personID=" + personID + ", fornavn=" + fornavn + ", etternavn=" + etternavn + ", epost=" + epost + ", telefon=" + telefon + "}";
     }
 } // end of class

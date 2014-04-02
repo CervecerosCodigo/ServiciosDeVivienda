@@ -12,10 +12,10 @@ import java.util.*;
  */
 public class Soknadregister<Soknad> extends Register<Soknad>{
 
-    protected LinkedHashSet<Soknad> soknadRegister;
+    //protected LinkedHashSet<Soknad> soknadRegister;
     
-    public Soknadregister(){
-        soknadRegister = new LinkedHashSet<>();
+    public Soknadregister( LinkedHashSet<Soknad> soknadRegister ){
+        //soknadRegister = new LinkedHashSet<>();
         super.collection = soknadRegister;
     }
 

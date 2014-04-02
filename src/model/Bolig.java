@@ -5,7 +5,7 @@ import java.util.GregorianCalendar;
 
 public abstract class Bolig {
 
-    private static int teller;//Brukes til å sette unik id for bolikobjektene
+    private static int teller = 1;//Brukes til å sette unik id for bolikobjektene
     private int boligID;
     private int personID; //En referanse til eier av boligen IKKE en generell person
     private int meglerID;
@@ -19,14 +19,7 @@ public abstract class Bolig {
     private Calendar tilgjengeligForUtleie;
     private String pathBildemappe; //Denne variabeln skal peke til en mappe med samme navn som biligID der vi lagrer bildene om boligen. Si at boligID er 1234 da vil den peke til "img/1234". Det er ikke sikket at vi trenger denne variabeln ettersom path i hvilken alt er lagret kan vi hente opp fra boligID
 
-    /**
-     * En tom kontruktør for Bolig. Brukes egentlig ikke lengre da den bruktes sammen med generesike collections.
-     */
-//    public Bolig(){
-//        //boligID = +teller;
-//    }
 
-    
     /**
      * Bolig.
      * @param personID
@@ -168,8 +161,13 @@ public abstract class Bolig {
      */
     @Override
     public String toString() {
-        return "Bolig{" + "boligID=" + boligID + ", personID=" + personID + ", meglerID=" + meglerID + ", adresse=" + adresse + ", postnummer=" + postnummer + ", poststed=" + poststed + ", boAreal=" + boAreal + ", byggeAr=" + byggeAr + ", beskrivelse=" + beskrivelse + ", erUtleid=" + erUtleid + ", tilgjengeligForUtleie=" + tilgjengeligForUtleie + '}';
+        return "Bolig{" + "boligID=" + boligID + " Adresse: " + adresse + ", personID=" + personID + '}';
     }
+//    @Override
+//    public String toString() {
+//        return "Bolig{" + "boligID=" + boligID + " Adresse: " + adresse + ", personID=" + personID + ", meglerID=" + meglerID + ", erUtleid=" + erUtleid + '}';
+//    }
 
+    
 
 }

@@ -60,10 +60,10 @@ public class Enebolig extends Bolig {
     
     
     
-    @Override
-    public String toString() {
-        return "Enebolig{" + "boligtype=" + boligtype + ", antallEtasjer=" + antallEtasjer + ", harKjeller=" + harKjeller + ", tomtAreal=" + tomtAreal + '}';
-    }
+//    @Override
+//    public String toString() {
+//        return super.toString() + "boligtype=" + boligtype + ", antallEtasjer=" + antallEtasjer + ", harKjeller=" + harKjeller + ", tomtAreal=" + tomtAreal + '}';
+//    }
     
     
 }

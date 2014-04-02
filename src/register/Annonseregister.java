@@ -10,10 +10,10 @@ import java.util.*;
  */
 public class Annonseregister<Annonse> extends Register<Annonse> {
 
-    protected HashSet<Annonse> annonseRegister;
+    //protected HashSet<Annonse> annonseRegister;
     
-    public Annonseregister() {
-        annonseRegister = new HashSet<>();
+    public Annonseregister( HashSet<Annonse> annonseRegister ) {
+        //annonseRegister = new HashSet<>();
         super.collection = annonseRegister;
     }
 
