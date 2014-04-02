@@ -8,10 +8,12 @@ package lib;
  */
 public class RegexTester {
 
-    private static final String NAVN_PATTERN = "^[a-zæøåA-ZÆØÅ ]{2,20}$";
+    private static final String NAVN_PATTERN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}$";
     private static final String EPOST_PATTERN = "^([a-zA-Z0-9])+([a-zA-Z0-9\\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\\._-]+)+$";
+    private static final String GATE_NAVN_PATTERN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s]?[A-ZÆØÅ]?[a-zæøå]*$";
     private static final String GATE_NR_PATTERN = "^[1-9]{1}[0-9]{0,2}$";
     private static final String POST_NUMMER_PATTERN = "^[0-9]{4}$";
+    private static final String POSTORT_NAVN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}$";
     private static final String TEL_NUMMER_NORSK = "^[1-9]{1}[0-9]{7}$";
     private static final String PERSONNUMMER = "^[0-9]{11}$";
     private static final String YEAR = "^[1|2]{1}[0-9]{3}$";
@@ -26,8 +28,7 @@ public class RegexTester {
     }
 
     /**
-     * Tester på en streng opp til 20 tegn dersom den innholder kun
-     * alfanumeriske tegn. Kan derfor brukes på både før- og etternavn samtidig.
+     * Tester dersom et navn innholder kun alfanumeriske tegn. Brukes kun på for- eller etternavn for seg ettersom denne atr ikke høyde for whitespaces. Navnet må begynne med stor bokstav.
      *
      * @param navn String
      * @return boolean
@@ -44,6 +45,15 @@ public class RegexTester {
      */
     public static boolean testEpost(String epost) {
         return patternMatchOK(epost, EPOST_PATTERN);
+    }
+    
+    /**
+     * Tester norsk gatenavn. Et gatenavn kan bestå av 1 til 3 ord separert med blank tegn. Alle ord må begynne med stor bokstav.
+     * @param gatenavn String
+     * @return boolean
+     */
+    public static boolean testGateNavn(String gatenavn){
+        return patternMatchOK(gatenavn, GATE_NAVN_PATTERN);
     }
 
     /**
@@ -65,6 +75,15 @@ public class RegexTester {
      */
     public static boolean testPostNummer(String postnr) {
         return patternMatchOK(postnr, POST_NUMMER_PATTERN);
+    }
+
+    /**
+     * Tester på navn for en postort. Må begynne på stor bokstav.
+     * @param postortnavn String
+     * @return boolean
+     */
+    public static boolean testPostOrtNavn(String postortnavn) {
+        return patternMatchOK(postortnavn, POSTORT_NAVN);
     }
 
     /**
@@ -119,40 +138,47 @@ public class RegexTester {
     public static boolean testDayNummer(String day) {
         return patternMatchOK(day, DAY_OF_MONTH_NUMMER);
     }
-    
+
     /**
-     * Tester kvadratmeter for boligen, får ikke begynne på 0 og kan ikke overstige 999 kvm.
+     * Tester kvadratmeter for boligen, får ikke begynne på 0 og kan ikke
+     * overstige 999 kvm.
+     *
      * @param kvm String
      * @return boolean
      */
-    public static boolean testKVMbolig(String kvm){
+    public static boolean testKVMbolig(String kvm) {
         return patternMatchOK(kvm, KVM_BOLIG);
     }
-    
+
     /**
-     * Tester på antall kvadratmeter for tomten. Får ikke begynne på 0 og kan ikke overgå 9999 kvm.
+     * Tester på antall kvadratmeter for tomten. Får ikke begynne på 0 og kan
+     * ikke overgå 9999 kvm.
+     *
      * @param kvm String
      * @return boolean
      */
-    public static boolean testKVMtomt(String kvm){
+    public static boolean testKVMtomt(String kvm) {
         return patternMatchOK(kvm, KVM_TOMT);
     }
-    
+
     /**
-     * Tester på etasjenummer. Et etasjenummer skal bestå av min et tall og maksimum av to tall og får ikke begynne på null.
+     * Tester på etasjenummer. Et etasjenummer skal bestå av min et tall og
+     * maksimum av to tall og får ikke begynne på null.
+     *
      * @param etasje String
      * @return boolean
      */
-    public static boolean testEtasje(String etasje){
+    public static boolean testEtasje(String etasje) {
         return patternMatchOK(etasje, ETASJE);
     }
-    
+
     /**
      * Tester på pris, får ikke begynne på null og kan være av et til seks tall.
-     * @param pris String 
+     *
+     * @param pris String
      * @return boolean
      */
-    public static boolean testPris(String pris){
+    public static boolean testPris(String pris) {
         return patternMatchOK(pris, PRIS);
     }
 
