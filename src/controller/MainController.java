@@ -44,7 +44,7 @@ public class MainController {
         annonseRegister = new Annonseregister(annonseliste);
         kontraktRegister = new Kontraktregister(kontraktliste);
         soknadRegister = new Soknadregister(soknadsliste);
-        postRegister = new Postregister();
+        //postRegister = new Postregister();
         testData();
         //finnBoligerRegistrertPaaEier("pedersen@boflott.no");
         //finnBoligerRegistrertPaaAdresse( "Ivar Aasens vei 25" );
