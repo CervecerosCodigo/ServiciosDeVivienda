@@ -3,14 +3,19 @@ package register;
 
 import java.util.*;
 
-
-
+/**
+ *
+ * @author espen
+ * @param <Person>
+ */
 public class Personregister<Person> extends Register{
 
-     //protected HashSet<Person> personRegister;
-    
+    /**
+     *
+     * @param personRegister
+     */
     public Personregister( HashSet<Person> personRegister){
-        //personRegister = new HashSet<>();
+
         super.collection = personRegister;
     }
 

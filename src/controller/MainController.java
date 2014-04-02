@@ -15,20 +15,21 @@ import view.*;
  */
 public class MainController {
 
-    private VelkomstMainFrame startGUI;
+    protected VelkomstMainFrame startGUI;
 
-    private Register personRegister;
-    private Register boligRegister;
-    private Register annonseRegister;
-    private Register kontraktRegister;
-    private Register soknadRegister;
-    private Register postRegister;
+    protected Register personRegister;
+    protected Register boligRegister;
+    protected Register annonseRegister;
+    protected Register kontraktRegister;
+    protected Register soknadRegister;
+    protected Postregister postRegister;
 
-    private HashSet<Person> personliste;
-    private HashSet<Bolig> boligliste;
-    private HashSet<Kontrakt> kontraktliste;
-    private HashSet<Annonse> annonseliste;
-    private LinkedHashSet<Soknad> soknadsliste;
+    protected HashSet<Person> personliste;
+    protected HashSet<Bolig> boligliste;
+    protected HashSet<Kontrakt> kontraktliste;
+    protected HashSet<Annonse> annonseliste;
+    protected LinkedHashSet<Soknad> soknadsliste;
+    protected TreeMap<String, Integer> postliste;
 
     public MainController(VelkomstMainFrame startGUI) {
         this.startGUI = startGUI;
@@ -38,13 +39,14 @@ public class MainController {
         annonseliste = new HashSet<>();
         kontraktliste = new HashSet<>();
         soknadsliste = new LinkedHashSet<>();
+        postliste = new TreeMap<>();
 
         personRegister = new Personregister(personliste);
         boligRegister = new Boligregister(boligliste);
         annonseRegister = new Annonseregister(annonseliste);
         kontraktRegister = new Kontraktregister(kontraktliste);
         soknadRegister = new Soknadregister(soknadsliste);
-        //postRegister = new Postregister();
+        postRegister = new Postregister();
         testData();
         //finnBoligerRegistrertPaaEier("pedersen@boflott.no");
         //finnBoligerRegistrertPaaAdresse( "Ivar Aasens vei 25" );
@@ -60,9 +62,7 @@ public class MainController {
      * //Annonsevinduet// Finn boliger basert på Areal minimum, Areal maksimum,
      * Max leiepris, Antall rom, Boligtype, Poststed
      */
-    public void finnBoligerBasertPaaSok() {
 
-    }
     /////////////////////////////////////////////////////////////////////////
     /**
      * //Metoder for SøkeGUI// Tar i mot epost fra GUI. Kaller så opp

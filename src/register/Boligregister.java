@@ -10,10 +10,12 @@ import java.util.*;
  */
 public class Boligregister<Bolig> extends Register {
 
-    //protected HashSet<Bolig> boligRegister;
-
+    /**
+     *
+     * @param boligRegister
+     */
     public Boligregister( HashSet<Bolig> boligRegister ) {
-        //boligRegister = new HashSet<>();
+
         super.collection = boligRegister;
         
     }
