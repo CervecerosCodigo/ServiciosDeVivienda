@@ -1,7 +1,14 @@
 package register;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import lib.*;
 
 /**
  * Klassen holder oversikt over antall boliger tilgjengelige for utleie for et
@@ -20,6 +27,45 @@ public class Postregister {
     public Postregister() {
 //        poststeder_med_bolig = new HashMap<>();
         poststeder_med_bolig = new TreeMap<>();
+    }
+
+    /**
+     * Sorterer innhold i postregisteret med hensikt på alfabetik rekkefølge etter innhold i keys i mappen.
+     */
+    private void sorterPostregisterKeys() {
+        
+        List liste = new LinkedList(poststeder_med_bolig.entrySet());
+
+        Collections.sort(liste, new KollatorMapEntry());
+
+        poststeder_med_bolig = new LinkedHashMap<>();
+
+        for (Iterator iter = liste.iterator(); iter.hasNext();) {
+            Map.Entry input = (Map.Entry) iter.next();
+            poststeder_med_bolig.put((String) input.getKey(), (Integer) input.getValue());
+        }
+    }
+    
+    /**
+     * Sorterer innhold i postregistret med hensikt på verdier, synkende.
+     */
+    private void sorterPostregisterValues(){
+        List liste = new LinkedList(poststeder_med_bolig.entrySet());
+
+        Collections.sort(liste, new Comparator(){
+            @Override
+            public int compare(Object o1, Object o2) {
+                return ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue());
+            }
+        });
+        
+        Collections.reverse(liste);
+        poststeder_med_bolig = new LinkedHashMap<>();
+        
+        for(Iterator iter = liste.iterator(); iter.hasNext();){
+            Map.Entry input = (Map.Entry) iter.next();
+            poststeder_med_bolig.put((String) input.getKey(), (Integer) input.getValue());
+        }
     }
 
     /**
@@ -98,11 +144,26 @@ public class Postregister {
 
     /**
      * Returnerer en streng med oversikt over alle poststeder og antall boliger
-     * til utleie.
+     * til utleie sortert alfabetisk etter poststed. Metoden tar høyde for norsk alfabet.
      *
      * @return String
      */
-    public String getStatistikk() {
+    public String getStatistikkEtterPoststed() {
+        sorterPostregisterKeys();
+        StringBuilder retur = new StringBuilder();
+        for (String poststed : poststeder_med_bolig.keySet()) {
+            retur.append(poststed + "\t" + poststeder_med_bolig.get(poststed).toString() + "\n");
+        }
+        return retur.toString();
+    }
+    
+    /**
+     * Returnerer en streng med oversikt over alle poststeder sortert på antall boliger per poststed synkende.
+     *
+     * @return String
+     */
+    public String getStatistikkEtterAntallBoliger() {
+        sorterPostregisterValues();
         StringBuilder retur = new StringBuilder();
         for (String poststed : poststeder_med_bolig.keySet()) {
             retur.append(poststed + "\t" + poststeder_med_bolig.get(poststed).toString() + "\n");
