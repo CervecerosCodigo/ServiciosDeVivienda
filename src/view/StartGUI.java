@@ -1,14 +1,13 @@
 package view;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import controller.*;
-import java.awt.GridLayout;
 import javax.swing.*;
+import lib.VinduStorrelse;
 
 public class StartGUI extends JFrame {
 
-    private final static int HEIGHT = 700;
-    private final static int WIDTH = 1200;
+    private final static int HEIGHT = VinduStorrelse.STOR.getHEIGHT();
+    private final static int WIDTH = VinduStorrelse.STOR.getWIDTH();
     
 
     private MainPanel innhold;
