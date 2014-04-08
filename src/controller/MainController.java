@@ -15,7 +15,7 @@ import view.*;
  */
 public class MainController {
 
-    protected VelkomstMainFrame startGUI;
+    protected VelkomstFrame startGUI;
 
     protected Register personRegister;
     protected Register boligRegister;
@@ -31,7 +31,7 @@ public class MainController {
     protected LinkedHashSet<Soknad> soknadsliste;
     //protected TreeMap<String, Integer> postliste;
 
-    public MainController(VelkomstMainFrame startGUI) {
+    public MainController(VelkomstFrame startGUI) {
         this.startGUI = startGUI;
 
         personliste = new HashSet<>();
@@ -47,7 +47,7 @@ public class MainController {
         kontraktRegister = new Kontraktregister(kontraktliste);
         soknadRegister = new Soknadregister(soknadsliste);
         //postRegister = new Postregister();
-        testData();
+        //testData();
         //finnBoligerRegistrertPaaEier("pedersen@boflott.no");
         //finnBoligerRegistrertPaaAdresse( "Ivar Aasens vei 25" );
 
