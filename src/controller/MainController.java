@@ -2,6 +2,7 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 
+import lib.Boligtype;
 import view.ArkfaneTemplate;
 import java.util.*;
 import model.*;

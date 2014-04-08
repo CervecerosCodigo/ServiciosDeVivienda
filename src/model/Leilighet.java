@@ -1,5 +1,6 @@
 package model;
 
+import lib.Boligtype;
 import java.util.Calendar;
 
 public class Leilighet extends Bolig {
