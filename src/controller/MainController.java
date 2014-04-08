@@ -1,6 +1,8 @@
 package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+
+import view.ArkfaneTemplate;
 import java.util.*;
 import model.*;
 import register.*;
@@ -15,8 +17,6 @@ import view.*;
  */
 public class MainController {
 
-    protected VelkomstFrame startGUI;
-
     protected Register personRegister;
     protected Register boligRegister;
     protected Register annonseRegister;
@@ -29,17 +29,23 @@ public class MainController {
     protected HashSet<Kontrakt> kontraktliste;
     protected HashSet<Annonse> annonseliste;
     protected LinkedHashSet<Soknad> soknadsliste;
-    //protected TreeMap<String, Integer> postliste;
+    
+    private ArkfaneTemplate meglerVindu;
+    private ArkfaneTemplate annonseVindu;
+    private StartGUI startGUI;    
 
-    public MainController(VelkomstFrame startGUI) {
-        this.startGUI = startGUI;
+
+    public MainController() {
+
+        meglerVindu = new ArkfaneTemplate();
+        annonseVindu = new ArkfaneTemplate();
+        startGUI =  new StartGUI(meglerVindu, annonseVindu);
 
         personliste = new HashSet<>();
         boligliste = new HashSet<>();
         annonseliste = new HashSet<>();
         kontraktliste = new HashSet<>();
         soknadsliste = new LinkedHashSet<>();
-        //postliste = new TreeMap<>();
 
         personRegister = new Personregister(personliste);
         boligRegister = new Boligregister(boligliste);
@@ -57,6 +63,7 @@ public class MainController {
         Calendar kalender = new GregorianCalendar(aar, mnd, dag);
         return kalender;
     }
+
     /////////////////////////////////////////////////////////////////////////
     /**
      * //Annonsevinduet// Finn boliger basert på Areal minimum, Areal maksimum,
@@ -95,7 +102,7 @@ public class MainController {
     public void finnBoligerRegistrertPaaAdresse(String adresse) {
 
         int teller = 0;
-        
+
         Iterator<Bolig> iter2 = boligliste.iterator();
         while (iter2.hasNext()) {
             Bolig temp = iter2.next();
@@ -108,7 +115,7 @@ public class MainController {
                 }
             }
         }//End while
-        if( teller == 0 ){
+        if (teller == 0) {
             System.out.println("Fant ingen boliger på den adressen!");
         }
     }//End method
@@ -137,19 +144,19 @@ public class MainController {
 
         return personID;
     }
-    
+
     /**
      *
      * @param kontraktNr
      * @return
      */
-    public Kontrakt finneKontrakterBasertPaaKontraktNr( int kontraktNr){
+    public Kontrakt finneKontrakterBasertPaaKontraktNr(int kontraktNr) {
         Kontrakt retur = null;
         Iterator<Kontrakt> iter = kontraktliste.iterator();
-        
-        while( iter.hasNext() ){
+
+        while (iter.hasNext()) {
             retur = iter.next();
-            if( retur.getAnnonseID() == kontraktNr ) {
+            if (retur.getAnnonseID() == kontraktNr) {
                 return retur;
             }
         }
@@ -159,57 +166,57 @@ public class MainController {
     /**
      * //Metoder for Registrering av person og bolig
      */
-    public void opprettUtleierOgLeggIRegister( String fornavn, String etternavn, String epost, String tlfnr, boolean erRepresentant, String representantFor ){
-        Person utleier = new Utleier( fornavn, etternavn, epost, tlfnr, erRepresentant, representantFor );
+    public void opprettUtleierOgLeggIRegister(String fornavn, String etternavn, String epost, String tlfnr, boolean erRepresentant, String representantFor) {
+        Person utleier = new Utleier(fornavn, etternavn, epost, tlfnr, erRepresentant, representantFor);
 
-        if( personRegister.leggTilObjekt( utleier ) ){
+        if (personRegister.leggTilObjekt(utleier)) {
             System.out.println("Utleier er lagt inn i registeret.");
             return;
         }
         System.out.println("Utleier ble ikke lagt inn i registeret.");
     }
-    
-    
-    public void opprettLeietakerOgLeggIRegister( String fornavn, String etternavn, String epost, String tlfnr ){
-        Person leietaker = new Leietaker( fornavn, etternavn, epost, tlfnr );
 
-        if( personRegister.leggTilObjekt( leietaker ) ){
+    public void opprettLeietakerOgLeggIRegister(String fornavn, String etternavn, String epost, String tlfnr) {
+        Person leietaker = new Leietaker(fornavn, etternavn, epost, tlfnr);
+
+        if (personRegister.leggTilObjekt(leietaker)) {
             System.out.println("Leietaker er lagt inn i registeret.");
             return;
         }
         System.out.println("Leietaker ble ikke lagt inn i registeret.");
     }
-    
-    public void opprettMeglerOgLeggIRegister( String fornavn, String etternavn, String epost, String tlfnr, int meglerID, String kontor ){
-        Person megler = new Megler( fornavn, etternavn, epost, tlfnr, meglerID, kontor );
 
-        if( personRegister.leggTilObjekt( megler ) ){
+    public void opprettMeglerOgLeggIRegister(String fornavn, String etternavn, String epost, String tlfnr, int meglerID, String kontor) {
+        Person megler = new Megler(fornavn, etternavn, epost, tlfnr, meglerID, kontor);
+
+        if (personRegister.leggTilObjekt(megler)) {
             System.out.println("Megler er lagt inn i registeret.");
             return;
         }
         System.out.println("Megler ble ikke lagt inn i registeret.");
     }
-    
-    public void opprettEneboligOgLeggIRegister( Boligtype boligtype, int antallEtasjer, boolean harKjeller, int tomtAreal, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie ){
+
+    public void opprettEneboligOgLeggIRegister(Boligtype boligtype, int antallEtasjer, boolean harKjeller, int tomtAreal, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
         Bolig enebolig = new Enebolig(boligtype, antallEtasjer, harKjeller, tomtAreal, personID, adresse, postnummer, poststed, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
-        
-        if( boligRegister.leggTilObjekt( enebolig ) ){
+
+        if (boligRegister.leggTilObjekt(enebolig)) {
             System.out.println("Enebolig er lagt inn i registeret.");
             return;
         }
         System.out.println("Enebolig ble ikke lagt inn i registeret.");
     }
-    
-    public void opprettLeilighetOgLeggIRegister( int etasjeNr, int balkongAreal, int bodAreal, boolean harHeis, boolean harGarsje, boolean harFellesvaskeri, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
-        
-        Bolig leilighet = new Leilighet( etasjeNr, balkongAreal, bodAreal, harHeis, harGarsje, harFellesvaskeri, personID, adresse, postnummer, poststed, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie );
-        
-        if( boligRegister.leggTilObjekt( leilighet ) ){
+
+    public void opprettLeilighetOgLeggIRegister(int etasjeNr, int balkongAreal, int bodAreal, boolean harHeis, boolean harGarsje, boolean harFellesvaskeri, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
+
+        Bolig leilighet = new Leilighet(etasjeNr, balkongAreal, bodAreal, harHeis, harGarsje, harFellesvaskeri, personID, adresse, postnummer, poststed, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
+
+        if (boligRegister.leggTilObjekt(leilighet)) {
             System.out.println("Leilighet er lagt inn i registeret.");
             return;
         }
         System.out.println("Leilighet ble ikke lagt inn i registeret.");
     }
+
     /////////////////////////////////////////////////////////////////////////
     private void testData() {
 
@@ -226,7 +233,7 @@ public class MainController {
         opprettUtleierOgLeggIRegister("Kristian", "Stormare", "kstor@stormare.no", "21304050", true, "Stormare AS");
         opprettUtleierOgLeggIRegister("Knut", "Bjorøy", "knutb@yahoo.com", "56320069", false, null);
         opprettUtleierOgLeggIRegister("Richard", "Heia", "rickyh@gmail.com", "32440350", false, null);
-        
+
         opprettLeietakerOgLeggIRegister("Line", "Larsen", "line@gmail.com", "48009067");
         opprettLeietakerOgLeggIRegister("Geir", "Fjæra", "geirf@gmail.com", "67004599");
         opprettLeietakerOgLeggIRegister("Nils", "Plassen", "nilsp@gmail.com", "22449044");
@@ -239,30 +246,30 @@ public class MainController {
         System.out.println("================================================");
         ////////////////////////////////////////////////////////////////////////
 
-        opprettEneboligOgLeggIRegister( Boligtype.ENEBOLIG, 2, true, 650, 2, "Ivar Aasens vei 23",
-                "0373", "Oslo", 190, 1939, "Villa på Vindern..", false, tilgjenglig2 );
-        opprettEneboligOgLeggIRegister( Boligtype.ENEBOLIG, 3, true, 1000, 6, "Ivar Aasens vei 24",
-                "0373", "Oslo", 230, 1898, "Villa på Vindern..", false, tilgjenglig3 );
-        opprettEneboligOgLeggIRegister( Boligtype.ENEBOLIG, 1, false, 450, 3, "Prof. Hansens vei 22",
-                "1373", "Lørenskog", 120, 1976, "Ganske kjedlige og lite hus..", false, tilgjenglig2 );
-        opprettEneboligOgLeggIRegister( Boligtype.ENEBOLIG, 2, true, 750, 2, "Utsikten",
-                "2022", "Lillestrøm", 140, 1969, "Ikke så værst hus.", false, tilgjenglig1 );
-        opprettEneboligOgLeggIRegister( Boligtype.ENEBOLIG, 3, true, 890, 2, "Eneboligstrøket 44",
-                "0377", "Slemdal", 250, 1920, "Villa på Slemdal..", false, tilgjenglig3 );
-        
-        opprettLeilighetOgLeggIRegister( 3, 0, 10, false, false, true, 5, "Gladengveien 15A",
-                "0661", "Oslo", 65, 1972, "Flott leilighet, solvendt.", false, tilgjenglig1 );
-        opprettLeilighetOgLeggIRegister( 1, 10, 0, false, true, false, 5, "Sinsenveien 34",
-                "0345", "Oslo", 45, 1963, "Ikke så fin leilighet.", false, tilgjenglig1 );
-        opprettLeilighetOgLeggIRegister( 8, 0, 10, true, false, true, 2, "Groruddalen 1",
-                "0453", "Oslo", 75, 1970, "Flott leilighet, solvendt.", false, tilgjenglig2 );
-        opprettLeilighetOgLeggIRegister( 2, 5, 5, true, true, true, 2, "Knatten 22",
-                "1453", "Lørenskog", 70, 1950, "Koselig leilighet med mye potensiale.", false, tilgjenglig3 );
-        opprettLeilighetOgLeggIRegister( 7, 0, 10, true, false, true, 3, "Groruddalen 1",
-                "0453", "Oslo", 75, 1970, "Trenger oppussing.", false, tilgjenglig1 );
-        opprettLeilighetOgLeggIRegister( 2, 0, 10, true, false, true, 4, "Groruddalen 1",
-                "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.", false, tilgjenglig3 );
- 
+        opprettEneboligOgLeggIRegister(Boligtype.ENEBOLIG, 2, true, 650, 2, "Ivar Aasens vei 23",
+                "0373", "Oslo", 190, 1939, "Villa på Vindern..", false, tilgjenglig2);
+        opprettEneboligOgLeggIRegister(Boligtype.ENEBOLIG, 3, true, 1000, 6, "Ivar Aasens vei 24",
+                "0373", "Oslo", 230, 1898, "Villa på Vindern..", false, tilgjenglig3);
+        opprettEneboligOgLeggIRegister(Boligtype.ENEBOLIG, 1, false, 450, 3, "Prof. Hansens vei 22",
+                "1373", "Lørenskog", 120, 1976, "Ganske kjedlige og lite hus..", false, tilgjenglig2);
+        opprettEneboligOgLeggIRegister(Boligtype.ENEBOLIG, 2, true, 750, 2, "Utsikten",
+                "2022", "Lillestrøm", 140, 1969, "Ikke så værst hus.", false, tilgjenglig1);
+        opprettEneboligOgLeggIRegister(Boligtype.ENEBOLIG, 3, true, 890, 2, "Eneboligstrøket 44",
+                "0377", "Slemdal", 250, 1920, "Villa på Slemdal..", false, tilgjenglig3);
+
+        opprettLeilighetOgLeggIRegister(3, 0, 10, false, false, true, 5, "Gladengveien 15A",
+                "0661", "Oslo", 65, 1972, "Flott leilighet, solvendt.", false, tilgjenglig1);
+        opprettLeilighetOgLeggIRegister(1, 10, 0, false, true, false, 5, "Sinsenveien 34",
+                "0345", "Oslo", 45, 1963, "Ikke så fin leilighet.", false, tilgjenglig1);
+        opprettLeilighetOgLeggIRegister(8, 0, 10, true, false, true, 2, "Groruddalen 1",
+                "0453", "Oslo", 75, 1970, "Flott leilighet, solvendt.", false, tilgjenglig2);
+        opprettLeilighetOgLeggIRegister(2, 5, 5, true, true, true, 2, "Knatten 22",
+                "1453", "Lørenskog", 70, 1950, "Koselig leilighet med mye potensiale.", false, tilgjenglig3);
+        opprettLeilighetOgLeggIRegister(7, 0, 10, true, false, true, 3, "Groruddalen 1",
+                "0453", "Oslo", 75, 1970, "Trenger oppussing.", false, tilgjenglig1);
+        opprettLeilighetOgLeggIRegister(2, 0, 10, true, false, true, 4, "Groruddalen 1",
+                "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.", false, tilgjenglig3);
+
         System.out.println(boligRegister.visRegister());
         System.out.println("================================================");
 

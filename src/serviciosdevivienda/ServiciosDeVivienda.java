@@ -17,9 +17,9 @@ public class ServiciosDeVivienda {
 
     public static void main(String[] args) {
 
-        VelkomstFrame oppstartsvindu = new VelkomstFrame();
-        
-        MainController controller = new MainController(oppstartsvindu );
+        //VelkomstFrame oppstartsvindu = new VelkomstFrame();
+        //MainController controller = new MainController(oppstartsvindu );
+        MainController controller = new MainController();
 
     }
 
