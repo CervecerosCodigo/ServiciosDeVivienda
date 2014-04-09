@@ -1,7 +1,6 @@
 package view;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.*;
 
@@ -18,20 +17,12 @@ public class MainPanel extends JPanel{
         this.annonse = (JPanel) annonse;
         arkfaner = new JTabbedPane(JTabbedPane.TOP);
         
-
-        
         //Legger til tab og kobler med panelet.
         arkfaner.addTab("Megler", this.megler);
         arkfaner.addTab("Annonser", this.annonse);
         
         add(arkfaner);
-        System.out.println("Kjører");
     }
 
-//    protected JPanel makePanel(String text) {
-//        JPanel panel = new JPanel();
-//        panel.setLayout( new BorderLayout());
-//        
-//        return panel;
-//    }
+
 }

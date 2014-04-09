@@ -11,14 +11,19 @@ package lib;
  */
 public enum VinduStorrelse {
 
-    STOR (1200, 700),
-    MIDDEL (800, 600), 
-    LITEN (400,300);
+    STOR (700, 1200),
+    MIDDEL (600, 800), 
+    LITEN (300,400),
+    TOPPANEL (150,0),
+    BUNNPANEL (50,0),
+    VENSTREPANEL (0,300),
+    SENTERPANEL (0,0);
+    
     
     private final int WIDTH;
     private final int HEIGHT;
 
-    private VinduStorrelse(int WIDTH, int HEIGHT) {
+    private VinduStorrelse(int HEIGHT, int WIDTH) {
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
     }

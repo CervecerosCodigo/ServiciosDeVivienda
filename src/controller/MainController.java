@@ -38,8 +38,8 @@ public class MainController {
 
     public MainController() {
 
-        meglerVindu = new ArkfaneTemplate();
-        annonseVindu = new ArkfaneTemplate();
+        meglerVindu = new ArkfaneTemplate( "megler" );
+        annonseVindu = new ArkfaneTemplate( "annonse" );
         startGUI =  new StartGUI(meglerVindu, annonseVindu);
 
         personliste = new HashSet<>();
