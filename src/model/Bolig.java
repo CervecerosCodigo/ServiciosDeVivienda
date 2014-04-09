@@ -1,11 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public abstract class Bolig {
+public abstract class Bolig implements Serializable{
 
-    private static int teller = 1;//Brukes til å sette unik id for bolikobjektene
+    private static int teller = 0;//Brukes til å sette unik id for bolikobjektene
     private int boligID;
     private int personID; //En referanse til eier av boligen IKKE en generell person
     private int meglerID;
