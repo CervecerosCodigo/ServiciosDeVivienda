@@ -2,6 +2,7 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 
+import java.io.Serializable;
 import lib.Boligtype;
 import view.ArkfaneTemplate;
 import java.util.*;
@@ -16,7 +17,9 @@ import view.*;
  *
  * @author espen
  */
-public class MainController {
+public class MainController implements Serializable{
+    
+    private static final long serialVersionUID = 1L;
 
     protected Register personRegister;
     protected Register boligRegister;
@@ -54,7 +57,7 @@ public class MainController {
         kontraktRegister = new Kontraktregister(kontraktliste);
         soknadRegister = new Soknadregister(soknadsliste);
         //postRegister = new Postregister();
-        //testData();
+        testData();
         //finnBoligerRegistrertPaaEier("pedersen@boflott.no");
         //finnBoligerRegistrertPaaAdresse( "Ivar Aasens vei 25" );
 

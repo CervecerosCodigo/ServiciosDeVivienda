@@ -1,6 +1,8 @@
 package model;
 
-public abstract class Person {
+import java.io.Serializable;
+
+public abstract class Person implements Serializable{
 
 	private int personID;
         private static int teller = 0;

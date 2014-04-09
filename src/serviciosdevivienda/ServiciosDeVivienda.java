@@ -1,7 +1,15 @@
 package serviciosdevivienda;
 
 import controller.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
+import lib.FilSkriver;
 
 /**
  *
@@ -15,19 +23,44 @@ public class ServiciosDeVivienda {
 
         SwingUtilities.invokeLater(new Runnable() {
 
+//             MainController controller;
+            FilSkriver filSkriver;
+            String file = "programdata/data.iso";
+
             @Override
             public void run() {
 
-                MainController controller = new MainController();
+                final MainController controller = new MainController();
 
+//                FileInputStream fis = null;
+//                ObjectInputStream in = null;
+//                
+//                try{
+//                    fis = new FileInputStream(file);
+//                    in = new ObjectInputStream(fis);
+//                    controller = (MainController) in.readObject();
+//                    in.close();
+//                    
+//                }catch(ClassNotFoundException e){
+//                    System.out.println("Klassen ikke funnet");
+//                }catch(IOException e){
+//                    System.out.println("IO feil");
+//                }
+                //////Avsluttnings Hooks///////
+                Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        System.out.println("Programmet avsluttes");
+
+                        filSkriver = new FilSkriver(file);
+                        filSkriver.skrivTilFil(controller);
+
+                    }
+                }));
             }
         });
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 
-            @Override
-            public void run() {
-                System.out.println("Programmet avsluttes");
-            }
-        }));
     }
 }

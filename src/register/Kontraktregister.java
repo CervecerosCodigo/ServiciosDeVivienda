@@ -1,6 +1,7 @@
 package register;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -9,8 +10,8 @@ import java.util.*;
  * @param <Kontrakt> 
  */
 
-public class Kontraktregister<Kontrakt> extends Register<Kontrakt>{
-
+public class Kontraktregister<Kontrakt> extends Register<Kontrakt> implements Serializable{
+ 
     /**
      *
      * @param kontraktRegister
