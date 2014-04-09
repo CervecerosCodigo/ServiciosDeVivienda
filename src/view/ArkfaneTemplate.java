@@ -8,9 +8,9 @@ import lib.VinduStorrelse;
 public class ArkfaneTemplate extends JPanel {
 
     private JPanel toppanel;
-    private JPanel bunnpanel;
-    private JPanel venstrepanel;
-    private JPanel senterpanel;
+    private BunnPanel bunnpanel;
+    private VenstrePanel venstrepanel;
+    private SenterPanel senterpanel;
 
     public ArkfaneTemplate(String valgtToppanel) {
         setLayout(new BorderLayout());
@@ -37,7 +37,23 @@ public class ArkfaneTemplate extends JPanel {
         add(senterpanel, BorderLayout.CENTER);
         add(bunnpanel, BorderLayout.SOUTH);
 
-
     }
 
+    public JPanel getToppanel() {
+        return toppanel;
+    }
+
+    public JPanel getBunnpanel() {
+        return bunnpanel;
+    }
+
+    public VenstrePanel getVenstrepanel() {
+        return venstrepanel;
+    }
+
+    public JPanel getSenterpanel() {
+        return senterpanel;
+    }
+
+    
 }

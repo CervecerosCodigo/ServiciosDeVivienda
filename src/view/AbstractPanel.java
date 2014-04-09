@@ -19,8 +19,8 @@ public abstract class AbstractPanel extends JPanel{
         this.dimWidth = dimWidth;
         
         Dimension dim = getPreferredSize();
-        dim.height = dimHeight;
-        dim.width = dimWidth;
+        dim.height = this.dimHeight;
+        dim.width = this.dimWidth;
         setPreferredSize(dim);
 
         Border innerBorder = BorderFactory.createTitledBorder(this.borderTitle);
