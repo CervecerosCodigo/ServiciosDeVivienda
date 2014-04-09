@@ -1,6 +1,9 @@
 package view;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 
@@ -9,25 +12,15 @@ public class VenstrePanel extends AbstractPanel {
     private JList liste;
     private JScrollPane scroll;
     private DefaultListModel valgtModel;
-//    private DefaultListModel personModel;
-//    private DefaultListModel boligModel;
-//    private DefaultListModel kontraktModel;
-//    private DefaultListModel soknadModel;
-//    private DefaultListModel annonseModel;
 
     public VenstrePanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
+        setLayout(new GridLayout(1, 1));
         
         liste = new JList();
-//        personModel = new DefaultListModel();
-//        boligModel = new DefaultListModel();
-//        kontraktModel = new DefaultListModel();
-//        soknadModel = new DefaultListModel();
-//        annonseModel = new DefaultListModel();
+        //liste.setPreferredSize(new Dimension(300, 350));
         scroll = new JScrollPane(liste);
 
-        //liste.setModel(valgtModel);
-        
         add(liste);
 
     }

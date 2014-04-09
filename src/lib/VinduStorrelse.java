@@ -16,7 +16,7 @@ public enum VinduStorrelse {
     LITEN (300,400),
     TOPPANEL (150,0),
     BUNNPANEL (50,0),
-    VENSTREPANEL (0,300),
+    VENSTREPANEL (0,400),
     SENTERPANEL (0,0);
     
     

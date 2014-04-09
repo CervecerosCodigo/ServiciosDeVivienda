@@ -3,12 +3,15 @@ package controller;
 
 
 import java.io.Serializable;
-import lib.Boligtype;
-import view.ArkfaneTemplate;
 import java.util.*;
+import javax.swing.DefaultListModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import lib.Boligtype;
 import model.*;
 import register.*;
 import view.*;
+import view.ArkfaneTemplate;
 
 /**
  * Controller.java er koblingen mellom GUI og dataobjektene. Det opprettes her
@@ -37,6 +40,8 @@ public class MainController implements Serializable{
     private ArkfaneTemplate meglerVindu;
     private ArkfaneTemplate annonseVindu;
     private StartGUI startGUI;    
+    
+    private DefaultListModel listeModel;
 
 
     public MainController() {
@@ -56,8 +61,11 @@ public class MainController implements Serializable{
         annonseRegister = new Annonseregister(annonseliste);
         kontraktRegister = new Kontraktregister(kontraktliste);
         soknadRegister = new Soknadregister(soknadsliste);
+        
+        listeModel = new DefaultListModel();
         //postRegister = new Postregister();
         testData();
+        fyllListenIVenstrePanel();
         //finnBoligerRegistrertPaaEier("pedersen@boflott.no");
         //finnBoligerRegistrertPaaAdresse( "Ivar Aasens vei 25" );
 
@@ -67,7 +75,53 @@ public class MainController implements Serializable{
         Calendar kalender = new GregorianCalendar(aar, mnd, dag);
         return kalender;
     }
+    /////////////////////////////////////////////////////////////////////////
+    ///////////////////////metoder for Venstre panel////////////////////////
+    
+    void fyllListenIVenstrePanel() {
 
+        //Finne ut hvilken radioknapp som er valgt først..
+        if (listeModel != null) {
+            Iterator<Person> iter = personliste.iterator();
+            while (iter.hasNext()) {
+                Person p = iter.next();
+                listeModel.addElement(p);
+            }
+        }
+        meglerVindu.getVenstrepanel().setlisteModel(listeModel);
+    }
+
+    /**
+     * Privat lytteklasse for listeelementet i venstrepanel.
+     */
+    class ListeLytter implements ListSelectionListener {
+
+        /**
+         * Sjekke hvilke radioknapp som er valgt. Finner så objektet som er
+         * valgt i listen og viser objektet sin alternative toString() i
+         * textfeltet.
+         *
+         * @param e
+         */
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+
+//            if ( toppanel.getBoligradio().isSelected()) {
+//                Bolig bolig = (Bolig) venstrepanel.getListe().getSelectedValue();
+//                textArea.setText( bolig.fullVisning() );
+//            }
+//            if (toppanel.getPersonradio().isSelected()) {
+//                Person person = (Person) venstrepanel.getListe().getSelectedValue();
+//                textArea.setText( person.fullVisning() );
+//            }
+        }
+    }
+    
+    
+    
+    
+    /////////////////////////////////////////////////////////////////////////
+    
     /////////////////////////////////////////////////////////////////////////
     /**
      * //Annonsevinduet// Finn boliger basert på Areal minimum, Areal maksimum,

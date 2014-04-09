@@ -15,7 +15,7 @@ public class Utleier extends Person {
 
     @Override
     public String toString() {
-        return "Utleier" + super.toString(); //To change body of generated methods, choose Tools | Templates.
+        return super.toString() + " (Utleier)"; //To change body of generated methods, choose Tools | Templates.
     }
         
 }
