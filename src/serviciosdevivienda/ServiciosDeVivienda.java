@@ -1,15 +1,9 @@
 package serviciosdevivienda;
 
 import controller.*;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import lib.FilSkriver;
+import model.Bolig;
 
 /**
  *
@@ -53,7 +47,6 @@ public class ServiciosDeVivienda {
                     public void run() {
 
                         System.out.println("Programmet avsluttes");
-
                         filSkriver = new FilSkriver(file);
                         filSkriver.skrivTilFil(controller);
 

@@ -17,6 +17,22 @@ public class Soknad {
         leietaker = l;
     }
 
+    /**
+     * Brukes for serialsiering.
+     * @return int
+     */
+    public static int getTeller() {
+        return teller;
+    }
+
+    /**
+     * Brukes for å gjeoprette telleren etter serialisering.
+     * @param teller int
+     */
+    public static void setTeller(int teller) {
+        Soknad.teller = teller;
+    }
+
     public int getSoknadID() {
         return soknadID;
     }

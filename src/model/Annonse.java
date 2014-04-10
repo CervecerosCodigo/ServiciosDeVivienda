@@ -26,6 +26,22 @@ public class Annonse {
         
     }
 
+    /**
+     * Brukes for serialisering.
+     * @return int
+     */
+    public static int getTeller() {
+        return teller;
+    }
+
+    /**
+     * Brukes for å gjenoprette etter serialisering.
+     * @param teller int
+     */
+    public static void setTeller(int teller) {
+        Annonse.teller = teller;
+    }
+    
     public int getAnnonseID() {
         return annonseID;
     }

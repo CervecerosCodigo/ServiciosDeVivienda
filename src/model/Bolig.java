@@ -45,6 +45,22 @@ public abstract class Bolig implements Serializable{
         this.erUtleid = erUtleid;
         this.tilgjengeligForUtleie = tilgjengeligForUtleie;
     }
+    
+    /**
+     * Brukes for å serialisere statics.
+     * @return int
+     */
+    public static int getTeller() {
+        return teller;
+    }
+
+    /**
+     * Brukes for å serialisere static tilbake til sammen status.
+     * @param teller int
+     */
+    public static void setTeller(int teller) {
+        Bolig.teller = teller;
+    }
 
     public int getBoligID() {
         return boligID;
