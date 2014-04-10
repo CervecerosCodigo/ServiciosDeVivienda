@@ -12,6 +12,8 @@ import java.util.*;
 import javax.swing.DefaultListModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import lib.Boligtype;
 import lib.Konstanter;
 import model.*;
@@ -71,16 +73,16 @@ public class MainController implements Serializable {
         File fil = new File(Konstanter.FILNANV);
         if (!fil.exists()) {//Et lite hack som brukes foreløpig
             testData();
-            
+
             System.out.println("Filen " + Konstanter.FILNANV + " eksisterer IKKE, fyller med dummydata.");
         } else {
             lesInnData();
             System.out.println("Leser inn data fra fil.");
         }
-        //finnBoligerRegistrertPaaEier("pedersen@boflott.no");
-        //finnBoligerRegistrertPaaAdresse( "Ivar Aasens vei 25" );
 
+        //////Setter Tabellen///////////////////
         settInnDataITabell();
+        meglerVindu.getVenstrepanel().getModel().addTableModelListener(new InteractiveTableModelListener());
     }
 
     /**
@@ -138,8 +140,6 @@ public class MainController implements Serializable {
 
             in.close();
 
-
-
         } catch (IOException e) {//FIXME: trenger en felles plass for å fange opp de
             System.out.println(e.fillInStackTrace());
         } catch (ClassNotFoundException e) {
@@ -154,13 +154,23 @@ public class MainController implements Serializable {
     /////////////////////////////////////////////////////////////////////////
     ///////////////////////metoder for Venstre panel////////////////////////
 
-        public void settInnDataITabell() {
+    public void settInnDataITabell() {
 
         Object[] liste = new Object[personliste.size()];
         liste = personliste.toArray();
-        meglerVindu.getVenstrepanel().fyllTabellMedInnhold( liste );        
+        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste);
     }
 
+    private class InteractiveTableModelListener implements TableModelListener {
+
+        public void tableChanged(TableModelEvent evt) {
+            if (evt.getType() == TableModelEvent.UPDATE) {
+                int column = evt.getColumn();
+                int row = evt.getFirstRow();
+                System.out.println("row: " + row + " column: " + column);
+            }
+        }
+    }
 
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////

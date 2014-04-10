@@ -11,31 +11,34 @@ import model.Person;
 public class VenstrePanel extends AbstractPanel {
 
     private JTable tabell;
-    private Object[] personObjekt;
-    private PersonTabellModell personModel;
+    private Object[] liste;
+    private PersonTabellModell tabellModell;
+    private AbstractTableModel valgtModel;
 
     public VenstrePanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
         setLayout(new GridLayout(1, 1));
 
-        personObjekt = new Object[0];
-        personModel = new PersonTabellModell();
+        liste = new Object[0];
+        tabellModell = new PersonTabellModell();
+        valgtModel = tabellModell;
+        
 
-        tabell = new JTable(personModel);
+        tabell = new JTable(tabellModell);
         tabell.setFillsViewportHeight(true);
-
+        
         add(new JScrollPane(tabell));
 
         //Send inn en tom Arraylist til modellen
-        personModel.fyllTabellMedInnhold(personObjekt);
+        tabellModell.fyllTabellMedInnhold(liste);
     }
 
     public AbstractTableModel getModel() {
-        return personModel;
+        return valgtModel;
     }
 
     public void fyllTabellMedInnhold(Object[] data) {
-        personModel.fyllTabellMedInnhold(data);
+        tabellModell.fyllTabellMedInnhold(data);
     }
 
     public JTable getTable() {
