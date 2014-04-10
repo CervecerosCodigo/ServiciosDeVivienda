@@ -67,12 +67,11 @@ public class MainController implements Serializable {
         kontraktRegister = new Kontraktregister(kontraktliste);
         soknadRegister = new Soknadregister(soknadsliste);
 
-        listeModel = new DefaultListModel();
         //postRegister = new Postregister();
         File fil = new File(Konstanter.FILNANV);
         if (!fil.exists()) {//Et lite hack som brukes foreløpig
             testData();
-            fyllListenIVenstrePanel();
+            settInnDataITabell();
             System.out.println("Filen " + Konstanter.FILNANV + " eksisterer IKKE, fyller med dummydata.");
         } else {
             lesInnData();
@@ -138,7 +137,7 @@ public class MainController implements Serializable {
 
             in.close();
 
-            fyllListenIVenstrePanel();
+
 
         } catch (IOException e) {//FIXME: trenger en felles plass for å fange opp de
             System.out.println(e.fillInStackTrace());
@@ -154,44 +153,17 @@ public class MainController implements Serializable {
     /////////////////////////////////////////////////////////////////////////
     ///////////////////////metoder for Venstre panel////////////////////////
 
-    void fyllListenIVenstrePanel() {
-
-        //Finne ut hvilken radioknapp som er valgt først..
-        if (listeModel != null) {
-            Iterator<Person> iter = personliste.iterator();
-            while (iter.hasNext()) {
-                Person p = iter.next();
-                listeModel.addElement(p);
-            }
+        public void settInnDataITabell() {
+        List<Person> liste = new ArrayList<>();
+        
+        Iterator<Person> iter = personliste.iterator();
+        while (iter.hasNext()) {
+            Person person = iter.next();
+            liste.add(person);
         }
-        meglerVindu.getVenstrepanel().setlisteModel(listeModel);
+        meglerVindu.getVenstrepanel().setPersonTabellData( liste );        
     }
 
-    /**
-     * Privat lytteklasse for listeelementet i venstrepanel.
-     */
-    class ListeLytter implements ListSelectionListener {
-
-        /**
-         * Sjekke hvilke radioknapp som er valgt. Finner så objektet som er
-         * valgt i listen og viser objektet sin alternative toString() i
-         * textfeltet.
-         *
-         * @param e
-         */
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-
-//            if ( toppanel.getBoligradio().isSelected()) {
-//                Bolig bolig = (Bolig) venstrepanel.getListe().getSelectedValue();
-//                textArea.setText( bolig.fullVisning() );
-//            }
-//            if (toppanel.getPersonradio().isSelected()) {
-//                Person person = (Person) venstrepanel.getListe().getSelectedValue();
-//                textArea.setText( person.fullVisning() );
-//            }
-        }
-    }
 
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
