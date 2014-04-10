@@ -1,7 +1,11 @@
 package model;
 
+import lib.Konstanter;
+
 public class Soknad {
 
+    private static final long serialVersionUID = Konstanter.SERNUM;
+    
     private int soknadID;
     private static int teller = 0;
     private boolean erBehandlet;

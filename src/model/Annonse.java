@@ -2,8 +2,11 @@ package model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import lib.Konstanter;
 
 public class Annonse {
+    
+    private static final long serialVersionUID = Konstanter.SERNUM;
 
     private int annonseID;
     private static int teller = 0;

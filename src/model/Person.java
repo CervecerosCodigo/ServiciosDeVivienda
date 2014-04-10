@@ -1,8 +1,11 @@
 package model;
 
 import java.io.Serializable;
+import lib.Konstanter;
 
 public abstract class Person implements Serializable {
+
+    private static final long serialVersionUID = Konstanter.SERNUM;
 
     private int personID;
     private static int teller = 0;
@@ -21,6 +24,7 @@ public abstract class Person implements Serializable {
 
     /**
      * Brukes for serialisering.
+     *
      * @return int
      */
     public static int getTeller() {
@@ -29,6 +33,7 @@ public abstract class Person implements Serializable {
 
     /**
      * Brukes for sette telleren tilbake etter serialisering.
+     *
      * @param teller int
      */
     public static void setTeller(int teller) {

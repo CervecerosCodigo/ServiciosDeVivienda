@@ -3,8 +3,11 @@ package model;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import lib.Konstanter;
 
 public abstract class Bolig implements Serializable{
+    
+    private static final long serialVersionUID = Konstanter.SERNUM;
 
     private static int teller = 0;//Brukes til å sette unik id for bolikobjektene
     private int boligID;
