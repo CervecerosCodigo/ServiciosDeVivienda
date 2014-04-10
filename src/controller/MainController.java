@@ -1,13 +1,19 @@
 package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 import javax.swing.DefaultListModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import lib.Boligtype;
+import lib.Konstanter;
 import model.*;
 import register.*;
 import view.*;
@@ -20,9 +26,9 @@ import view.ArkfaneTemplate;
  *
  * @author espen
  */
-public class MainController implements Serializable{
-    
-    private static final long serialVersionUID = 1L;
+public class MainController implements Serializable {
+
+    private static final long serialVersionUID = Konstanter.SERNUM;
 
     protected Register personRegister;
     protected Register boligRegister;
@@ -36,19 +42,18 @@ public class MainController implements Serializable{
     protected HashSet<Kontrakt> kontraktliste;
     protected HashSet<Annonse> annonseliste;
     protected LinkedHashSet<Soknad> soknadsliste;
-    
+
     private ArkfaneTemplate meglerVindu;
     private ArkfaneTemplate annonseVindu;
-    private StartGUI startGUI;    
-    
-    private DefaultListModel listeModel;
+    private StartGUI startGUI;
 
+    private DefaultListModel listeModel;
 
     public MainController() {
 
-        meglerVindu = new ArkfaneTemplate( "megler" );
-        annonseVindu = new ArkfaneTemplate( "annonse" );
-        startGUI =  new StartGUI(meglerVindu, annonseVindu);
+        meglerVindu = new ArkfaneTemplate("megler");
+        annonseVindu = new ArkfaneTemplate("annonse");
+        startGUI = new StartGUI(meglerVindu, annonseVindu);
 
         personliste = new HashSet<>();
         boligliste = new HashSet<>();
@@ -61,14 +66,85 @@ public class MainController implements Serializable{
         annonseRegister = new Annonseregister(annonseliste);
         kontraktRegister = new Kontraktregister(kontraktliste);
         soknadRegister = new Soknadregister(soknadsliste);
-        
+
         listeModel = new DefaultListModel();
         //postRegister = new Postregister();
-        testData();
-        fyllListenIVenstrePanel();
+        File fil = new File(Konstanter.FILNANV);
+        if (!fil.exists()) {//Et lite hack som brukes foreløpig
+            testData();
+            fyllListenIVenstrePanel();
+            System.out.println("Filen " + Konstanter.FILNANV + " eksisterer IKKE, fyller med dummydata.");
+        } else {
+            lesInnData();
+            System.out.println("Leser inn data fra fil.");
+        }
         //finnBoligerRegistrertPaaEier("pedersen@boflott.no");
         //finnBoligerRegistrertPaaAdresse( "Ivar Aasens vei 25" );
 
+    }
+
+    /**
+     * FIXME: Flyttes til egen klasse
+     */
+    public void lagreData() {
+        try {
+            FileOutputStream fos = new FileOutputStream(new File(Konstanter.FILNANV));
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+
+            out.writeObject(personliste);
+            out.writeObject(boligliste);
+            out.writeObject(annonseliste);
+            out.writeObject(kontraktliste);
+            out.writeObject(soknadsliste);
+
+            out.writeInt(Person.getTeller());
+            out.writeInt(Bolig.getTeller());
+            out.writeInt(Annonse.getTeller());
+            out.writeInt(Soknad.getTeller());
+            out.writeInt(Kontrakt.getTeller());
+
+            out.close();
+
+        } catch (IOException e) {//FIXME: trenger en felles plass for å fange opp de
+            System.out.println(e.fillInStackTrace());
+        }
+    }
+
+    /**
+     * FIXME: Flyttes til egen klasse
+     */
+    public void lesInnData() {
+        try {
+            FileInputStream fis = new FileInputStream(new File(Konstanter.FILNANV));
+            ObjectInputStream in = new ObjectInputStream(fis);
+
+            personliste = (HashSet<Person>) in.readObject();
+            boligliste = (HashSet<Bolig>) in.readObject();
+            annonseliste = (HashSet<Annonse>) in.readObject();
+            kontraktliste = (HashSet<Kontrakt>) in.readObject();
+            soknadsliste = (LinkedHashSet<Soknad>) in.readObject();
+
+            personRegister = new Personregister(personliste);
+            boligRegister = new Boligregister(boligliste);
+            annonseRegister = new Annonseregister(annonseliste);
+            kontraktRegister = new Kontraktregister(kontraktliste);
+            soknadRegister = new Soknadregister(soknadsliste);
+
+            Person.setTeller(in.readInt());
+            Bolig.setTeller(in.readInt());
+            Annonse.setTeller(in.readInt());
+            Soknad.setTeller(in.readInt());
+            Kontrakt.setTeller(in.readInt());
+
+            in.close();
+
+            fyllListenIVenstrePanel();
+
+        } catch (IOException e) {//FIXME: trenger en felles plass for å fange opp de
+            System.out.println(e.fillInStackTrace());
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.fillInStackTrace());
+        }
     }
 
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
@@ -77,7 +153,7 @@ public class MainController implements Serializable{
     }
     /////////////////////////////////////////////////////////////////////////
     ///////////////////////metoder for Venstre panel////////////////////////
-    
+
     void fyllListenIVenstrePanel() {
 
         //Finne ut hvilken radioknapp som er valgt først..
@@ -116,18 +192,13 @@ public class MainController implements Serializable{
 //            }
         }
     }
-    
-    
-    
-    
+
     /////////////////////////////////////////////////////////////////////////
-    
     /////////////////////////////////////////////////////////////////////////
     /**
      * //Annonsevinduet// Finn boliger basert på Areal minimum, Areal maksimum,
      * Max leiepris, Antall rom, Boligtype, Poststed
      */
-
     /////////////////////////////////////////////////////////////////////////
     /**
      * //Metoder for SøkeGUI// Tar i mot epost fra GUI. Kaller så opp
