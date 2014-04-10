@@ -71,7 +71,7 @@ public class MainController implements Serializable {
         File fil = new File(Konstanter.FILNANV);
         if (!fil.exists()) {//Et lite hack som brukes foreløpig
             testData();
-            settInnDataITabell();
+            
             System.out.println("Filen " + Konstanter.FILNANV + " eksisterer IKKE, fyller med dummydata.");
         } else {
             lesInnData();
@@ -80,6 +80,7 @@ public class MainController implements Serializable {
         //finnBoligerRegistrertPaaEier("pedersen@boflott.no");
         //finnBoligerRegistrertPaaAdresse( "Ivar Aasens vei 25" );
 
+        settInnDataITabell();
     }
 
     /**
@@ -154,14 +155,10 @@ public class MainController implements Serializable {
     ///////////////////////metoder for Venstre panel////////////////////////
 
         public void settInnDataITabell() {
-        List<Person> liste = new ArrayList<>();
-        
-        Iterator<Person> iter = personliste.iterator();
-        while (iter.hasNext()) {
-            Person person = iter.next();
-            liste.add(person);
-        }
-        meglerVindu.getVenstrepanel().setPersonTabellData( liste );        
+
+        Object[] liste = new Object[personliste.size()];
+        liste = personliste.toArray();
+        meglerVindu.getVenstrepanel().fyllTabellMedInnhold( liste );        
     }
 
 
