@@ -2,8 +2,7 @@ package serviciosdevivienda;
 
 import controller.*;
 import javax.swing.SwingUtilities;
-import lib.FilSkriver;
-import model.Bolig;
+
 
 /**
  *
@@ -17,29 +16,14 @@ public class ServiciosDeVivienda {
 
         SwingUtilities.invokeLater(new Runnable() {
 
-//             MainController controller;
-            FilSkriver filSkriver;
-            String file = "programdata/data.iso";
+            MainController controller;
 
             @Override
             public void run() {
 
-                final MainController controller = new MainController();
+                
+                controller = new MainController();
 
-//                FileInputStream fis = null;
-//                ObjectInputStream in = null;
-//                
-//                try{
-//                    fis = new FileInputStream(file);
-//                    in = new ObjectInputStream(fis);
-//                    controller = (MainController) in.readObject();
-//                    in.close();
-//                    
-//                }catch(ClassNotFoundException e){
-//                    System.out.println("Klassen ikke funnet");
-//                }catch(IOException e){
-//                    System.out.println("IO feil");
-//                }
                 //////Avsluttnings Hooks///////
                 Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 
@@ -47,9 +31,7 @@ public class ServiciosDeVivienda {
                     public void run() {
 
                         System.out.println("Programmet avsluttes");
-                        filSkriver = new FilSkriver(file);
-                        filSkriver.skrivTilFil(controller);
-
+                        controller.lagreData();
                     }
                 }));
             }
