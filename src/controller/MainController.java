@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 import javax.swing.DefaultListModel;
+import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -82,7 +83,17 @@ public class MainController implements Serializable {
 
         //////Setter Tabellen///////////////////
         settInnDataITabell();
-        meglerVindu.getVenstrepanel().getModel().addTableModelListener(new InteractiveTableModelListener());
+        meglerVindu.getVenstrepanel().getModel().addTableModelListener(new SetTabellModellLytter());
+        //Setter en lytter som finner raden som er valgt
+        final JTable tabell = meglerVindu.getVenstrepanel().getTable();
+        tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int rad = tabell.getSelectedRow() + 1;
+                System.out.println(rad);
+            }
+        });
     }
 
     /**
@@ -161,8 +172,9 @@ public class MainController implements Serializable {
         meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste);
     }
 
-    private class InteractiveTableModelListener implements TableModelListener {
+    private class SetTabellModellLytter implements TableModelListener {
 
+        @Override
         public void tableChanged(TableModelEvent evt) {
             if (evt.getType() == TableModelEvent.UPDATE) {
                 int column = evt.getColumn();
@@ -173,12 +185,12 @@ public class MainController implements Serializable {
     }
 
     /////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
     /**
      * //Annonsevinduet// Finn boliger basert på Areal minimum, Areal maksimum,
      * Max leiepris, Antall rom, Boligtype, Poststed
      */
-    /////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
     /**
      * //Metoder for SøkeGUI// Tar i mot epost fra GUI. Kaller så opp
      * hjelpemetoden finnePersonIDBasertPaaEpost for å få tak i personID til

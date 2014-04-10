@@ -4,6 +4,8 @@ package view;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import model.Person;
@@ -22,15 +24,16 @@ public class VenstrePanel extends AbstractPanel {
         liste = new Object[0];
         tabellModell = new PersonTabellModell();
         valgtModel = tabellModell;
-        
 
         tabell = new JTable(tabellModell);
         tabell.setFillsViewportHeight(true);
-        
+
         add(new JScrollPane(tabell));
 
         //Send inn en tom Arraylist til modellen
         tabellModell.fyllTabellMedInnhold(liste);
+
+
     }
 
     public AbstractTableModel getModel() {
