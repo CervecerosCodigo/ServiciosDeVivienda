@@ -81,7 +81,7 @@ public class MainController implements Serializable {
             System.out.println("Leser inn data fra fil.");
         }
 
-        //////Setter Tabellen///////////////////
+        //////Setter Tabellen - Kan/bør flyttes på senere tidspunkt///////////////////
         settInnDataITabell();
         meglerVindu.getVenstrepanel().getModel().addTableModelListener(new SetTabellModellLytter());
         //Setter en lytter som finner raden som er valgt
@@ -90,8 +90,9 @@ public class MainController implements Serializable {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                int rad = tabell.getSelectedRow() + 1;
-                System.out.println(rad);
+                int rad = tabell.getSelectedRow();
+                int kol = tabell.getSelectedColumn();
+                System.out.println(rad + " : " + kol);
             }
         });
     }
@@ -165,15 +166,34 @@ public class MainController implements Serializable {
     /////////////////////////////////////////////////////////////////////////
     ///////////////////////metoder for Venstre panel////////////////////////
 
+    /**
+     * Oppretter en array med lenge av mottatt datasett.
+     */
     public void settInnDataITabell() {
-
-        Object[] liste = new Object[personliste.size()];
-        liste = personliste.toArray();
-        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste);
+        
+        String[] kolonneNavn = new String[]{"BoligID", "EierID", "Adresse", "Utleid"}; 
+        Object[] liste = boligliste.toArray();
+        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.BOLIGOBJ);
+        
+        
+//        String[] kolonneNavn = new String[]{"ID", "Fornavn", "Etternavn", "Epost"};        
+//        Object[] liste = personliste.toArray();
+//        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.PERSONOBJ);
+        
+//        String[] kolonneNavn = new String[]{"AnnonseID", "Utleiepris", "Utløpsdatao", "Synlig"};        
+//        Object[] liste = annonseliste.toArray();
+//        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.ANNONSEOBJ);
+        
+//        String[] kolonneNavn = new String[]{"KontraktID", "BoligID", "LeietakerID", "Varighet"};        
+//        Object[] liste = kontraktliste.toArray();
+//        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.KONTRAKTOBJ);
+        
+//        String[] kolonneNavn = new String[]{"AnnonseID", "Adresse", "Søkers fornavn", "Søkers etternavn"};        
+//        Object[] liste = kontraktliste.toArray();
+//        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.KONTRAKTOBJ);
     }
 
     private class SetTabellModellLytter implements TableModelListener {
-
         @Override
         public void tableChanged(TableModelEvent evt) {
             if (evt.getType() == TableModelEvent.UPDATE) {
@@ -393,60 +413,6 @@ public class MainController implements Serializable {
         System.out.println(boligRegister.visRegister());
         System.out.println("================================================");
 
-//        ////////////////////////////////////////////////////////////////////////
-//        Annonse annonse1 = new Annonse(30000, 10000, utlopsdato1, nyLeilighet1);
-//        Annonse annonse2 = new Annonse(24000, 8000, utlopsdato1, nyLeilighet2);
-//        Annonse annonse3 = new Annonse(21000, 7000, utlopsdato3, nyLeilighet3);
-//        Annonse annonse4 = new Annonse(45000, 15000, utlopsdato2, nyEnebolig1);
-//        Annonse annonse5 = new Annonse(27000, 9000, utlopsdato3, nyLeilighet4);
-//        Annonse annonse6 = new Annonse(21000, 7000, utlopsdato2, nyLeilighet5);
-//        Annonse annonse7 = new Annonse(60000, 20000, utlopsdato2, nyEnebolig2);
-//        Annonse annonse8 = new Annonse(45000, 15000, utlopsdato1, nyEnebolig4);
-//        Annonse annonse9 = new Annonse(60000, 20000, utlopsdato1, nyEnebolig5);
-//        annonseRegister.leggTilObjekt(annonse1);
-//        annonseRegister.leggTilObjekt(annonse2);
-//        annonseRegister.leggTilObjekt(annonse3);
-//        annonseRegister.leggTilObjekt(annonse4);
-//        annonseRegister.leggTilObjekt(annonse5);
-//        annonseRegister.leggTilObjekt(annonse6);
-//        annonseRegister.leggTilObjekt(annonse7);
-//        annonseRegister.leggTilObjekt(annonse8);
-//        annonseRegister.leggTilObjekt(annonse9);
-//        System.out.println(annonseRegister.visRegister());
-//        System.out.println("================================================");
-//        ////////////////////////////////////////////////////////////////////////
-//
-//        Kontrakt kontrakt1 = new Kontrakt(annonse1, megler1, leietaker1, 36);
-//        Kontrakt kontrakt2 = new Kontrakt(annonse2, megler1, leietaker2, 36);
-//        Kontrakt kontrakt3 = new Kontrakt(annonse5, megler1, leietaker3, 36);
-//        Kontrakt kontrakt4 = new Kontrakt(annonse6, megler1, leietaker6, 36);
-//        Kontrakt kontrakt5 = new Kontrakt(annonse8, megler1, leietaker7, 36);
-//        kontraktRegister.leggTilObjekt(kontrakt1);
-//        kontraktRegister.leggTilObjekt(kontrakt2);
-//        kontraktRegister.leggTilObjekt(kontrakt3);
-//        kontraktRegister.leggTilObjekt(kontrakt4);
-//        kontraktRegister.leggTilObjekt(kontrakt5);
-//        System.out.println(kontraktRegister.visRegister());
-//        System.out.println("================================================");
-//        ////////////////////////////////////////////////////////////////////////
-//
-//        Soknad soknad1 = new Soknad(annonse1, leietaker1);
-//        Soknad soknad2 = new Soknad(annonse5, leietaker2);
-//        Soknad soknad3 = new Soknad(annonse4, leietaker3);
-//        Soknad soknad4 = new Soknad(annonse4, leietaker6);
-//        Soknad soknad5 = new Soknad(annonse4, leietaker4);
-//        Soknad soknad6 = new Soknad(annonse4, leietaker7);
-//        Soknad soknad7 = new Soknad(annonse2, leietaker1);
-//        soknadRegister.leggTilObjekt(soknad1);
-//        soknadRegister.leggTilObjekt(soknad2);
-//        soknadRegister.leggTilObjekt(soknad3);
-//        soknadRegister.leggTilObjekt(soknad4);
-//        soknadRegister.leggTilObjekt(soknad5);
-//        soknadRegister.leggTilObjekt(soknad6);
-//        soknadRegister.leggTilObjekt(soknad7);
-//        System.out.println(soknadRegister.visRegister());
-//        System.out.println("================================================");
-//        ////////////////////////////////////////////////////////////////////////        
     }
 
 }

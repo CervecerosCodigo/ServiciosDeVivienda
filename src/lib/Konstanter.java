@@ -19,4 +19,10 @@ public class Konstanter {
     public static final long SERNUM = 1234L;
     
     public static final String FILNANV = "programdata/data.iso";
+    
+    public static final int PERSONOBJ = 1;
+    public static final int BOLIGOBJ = 2;
+    public static final int ANNONSEOBJ = 3;
+    public static final int KONTRAKTOBJ = 4;
+    public static final int SOKNADOBJ = 5;
 }

@@ -1,49 +1,54 @@
 package view;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import java.awt.FlowLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.table.AbstractTableModel;
-import model.Person;
+import javax.swing.table.TableCellRenderer;
 
 public class VenstrePanel extends AbstractPanel {
 
     private JTable tabell;
-    private Object[] liste;
-    private PersonTabellModell tabellModell;
-    private AbstractTableModel valgtModel;
+    private TabellModell tabellModell;
 
     public VenstrePanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
         setLayout(new GridLayout(1, 1));
 
-        liste = new Object[0];
-        tabellModell = new PersonTabellModell();
-        valgtModel = tabellModell;
-
+        tabellModell = new TabellModell();
         tabell = new JTable(tabellModell);
-        tabell.setFillsViewportHeight(true);
 
+        tabell.setFillsViewportHeight(true);
         add(new JScrollPane(tabell));
 
-        //Send inn en tom Arraylist til modellen
-        tabellModell.fyllTabellMedInnhold(liste);
+    }//End Constructor
 
+
+    /**
+     * Setter Tabellmodell.
+     *
+     * @return
+     */
+    public TabellModell getModel() {
+        return tabellModell;
+    }
+
+    /**
+     * Tar imot en array fra MainController og setter i Tabellmodellen.
+     *
+     * @param data
+     */
+    public void fyllTabellMedInnhold(Object[] data, String[] kolonneNavn, int objektType) {
+        tabellModell.fyllTabellMedInnhold(data, kolonneNavn, objektType);
+        tabellModell.fireTableStructureChanged();
 
     }
 
-    public AbstractTableModel getModel() {
-        return valgtModel;
-    }
-
-    public void fyllTabellMedInnhold(Object[] data) {
-        tabellModell.fyllTabellMedInnhold(data);
-    }
-
+    /**
+     * Returnerer tabellen.
+     *
+     * @return
+     */
     public JTable getTable() {
         return tabell;
     }
