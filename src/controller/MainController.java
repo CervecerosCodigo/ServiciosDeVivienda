@@ -1,26 +1,15 @@
 package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import lib.Boligtype;
-import lib.Konstanter;
+import lib.*;
 import model.*;
 import register.*;
 import view.*;
-import view.ArkfaneTemplate;
 
 /**
  * Controller.java er koblingen mellom GUI og dataobjektene. Det opprettes her
@@ -49,6 +38,8 @@ public class MainController implements Serializable {
     private ArkfaneTemplate meglerVindu;
     private ArkfaneTemplate annonseVindu;
     private StartGUI startGUI;
+    
+
 
     private DefaultListModel listeModel;
 
@@ -82,19 +73,9 @@ public class MainController implements Serializable {
         }
 
         //////Setter Tabellen - Kan/bør flyttes på senere tidspunkt///////////////////
-        settInnDataITabell();
-        meglerVindu.getVenstrepanel().getModel().addTableModelListener(new SetTabellModellLytter());
-        //Setter en lytter som finner raden som er valgt
-        final JTable tabell = meglerVindu.getVenstrepanel().getTable();
-        tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu);
+        ArrayTilHTMLMetoder.settOppTabell(meglerVindu);
 
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                int rad = tabell.getSelectedRow();
-                int kol = tabell.getSelectedColumn();
-                System.out.println(rad + " : " + kol);
-            }
-        });
     }
 
     /**
@@ -162,46 +143,6 @@ public class MainController implements Serializable {
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
         Calendar kalender = new GregorianCalendar(aar, mnd, dag);
         return kalender;
-    }
-    /////////////////////////////////////////////////////////////////////////
-    ///////////////////////metoder for Venstre panel////////////////////////
-
-    /**
-     * Oppretter en array med lenge av mottatt datasett.
-     */
-    public void settInnDataITabell() {
-        
-        String[] kolonneNavn = new String[]{"BoligID", "EierID", "Adresse", "Utleid"}; 
-        Object[] liste = boligliste.toArray();
-        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.BOLIGOBJ);
-        
-        
-//        String[] kolonneNavn = new String[]{"ID", "Fornavn", "Etternavn", "Epost"};        
-//        Object[] liste = personliste.toArray();
-//        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.PERSONOBJ);
-        
-//        String[] kolonneNavn = new String[]{"AnnonseID", "Utleiepris", "Utløpsdatao", "Synlig"};        
-//        Object[] liste = annonseliste.toArray();
-//        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.ANNONSEOBJ);
-        
-//        String[] kolonneNavn = new String[]{"KontraktID", "BoligID", "LeietakerID", "Varighet"};        
-//        Object[] liste = kontraktliste.toArray();
-//        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.KONTRAKTOBJ);
-        
-//        String[] kolonneNavn = new String[]{"AnnonseID", "Adresse", "Søkers fornavn", "Søkers etternavn"};        
-//        Object[] liste = kontraktliste.toArray();
-//        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.KONTRAKTOBJ);
-    }
-
-    private class SetTabellModellLytter implements TableModelListener {
-        @Override
-        public void tableChanged(TableModelEvent evt) {
-            if (evt.getType() == TableModelEvent.UPDATE) {
-                int column = evt.getColumn();
-                int row = evt.getFirstRow();
-                System.out.println("row: " + row + " column: " + column);
-            }
-        }
     }
 
     /////////////////////////////////////////////////////////////////////////

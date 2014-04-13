@@ -1,10 +1,8 @@
 package view;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import java.awt.Component;
 import java.awt.GridLayout;
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
 
 public class VenstrePanel extends AbstractPanel {
 
@@ -25,24 +23,14 @@ public class VenstrePanel extends AbstractPanel {
 
 
     /**
-     * Setter Tabellmodell.
-     *
-     * @return
+     * Returnerer tabellmodellen som definerer tabellens innhold og funksjon.
+     * @return 
      */
-    public TabellModell getModel() {
+    public TabellModell getTabellModell() {
         return tabellModell;
     }
 
-    /**
-     * Tar imot en array fra MainController og setter i Tabellmodellen.
-     *
-     * @param data
-     */
-    public void fyllTabellMedInnhold(Object[] data, String[] kolonneNavn, int objektType) {
-        tabellModell.fyllTabellMedInnhold(data, kolonneNavn, objektType);
-        tabellModell.fireTableStructureChanged();
 
-    }
 
     /**
      * Returnerer tabellen.

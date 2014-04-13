@@ -39,11 +39,14 @@ public class ArkfaneTemplate extends JPanel {
 
     }
 
-    public JPanel getToppanel() {
-        return toppanel;
+    public TopPanelMegler getToppanelMegler() {
+        return (TopPanelMegler) toppanel;
+    }
+    public TopPanelAnnonse getToppanelAnnonse() {
+        return (TopPanelAnnonse) toppanel;
     }
 
-    public JPanel getBunnpanel() {
+    public BunnPanel getBunnpanel() {
         return bunnpanel;
     }
 
@@ -51,7 +54,7 @@ public class ArkfaneTemplate extends JPanel {
         return venstrepanel;
     }
 
-    public JPanel getSenterpanel() {
+    public SenterPanel getSenterpanel() {
         return senterpanel;
     }
 
