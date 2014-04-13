@@ -3,9 +3,6 @@ package controller;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
 import lib.*;
 import model.*;
 import register.*;
@@ -22,38 +19,34 @@ public class MainController implements Serializable {
 
     private static final long serialVersionUID = Konstanter.SERNUM;
 
-    protected Register personRegister;
-    protected Register boligRegister;
-    protected Register annonseRegister;
-    protected Register kontraktRegister;
-    protected Register soknadRegister;
-    protected Postregister postRegister;
+    private Register personRegister;
+    private Register boligRegister;
+    private Register annonseRegister;
+    private Register kontraktRegister;
+    private Register soknadRegister;
+    private Postregister postRegister;
 
-    protected HashSet<Person> personliste;
-    protected HashSet<Bolig> boligliste;
-    protected HashSet<Kontrakt> kontraktliste;
-    protected HashSet<Annonse> annonseliste;
-    protected LinkedHashSet<Soknad> soknadsliste;
+    private HashSet<Person> personliste;
+    private HashSet<Bolig> boligliste;
+    private HashSet<Kontrakt> kontraktliste;
+    private HashSet<Annonse> annonseliste;
+    private LinkedHashSet<Soknad> soknadsliste;
 
     private ArkfaneTemplate meglerVindu;
     private ArkfaneTemplate annonseVindu;
     private StartGUI startGUI;
-    
 
-
-    private DefaultListModel listeModel;
-
-    public MainController() {
+    public MainController(HashSet<Person> personliste, HashSet<Bolig> boligliste, HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste, LinkedHashSet<Soknad> soknadsliste) {
 
         meglerVindu = new ArkfaneTemplate("megler");
         annonseVindu = new ArkfaneTemplate("annonse");
         startGUI = new StartGUI(meglerVindu, annonseVindu);
 
-        personliste = new HashSet<>();
-        boligliste = new HashSet<>();
-        annonseliste = new HashSet<>();
-        kontraktliste = new HashSet<>();
-        soknadsliste = new LinkedHashSet<>();
+        this.personliste = personliste;
+        this.boligliste = boligliste;
+        this.annonseliste = annonseliste;
+        this.kontraktliste = kontraktliste;
+        this.soknadsliste = soknadsliste;
 
         personRegister = new Personregister(personliste);
         boligRegister = new Boligregister(boligliste);
@@ -61,83 +54,11 @@ public class MainController implements Serializable {
         kontraktRegister = new Kontraktregister(kontraktliste);
         soknadRegister = new Soknadregister(soknadsliste);
 
-        //postRegister = new Postregister();
-        File fil = new File(Konstanter.FILNANV);
-        if (!fil.exists()) {//Et lite hack som brukes foreløpig
-            testData();
 
-            System.out.println("Filen " + Konstanter.FILNANV + " eksisterer IKKE, fyller med dummydata.");
-        } else {
-            lesInnData();
-            System.out.println("Leser inn data fra fil.");
-        }
-
-        //////Setter Tabellen - Kan/bør flyttes på senere tidspunkt///////////////////
+        //////Setter Tabellen - Midlertidig kall på metodene herfra///////////////////
         ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu);
         ArrayTilHTMLMetoder.settOppTabell(meglerVindu);
 
-    }
-
-    /**
-     * FIXME: Flyttes til egen klasse
-     */
-    public void lagreData() {
-        try {
-            FileOutputStream fos = new FileOutputStream(new File(Konstanter.FILNANV));
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-
-            out.writeObject(personliste);
-            out.writeObject(boligliste);
-            out.writeObject(annonseliste);
-            out.writeObject(kontraktliste);
-            out.writeObject(soknadsliste);
-
-            out.writeInt(Person.getTeller());
-            out.writeInt(Bolig.getTeller());
-            out.writeInt(Annonse.getTeller());
-            out.writeInt(Soknad.getTeller());
-            out.writeInt(Kontrakt.getTeller());
-
-            out.close();
-
-        } catch (IOException e) {//FIXME: trenger en felles plass for å fange opp de
-            System.out.println(e.fillInStackTrace());
-        }
-    }
-
-    /**
-     * FIXME: Flyttes til egen klasse
-     */
-    public void lesInnData() {
-        try {
-            FileInputStream fis = new FileInputStream(new File(Konstanter.FILNANV));
-            ObjectInputStream in = new ObjectInputStream(fis);
-
-            personliste = (HashSet<Person>) in.readObject();
-            boligliste = (HashSet<Bolig>) in.readObject();
-            annonseliste = (HashSet<Annonse>) in.readObject();
-            kontraktliste = (HashSet<Kontrakt>) in.readObject();
-            soknadsliste = (LinkedHashSet<Soknad>) in.readObject();
-
-            personRegister = new Personregister(personliste);
-            boligRegister = new Boligregister(boligliste);
-            annonseRegister = new Annonseregister(annonseliste);
-            kontraktRegister = new Kontraktregister(kontraktliste);
-            soknadRegister = new Soknadregister(soknadsliste);
-
-            Person.setTeller(in.readInt());
-            Bolig.setTeller(in.readInt());
-            Annonse.setTeller(in.readInt());
-            Soknad.setTeller(in.readInt());
-            Kontrakt.setTeller(in.readInt());
-
-            in.close();
-
-        } catch (IOException e) {//FIXME: trenger en felles plass for å fange opp de
-            System.out.println(e.fillInStackTrace());
-        } catch (ClassNotFoundException e) {
-            System.out.println(e.fillInStackTrace());
-        }
     }
 
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
@@ -299,7 +220,7 @@ public class MainController implements Serializable {
     }
 
     /////////////////////////////////////////////////////////////////////////
-    private void testData() {
+    public void testData() {
 
         Calendar tilgjenglig1 = opprettKalenderobjekt(2014, 5, 29);
         Calendar tilgjenglig2 = opprettKalenderobjekt(2014, 7, 1);
@@ -351,6 +272,7 @@ public class MainController implements Serializable {
         opprettLeilighetOgLeggIRegister(2, 0, 10, true, false, true, 4, "Groruddalen 1",
                 "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.", false, tilgjenglig3);
 
+        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu);
         System.out.println(boligRegister.visRegister());
         System.out.println("================================================");
 

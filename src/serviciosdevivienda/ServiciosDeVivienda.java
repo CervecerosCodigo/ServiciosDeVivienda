@@ -1,8 +1,9 @@
 package serviciosdevivienda;
 
 import controller.*;
+import java.util.*;
 import javax.swing.SwingUtilities;
-
+import model.*;
 
 /**
  *
@@ -16,13 +17,12 @@ public class ServiciosDeVivienda {
 
         SwingUtilities.invokeLater(new Runnable() {
 
-            MainController controller;
+            SkrivTilLesFraFil startProgram;
 
             @Override
             public void run() {
 
-                
-                controller = new MainController();
+                startProgram = new SkrivTilLesFraFil();
 
                 //////Avsluttnings Hooks///////
                 Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
@@ -31,7 +31,7 @@ public class ServiciosDeVivienda {
                     public void run() {
 
                         System.out.println("Programmet avsluttes");
-                        controller.lagreData();
+                        startProgram.lagreData();
                     }
                 }));
             }

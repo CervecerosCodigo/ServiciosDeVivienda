@@ -2,10 +2,8 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.util.Collection;
-import javax.swing.JEditorPane;
-import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.*;
+import javax.swing.event.*;
 import lib.Konstanter;
 import model.*;
 import view.*;
@@ -14,6 +12,8 @@ public class ArrayTilHTMLMetoder {
 
     private static Object[] tabellData;
     private static int datasettIBruk;
+    
+    
 
     public static void settOppTabell(final ArkfaneTemplate vindu) {
         //Setter en lytter som finner raden som er valgt
@@ -86,7 +86,6 @@ public class ArrayTilHTMLMetoder {
         }
         JEditorPane output = vindu.getSenterpanel().getEditorPane();
         //Document dok = meglerVindu.getSenterpanel().getHTMLDokument();
-
         output.setText(valgtObjekt.toString());
 
     }
