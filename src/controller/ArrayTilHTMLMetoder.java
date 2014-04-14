@@ -45,42 +45,57 @@ public class ArrayTilHTMLMetoder {
      * Oppretter en array med lengde av mottatt datasett. Denne metoden er
      * avhengig av søkeresultatene og må få inn parametere fra toppanel.
      */
-    public static void settInnDataITabell(Collection liste, ArkfaneTemplate vindu) {
+    public static void settInnDataITabell(Collection liste, ArkfaneTemplate vindu, int datasettIBruk) {
 
-//        String[] kolonneNavn = new String[]{"BoligID", "EierID", "Adresse", "Utleid"};
-//        tabellData = liste.toArray();
-//        datasettIBruk = Konstanter.BOLIGOBJ;
-//        vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, datasettIBruk);
-//        vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
-        String[] kolonneNavn = new String[]{"ID", "Fornavn", "Etternavn", "Epost"};
-        tabellData = liste.toArray();
-        ArrayTilHTMLMetoder.liste = liste;
-        datasettIBruk = Konstanter.PERSONOBJ;
-        vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.PERSONOBJ);
-        vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
+        String[] kolonneNavn = null;
+
+        switch (datasettIBruk) {
+            case Konstanter.PERSONOBJ:
+                kolonneNavn = new String[]{"ID", "Fornavn", "Etternavn", "Epost"};
+                tabellData = liste.toArray();
+                ArrayTilHTMLMetoder.liste = liste;
+                ArrayTilHTMLMetoder.datasettIBruk = Konstanter.PERSONOBJ;
+                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.PERSONOBJ);
+                vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
+                break;
+            case Konstanter.BOLIGOBJ:
+                kolonneNavn = new String[]{"BoligID", "EierID", "Adresse", "Utleid"};
+                tabellData = liste.toArray();
+                datasettIBruk = Konstanter.BOLIGOBJ;
+                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, datasettIBruk);
+                vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
+                break;
+            case Konstanter.ANNONSEOBJ:
+                kolonneNavn = new String[]{"AnnonseID", "Utleiepris", "Utløpsdatao", "Synlig"};
+                tabellData = liste.toArray();
+                datasettIBruk = Konstanter.ANNONSEOBJ;
+                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.ANNONSEOBJ);
+                break;
+            case Konstanter.KONTRAKTOBJ:
+                kolonneNavn = new String[]{"KontraktID", "BoligID", "LeietakerID", "Varighet"};
+                tabellData = liste.toArray();
+                datasettIBruk = Konstanter.KONTRAKTOBJ;
+                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.KONTRAKTOBJ);
+                break;
+            case Konstanter.SOKNADOBJ:
+                kolonneNavn = new String[]{"AnnonseID", "Adresse", "Søkers fornavn", "Søkers etternavn"};
+                tabellData = liste.toArray();
+                datasettIBruk = Konstanter.SOKNADOBJ;
+                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.SOKNADOBJ);
+                break;
+        }
+
 //        
-//        String[] kolonneNavn = new String[]{"AnnonseID", "Utleiepris", "Utløpsdatao", "Synlig"};        
-//        Object[] liste = annonseliste.toArray();
-//        datasettIBruk = Konstanter.ANNONSEOBJ;
-//        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.ANNONSEOBJ);
 //        
-//        String[] kolonneNavn = new String[]{"KontraktID", "BoligID", "LeietakerID", "Varighet"};        
-//        Object[] liste = kontraktliste.toArray();
-//        datasettIBruk = Konstanter.KONTRAKTOBJ;
-//        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.KONTRAKTOBJ);
 //        
-//        String[] kolonneNavn = new String[]{"AnnonseID", "Adresse", "Søkers fornavn", "Søkers etternavn"};        
-//        Object[] liste = soknadsliste.toArray();
-//        datasettIBruk = Konstanter.SOKNADOBJ;
-//        meglerVindu.getVenstrepanel().fyllTabellMedInnhold(liste, kolonneNavn, Konstanter.SOKNADOBJ);
     }
 
     /**
-     * 
+     *
      * @param valgtRad
      * @param datasettIBruk
      * @param tabellData
-     * @param vindu 
+     * @param vindu
      */
     public static void sendObjektFraTabellTilOutput(int valgtRad, int datasettIBruk, Object[] tabellData, ArkfaneTemplate vindu) {
         Object valgtObjekt = null;
@@ -112,7 +127,7 @@ public class ArrayTilHTMLMetoder {
 
         JEditorPane output = vindu.getSenterpanel().getEditorPane();
         Collection<Person> personliste = liste;
-        
+
         Person skalVises = (Person) valgtObjekt;
         Megler megler = null;
         Leietaker leietaker = null;
@@ -134,32 +149,32 @@ public class ArrayTilHTMLMetoder {
         html.append("<h1>".concat(skalVises.getClass().getSimpleName()).concat("</h1>"));
         html.append("<table id= 'personinfo'>");
         html.append("<tr>");
-            html.append("<td>ID i systemet");
-            html.append("</td>");
-            html.append("<td>");
-            html.append(skalVises.getPersonID());
-            html.append("</td>");
+        html.append("<td>ID i systemet");
+        html.append("</td>");
+        html.append("<td>");
+        html.append(skalVises.getPersonID());
+        html.append("</td>");
         html.append("</tr>");
         html.append("<tr>");
-            html.append("<td>Navn");
-            html.append("</td>");
-            html.append("<td>".concat(skalVises.getFornavn().concat(" ".concat(skalVises.getEtternavn()))));
-            html.append("</td>");
+        html.append("<td>Navn");
+        html.append("</td>");
+        html.append("<td>".concat(skalVises.getFornavn().concat(" ".concat(skalVises.getEtternavn()))));
+        html.append("</td>");
         html.append("</tr>");
         html.append("<tr>");
-            html.append("<td>Telefonnummer");
-            html.append("</td>");
-            html.append("<td>".concat(skalVises.getTelefon()));
-            html.append("</td>");
+        html.append("<td>Telefonnummer");
+        html.append("</td>");
+        html.append("<td>".concat(skalVises.getTelefon()));
+        html.append("</td>");
         html.append("</tr>");
         html.append("<tr>");
-            html.append("<td>Epost");
-            html.append("</td>");
-            html.append("<td>".concat(skalVises.getEpost()));
-            html.append("</td>");
-        html.append("</tr>");                
+        html.append("<td>Epost");
+        html.append("</td>");
+        html.append("<td>".concat(skalVises.getEpost()));
+        html.append("</td>");
+        html.append("</tr>");
         html.append("</table>");
-        
+
 //        html.append("ID i systemet ");
 //        html.append(skalVises.getPersonID());
 //        html.append("<br/>");
@@ -168,7 +183,6 @@ public class ArrayTilHTMLMetoder {
 //        html.append("Telefonnummer: ".concat(skalVises.getTelefon()));
 //        html.append("<br/>");
 //        html.append("Epost: ".concat(skalVises.getEpost()));
-        
         output.setText(html.toString());
     }
 

@@ -56,7 +56,7 @@ public class MainController implements Serializable {
 
 
         //////Setter Tabellen - Midlertidig kall på metodene herfra///////////////////
-        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu);
+        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu, Konstanter.PERSONOBJ);
         ArrayTilHTMLMetoder.settOppTabell(meglerVindu);
 
     }
@@ -272,7 +272,7 @@ public class MainController implements Serializable {
         opprettLeilighetOgLeggIRegister(2, 0, 10, true, false, true, 4, "Groruddalen 1",
                 "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.", false, tilgjenglig3);
 
-        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu);
+        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu, Konstanter.PERSONOBJ);
         System.out.println(boligRegister.visRegister());
         System.out.println("================================================");
 
