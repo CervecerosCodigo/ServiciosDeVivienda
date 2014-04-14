@@ -7,7 +7,7 @@ import model.*;
 
 public class TabellModell extends AbstractTableModel {
 
-    private Object[] liste = new Object[0];
+    private Object[] mottattTabell = new Object[0];
     private String[] overskrift = new String[0];
     private int objektType;
 
@@ -18,14 +18,14 @@ public class TabellModell extends AbstractTableModel {
      * @param kolonneNavn
      */
     public void fyllTabellMedInnhold(Object[] liste, String[] kolonneNavn, int objektType) {
-        this.liste = liste;
+        this.mottattTabell = liste;
         this.overskrift = kolonneNavn;
         this.objektType = objektType;
     }
 
     @Override
     public int getRowCount() {
-        return liste.length;
+        return mottattTabell.length;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TabellModell extends AbstractTableModel {
 
         if (objektType == Konstanter.BOLIGOBJ) {
             Bolig bolig = null;
-            bolig = (Bolig) liste[rad];
+            bolig = (Bolig) mottattTabell[rad];
             switch (kolonne) {
                 case 0:
                     return bolig.getBoligID();
@@ -56,7 +56,7 @@ public class TabellModell extends AbstractTableModel {
         } else if (objektType == Konstanter.PERSONOBJ) {
 
             Person person = null;
-            person = (Person) liste[rad];
+            person = (Person) mottattTabell[rad];
             switch (kolonne) {
                 case 0:
                     return person.getPersonID();
@@ -69,7 +69,7 @@ public class TabellModell extends AbstractTableModel {
             }
         } else if (objektType == Konstanter.ANNONSEOBJ) {
             Annonse annonse = null;
-            annonse = (Annonse) liste[rad];
+            annonse = (Annonse) mottattTabell[rad];
             switch (kolonne) {
                 case 0:
                     return annonse.getAnnonseID();
@@ -82,7 +82,7 @@ public class TabellModell extends AbstractTableModel {
             }
         } else if (objektType == Konstanter.KONTRAKTOBJ) {
             Kontrakt kontrakt = null;
-            kontrakt = (Kontrakt) liste[rad];
+            kontrakt = (Kontrakt) mottattTabell[rad];
             switch (kolonne) {
                 case 0:
                     return kontrakt.getAnnonseID();
@@ -95,7 +95,7 @@ public class TabellModell extends AbstractTableModel {
             }
         } else if (objektType == Konstanter.SOKNADOBJ) {
             Soknad soknad = null;
-            soknad = (Soknad) liste[rad];
+            soknad = (Soknad) mottattTabell[rad];
             switch (kolonne) {
                 case 0:
                     return soknad.getAnnonseObjekt().getAnnonseID();
