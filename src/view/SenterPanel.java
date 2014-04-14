@@ -1,10 +1,13 @@
 package view;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+
+import controller.ArrayTilHTMLMetoder;
 import java.awt.GridLayout;
 import javax.swing.*;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 
 
 
@@ -12,6 +15,7 @@ public class SenterPanel extends AbstractPanel{
 
     private JEditorPane output;
     private HTMLEditorKit kit;
+    private StyleSheet css;
     private JScrollPane scroll;
     private Document dok;
     
@@ -22,6 +26,9 @@ public class SenterPanel extends AbstractPanel{
         output = new JEditorPane();
         kit = new HTMLEditorKit();
         dok = kit.createDefaultDocument();
+        css = kit.getStyleSheet();
+        
+        
 
         
         output.setDocument(dok);
@@ -30,6 +37,7 @@ public class SenterPanel extends AbstractPanel{
         scroll = new JScrollPane( output );
         
         add(scroll);
+        
     }
 
     public JEditorPane getEditorPane(){
@@ -44,9 +52,8 @@ public class SenterPanel extends AbstractPanel{
         return dok;
     }
             
-    private void settCSSTilHTML(){
-        
+    public StyleSheet getStyleSheet(){
+        return css;
     }
-    
     
 }
