@@ -27,14 +27,19 @@ public class ArrayTilHTMLMetoder {
     public ArrayTilHTMLMetoder() {
 
     }
+    
+    public static int getDatasettIBruk(){
+        return datasettIBruk;
+    }
 
     /**
      * Tar i mot det vinduet tabellen skal settes for. Metoden oppretter en
      * lytter på tabellen som finner hvilken rad/objekt som er valgt.
+     * valueChanged-metoden sender også valgt objekt til output.
      *
      * @param vindu
      */
-    public static void settOppTabell(final ArkfaneTemplate vindu) {
+    public static void settOppTabellLytter(final ArkfaneTemplate vindu) {
         //Setter en lytter som finner raden som er valgt
         final JTable tabell = vindu.getVenstrepanel().getTable();
 
@@ -73,6 +78,7 @@ public class ArrayTilHTMLMetoder {
                 ArrayTilHTMLMetoder.datasettIBruk = Konstanter.BOLIGOBJ;
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, datasettIBruk);
                 vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
+                vindu.getVenstrepanel().resizeKolonneBredde();
                 break;
             case Konstanter.ANNONSEOBJ:
                 kolonneNavn = new String[]{"AnnonseID", "Utleiepris", "Utløpsdatao", "Synlig"};

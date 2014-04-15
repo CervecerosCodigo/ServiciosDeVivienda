@@ -18,8 +18,7 @@ public class Megler extends Person {
 
     @Override
     public String toString() {
-        return super.toString() + " (Megler)";
-//        return "Megler{personID " + super.getPersonID() + ", meglerID=" + meglerID + ", kontor=" + kontor + "}\n";
+        return "Megler{personID " + super.getPersonID() + ", meglerID=" + meglerID + ", kontor=" + kontor + "}\n";
     }
 
         

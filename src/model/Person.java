@@ -118,7 +118,6 @@ public abstract class Person implements Serializable {
 
     @Override
     public String toString() {
-        return fornavn + " " + etternavn;
-//        return "{" + "personID=" + personID + ", fornavn=" + fornavn + ", etternavn=" + etternavn + ", epost=" + epost + ", telefon=" + telefon + "}";
+        return "{" + "personID=" + personID + ", fornavn=" + fornavn + ", etternavn=" + etternavn + ", epost=" + epost + ", telefon=" + telefon + "}";
     }
 } // end of class

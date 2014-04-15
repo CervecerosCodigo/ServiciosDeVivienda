@@ -16,7 +16,7 @@ public class Leietaker extends Person {
 
     @Override
     public String toString() {
-        return super.toString() + " (Leietaker)"; //To change body of generated methods, choose Tools | Templates.
+        return super.toString() + " (Leietaker)";
     }
 
         

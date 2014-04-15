@@ -1,6 +1,8 @@
 package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.*;
 import lib.*;
@@ -9,10 +11,8 @@ import register.*;
 import view.*;
 
 /**
- * Controller.java er koblingen mellom GUI og dataobjektene. Det opprettes her
- * Dataregistre, og logikken i forhold til hva som skal leses og skrives til
- * registrene blir utført her.
- *
+ * Dette er hovedkontrolleren mellom GUI og funksjonalitet.
+ * Mer info siden..
  * @author espen
  */
 public class MainController implements Serializable {
@@ -35,12 +35,16 @@ public class MainController implements Serializable {
     private ArkfaneTemplate meglerVindu;
     private ArkfaneTemplate annonseVindu;
     private StartGUI startGUI;
+    private ControllerBunnPanel bunnController;
 
-    public MainController(HashSet<Person> personliste, HashSet<Bolig> boligliste, HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste, LinkedHashSet<Soknad> soknadsliste) {
+    public MainController(HashSet<Person> personliste, HashSet<Bolig> boligliste, 
+            HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste, 
+            LinkedHashSet<Soknad> soknadsliste) {
 
         meglerVindu = new ArkfaneTemplate("megler");
         annonseVindu = new ArkfaneTemplate("annonse");
         startGUI = new StartGUI(meglerVindu, annonseVindu);
+        bunnController = new ControllerBunnPanel(meglerVindu, annonseVindu);
 
         this.personliste = personliste;
         this.boligliste = boligliste;
@@ -56,9 +60,12 @@ public class MainController implements Serializable {
 
 
         //////Setter Tabellen - Midlertidig kall på metodene herfra///////////////////
+        /**
+         * Man vil sende med resultatet fra søk i toppanel i stedet for hele listen, der det er ønskelig.
+         */
 //        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu, Konstanter.PERSONOBJ);
         ArrayTilHTMLMetoder.settInnDataITabell(boligliste, meglerVindu, Konstanter.BOLIGOBJ);
-        ArrayTilHTMLMetoder.settOppTabell(meglerVindu);
+        ArrayTilHTMLMetoder.settOppTabellLytter(meglerVindu);
 
     }
 
@@ -67,7 +74,8 @@ public class MainController implements Serializable {
         return kalender;
     }
 
-    /////////////////////////////////////////////////////////////////////////
+
+    
 /////////////////////////////////////////////////////////////////////////
     /**
      * //Annonsevinduet// Finn boliger basert på Areal minimum, Areal maksimum,
