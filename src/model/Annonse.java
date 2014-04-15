@@ -98,7 +98,4 @@ public class Annonse {
         return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", erSynlig=" + erSynlig + ", utlopsDato=" + df.format(utlopsDato.getTime()) + ", boligID=" + bolig.getBoligID() + '}';
     }
     
-    
-    
-    
 }
