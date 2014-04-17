@@ -357,12 +357,30 @@ public class ArrayTilHTMLMetoder {
         html.append("</table>");
         html.append("<hr class='linjeEn'>");
         
-        html.append("<div id='boligbeskrivelse'>");
-        html.append("<b><u>Beskrivelse av boligen</u></b><br/>");
-        html.append(skalVises.getBeskrivelse());
-        html.append("</div>");
-        html.append("<div id='boligbilde'>");
-        html.append("</div>");
+        String localImageSrc = ArrayTilHTMLMetoder.class.getClassLoader().getSystemResource("77_1655132553.jpg").toString();
+        
+        html.append("<table id='bildetabell'>");
+        html.append("<tr id='bilderad'>");
+            html.append("<td id='tekstkolonne'>");
+            html.append("<b>Beskrivelse av bolig</b><br/>");
+            html.append(skalVises.getBeskrivelse());                    
+            html.append("</td>");
+        
+            html.append("<td id='bildekolonne'>");
+            html.append("<img src=\""+localImageSrc+"\">");             
+            html.append("</td>");
+
+        html.append("</tr>");
+        html.append("</table>");
+        
+//        String localImageSrc = ArrayTilHTMLMetoder.class.getClassLoader().getSystemResource("77_1655132553.jpg").toString();
+////        html.append("<div id='bilde'>");
+//        html.append("<img src=\""+localImageSrc+"\">");                
+////        html.append("</div>");
+//        html.append("<b>Beskrivelse av bolig</b><br/>");
+//        html.append(skalVises.getBeskrivelse());        
+
+
         output.setText(html.toString());
     }
     
@@ -386,9 +404,8 @@ public class ArrayTilHTMLMetoder {
         css.addRule(".boligText {width: 80px}");
         css.addRule("#boliginfo {font-size: 12");
         css.addRule("#boliginfo {border-spacing: 0}");
-        css.addRule("#boligbeskrivelse {width: 40%}");        
-        css.addRule("#boligbeskrivelse {height: 200px}");        
-        css.addRule("#boligbeskrivelse {border-right: 1px solid}");        
-        css.addRule("#boligbilde {}");
+        
+        css.addRule("#tekstkolonne {width:290px}");
+        
     }    
 }

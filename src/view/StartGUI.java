@@ -1,6 +1,7 @@
 package view;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import java.awt.Color;
 import javax.swing.*;
 import lib.VinduStorrelse;
 
@@ -17,6 +18,7 @@ public class StartGUI extends JFrame {
         setSize(WIDTH, HEIGHT);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
 
         innhold = new MainPanel( megler, annonse );
         add( innhold );
