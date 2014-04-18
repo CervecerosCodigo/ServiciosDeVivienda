@@ -10,10 +10,19 @@ import view.ArkfaneTemplate;
 
 public class ControllerBunnPanel {
 
-    public ControllerBunnPanel(ArkfaneTemplate meglerVindu, ArkfaneTemplate annonseVindu){
+    private KnappeLytter lytter;
+    
+    public ControllerBunnPanel(){
      
-        meglerVindu.getBunnpanel().addKnappeLytter( new KnappeLytter( meglerVindu));
-        annonseVindu.getBunnpanel().addKnappeLytter( new KnappeLytter( annonseVindu));
+        
+    }
+    
+    public void settKnappeLytter(ArkfaneTemplate vindu){
+        vindu.getBunnpanel().addKnappeLytter( lytter = new KnappeLytter( vindu ));
+    }
+    
+    public void settDatasettIBruk( int datasettIBruk ){
+        lytter.settDatasettIBruk(datasettIBruk);
     }
     
     /**
@@ -30,9 +39,13 @@ public class ControllerBunnPanel {
             
         }
         
+        public void settDatasettIBruk( int datasettIBruk ){
+            this.datasettIBruk = datasettIBruk;
+        }
+        
         @Override
         public void actionPerformed(ActionEvent e) {
-            datasettIBruk = ArrayTilHTMLMetoder.getDatasettIBruk();
+            //datasettIBruk = ControllerTabellOgOutput.getDatasettIBruk();
             JTable tabell = vindu.getVenstrepanel().getTable();
             raderITabell = vindu.getVenstrepanel().getTabellModell().getRowCount();
             /**
@@ -51,7 +64,10 @@ public class ControllerBunnPanel {
                 vindu.getVenstrepanel().getTable().changeSelection(tabell.getSelectedRow() -1, 0, false, false);
                 
             } else if(e.getSource().equals(vindu.getBunnpanel().getFremKnapp())){
-                vindu.getVenstrepanel().getTable().changeSelection(tabell.getSelectedRow() +1, 0, false, false);
+                int valgtRad = vindu.getVenstrepanel().getTable().getSelectedRow();
+                
+                if( valgtRad +1 < vindu.getVenstrepanel().getTable().getRowCount() )
+                    vindu.getVenstrepanel().getTable().changeSelection(tabell.getSelectedRow() +1, 0, false, false);
             }
         }
         

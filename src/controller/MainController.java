@@ -36,6 +36,8 @@ public class MainController implements Serializable {
     private ArkfaneTemplate annonseVindu;
     private StartGUI startGUI;
     private ControllerBunnPanel bunnController;
+    private ControllerTabellOgOutput tabellControllerMegler;
+    private ControllerTabellOgOutput tabellControllerAnnonse;
 
     public MainController(HashSet<Person> personliste, HashSet<Bolig> boligliste, 
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste, 
@@ -44,7 +46,10 @@ public class MainController implements Serializable {
         meglerVindu = new ArkfaneTemplate("megler");
         annonseVindu = new ArkfaneTemplate("annonse");
         startGUI = new StartGUI(meglerVindu, annonseVindu);
-        bunnController = new ControllerBunnPanel(meglerVindu, annonseVindu);
+        
+        bunnController = new ControllerBunnPanel();
+        tabellControllerMegler = new ControllerTabellOgOutput();
+        tabellControllerAnnonse = new ControllerTabellOgOutput();
 
         this.personliste = personliste;
         this.boligliste = boligliste;
@@ -63,10 +68,14 @@ public class MainController implements Serializable {
         /**
          * Man vil sende med resultatet fra søk i toppanel i stedet for hele listen, der det er ønskelig.
          */
-//        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu, Konstanter.PERSONOBJ);
-        ArrayTilHTMLMetoder.settInnDataITabell(boligliste, meglerVindu, Konstanter.BOLIGOBJ);
-        ArrayTilHTMLMetoder.settOppTabellLytter(meglerVindu);
 
+        tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, Konstanter.BOLIGOBJ);
+        tabellControllerAnnonse.settInnDataITabell(annonseliste, annonseVindu, Konstanter.ANNONSEOBJ);
+        tabellControllerMegler.settOppTabellLytter(meglerVindu);
+        tabellControllerAnnonse.settOppTabellLytter(annonseVindu);
+
+        bunnController.settKnappeLytter(meglerVindu);
+        bunnController.settKnappeLytter(annonseVindu);
     }
 
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
@@ -173,6 +182,17 @@ public class MainController implements Serializable {
         }
         return null;
     }
+    
+    public Bolig finnBoligFraBoligID(int id){
+        
+        Iterator<Bolig> iter = boligliste.iterator();
+        while(iter.hasNext()){
+            Bolig temp = iter.next();
+            if(temp.getBoligID() == id)
+                return temp;
+        }
+        return null;
+    }
     /////////////////////////////////////////////////////////////////////////
     /**
      * //Metoder for Registrering av person og bolig
@@ -226,6 +246,16 @@ public class MainController implements Serializable {
             return;
         }
         System.out.println("Leilighet ble ikke lagt inn i registeret.");
+    }
+    
+    public void opprettAnnonseOgLeggIRegister(int depositum, int utleiepris, Calendar utlopsDato, Bolig bolig){
+        
+        Annonse annonse = new Annonse(depositum, utleiepris, utlopsDato, bolig);
+        if( annonseRegister.leggTilObjekt( annonse )){
+            System.out.println("Annonsen er lagt inn i registeret");
+            return;
+        }
+        System.out.println("Annonsen ble ikke lagt inn i registeret");
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -282,10 +312,19 @@ public class MainController implements Serializable {
                 "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.", false, tilgjenglig3);
 
 //        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu, Konstanter.PERSONOBJ);
-        ArrayTilHTMLMetoder.settInnDataITabell(boligliste, meglerVindu, Konstanter.BOLIGOBJ);
+        tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, Konstanter.BOLIGOBJ);
         System.out.println(boligRegister.visRegister());
         System.out.println("================================================");
 
+        
+        opprettAnnonseOgLeggIRegister(30000, 10000, utlopsdato3, finnBoligFraBoligID(8) );
+        opprettAnnonseOgLeggIRegister(25000, 8000, utlopsdato2, finnBoligFraBoligID(7) );
+        opprettAnnonseOgLeggIRegister(45000, 15000, utlopsdato3, finnBoligFraBoligID(3) );
+        opprettAnnonseOgLeggIRegister(50000, 17500, utlopsdato3, finnBoligFraBoligID(4) );
+        opprettAnnonseOgLeggIRegister(30000, 10000, utlopsdato1, finnBoligFraBoligID(9) );
+        opprettAnnonseOgLeggIRegister(20000, 7000, utlopsdato2, finnBoligFraBoligID(10) );
+        System.out.println("================================================");
+        ////////////////////////////////////////////////////////////////////////        
     }
 
 }

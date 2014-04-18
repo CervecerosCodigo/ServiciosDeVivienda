@@ -17,18 +17,18 @@ import lib.Konstanter;
 import model.*;
 import view.*;
 
-public class ArrayTilHTMLMetoder {
+public class ControllerTabellOgOutput {
 
-    private static Object[] tabellData;
-    private static int datasettIBruk;
-    private static Collection liste;
-    private static StyleSheet css;
+    private Object[] tabellData;
+    private int datasettIBruk;
+    private Collection liste;
+    private StyleSheet css;
 
-    public ArrayTilHTMLMetoder() {
+    public ControllerTabellOgOutput() {
 
     }
     
-    public static int getDatasettIBruk(){
+    public int getDatasettIBruk(){
         return datasettIBruk;
     }
 
@@ -39,7 +39,7 @@ public class ArrayTilHTMLMetoder {
      *
      * @param vindu
      */
-    public static void settOppTabellLytter(final ArkfaneTemplate vindu) {
+    public void settOppTabellLytter(final ArkfaneTemplate vindu) {
         //Setter en lytter som finner raden som er valgt
         final JTable tabell = vindu.getVenstrepanel().getTable();
 
@@ -49,7 +49,7 @@ public class ArrayTilHTMLMetoder {
             public void valueChanged(ListSelectionEvent e) {
                 int rad = tabell.getSelectedRow();
 
-                ArrayTilHTMLMetoder.sendObjektFraTabellTilOutput(rad, datasettIBruk, tabellData, vindu);
+                sendObjektFraTabellTilOutput(rad, datasettIBruk, tabellData, vindu);
             }
         });
     }
@@ -58,7 +58,7 @@ public class ArrayTilHTMLMetoder {
      * Oppretter en array med lengde av mottatt datasett. Denne metoden er
      * avhengig av søkeresultatene og må få inn parametere fra toppanel.
      */
-    public static void settInnDataITabell(Collection liste, ArkfaneTemplate vindu, int datasettIBruk) {
+    public void settInnDataITabell(Collection liste, ArkfaneTemplate vindu, int datasettIBruk) {
 
         String[] kolonneNavn = null;
 
@@ -66,40 +66,47 @@ public class ArrayTilHTMLMetoder {
             case Konstanter.PERSONOBJ:
                 kolonneNavn = new String[]{"ID", "Fornavn", "Etternavn", "Epost"};
                 tabellData = liste.toArray();
-                ArrayTilHTMLMetoder.liste = liste;
-                ArrayTilHTMLMetoder.datasettIBruk = Konstanter.PERSONOBJ;
+                this.liste = liste;
+                this.datasettIBruk = Konstanter.PERSONOBJ;
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.PERSONOBJ);
                 vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
+                vindu.getVenstrepanel().resizeKolonneBredde();
                 break;
             case Konstanter.BOLIGOBJ:
                 kolonneNavn = new String[]{"BoligID", "EierID", "Adresse", "Utleid"};
                 tabellData = liste.toArray();
-                ArrayTilHTMLMetoder.liste = liste;
-                ArrayTilHTMLMetoder.datasettIBruk = Konstanter.BOLIGOBJ;
+                this.liste = liste;
+                this.datasettIBruk = Konstanter.BOLIGOBJ;
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, datasettIBruk);
                 vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
                 vindu.getVenstrepanel().resizeKolonneBredde();
                 break;
             case Konstanter.ANNONSEOBJ:
-                kolonneNavn = new String[]{"AnnonseID", "Utleiepris", "Utløpsdatao", "Synlig"};
+                kolonneNavn = new String[]{"AnnonseID", "Adresse", "Depositum", "Prs pr mnd"};
                 tabellData = liste.toArray();
-                ArrayTilHTMLMetoder.liste = liste;
-                ArrayTilHTMLMetoder.datasettIBruk = Konstanter.ANNONSEOBJ;
-                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.ANNONSEOBJ);
+                this.liste = liste;
+                this.datasettIBruk = Konstanter.ANNONSEOBJ;
+                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, datasettIBruk);
+                vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
+                vindu.getVenstrepanel().resizeKolonneBredde();                
                 break;
             case Konstanter.KONTRAKTOBJ:
                 kolonneNavn = new String[]{"KontraktID", "BoligID", "LeietakerID", "Varighet"};
                 tabellData = liste.toArray();
-                ArrayTilHTMLMetoder.liste = liste;
-                ArrayTilHTMLMetoder.datasettIBruk = Konstanter.KONTRAKTOBJ;
+                this.liste = liste;
+                this.datasettIBruk = Konstanter.KONTRAKTOBJ;
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.KONTRAKTOBJ);
+                vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
+                vindu.getVenstrepanel().resizeKolonneBredde();                
                 break;
             case Konstanter.SOKNADOBJ:
                 kolonneNavn = new String[]{"AnnonseID", "Adresse", "Søkers fornavn", "Søkers etternavn"};
                 tabellData = liste.toArray();
-                ArrayTilHTMLMetoder.liste = liste;
-                ArrayTilHTMLMetoder.datasettIBruk = Konstanter.SOKNADOBJ;
+                this.liste = liste;
+                this.datasettIBruk = Konstanter.SOKNADOBJ;
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.SOKNADOBJ);
+                vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
+                vindu.getVenstrepanel().resizeKolonneBredde();                
                 break;
         }
     }
@@ -111,10 +118,10 @@ public class ArrayTilHTMLMetoder {
      * @param tabellData
      * @param vindu
      */
-    public static void sendObjektFraTabellTilOutput(int valgtRad, int datasettIBruk, Object[] tabellData, ArkfaneTemplate vindu) {
+    public void sendObjektFraTabellTilOutput(int valgtRad, int datasettIBruk, Object[] tabellData, ArkfaneTemplate vindu) {
         Object valgtObjekt = null;
         css = vindu.getSenterpanel().getStyleSheet();
-        ArrayTilHTMLMetoder.setStyleSheet();
+        setStyleSheet();
 
         switch (datasettIBruk) {
             case Konstanter.PERSONOBJ:
@@ -147,7 +154,7 @@ public class ArrayTilHTMLMetoder {
      * @param valgtObjekt
      * @param vindu 
      */
-    public static void visPersonObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
+    public void visPersonObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
 
         JEditorPane output = vindu.getSenterpanel().getEditorPane();
         Collection<Person> personliste = liste;
@@ -209,7 +216,7 @@ public class ArrayTilHTMLMetoder {
      * @param valgtObjekt
      * @param vindu 
      */
-    public static void visBoligObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
+    public void visBoligObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
         JEditorPane output = vindu.getSenterpanel().getEditorPane();
         Collection<Bolig> boligliste = liste;
         Bolig skalVises = (Bolig) valgtObjekt;
@@ -355,15 +362,16 @@ public class ArrayTilHTMLMetoder {
         html.append("</tr>");            
         }
         html.append("</table>");
-        html.append("<hr class='linjeEn'>");
+        //html.append("<hr class='linjeEn'>");
         
-        String localImageSrc = ArrayTilHTMLMetoder.class.getClassLoader().getSystemResource("77_1655132553.jpg").toString();
+        String localImageSrc = ControllerTabellOgOutput.class.getClassLoader().getSystemResource("77_1655132553.jpg").toString();
         
         html.append("<table id='bildetabell'>");
         html.append("<tr id='bilderad'>");
             html.append("<td id='tekstkolonne'>");
             html.append("<b>Beskrivelse av bolig</b><br/>");
-            html.append(skalVises.getBeskrivelse());                    
+            html.append(skalVises.getBeskrivelse());   
+            html.append("<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>");            
             html.append("</td>");
         
             html.append("<td id='bildekolonne'>");
@@ -373,39 +381,192 @@ public class ArrayTilHTMLMetoder {
         html.append("</tr>");
         html.append("</table>");
         
-//        String localImageSrc = ArrayTilHTMLMetoder.class.getClassLoader().getSystemResource("77_1655132553.jpg").toString();
-////        html.append("<div id='bilde'>");
-//        html.append("<img src=\""+localImageSrc+"\">");                
-////        html.append("</div>");
-//        html.append("<b>Beskrivelse av bolig</b><br/>");
-//        html.append(skalVises.getBeskrivelse());        
-
-
         output.setText(html.toString());
     }
     
-    public static void visAnnonseObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
+    public void visAnnonseObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
+        JEditorPane output = vindu.getSenterpanel().getEditorPane();
+        Collection<Annonse> annonseliste = liste;
+        Annonse skalVises = (Annonse) valgtObjekt;
+        
+        Leilighet leilighet = null;
+        Enebolig enebolig = null;
+
+        switch (skalVises.getBolig().getClass().getSimpleName()) {
+            case "Leilighet":
+                leilighet = (Leilighet) skalVises.getBolig();
+                break;
+            case "Enebolig":
+                enebolig = (Enebolig) skalVises.getBolig();
+                break;
+        }
+        
+        StringBuilder html = new StringBuilder();
+        
+        html.append("<h1><u>");
+        html.append(skalVises.getBolig().getAdresse().concat(",    ".concat(skalVises.getBolig().getPostnummer().concat(" ".concat(skalVises.getBolig().getPoststed())))));        
+        html.append("</u></h1>");        
+        html.append("<table id= 'annonseinfo'>");
+        html.append("<tr>");
+            html.append("<td class='boligText'><b>Annonse ID</b>");
+            html.append("</td>");
+            html.append("<td class='annonseData'>");
+            html.append(skalVises.getAnnonseID());
+            html.append("</td>");
+            html.append("<td class='annonseText'><b></b>");
+            html.append("</td>");
+            html.append("<td class='annonseData'>");
+            html.append("");
+            html.append("</td>");
+            html.append("<td class='annonseText'>");
+            html.append("</td>");
+            html.append("<td class='annonseData'>");
+            html.append("</td>");            
+        html.append("</tr>");
+        html.append("<tr>");
+            html.append("<td><b>Byggeår</b>");
+            html.append("</td>");
+            html.append("<td>");
+            html.append(skalVises.getBolig().getByggeAr());
+            html.append("</td>");
+            html.append("<td><b>Boareal</b>");
+            html.append("</td>");
+            html.append("<td>");
+            html.append(skalVises.getBolig().getBoAreal());
+            html.append(" m2");
+            html.append("</td>");
+            html.append("<td><b></b>");
+            html.append("</td>");
+            html.append("<td>");
+            html.append("");            
+            html.append("</td>");            
+        html.append("</tr>");
+        
+        if(leilighet != null){
+            html.append("<tr>");
+                html.append("<td><b>Etasje</b>");
+                html.append("</td>");
+                html.append("<td>");
+                html.append(leilighet.getEtasjeNr());
+                html.append("</td>");
+                html.append("<td><b>Bodareal</b>");
+                html.append("</td>");
+                html.append("<td>");
+                String bod = (leilighet.getBodAreal()> 0) ? leilighet.getBodAreal()+ " m2" : "Ingen bod";                
+                html.append(bod);
+                html.append("</td>");
+                html.append("<td><b>Balkong</b>");
+                html.append("</td>");
+                html.append("<td>");
+                String balkong = (leilighet.getBalkongAreal() > 0) ? leilighet.getBalkongAreal() + " m2" : "Ingen balkong";
+                html.append(balkong);                
+                html.append("</td>");            
+            html.append("</tr>");
+            html.append("<tr>");
+                html.append("<td><b>Har heis?</b>");
+                html.append("</td>");
+                html.append("<td>");
+                html.append((leilighet.isHarHeis() == true) ? "Ja": "Nei");                                
+                html.append("</td>");
+                html.append("<td><b>Har garasje?</b>");
+                html.append("</td>");
+                html.append("<td>");
+                html.append((leilighet.isHarGarsje() == true) ? "Ja": "Nei");                   
+                html.append("</td>");
+                html.append("<td><b>Fellesvaskeri?</b>");
+                html.append("</td>");
+                html.append("<td>");
+                html.append((leilighet.isHarFellesvaskeri() == true) ? "Ja": "Nei");                  
+                html.append("</td>");            
+            html.append("</tr>");
+
+        } else if(enebolig != null){
+            
+            html.append("<tr>");
+                html.append("<td><b>Tomteareal</b>");
+                html.append("</td>");
+                html.append("<td>");
+                html.append(enebolig.getTomtAreal());
+                html.append(" m2");
+                html.append("</td>");
+                html.append("<td><b>Har kjeller?</b>");
+                html.append("</td>");
+                html.append("<td>");
+                html.append((enebolig.isHarKjeller() == true) ? "Ja": "Nei");                
+                html.append("</td>");
+                html.append("<td><b>Ant. etasjer</b>");
+                html.append("</td>");
+                html.append("<td>");
+                html.append(enebolig.getAntallEtasjer());
+                html.append("</td>");            
+            html.append("</tr>");     
+        html.append("<tr>");
+            html.append("<td>");
+            html.append("</td>");
+            html.append("<td>");
+            html.append("</td>");
+            html.append("<td>");
+            html.append("</td>");
+            html.append("<td>");
+            html.append("</td>");
+            html.append("<td>");
+            html.append("</td>");
+            html.append("<td>");
+            html.append("</td>");
+        html.append("</tr>");            
+        }
+        html.append("</table>");
+        //html.append("<hr class='linjeEn'>");
+        
+        String localImageSrc = ControllerTabellOgOutput.class.getClassLoader().getSystemResource("77_1655132553.jpg").toString();
+        
+        html.append("<table id='bildetabell'>");
+        html.append("<tr id='bilderad'>");
+            html.append("<td id='tekstkolonne'>");
+            html.append("<b>Beskrivelse av bolig</b><br/>");
+            html.append(skalVises.getBolig().getBeskrivelse());   
+            html.append("<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>");            
+            html.append("</td>");
+        
+            html.append("<td id='bildekolonne'>");
+            html.append("<img src=\""+localImageSrc+"\">");             
+            html.append("</td>");
+
+        html.append("</tr>");
+        html.append("</table>");
+        
+        output.setText(html.toString());
         
     }    
-    public static void visKontraktObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
+    public void visKontraktObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
         
     }    
-    public static void visSoknadObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
+    public void visSoknadObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
         
     }    
     
     /**
      * Denne metoden definerer CSS-oppsettet for HTML-utskriftene.
      */
-    public static void setStyleSheet() {
+    public void setStyleSheet() {
         css.addRule("h1 {text-align: center}");
         css.addRule("h1 {font-size: 16}");
         css.addRule(".boligData {width: 150px}");
         css.addRule(".boligText {width: 80px}");
         css.addRule("#boliginfo {font-size: 12");
         css.addRule("#boliginfo {border-spacing: 0}");
+        css.addRule("#boliginfo {border: 1px solid}");
         
+        css.addRule("#bildetabell {align: right}");
+        css.addRule("#tekstkolonne {border: 1px solid}");
         css.addRule("#tekstkolonne {width:290px}");
+        css.addRule("#bildekolonne {border: 1px solid}");
         
+
+        css.addRule(".annonseData {width: 150px}");
+        css.addRule(".annonseText {width: 80px}");
+        css.addRule("#annonseinfo {font-size: 12");
+        css.addRule("#annonseinfo {border-spacing: 0}");
+        css.addRule("#annonseinfo {border: 1px solid}");        
     }    
 }

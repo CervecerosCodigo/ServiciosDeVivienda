@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * Kontrakt klassen er ganske spesiell ettersom denne skal bevare historikken
  * over alle annonser, leietakere, utleier og megler som var med da kontraktet
@@ -7,7 +9,7 @@ package model;
  * fremtidig lagring. Dette blir egentlig dobbellagring men det er nødvendig
  * ettersom vi må se på dette som en "bevaring for fremtiden".
  */
-public class Kontrakt {
+public class Kontrakt implements Serializable{
 
     private Annonse annonse;
     private Person megler;

@@ -1,6 +1,7 @@
 package view;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import java.text.SimpleDateFormat;
 import javax.swing.table.AbstractTableModel;
 import lib.Konstanter;
 import model.*;
@@ -64,6 +65,9 @@ public class TabellModell extends AbstractTableModel {
     @Override
     public Object getValueAt(int rad, int kolonne) {
         
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        
+        
         if (datasettIBruk == Konstanter.BOLIGOBJ) {
             Bolig bolig = null;
             bolig = (Bolig) mottattArray[rad];
@@ -98,11 +102,11 @@ public class TabellModell extends AbstractTableModel {
                 case 0:
                     return annonse.getAnnonseID();
                 case 1:
-                    return annonse.getUtleiepris();
+                    return annonse.getBolig().getAdresse();
                 case 2:
-                    return annonse.getUtlopsDato();
+                    return "kr. " + annonse.getDepositum();
                 case 3:
-                    return annonse.isErSynlig();
+                    return "kr. " + annonse.getUtleiepris();
             }
         } else if (datasettIBruk == Konstanter.KONTRAKTOBJ) {
             Kontrakt kontrakt = null;

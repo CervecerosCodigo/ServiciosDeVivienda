@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import lib.Konstanter;
 
-public class Soknad {
+public class Soknad implements Serializable{
 
     private static final long serialVersionUID = Konstanter.SERNUM;
     

@@ -1,10 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import lib.Konstanter;
 
-public class Annonse {
+public class Annonse implements Serializable{
     
     private static final long serialVersionUID = Konstanter.SERNUM;
 
