@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import lib.Konstanter;
+import search.*;
 
-public abstract class Bolig implements Serializable{
-    
+public abstract class Bolig implements Serializable,  Searchable{
+
     private static final long serialVersionUID = Konstanter.SERNUM;
 
     private static int teller = 0;//Brukes til å sette unik id for bolikobjektene
@@ -23,9 +24,9 @@ public abstract class Bolig implements Serializable{
     private Calendar tilgjengeligForUtleie;
     private String pathBildemappe; //Denne variabeln skal peke til en mappe med samme navn som biligID der vi lagrer bildene om boligen. Si at boligID er 1234 da vil den peke til "img/1234". Det er ikke sikket at vi trenger denne variabeln ettersom path i hvilken alt er lagret kan vi hente opp fra boligID
 
-
     /**
      * Bolig.
+     *
      * @param personID
      * @param adresse
      * @param postnummer
@@ -34,7 +35,7 @@ public abstract class Bolig implements Serializable{
      * @param byggeAr
      * @param beskrivelse
      * @param erUtleid
-     * @param tilgjengeligForUtleie 
+     * @param tilgjengeligForUtleie
      */
     public Bolig(int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
         boligID = ++teller;
@@ -48,9 +49,10 @@ public abstract class Bolig implements Serializable{
         this.erUtleid = erUtleid;
         this.tilgjengeligForUtleie = tilgjengeligForUtleie;
     }
-    
+
     /**
      * Brukes for å serialisere statics.
+     *
      * @return int
      */
     public static int getTeller() {
@@ -59,6 +61,7 @@ public abstract class Bolig implements Serializable{
 
     /**
      * Brukes for å serialisere static tilbake til sammen status.
+     *
      * @param teller int
      */
     public static void setTeller(int teller) {
@@ -153,7 +156,6 @@ public abstract class Bolig implements Serializable{
         this.pathBildemappe = pathBildemappe;
     }
 
-    
     /**
      * Setter dato for når objektet blir tilgjengeligt for utleie.
      *
@@ -188,6 +190,15 @@ public abstract class Bolig implements Serializable{
 //        return "Bolig{" + "boligID=" + boligID + " Adresse: " + adresse + ", personID=" + personID + ", meglerID=" + meglerID + ", erUtleid=" + erUtleid + '}';
 //    }
 
-    
+    @Override
+    public String[] toSearch() {
 
+        String[] resultat = {String.valueOf(boligID), String.valueOf(personID), String.valueOf(meglerID), adresse, postnummer, poststed};
+        for (int i = 0; i < resultat.length; i++) {
+            resultat[i] = resultat[i].toLowerCase();
+        }
+        return resultat;
+
+//        return new String[]{String.valueOf(boligID), String.valueOf(personID), String.valueOf(meglerID), adresse, postnummer, poststed};
+    }
 }
