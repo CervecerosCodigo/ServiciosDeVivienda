@@ -8,6 +8,7 @@ import java.util.*;
 import lib.*;
 import model.*;
 import register.*;
+import search.FreeTextSearch;
 import view.*;
 
 /**
@@ -18,6 +19,8 @@ import view.*;
 public class MainController implements Serializable {
 
     private static final long serialVersionUID = Konstanter.SERNUM;
+    
+    FreeTextSearch freeTextSearch = new FreeTextSearch();
 
     private Register personRegister;
     private Register boligRegister;
@@ -76,6 +79,12 @@ public class MainController implements Serializable {
 
         bunnController.settKnappeLytter(meglerVindu);
         bunnController.settKnappeLytter(annonseVindu);
+        
+        //Eksempel på implementering av fritekstsøk
+        ArrayList<Bolig> testList = freeTextSearch.searchForPattern(boligliste, "grorud");
+        for(Bolig b : testList){
+            System.out.println("Søkeresultat"+b.toString());
+        }
     }
 
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
