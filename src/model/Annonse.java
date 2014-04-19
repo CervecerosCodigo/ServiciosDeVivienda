@@ -16,17 +16,20 @@ public class Annonse implements Serializable{
     private boolean erSynlig;
     private Calendar utlopsDato;
     private SimpleDateFormat df;
+    private String eiersKrav;
     private Bolig bolig;
     
 
-    public Annonse( int depositum, int utleiepris, Calendar utlopsDato, Bolig bolig ){
+    public Annonse( int depositum, int utleiepris, Calendar utlopsDato, Bolig bolig, String eiersKrav ){
         annonseID = ++teller;
         this.erSynlig = true;
         this.depositum = depositum;
         this.utleiepris = utleiepris;
         this.utlopsDato = utlopsDato;
         this.bolig = bolig;
+        this.eiersKrav = eiersKrav;
         df = new SimpleDateFormat("dd-MM-yyyy");
+        
         
     }
 
@@ -66,6 +69,9 @@ public class Annonse implements Serializable{
     public Calendar getUtlopsDato() {
         return  utlopsDato;
     }
+    public String getEiersKrav() {
+        return eiersKrav;
+    }
 
     public Bolig getBolig() {
         return bolig;
@@ -89,6 +95,10 @@ public class Annonse implements Serializable{
 
     public void setUtlopsDato(Calendar utlopsDato) {
         this.utlopsDato = utlopsDato;
+    }
+    
+    public void setEiersKrav(String eiersKrav) {
+        this.eiersKrav = eiersKrav;
     }
 
     @Override  //En "mini-toString" for testing

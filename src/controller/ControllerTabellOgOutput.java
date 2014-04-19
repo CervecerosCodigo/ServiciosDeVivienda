@@ -371,7 +371,7 @@ public class ControllerTabellOgOutput {
             html.append("<td id='tekstkolonne'>");
             html.append("<b>Beskrivelse av bolig</b><br/>");
             html.append(skalVises.getBeskrivelse());   
-            html.append("<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>");            
+            html.append("<br/><br/><br/><br/><br/><br/><br/><br/><br/>");            
             html.append("</td>");
         
             html.append("<td id='bildekolonne'>");
@@ -403,9 +403,9 @@ public class ControllerTabellOgOutput {
         
         StringBuilder html = new StringBuilder();
         
-        html.append("<h1><u>");
+        html.append("<h1>");
         html.append(skalVises.getBolig().getAdresse().concat(",    ".concat(skalVises.getBolig().getPostnummer().concat(" ".concat(skalVises.getBolig().getPoststed())))));        
-        html.append("</u></h1>");        
+        html.append("</h1>");        
         html.append("<table id= 'annonseinfo'>");
         html.append("<tr>");
             html.append("<td class='boligText'><b>Annonse ID</b>");
@@ -413,14 +413,19 @@ public class ControllerTabellOgOutput {
             html.append("<td class='annonseData'>");
             html.append(skalVises.getAnnonseID());
             html.append("</td>");
-            html.append("<td class='annonseText'><b></b>");
+            html.append("<td class='annonseText'><b>Depositum</b>");
             html.append("</td>");
             html.append("<td class='annonseData'>");
-            html.append("");
+            html.append("kr. ");
+            html.append(skalVises.getDepositum());
+            html.append(",-");
             html.append("</td>");
-            html.append("<td class='annonseText'>");
+            html.append("<td class='annonseText'><b>Pris pr mnd</b>");
             html.append("</td>");
             html.append("<td class='annonseData'>");
+            html.append("kr. ");            
+            html.append(skalVises.getUtleiepris());
+            html.append(",-");            
             html.append("</td>");            
         html.append("</tr>");
         html.append("<tr>");
@@ -521,18 +526,46 @@ public class ControllerTabellOgOutput {
         String localImageSrc = ControllerTabellOgOutput.class.getClassLoader().getSystemResource("77_1655132553.jpg").toString();
         
         html.append("<table id='bildetabell'>");
-        html.append("<tr id='bilderad'>");
-            html.append("<td id='tekstkolonne'>");
-            html.append("<b>Beskrivelse av bolig</b><br/>");
-            html.append(skalVises.getBolig().getBeskrivelse());   
-            html.append("<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>");            
-            html.append("</td>");
         
+            html.append("<tr>");
+                html.append("<td id='tekstkolonne'>");
+                html.append("<table>");
+                html.append("<tr>");
+                    html.append("<td>");
+                    html.append("<b>Beskrivelse av bolig</b>");                
+                    html.append("</td>");
+                html.append("</tr>");
+                html.append("<tr>");
+                    html.append("<td>");
+                    html.append(skalVises.getBolig().getBeskrivelse());                 
+                    html.append("</td>");
+                html.append("</tr>");
+                html.append("<tr>");
+                    html.append("<td>");
+                    html.append("</td>");
+                html.append("</tr>");
+                html.append("<tr>");
+                    html.append("<td>");
+                    
+                    if( !skalVises.getEiersKrav().equals("") ){
+                        html.append("<b>Selgers krav til leietaker</b>");                 
+                    }
+                    
+                    html.append("</td>");
+                html.append("</tr>");
+                html.append("<tr>");
+                    html.append("<td>");
+                    html.append(skalVises.getEiersKrav());                                 
+                    html.append("</td>");
+                html.append("</tr>");
+                html.append("</table>");
+
+                
             html.append("<td id='bildekolonne'>");
             html.append("<img src=\""+localImageSrc+"\">");             
             html.append("</td>");
 
-        html.append("</tr>");
+            html.append("</tr>");
         html.append("</table>");
         
         output.setText(html.toString());
@@ -549,24 +582,30 @@ public class ControllerTabellOgOutput {
      * Denne metoden definerer CSS-oppsettet for HTML-utskriftene.
      */
     public void setStyleSheet() {
+
         css.addRule("h1 {text-align: center}");
         css.addRule("h1 {font-size: 16}");
+//        css.addRule("body {background-color: #cecece}");
+        css.addRule("body {border: 1px solid #cecece}");
+        
+        //CSS for Bolig
         css.addRule(".boligData {width: 150px}");
         css.addRule(".boligText {width: 80px}");
         css.addRule("#boliginfo {font-size: 12");
         css.addRule("#boliginfo {border-spacing: 0}");
-        css.addRule("#boliginfo {border: 1px solid}");
+        css.addRule("#boliginfo {border: 1px solid #cecece}");
         
+        //CSS felles for Bolig og Annonser
         css.addRule("#bildetabell {align: right}");
-        css.addRule("#tekstkolonne {border: 1px solid}");
+        css.addRule("#tekstkolonne {border: 1px solid #cecece}");
         css.addRule("#tekstkolonne {width:290px}");
-        css.addRule("#bildekolonne {border: 1px solid}");
+        css.addRule("#bildekolonne {border: 1px solid #cecece}");
         
-
+        //CSS for Annonser
         css.addRule(".annonseData {width: 150px}");
         css.addRule(".annonseText {width: 80px}");
         css.addRule("#annonseinfo {font-size: 12");
         css.addRule("#annonseinfo {border-spacing: 0}");
-        css.addRule("#annonseinfo {border: 1px solid}");        
+        css.addRule("#annonseinfo {border: 1px solid #cecece}");        
     }    
 }

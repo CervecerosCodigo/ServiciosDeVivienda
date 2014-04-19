@@ -248,9 +248,9 @@ public class MainController implements Serializable {
         System.out.println("Leilighet ble ikke lagt inn i registeret.");
     }
     
-    public void opprettAnnonseOgLeggIRegister(int depositum, int utleiepris, Calendar utlopsDato, Bolig bolig){
+    public void opprettAnnonseOgLeggIRegister(int depositum, int utleiepris, Calendar utlopsDato, Bolig bolig, String eiersKrav){
         
-        Annonse annonse = new Annonse(depositum, utleiepris, utlopsDato, bolig);
+        Annonse annonse = new Annonse(depositum, utleiepris, utlopsDato, bolig, eiersKrav);
         if( annonseRegister.leggTilObjekt( annonse )){
             System.out.println("Annonsen er lagt inn i registeret");
             return;
@@ -305,11 +305,12 @@ public class MainController implements Serializable {
         opprettLeilighetOgLeggIRegister(8, 0, 10, true, false, true, 2, "Groruddalen 1",
                 "0453", "Oslo", 75, 1970, "Flott leilighet, solvendt.", false, tilgjenglig2);
         opprettLeilighetOgLeggIRegister(2, 5, 5, true, true, true, 2, "Knatten 22",
-                "1453", "Lørenskog", 70, 1950, "Koselig leilighet med mye potensiale.", false, tilgjenglig3);
+                "1453", "Lørenskog", 70, 1950, "Koselig leilighet med mye potensiale.", 
+                false, tilgjenglig3);
         opprettLeilighetOgLeggIRegister(7, 0, 10, true, false, true, 3, "Groruddalen 1",
                 "0453", "Oslo", 75, 1970, "Trenger oppussing.", false, tilgjenglig1);
         opprettLeilighetOgLeggIRegister(2, 0, 10, true, false, true, 4, "Groruddalen 1",
-                "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.", false, tilgjenglig3);
+                "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.",false, tilgjenglig3);
 
 //        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu, Konstanter.PERSONOBJ);
         tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, Konstanter.BOLIGOBJ);
@@ -317,12 +318,12 @@ public class MainController implements Serializable {
         System.out.println("================================================");
 
         
-        opprettAnnonseOgLeggIRegister(30000, 10000, utlopsdato3, finnBoligFraBoligID(8) );
-        opprettAnnonseOgLeggIRegister(25000, 8000, utlopsdato2, finnBoligFraBoligID(7) );
-        opprettAnnonseOgLeggIRegister(45000, 15000, utlopsdato3, finnBoligFraBoligID(3) );
-        opprettAnnonseOgLeggIRegister(50000, 17500, utlopsdato3, finnBoligFraBoligID(4) );
-        opprettAnnonseOgLeggIRegister(30000, 10000, utlopsdato1, finnBoligFraBoligID(9) );
-        opprettAnnonseOgLeggIRegister(20000, 7000, utlopsdato2, finnBoligFraBoligID(10) );
+        opprettAnnonseOgLeggIRegister(30000, 10000, utlopsdato3, finnBoligFraBoligID(8), "Ikke lov å røyke i boligen." );
+        opprettAnnonseOgLeggIRegister(25000, 8000, utlopsdato2, finnBoligFraBoligID(7), "Ikke lov å røyke i boligen." );
+        opprettAnnonseOgLeggIRegister(45000, 15000, utlopsdato3, finnBoligFraBoligID(3), "Ikke lov å røyke i boligen.<br>Ikke lov med husdyr.");
+        opprettAnnonseOgLeggIRegister(50000, 17500, utlopsdato3, finnBoligFraBoligID(4), "Ikke lov å røyke i boligen.<br>Ikke lov med husdyr.");
+        opprettAnnonseOgLeggIRegister(30000, 10000, utlopsdato1, finnBoligFraBoligID(9), "" );
+        opprettAnnonseOgLeggIRegister(20000, 7000, utlopsdato2, finnBoligFraBoligID(10), "Ikke lov å røyke i boligen.");
         System.out.println("================================================");
         ////////////////////////////////////////////////////////////////////////        
     }
