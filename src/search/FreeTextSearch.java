@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * //Klassen er til for å teste først dersom en slik løsning kommer til å
- * fungere. Det kan være mer lempelig å bruke generics her. File:
+ * Klassen kan brukes for fritekssøk over datafelt fra registre.
+ * File:
  FreeTextSearch.java Package: search Project: ServiciosDeVivienda Apr 19,
  2014
  *
@@ -21,7 +21,13 @@ public class FreeTextSearch<T extends Searchable> {
     public FreeTextSearch() {
         resultList = new ArrayList<>();
     }
-
+    
+    /**
+     * Metoden søker gjennom datafelt i gitt register over datafelt dersom registret implementerer inteface Searchable der alle datafelt kan hentes opp gjennom en String[] via metoden toSearch()
+     * @param liste
+     * @param pattern
+     * @return 
+     */
     public ArrayList<T> searchForPattern(HashSet<? extends Searchable> liste, String pattern) {
         pattern = pattern.trim();
         pattern = pattern.toLowerCase();
