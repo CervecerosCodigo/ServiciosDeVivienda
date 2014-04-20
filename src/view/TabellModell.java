@@ -30,10 +30,10 @@ public class TabellModell extends AbstractTableModel {
      * @param liste
      * @param kolonneNavn
      */
-    public void fyllTabellMedInnhold(Object[] liste, String[] kolonneNavn, int objektType) {
+    public void fyllTabellMedInnhold(Object[] liste, String[] kolonneNavn, int datasettIBruk) {
         this.mottattArray = liste;
         this.overskrift = kolonneNavn;
-        this.datasettIBruk = objektType;
+        this.datasettIBruk = datasettIBruk;
     }
 
     /**
@@ -64,9 +64,6 @@ public class TabellModell extends AbstractTableModel {
      */
     @Override
     public Object getValueAt(int rad, int kolonne) {
-        
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        
         
         if (datasettIBruk == Konstanter.BOLIGOBJ) {
             Bolig bolig = null;
@@ -104,9 +101,9 @@ public class TabellModell extends AbstractTableModel {
                 case 1:
                     return annonse.getBolig().getAdresse();
                 case 2:
-                    return "kr. " + annonse.getDepositum();
+                    return "kr. " + Konstanter.nf.format(annonse.getDepositum());
                 case 3:
-                    return "kr. " + annonse.getUtleiepris();
+                    return "kr. " + Konstanter.nf.format(annonse.getUtleiepris());
             }
         } else if (datasettIBruk == Konstanter.KONTRAKTOBJ) {
             Kontrakt kontrakt = null;

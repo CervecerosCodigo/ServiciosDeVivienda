@@ -1,6 +1,9 @@
 
 package lib;
 
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * 
  * File: Konstanter.java
@@ -25,4 +28,8 @@ public class Konstanter {
     public static final int ANNONSEOBJ = 3;
     public static final int KONTRAKTOBJ = 4;
     public static final int SOKNADOBJ = 5;
+    
+    public static NumberFormat nf = NumberFormat.getIntegerInstance();
+    public static SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+//    public static SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 }

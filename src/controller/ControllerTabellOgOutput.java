@@ -9,6 +9,9 @@ package controller;
  */
 
 
+import java.text.FieldPosition;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -417,14 +420,14 @@ public class ControllerTabellOgOutput {
             html.append("</td>");
             html.append("<td class='annonseData'>");
             html.append("kr. ");
-            html.append(skalVises.getDepositum());
+            html.append(Konstanter.nf.format(skalVises.getDepositum()));
             html.append(",-");
             html.append("</td>");
             html.append("<td class='annonseText'><b>Pris pr mnd</b>");
             html.append("</td>");
             html.append("<td class='annonseData'>");
             html.append("kr. ");            
-            html.append(skalVises.getUtleiepris());
+            html.append(Konstanter.nf.format(skalVises.getUtleiepris()));
             html.append(",-");            
             html.append("</td>");            
         html.append("</tr>");
@@ -440,10 +443,10 @@ public class ControllerTabellOgOutput {
             html.append(skalVises.getBolig().getBoAreal());
             html.append(" m2");
             html.append("</td>");
-            html.append("<td><b></b>");
+            html.append("<td><b>Tilgjenglig fra:</b>");
             html.append("</td>");
             html.append("<td>");
-            html.append("");            
+            html.append(Konstanter.df.format(skalVises.getTilgjengeligFraDato().getTime()));            
             html.append("</td>");            
         html.append("</tr>");
         
