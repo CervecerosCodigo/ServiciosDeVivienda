@@ -15,12 +15,12 @@ public class Annonse implements Serializable{
     private int utleiepris;
     private boolean erSynlig;
     private Calendar utlopsDato;
-    private SimpleDateFormat df;
+    private Calendar tilgjengeligFraDato;
     private String eiersKrav;
     private Bolig bolig;
     
 
-    public Annonse( int depositum, int utleiepris, Calendar utlopsDato, Bolig bolig, String eiersKrav ){
+    public Annonse( int depositum, int utleiepris, Calendar tilgjengligFraDato, Calendar utlopsDato, Bolig bolig, String eiersKrav ){
         annonseID = ++teller;
         this.erSynlig = true;
         this.depositum = depositum;
@@ -28,7 +28,7 @@ public class Annonse implements Serializable{
         this.utlopsDato = utlopsDato;
         this.bolig = bolig;
         this.eiersKrav = eiersKrav;
-        df = new SimpleDateFormat("dd-MM-yyyy");
+        this.tilgjengeligFraDato = tilgjengligFraDato;
         
         
     }
@@ -69,6 +69,11 @@ public class Annonse implements Serializable{
     public Calendar getUtlopsDato() {
         return  utlopsDato;
     }
+    
+    public Calendar getTilgjengeligFraDato() {
+        return  tilgjengeligFraDato;
+    }
+    
     public String getEiersKrav() {
         return eiersKrav;
     }
@@ -97,6 +102,10 @@ public class Annonse implements Serializable{
         this.utlopsDato = utlopsDato;
     }
     
+    public void setTilgjengligFraDato(Calendar tilgjengeligFraDato) {
+        this.tilgjengeligFraDato = tilgjengeligFraDato;
+    }
+    
     public void setEiersKrav(String eiersKrav) {
         this.eiersKrav = eiersKrav;
     }
@@ -106,7 +115,7 @@ public class Annonse implements Serializable{
 //        return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", utlopsDato=" + df.format(utlopsDato.getTime()) + '}';
 //    }
     public String toString() {
-        return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", erSynlig=" + erSynlig + ", utlopsDato=" + df.format(utlopsDato.getTime()) + ", boligID=" + bolig.getBoligID() + '}';
+        return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", erSynlig=" + erSynlig + ", utlopsDato=" + Konstanter.df.format(utlopsDato.getTime()) + ", boligID=" + bolig.getBoligID() + '}';
     }
     
 }

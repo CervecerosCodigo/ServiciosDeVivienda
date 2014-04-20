@@ -257,9 +257,9 @@ public class MainController implements Serializable {
         System.out.println("Leilighet ble ikke lagt inn i registeret.");
     }
     
-    public void opprettAnnonseOgLeggIRegister(int depositum, int utleiepris, Calendar utlopsDato, Bolig bolig, String eiersKrav){
+    public void opprettAnnonseOgLeggIRegister(int depositum, int utleiepris, Calendar tilgjengeligFraDato, Calendar utlopsDato, Bolig bolig, String eiersKrav){
         
-        Annonse annonse = new Annonse(depositum, utleiepris, utlopsDato, bolig, eiersKrav);
+        Annonse annonse = new Annonse(depositum, utleiepris, tilgjengeligFraDato, utlopsDato, bolig, eiersKrav);
         if( annonseRegister.leggTilObjekt( annonse )){
             System.out.println("Annonsen er lagt inn i registeret");
             return;
@@ -327,12 +327,12 @@ public class MainController implements Serializable {
         System.out.println("================================================");
 
         
-        opprettAnnonseOgLeggIRegister(30000, 10000, utlopsdato3, finnBoligFraBoligID(8), "Ikke lov å røyke i boligen." );
-        opprettAnnonseOgLeggIRegister(25000, 8000, utlopsdato2, finnBoligFraBoligID(7), "Ikke lov å røyke i boligen." );
-        opprettAnnonseOgLeggIRegister(45000, 15000, utlopsdato3, finnBoligFraBoligID(3), "Ikke lov å røyke i boligen.<br>Ikke lov med husdyr.");
-        opprettAnnonseOgLeggIRegister(50000, 17500, utlopsdato3, finnBoligFraBoligID(4), "Ikke lov å røyke i boligen.<br>Ikke lov med husdyr.");
-        opprettAnnonseOgLeggIRegister(30000, 10000, utlopsdato1, finnBoligFraBoligID(9), "" );
-        opprettAnnonseOgLeggIRegister(20000, 7000, utlopsdato2, finnBoligFraBoligID(10), "Ikke lov å røyke i boligen.");
+        opprettAnnonseOgLeggIRegister(30000, 10000, tilgjenglig1, utlopsdato3, finnBoligFraBoligID(8), "Ikke lov å røyke i boligen." );
+        opprettAnnonseOgLeggIRegister(25000, 8000, tilgjenglig1, utlopsdato2, finnBoligFraBoligID(7), "Ikke lov å røyke i boligen." );
+        opprettAnnonseOgLeggIRegister(45000, 15000, tilgjenglig2, utlopsdato3, finnBoligFraBoligID(3), "Ikke lov å røyke i boligen.<br>Ikke lov med husdyr.");
+        opprettAnnonseOgLeggIRegister(50000, 17500, tilgjenglig2, utlopsdato3, finnBoligFraBoligID(4), "Ikke lov å røyke i boligen.<br>Ikke lov med husdyr.");
+        opprettAnnonseOgLeggIRegister(30000, 10000, tilgjenglig3, utlopsdato1, finnBoligFraBoligID(9), "" );
+        opprettAnnonseOgLeggIRegister(20000, 700, tilgjenglig3, utlopsdato2, finnBoligFraBoligID(10), "Ikke lov å røyke i boligen.");
         System.out.println("================================================");
         ////////////////////////////////////////////////////////////////////////        
     }
