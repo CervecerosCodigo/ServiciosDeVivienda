@@ -3,6 +3,7 @@ package search;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Klassen kan brukes for fritekssøk over datafelt fra registre.
@@ -29,6 +30,7 @@ public class FreeTextSearch<T extends Searchable> {
      * @return 
      */
     public ArrayList<T> searchForPattern(HashSet<? extends Searchable> liste, String pattern) {
+        //FIXME: Register over søknader er ikke av type HashSet uten LInkedHashSet dette kommer derfor ikke til å fungere for den. Input parametern her må derfor seinere endre til eventuelt Set (hvis det går, foreløpig så krasjer det) dersom dette ikke går må vi ovverloade metoden slik at den tar inn en LinkedHashSet også.
         pattern = pattern.trim();
         pattern = pattern.toLowerCase();
         
@@ -36,6 +38,7 @@ public class FreeTextSearch<T extends Searchable> {
             checkMeForResults = o.toSearch();
 
             for (String s : checkMeForResults) {
+                s = s.toLowerCase();
                 if (s.contains(pattern)) {
                     resultList.add((T) o);
                     System.out.println("Funnet: "+o.toString());
