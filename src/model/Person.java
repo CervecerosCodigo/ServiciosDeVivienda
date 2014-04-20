@@ -2,8 +2,9 @@ package model;
 
 import java.io.Serializable;
 import lib.Konstanter;
+import search.Searchable;
 
-public abstract class Person implements Serializable {
+public abstract class Person implements Serializable, Searchable {
 
     private static final long serialVersionUID = Konstanter.SERNUM;
 
@@ -119,5 +120,12 @@ public abstract class Person implements Serializable {
     @Override
     public String toString() {
         return "{" + "personID=" + personID + ", fornavn=" + fornavn + ", etternavn=" + etternavn + ", epost=" + epost + ", telefon=" + telefon + "}";
+    }
+    
+    @Override
+    public String[] toSearch(){
+        String[] searchFields = {String.valueOf(personID), fornavn, etternavn, epost, telefon};
+        
+        return searchFields;
     }
 } // end of class

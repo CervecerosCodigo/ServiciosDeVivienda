@@ -192,13 +192,7 @@ public abstract class Bolig implements Serializable,  Searchable{
 
     @Override
     public String[] toSearch() {
-
-        String[] resultat = {String.valueOf(boligID), String.valueOf(personID), String.valueOf(meglerID), adresse, postnummer, poststed};
-        for (int i = 0; i < resultat.length; i++) {
-            resultat[i] = resultat[i].toLowerCase();
-        }
-        return resultat;
-
-//        return new String[]{String.valueOf(boligID), String.valueOf(personID), String.valueOf(meglerID), adresse, postnummer, poststed};
+        String[] searchFields = {String.valueOf(boligID), String.valueOf(personID), String.valueOf(meglerID), adresse, postnummer, poststed};
+        return searchFields;
     }
 }

@@ -2,8 +2,9 @@ package model;
 
 import java.io.Serializable;
 import lib.Konstanter;
+import search.Searchable;
 
-public class Soknad implements Serializable{
+public class Soknad implements Serializable, Searchable{
 
     private static final long serialVersionUID = Konstanter.SERNUM;
     
@@ -78,6 +79,13 @@ public class Soknad implements Serializable{
     public String toString() {
         return "Søknad{SøknadID: " + soknadID + ", Er behandlet? " + erBehandlet + ", Er godkjent? " + erGodkjent
                 + ", LeietakerID: " + leietaker.getPersonID() + ", AnnonseID: " + annonse.getAnnonseID() + "}";
+    }
+
+    @Override
+    public String[] toSearch() {
+        //TODO: Foreløpig implementerer jeg kun disse felt ettersom vi ikke har spsifisert for hvordan vi ønsker å finne søknader dvs hvilke søknadskriterier skal angis. 
+        String[] searchFields = {String.valueOf(soknadID), String.valueOf(annonse.getAnnonseID()), leietaker.getEpost()};
+        return searchFields;
     }
 
 }

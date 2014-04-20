@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import lib.Konstanter;
+import search.Searchable;
 
-public class Annonse implements Serializable{
+public class Annonse implements Serializable, Searchable{
     
     private static final long serialVersionUID = Konstanter.SERNUM;
 
@@ -116,6 +117,13 @@ public class Annonse implements Serializable{
 //    }
     public String toString() {
         return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", erSynlig=" + erSynlig + ", utlopsDato=" + Konstanter.df.format(utlopsDato.getTime()) + ", boligID=" + bolig.getBoligID() + '}';
+    }
+
+    @Override
+    public String[] toSearch() {
+        //Denne metoden sørger for meglerens sine søkeparemetre. Metode som sørger for søkning til boligsøkende kommer til å være mer spesifikk.
+        String[] searchFields = {String.valueOf(annonseID), String.valueOf(bolig.getBoligID())};
+        return searchFields;
     }
     
 }
