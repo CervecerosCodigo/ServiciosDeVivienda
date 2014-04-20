@@ -80,11 +80,20 @@ public class MainController implements Serializable {
         bunnController.settKnappeLytter(meglerVindu);
         bunnController.settKnappeLytter(annonseVindu);
         
-        //Eksempel på implementering av fritekstsøk
-        ArrayList<Bolig> testList = freeTextSearch.searchForPattern(boligliste, "grorud");
-        for(Bolig b : testList){
-            System.out.println("Søkeresultat"+b.toString());
+        //Eksempel på implementering av fritekstsøk-------------------------
+        
+        //Søk etter bolig
+//        ArrayList<Bolig> testList = freeTextSearch.searchForPattern(boligliste, "grorud");
+//        for(Bolig b : testList){
+//            System.out.println("Søkeresultat"+b.toString());
+//        }
+        
+        ArrayList<Annonse> testList2 = freeTextSearch.searchForPattern(annonseliste, "6");
+        for(Annonse a : testList2){
+            System.out.println("Søkeresultat annonser: "+a.toString());
         }
+        
+        //Slutt på eksempel av implementering av fritekstsøk
     }
 
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
