@@ -4,11 +4,16 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.text.ParseException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lib.*;
 import model.*;
 import register.*;
+import search.AnnonseParameterSearch;
 import search.FreeTextSearch;
+import search.SearchException;
 import view.*;
 
 /**
@@ -80,22 +85,73 @@ public class MainController implements Serializable {
         bunnController.settKnappeLytter(meglerVindu);
         bunnController.settKnappeLytter(annonseVindu);
         
-        //Eksempel på implementering av fritekstsøk-------------------------
         
+        //Inisjering av søketest
+//        testFritekstSok();
+          testBoligSoker();
+    }
+
+    
+    ////////////////TEST AV SØKEKLASSER////////////////
+    
+    /**
+     * Denne er til å teste søkemetoder som brukes fra meglerpanelen
+     */
+    public void testFritekstSok(){
         //Søk etter bolig
-//        ArrayList<Bolig> testList = freeTextSearch.searchForPattern(boligliste, "grorud");
-//        for(Bolig b : testList){
-//            System.out.println("Søkeresultat"+b.toString());
-//        }
+        ArrayList<Bolig> testList = freeTextSearch.searchForPattern(boligliste, "grorud");
+        for(Bolig b : testList){
+            System.out.println("Søkeresultat"+b.toString());
+        }
         
+        //Søk etter en annonse med fritekst
         ArrayList<Annonse> testList2 = freeTextSearch.searchForPattern(annonseliste, "6");
         for(Annonse a : testList2){
             System.out.println("Søkeresultat annonser: "+a.toString());
         }
-        
-        //Slutt på eksempel av implementering av fritekstsøk
     }
-
+    
+    /**
+     * Denne er til å teste søkeklasser som finnes for boligsøkere
+     */
+    public void testBoligSoker(){
+        AnnonseParameterSearch search = new AnnonseParameterSearch(annonseliste);
+        
+        //Test for antall tilgjengelige annonser
+        System.out.println("Antall annonser: "+search.getAntallAnnonser());
+        
+        //Test for utskrift av alle poststeder med annonser
+        try {
+            SortedSet<String> p = search.getPoststedList();
+            for(String s : p){
+                System.out.println(s);
+            }
+        } catch (ParseException ex) {
+            System.out.println("Parseexception i getPostedList()");
+        }
+        
+        //Test for annonseintervall
+//        try {
+//            ArrayList<Annonse> annonseIntervall = search.getAnnonseIntervall(2, 4);
+//            for(Annonse a : annonseIntervall){
+//                System.out.println("Annonseintervall: "+a.toString());
+//            }
+//        } catch (SearchException ex) {
+//            System.out.println("En Search exception har intreffet");
+//        }
+        
+        //Test for filtrering etter poststed
+        search.filtrerEtterPostSted("Oslo");
+        HashSet<Annonse> e = search.getFilteredResults();
+        for(Annonse a : e){
+            System.out.println("Boliger tilgjengelige i Oslo: "+a.toString());
+        }
+    }
+    
+    ////////////////SLUTT AV TEST AV SØKEKLASSER////////////////
+    
+    
+    
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
         Calendar kalender = new GregorianCalendar(aar, mnd, dag);
         return kalender;
