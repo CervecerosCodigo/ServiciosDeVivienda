@@ -8,23 +8,24 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import lib.*;
 import model.*;
 import register.*;
-import search.AnnonseParameterSearch;
+import search.AnnonseFilter;
 import search.FreeTextSearch;
 import search.SearchException;
 import view.*;
 
 /**
- * Dette er hovedkontrolleren mellom GUI og funksjonalitet.
- * Mer info siden..
+ * Dette er hovedkontrolleren mellom GUI og funksjonalitet. Mer info siden..
+ *
  * @author espen
  */
 public class MainController implements Serializable {
 
     private static final long serialVersionUID = Konstanter.SERNUM;
-    
+
     FreeTextSearch freeTextSearch = new FreeTextSearch();
 
     private Register personRegister;
@@ -47,14 +48,14 @@ public class MainController implements Serializable {
     private ControllerTabellOgOutput tabellControllerMegler;
     private ControllerTabellOgOutput tabellControllerAnnonse;
 
-    public MainController(HashSet<Person> personliste, HashSet<Bolig> boligliste, 
-            HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste, 
+    public MainController(HashSet<Person> personliste, HashSet<Bolig> boligliste,
+            HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
             LinkedHashSet<Soknad> soknadsliste) {
 
         meglerVindu = new ArkfaneTemplate("megler");
         annonseVindu = new ArkfaneTemplate("annonse");
         startGUI = new StartGUI(meglerVindu, annonseVindu);
-        
+
         bunnController = new ControllerBunnPanel();
         tabellControllerMegler = new ControllerTabellOgOutput();
         tabellControllerAnnonse = new ControllerTabellOgOutput();
@@ -71,12 +72,11 @@ public class MainController implements Serializable {
         kontraktRegister = new Kontraktregister(kontraktliste);
         soknadRegister = new Soknadregister(soknadsliste);
 
-
         //////Setter Tabellen - Midlertidig kall på metodene herfra///////////////////
         /**
-         * Man vil sende med resultatet fra søk i toppanel i stedet for hele listen, der det er ønskelig.
+         * Man vil sende med resultatet fra søk i toppanel i stedet for hele
+         * listen, der det er ønskelig.
          */
-
         tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, Konstanter.BOLIGOBJ);
         tabellControllerAnnonse.settInnDataITabell(annonseliste, annonseVindu, Konstanter.ANNONSEOBJ);
         tabellControllerMegler.settOppTabellLytter(meglerVindu);
@@ -84,52 +84,65 @@ public class MainController implements Serializable {
 
         bunnController.settKnappeLytter(meglerVindu);
         bunnController.settKnappeLytter(annonseVindu);
-        
-        
+
         //Inisjering av søketest
 //        testFritekstSok();
-          testBoligSoker();
+        testBoligSoker();
     }
 
-    
     ////////////////TEST AV SØKEKLASSER////////////////
-    
     /**
      * Denne er til å teste søkemetoder som brukes fra meglerpanelen
      */
-    public void testFritekstSok(){
+    public void testFritekstSok() {
         //Søk etter bolig
         ArrayList<Bolig> testList = freeTextSearch.searchForPattern(boligliste, "grorud");
-        for(Bolig b : testList){
-            System.out.println("Søkeresultat"+b.toString());
+        for (Bolig b : testList) {
+            System.out.println("Søkeresultat" + b.toString());
         }
-        
+
         //Søk etter en annonse med fritekst
         ArrayList<Annonse> testList2 = freeTextSearch.searchForPattern(annonseliste, "6");
-        for(Annonse a : testList2){
-            System.out.println("Søkeresultat annonser: "+a.toString());
+        for (Annonse a : testList2) {
+            System.out.println("Søkeresultat annonser: " + a.toString());
         }
     }
-    
+
     /**
      * Denne er til å teste søkeklasser som finnes for boligsøkere
      */
-    public void testBoligSoker(){
-        AnnonseParameterSearch search = new AnnonseParameterSearch(annonseliste);
-        
+    public void testBoligSoker() {
+        AnnonseFilter search = new AnnonseFilter(annonseliste);
+        StringBuilder utskrift = new StringBuilder();
+        utskrift.append("Kommenter bort testBoligSøker() i konstruktør for å få bort den testmeldingen.\n\n");
+
         //Test for antall tilgjengelige annonser
-        System.out.println("Antall annonser: "+search.getAntallAnnonser());
-        
+        utskrift.append("Antall annonser: " + search.getAntallAnnonser());
+
         //Test for utskrift av alle poststeder med annonser
         try {
-            SortedSet<String> p = search.getPoststedList();
-            for(String s : p){
-                System.out.println(s);
+            SortedSet<String> p = search.getPoststederIAnnonser();
+            utskrift.append("\n\nAlle poststeder med annonser:\n");
+            for (String s : p) {
+                utskrift.append(s).append(", ");
             }
+            utskrift.append("\n");
         } catch (ParseException ex) {
-            System.out.println("Parseexception i getPostedList()");
+            System.out.println("Parseexception i getPoststederIAnnonser()");
         }
-        
+
+        //Test for utskrift av alle boligtyper som finnes i annonseregisteret.
+        try {
+            SortedSet<Boligtype> bt = search.getBoligtyperIAnnonser();
+            utskrift.append("\nAlle boligtyper i annonser:\n");
+            for(Boligtype btt : bt ){
+                utskrift.append(btt.toString()).append(", ");
+            }
+            utskrift.append("\n");
+        }catch(ParseException ex){
+            System.out.println("Parsexception i getBoligTyperIAnnonser()");
+        }
+
         //Test for annonseintervall
 //        try {
 //            ArrayList<Annonse> annonseIntervall = search.getAnnonseIntervall(2, 4);
@@ -139,26 +152,73 @@ public class MainController implements Serializable {
 //        } catch (SearchException ex) {
 //            System.out.println("En Search exception har intreffet");
 //        }
-        
         //Test for filtrering etter poststed
-        search.filtrerEtterPostSted("Oslo");
+        String poststed = "Lørenskog";
+        search.filtrerEtterPostSted(poststed);
         HashSet<Annonse> e = search.getFilteredResults();
-        for(Annonse a : e){
-            System.out.println("Boliger tilgjengelige i Oslo: "+a.toString());
+        utskrift.append("\nFiltrere etter poststed <<" + poststed + ">>:\n");
+        for (Annonse a : e) {
+            utskrift.append(a.toString()).append("\n");
         }
+
+        //Test for filtrering etter boligtype
+        search.filtrerEtterBoligType(Boligtype.LEILIGHET);
+        HashSet<Annonse> f = search.getFilteredResults();
+        utskrift.append("\nFiltrere etter boligtype <<" + Boligtype.ENEBOLIG.toString() + ">>:\n");
+        for (Annonse b : f) {
+            utskrift.append(b.toString()).append("\n");
+        }
+
+        //Test for sortering etter pris
+        int prisMin = 8000;
+        int prisMaks = 12000;
+        search.filtrerEtterPrisRange(prisMin, prisMaks);
+        HashSet<Annonse> g = search.getFilteredResults();
+        utskrift.append("\nFiltrere etter prisrange <<" + prisMin + " - " + prisMaks + ">>:\n");
+        for (Annonse c : g) {
+            utskrift.append(c.toString()).append("\n");
+        }
+
+        //Test for sortering etter boareal
+        int kvmMin = 60;
+        int kvmMaks = 80;
+        search.filtrerEtterBoArealRange(kvmMin, kvmMaks);
+        HashSet<Annonse> h = search.getFilteredResults();
+        utskrift.append("\nFiltrere etter boareal range <<" + kvmMin + " - " + kvmMaks + ">>:\n");
+        for (Annonse d : h) {
+            utskrift.append(d.toString()).append("\n");
+        }
+
+        //Test for fellesvaskeri
+        //Filtre over andre checkbokser skal implementeres i like måte. Har foreløpig ikke testet dem alle.
+        search.filtrerEtterFellesvaskeri();
+        HashSet<Annonse> i = search.getFilteredResults();
+        utskrift.append("\nFiltrere etter fellevaskeri\n");
+        for (Annonse fellesvask : i) {
+            utskrift.append(fellesvask.toString()).append("\n");
+        }
+
+        //Viser resultat av filtreringer
+        visMelding("testBoligSoker()", utskrift.toString());
     }
-    
+
     ////////////////SLUTT AV TEST AV SØKEKLASSER////////////////
-    
-    
-    
+    /**
+     * Brukes sammen med testing ettersom det ble litt for rotede å søke etter
+     * tekst i terminal.
+     *
+     * @param metode
+     * @param melding
+     */
+    private void visMelding(String metode, String melding) {
+        JOptionPane.showMessageDialog(null, melding, metode, JOptionPane.INFORMATION_MESSAGE);
+    }
+
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
         Calendar kalender = new GregorianCalendar(aar, mnd, dag);
         return kalender;
     }
 
-
-    
 /////////////////////////////////////////////////////////////////////////
     /**
      * //Annonsevinduet// Finn boliger basert på Areal minimum, Areal maksimum,
@@ -256,14 +316,15 @@ public class MainController implements Serializable {
         }
         return null;
     }
-    
-    public Bolig finnBoligFraBoligID(int id){
-        
+
+    public Bolig finnBoligFraBoligID(int id) {
+
         Iterator<Bolig> iter = boligliste.iterator();
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             Bolig temp = iter.next();
-            if(temp.getBoligID() == id)
+            if (temp.getBoligID() == id) {
                 return temp;
+            }
         }
         return null;
     }
@@ -321,11 +382,11 @@ public class MainController implements Serializable {
         }
         System.out.println("Leilighet ble ikke lagt inn i registeret.");
     }
-    
-    public void opprettAnnonseOgLeggIRegister(int depositum, int utleiepris, Calendar tilgjengeligFraDato, Calendar utlopsDato, Bolig bolig, String eiersKrav){
-        
+
+    public void opprettAnnonseOgLeggIRegister(int depositum, int utleiepris, Calendar tilgjengeligFraDato, Calendar utlopsDato, Bolig bolig, String eiersKrav) {
+
         Annonse annonse = new Annonse(depositum, utleiepris, tilgjengeligFraDato, utlopsDato, bolig, eiersKrav);
-        if( annonseRegister.leggTilObjekt( annonse )){
+        if (annonseRegister.leggTilObjekt(annonse)) {
             System.out.println("Annonsen er lagt inn i registeret");
             return;
         }
@@ -379,24 +440,23 @@ public class MainController implements Serializable {
         opprettLeilighetOgLeggIRegister(8, 0, 10, true, false, true, 2, "Groruddalen 1",
                 "0453", "Oslo", 75, 1970, "Flott leilighet, solvendt.", false, tilgjenglig2);
         opprettLeilighetOgLeggIRegister(2, 5, 5, true, true, true, 2, "Knatten 22",
-                "1453", "Lørenskog", 70, 1950, "Koselig leilighet med mye potensiale.", 
+                "1453", "Lørenskog", 70, 1950, "Koselig leilighet med mye potensiale.",
                 false, tilgjenglig3);
         opprettLeilighetOgLeggIRegister(7, 0, 10, true, false, true, 3, "Groruddalen 1",
                 "0453", "Oslo", 75, 1970, "Trenger oppussing.", false, tilgjenglig1);
         opprettLeilighetOgLeggIRegister(2, 0, 10, true, false, true, 4, "Groruddalen 1",
-                "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.",false, tilgjenglig3);
+                "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.", false, tilgjenglig3);
 
 //        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu, Konstanter.PERSONOBJ);
         tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, Konstanter.BOLIGOBJ);
         System.out.println(boligRegister.visRegister());
         System.out.println("================================================");
 
-        
-        opprettAnnonseOgLeggIRegister(30000, 10000, tilgjenglig1, utlopsdato3, finnBoligFraBoligID(8), "Ikke lov å røyke i boligen." );
-        opprettAnnonseOgLeggIRegister(25000, 8000, tilgjenglig1, utlopsdato2, finnBoligFraBoligID(7), "Ikke lov å røyke i boligen." );
+        opprettAnnonseOgLeggIRegister(30000, 10000, tilgjenglig1, utlopsdato3, finnBoligFraBoligID(8), "Ikke lov å røyke i boligen.");
+        opprettAnnonseOgLeggIRegister(25000, 8000, tilgjenglig1, utlopsdato2, finnBoligFraBoligID(7), "Ikke lov å røyke i boligen.");
         opprettAnnonseOgLeggIRegister(45000, 15000, tilgjenglig2, utlopsdato3, finnBoligFraBoligID(3), "Ikke lov å røyke i boligen.<br>Ikke lov med husdyr.");
         opprettAnnonseOgLeggIRegister(50000, 17500, tilgjenglig2, utlopsdato3, finnBoligFraBoligID(4), "Ikke lov å røyke i boligen.<br>Ikke lov med husdyr.");
-        opprettAnnonseOgLeggIRegister(30000, 10000, tilgjenglig3, utlopsdato1, finnBoligFraBoligID(9), "" );
+        opprettAnnonseOgLeggIRegister(30000, 10000, tilgjenglig3, utlopsdato1, finnBoligFraBoligID(9), "");
         opprettAnnonseOgLeggIRegister(20000, 700, tilgjenglig3, utlopsdato2, finnBoligFraBoligID(10), "Ikke lov å røyke i boligen.");
         System.out.println("================================================");
         ////////////////////////////////////////////////////////////////////////        
