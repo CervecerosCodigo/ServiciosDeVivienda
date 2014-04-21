@@ -41,11 +41,12 @@ public class AnnonseFilter {
     }
 
     //TODO: Den beste måten blir mest sannsynlig da man sender inn en oppsetting av søkeparametre fra gui og foreta en søkerutine etter det. Rekkefølge av filtreringstrinn må foregå på altid samme måte.
-    
     //TODO: En metode som returnerer annonser fra et vist dato
-    
     public HashSet<Annonse> filtrerEtterParametre(String poststed, Boligtype boligtype, int prisMin, int prisMaks, int arealMin, int arealMaks, boolean harBalkong, boolean harFellesvask, boolean harHage, boolean harKjeller) {
-        //Sluttet her. Her skal det foretas trinnvis filtrering etter hvilke parametre blir tilgjengelige for filtrering. 
+        
+        filtrerEtterPostSted(poststed);
+        //Sluttet her
+        
         return null;
     }
 
@@ -56,15 +57,21 @@ public class AnnonseFilter {
      * @param poststed
      */
     public void filtrerEtterPostSted(String poststed) {
-        for (Annonse a : annonseListeOriginal) {
-            if (a.getBolig() != null) {
-                String p = a.getBolig().getPoststed();
-                if (p.equals(poststed)) {
-                    annonseListeTmp.add(a);
+        if (poststed == null) {//All filtrering starter internt gjennom at man foretar første filtrering på poststed og på slik måte kan data fra set med annonse bli kopiert til set med filtrert data. Dersom bruker ikke velger poststed som inisjerer vi søkefunksjonen gjennom å kopiere all data fra annonseregisteret til filtrert set ettertsom det betyr at brukeren vil filtrerere på alle tilgjengelige poststeder.
+            annonseListeTmp = new HashSet<>(annonseListeOriginal);
+            //nå kan vi legge over data fra tmp set til filtrerte resultat
+            kopierTilFiltrerteResultat();
+        } else {
+            for (Annonse a : annonseListeOriginal) {
+                if (a.getBolig() != null) {
+                    String p = a.getBolig().getPoststed();
+                    if (p.equals(poststed)) {
+                        annonseListeTmp.add(a);
+                    }
                 }
             }
+            kopierTilFiltrerteResultat();
         }
-        kopierTilFiltrerteResultat();
     }
 
     /**
@@ -175,11 +182,11 @@ public class AnnonseFilter {
         }
         kopierTilFiltrerteResultat();
     }
-    
+
     /**
      * Filtrer etter bolig dersom den har kjeller.
      */
-    public void filtrerEtterKjeller(){
+    public void filtrerEtterKjeller() {
         for (Annonse a : annonseListeFiltrert) {
             if (a.getBolig() != null && a.getBolig() instanceof Enebolig) {
                 Enebolig b = (Enebolig) a.getBolig();
@@ -190,7 +197,6 @@ public class AnnonseFilter {
         }
         kopierTilFiltrerteResultat();
     }
-    
 
     /**
      * Brukes internt for å kopiere over resultat av filtreringen. Er tenkt å
@@ -227,21 +233,25 @@ public class AnnonseFilter {
         }
         return poststederMedAnnonser;
     }
-    
+
     /**
-     * Returner set med enum typer over type av boliger som finnes i boligregisteret. Foreløpig kun for enebolig og leilighet da det er kun disse vi har oprettet klaaser av fra superklassen. 
-     * //TODO: Kan egentlig gjøre om denne til an map slik at man sender med en int som viser antal annonser for forskjellige boligtype.
+     * Returner set med enum typer over type av boliger som finnes i
+     * boligregisteret. Foreløpig kun for enebolig og leilighet da det er kun
+     * disse vi har oprettet klaaser av fra superklassen. //TODO: Kan egentlig
+     * gjøre om denne til an map slik at man sender med en int som viser antal
+     * annonser for forskjellige boligtype.
+     *
      * @return SortedSet<Boligtype>
-     * @throws ParseException 
+     * @throws ParseException
      */
-    public SortedSet<Boligtype> getBoligtyperIAnnonser() throws ParseException{
+    public SortedSet<Boligtype> getBoligtyperIAnnonser() throws ParseException {
         SortedSet<Boligtype> boligtyperIAnnonser = new TreeSet<>();
-        
-        for(Annonse a : annonseListeOriginal){
-            if(a.getBolig() instanceof Leilighet){
+
+        for (Annonse a : annonseListeOriginal) {
+            if (a.getBolig() instanceof Leilighet) {
                 Leilighet b = (Leilighet) a.getBolig();
                 boligtyperIAnnonser.add(b.getBoligtype());
-            } else if(a.getBolig() instanceof Enebolig){
+            } else if (a.getBolig() instanceof Enebolig) {
                 Enebolig c = (Enebolig) a.getBolig();
                 boligtyperIAnnonser.add(c.getBoligtype());
             }
