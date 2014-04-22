@@ -23,7 +23,7 @@ public class TopPanelMegler extends AbstractPanel {
 		sokeKnapp = new JButton("Søk");
 		lagNyKnapp = new JButton("Lag ny");
 		
-		setLayout(new FlowLayout(FlowLayout.LEADING, 50, 0));
+		setLayout(new FlowLayout(FlowLayout.LEADING, 40, 0));
 		setVisible(true);
 		
 		add(meglerRadioKnapper);
