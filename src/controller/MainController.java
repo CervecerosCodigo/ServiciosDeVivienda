@@ -15,6 +15,8 @@ import register.*;
 import search.AnnonseFilter;
 import search.FreeTextSearch;
 import search.SearchException;
+import test.search.TestAnnonseFilter;
+import test.search.TestFritekstSok;
 import view.*;
 
 /**
@@ -25,8 +27,6 @@ import view.*;
 public class MainController implements Serializable {
 
     private static final long serialVersionUID = Konstanter.SERNUM;
-
-    FreeTextSearch freeTextSearch = new FreeTextSearch();
 
     private Register personRegister;
     private Register boligRegister;
@@ -85,134 +85,20 @@ public class MainController implements Serializable {
         bunnController.settKnappeLytter(meglerVindu);
         bunnController.settKnappeLytter(annonseVindu);
 
-        //Inisjering av søketest
-//        testFritekstSok();
-        testBoligSoker();
+        ////////////////TEST AV SØKEKLASSER////////////////
+        
+        //Kommenter av metodene for å kjøre test
+        
+        //Test av filtrering fir boligsøker.
+        TestAnnonseFilter testFilter = new TestAnnonseFilter(annonseliste);
+//        testFilter.testBoligSokerEtterParametre();
+
+        TestFritekstSok testFritekst = new TestFritekstSok();
+//        testFritekst.testSokAnnonseListe(annonseliste, "6");
+//        testFritekst.testSokBoligListe(boligliste, "grorud");
+        ////////////////SLUTT AV TEST AV SØKEKLASSER////////////////
     }
 
-    ////////////////TEST AV SØKEKLASSER////////////////
-    /**
-     * Denne er til å teste søkemetoder som brukes fra meglerpanelen
-     */
-    public void testFritekstSok() {
-        //Søk etter bolig
-        ArrayList<Bolig> testList = freeTextSearch.searchForPattern(boligliste, "grorud");
-        for (Bolig b : testList) {
-            System.out.println("Søkeresultat" + b.toString());
-        }
-
-        //Søk etter en annonse med fritekst
-        ArrayList<Annonse> testList2 = freeTextSearch.searchForPattern(annonseliste, "6");
-        for (Annonse a : testList2) {
-            System.out.println("Søkeresultat annonser: " + a.toString());
-        }
-    }
-
-    /**
-     * Denne er til å teste søkeklasser som finnes for boligsøkere
-     */
-    public void testBoligSoker() {
-        AnnonseFilter search = new AnnonseFilter(annonseliste);
-        StringBuilder utskrift = new StringBuilder();
-        utskrift.append("Kommenter bort testBoligSøker() i konstruktør for å få bort den testmeldingen.\n\n");
-
-        //Test for antall tilgjengelige annonser
-        utskrift.append("Antall annonser: " + search.getAntallAnnonser());
-
-        //Test for utskrift av alle poststeder med annonser
-        try {
-            SortedSet<String> p = search.getPoststederIAnnonser();
-            utskrift.append("\n\nAlle poststeder med annonser:\n");
-            for (String s : p) {
-                utskrift.append(s).append(", ");
-            }
-            utskrift.append("\n");
-        } catch (ParseException ex) {
-            System.out.println("Parseexception i getPoststederIAnnonser()");
-        }
-
-        //Test for utskrift av alle boligtyper som finnes i annonseregisteret.
-        try {
-            SortedSet<Boligtype> bt = search.getBoligtyperIAnnonser();
-            utskrift.append("\nAlle boligtyper i annonser:\n");
-            for(Boligtype btt : bt ){
-                utskrift.append(btt.toString()).append(", ");
-            }
-            utskrift.append("\n");
-        }catch(ParseException ex){
-            System.out.println("Parsexception i getBoligTyperIAnnonser()");
-        }
-
-        //Test for annonseintervall
-//        try {
-//            ArrayList<Annonse> annonseIntervall = search.getAnnonseIntervall(2, 4);
-//            for(Annonse a : annonseIntervall){
-//                System.out.println("Annonseintervall: "+a.toString());
-//            }
-//        } catch (SearchException ex) {
-//            System.out.println("En Search exception har intreffet");
-//        }
-        //Test for filtrering etter poststed
-        String poststed = "Lørenskog";
-        search.filtrerEtterPostSted(poststed);
-        HashSet<Annonse> e = search.getFilteredResults();
-        utskrift.append("\nFiltrere etter poststed <<" + poststed + ">>:\n");
-        for (Annonse a : e) {
-            utskrift.append(a.toString()).append("\n");
-        }
-
-        //Test for filtrering etter boligtype
-        search.filtrerEtterBoligType(Boligtype.LEILIGHET);
-        HashSet<Annonse> f = search.getFilteredResults();
-        utskrift.append("\nFiltrere etter boligtype <<" + Boligtype.ENEBOLIG.toString() + ">>:\n");
-        for (Annonse b : f) {
-            utskrift.append(b.toString()).append("\n");
-        }
-
-        //Test for sortering etter pris
-        int prisMin = 8000;
-        int prisMaks = 12000;
-        search.filtrerEtterPrisRange(prisMin, prisMaks);
-        HashSet<Annonse> g = search.getFilteredResults();
-        utskrift.append("\nFiltrere etter prisrange <<" + prisMin + " - " + prisMaks + ">>:\n");
-        for (Annonse c : g) {
-            utskrift.append(c.toString()).append("\n");
-        }
-
-        //Test for sortering etter boareal
-        int kvmMin = 60;
-        int kvmMaks = 80;
-        search.filtrerEtterBoArealRange(kvmMin, kvmMaks);
-        HashSet<Annonse> h = search.getFilteredResults();
-        utskrift.append("\nFiltrere etter boareal range <<" + kvmMin + " - " + kvmMaks + ">>:\n");
-        for (Annonse d : h) {
-            utskrift.append(d.toString()).append("\n");
-        }
-
-        //Test for fellesvaskeri
-        //Filtre over andre checkbokser skal implementeres i like måte. Har foreløpig ikke testet dem alle.
-        search.filtrerEtterFellesvaskeri();
-        HashSet<Annonse> i = search.getFilteredResults();
-        utskrift.append("\nFiltrere etter fellevaskeri\n");
-        for (Annonse fellesvask : i) {
-            utskrift.append(fellesvask.toString()).append("\n");
-        }
-
-        //Viser resultat av filtreringer
-        visMelding("testBoligSoker()", utskrift.toString());
-    }
-
-    ////////////////SLUTT AV TEST AV SØKEKLASSER////////////////
-    /**
-     * Brukes sammen med testing ettersom det ble litt for rotede å søke etter
-     * tekst i terminal.
-     *
-     * @param metode
-     * @param melding
-     */
-    private void visMelding(String metode, String melding) {
-        JOptionPane.showMessageDialog(null, melding, metode, JOptionPane.INFORMATION_MESSAGE);
-    }
 
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
         Calendar kalender = new GregorianCalendar(aar, mnd, dag);
