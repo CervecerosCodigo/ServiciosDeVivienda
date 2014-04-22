@@ -9,9 +9,9 @@ package controller;
  */
 
 
-import java.text.FieldPosition;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -45,7 +45,7 @@ public class ControllerTabellOgOutput {
     public void settOppTabellLytter(final ArkfaneTemplate vindu) {
         //Setter en lytter som finner raden som er valgt
         final JTable tabell = vindu.getVenstrepanel().getTable();
-
+        
         tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             @Override
@@ -72,8 +72,6 @@ public class ControllerTabellOgOutput {
                 this.liste = liste;
                 this.datasettIBruk = Konstanter.PERSONOBJ;
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.PERSONOBJ);
-                vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
-                vindu.getVenstrepanel().resizeKolonneBredde();
                 break;
             case Konstanter.BOLIGOBJ:
                 kolonneNavn = new String[]{"BoligID", "EierID", "Adresse", "Utleid"};
@@ -81,8 +79,6 @@ public class ControllerTabellOgOutput {
                 this.liste = liste;
                 this.datasettIBruk = Konstanter.BOLIGOBJ;
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, datasettIBruk);
-                vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
-                vindu.getVenstrepanel().resizeKolonneBredde();
                 break;
             case Konstanter.ANNONSEOBJ:
                 kolonneNavn = new String[]{"AnnonseID", "Adresse", "Depositum", "Prs pr mnd"};
@@ -90,8 +86,6 @@ public class ControllerTabellOgOutput {
                 this.liste = liste;
                 this.datasettIBruk = Konstanter.ANNONSEOBJ;
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, datasettIBruk);
-                vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
-                vindu.getVenstrepanel().resizeKolonneBredde();                
                 break;
             case Konstanter.KONTRAKTOBJ:
                 kolonneNavn = new String[]{"KontraktID", "BoligID", "LeietakerID", "Varighet"};
@@ -99,8 +93,6 @@ public class ControllerTabellOgOutput {
                 this.liste = liste;
                 this.datasettIBruk = Konstanter.KONTRAKTOBJ;
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.KONTRAKTOBJ);
-                vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
-                vindu.getVenstrepanel().resizeKolonneBredde();                
                 break;
             case Konstanter.SOKNADOBJ:
                 kolonneNavn = new String[]{"AnnonseID", "Adresse", "Søkers fornavn", "Søkers etternavn"};
@@ -108,10 +100,11 @@ public class ControllerTabellOgOutput {
                 this.liste = liste;
                 this.datasettIBruk = Konstanter.SOKNADOBJ;
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.SOKNADOBJ);
-                vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
-                vindu.getVenstrepanel().resizeKolonneBredde();                
+            
                 break;
         }
+        vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
+        vindu.getVenstrepanel().resizeKolonneBredde();            
     }
 
     /**
@@ -234,6 +227,7 @@ public class ControllerTabellOgOutput {
                 enebolig = (Enebolig) skalVises;
                 break;
         }
+        
 
         StringBuilder html = new StringBuilder();
         
@@ -365,9 +359,16 @@ public class ControllerTabellOgOutput {
         html.append("</tr>");            
         }
         html.append("</table>");
-        //html.append("<hr class='linjeEn'>");
         
-        String localImageSrc = ControllerTabellOgOutput.class.getClassLoader().getSystemResource("77_1655132553.jpg").toString();
+        String localImageSrc = ControllerTabellOgOutput.class.getClassLoader().getSystemResource("programdata").toString();
+        localImageSrc += "/77_1655132553.jpg";
+        
+        
+        Path p = Paths.get(localImageSrc);
+        Path toAbsolutePath = p.getParent();
+        
+//        String file = p.getFileName().toString();        
+        System.out.println(toAbsolutePath);
         
         html.append("<table id='bildetabell'>");
         html.append("<tr id='bilderad'>");
