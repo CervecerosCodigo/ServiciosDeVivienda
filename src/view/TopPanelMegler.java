@@ -8,8 +8,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
-
 
 public class TopPanelMegler extends AbstractPanel {
 	
@@ -25,7 +23,7 @@ public class TopPanelMegler extends AbstractPanel {
 		sokeKnapp = new JButton("Søk");
 		lagNyKnapp = new JButton("Lag ny");
 		
-		setLayout(new FlowLayout());
+		setLayout(new FlowLayout(FlowLayout.LEADING, 50, 0));
 		setVisible(true);
 		
 		add(meglerRadioKnapper);
@@ -55,7 +53,8 @@ class MeglerRadioKnapper extends JPanel {
 		radioGroup.add(leietakereRadio);
 		
 		setVisible(true);
-		setPreferredSize(new Dimension(90,150));
+		setPreferredSize(new Dimension(90,110));
+		setLayout(new FlowLayout(FlowLayout.LEFT, 0, -1));
 		
 		add(soknaderRadio);
 		add(annonserRadio);
