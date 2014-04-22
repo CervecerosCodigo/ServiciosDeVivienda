@@ -31,6 +31,23 @@ public class TopPanelMegler extends AbstractPanel {
 		add(sokeKnapp);
 		add(lagNyKnapp);
     }
+
+    public MeglerRadioKnapper getMeglerRadioKnapper() {
+        return meglerRadioKnapper;
+    }
+
+    public CustomJTextField getSokeFelt() {
+        return sokeFelt;
+    }
+
+    public JButton getSokeKnapp() {
+        return sokeKnapp;
+    }
+
+    public JButton getLagNyKnapp() {
+        return lagNyKnapp;
+    }
+    
 }
 
 class MeglerRadioKnapper extends JPanel {
