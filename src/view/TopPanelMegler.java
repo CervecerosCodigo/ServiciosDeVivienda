@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -64,4 +65,34 @@ class MeglerRadioKnapper extends JPanel {
 		
 		soknaderRadio.setSelected(true);
 	}
+
+    public JRadioButton getSoknaderRadio() {
+        return soknaderRadio;
+    }
+
+    public JRadioButton getAnnonserRadio() {
+        return annonserRadio;
+    }
+
+    public JRadioButton getBoligerRadio() {
+        return boligerRadio;
+    }
+
+    public JRadioButton getUtleiereRadio() {
+        return utleiereRadio;
+    }
+
+    public JRadioButton getLeietakereRadio() {
+        return leietakereRadio;
+    }
+
+       
+   public void addRadioListener(ActionListener lytter) {
+        boligerRadio.addActionListener(lytter);
+        utleiereRadio.addActionListener(lytter);
+        leietakereRadio.addActionListener(lytter);
+        soknaderRadio.addActionListener(lytter);
+        annonserRadio.addActionListener(lytter);
+
+    }    
 }
