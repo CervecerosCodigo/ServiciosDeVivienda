@@ -9,22 +9,16 @@ import java.util.TreeSet;
 import lib.Boligtype;
 import lib.Konstanter;
 import model.Annonse;
-import model.Bolig;
 import model.Enebolig;
 import model.Leilighet;
 
 /**
- * I klassen inngår metoder som gjør det mulig å søke igjennom alle annonser fra
- * boligsøker vindu gjennom å oppgi nødvendige parametre.<br><br>
- * <u>Viktig!</u><br>
- * Søknigen fungerer gjennom at den eksisterende listen over annonser blir
- * kopiert til en filtrert liste. Dett skjer i en spesifikk rekkefølge der den
- * første filtreringen må foretas etter poststed med metoden
- * filtrerEtterPoststed() ettersom den metoden kopierer den første data til det
- * filtrerte settet.
- * <br><br>
- * File: AnnonseFilter.java Package: search Project: ServiciosDeVivienda Apr 20,
- * 2014
+ * Klassen sørger for filtrering av annoser som brukes av boligsøkende. Den har
+ * også metoder som returnerer opplysninger om antall annonser, poststeder med
+ * annonser og boligtyper som inngår i annonser. 
+ * <br>
+ * File: AnnonseFilter.java
+ * Package: search Project: ServiciosDeVivienda Apr 20, 2014
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
@@ -43,20 +37,34 @@ public class AnnonseFilter {
     //TODO: Den beste måten blir mest sannsynlig da man sender inn en oppsetting av søkeparametre fra gui og foreta en søkerutine etter det. Rekkefølge av filtreringstrinn må foregå på altid samme måte.
     //TODO: En metode som returnerer annonser fra et vist dato
     public HashSet<Annonse> filtrerEtterParametre(String poststed, Boligtype boligtype, int prisMin, int prisMaks, int arealMin, int arealMaks, boolean harBalkong, boolean harFellesvask, boolean harHage, boolean harKjeller) {
-        
+
         filtrerEtterPostSted(poststed);
-        //Sluttet her
-        
-        return null;
+        filtrerEtterBoligType(boligtype);
+        filtrerEtterPrisRange(prisMin, prisMaks);
+        filtrerEtterBoArealRange(arealMin, arealMaks);
+        if (harBalkong) {
+            filtrerEtterBalkong();
+        }
+        if (harFellesvask) {
+            filtrerEtterFellesvaskeri();
+        }
+        if (harHage) {
+            filtrerEtterHage();
+        }
+        if (harKjeller) {
+            filtrerEtterKjeller();
+        }
+
+        return getFilteredResults();
     }
 
     /**
      * Filtrer tilgjengelige annonser etter poststed. Brukes som trinn 1 i
-     * filtreringen.
+     * interne filtrering.
      *
-     * @param poststed
+     * @param poststed Kan være null
      */
-    public void filtrerEtterPostSted(String poststed) {
+    private void filtrerEtterPostSted(String poststed) {
         if (poststed == null) {//All filtrering starter internt gjennom at man foretar første filtrering på poststed og på slik måte kan data fra set med annonse bli kopiert til set med filtrert data. Dersom bruker ikke velger poststed som inisjerer vi søkefunksjonen gjennom å kopiere all data fra annonseregisteret til filtrert set ettertsom det betyr at brukeren vil filtrerere på alle tilgjengelige poststeder.
             annonseListeTmp = new HashSet<>(annonseListeOriginal);
             //nå kan vi legge over data fra tmp set til filtrerte resultat
@@ -81,63 +89,69 @@ public class AnnonseFilter {
      * hvilke type av bolig vi har med å gjøre uten å se på selve objektet.
      * Dersom vi skal utøke dette slik at det skal være mulig å søke etter andre
      * boligytyper så bør vi flytte initilisering av boligtype til superklasse
-     * Bolig.
+     * Bolig. Dette er trinn 2 i den klasse interne filtreringen.
      *
      * @param t Boligtype
      */
-    public void filtrerEtterBoligType(Boligtype t) {
-
-        for (Annonse a : annonseListeFiltrert) {
-            if (a.getBolig() != null) {
-                //Foreløpig så bruker vi ikke alle boligtyper som er definiert i lib.boligtype så jeg tester kun på disse det medfører at vi kan bare ha instanser av Leilighet eller Enebolig.
-                if (t.equals(Boligtype.LEILIGHET) && a.getBolig() instanceof Leilighet) {
-                    annonseListeTmp.add(a);
-                } else if (t.equals(Boligtype.ENEBOLIG) && a.getBolig() instanceof Enebolig) {
-                    annonseListeTmp.add(a);
+    private void filtrerEtterBoligType(Boligtype t) {
+        //Dersom parametern er tom trenger vi ikke å gjøre noe
+        if (t != null) {
+            for (Annonse a : annonseListeFiltrert) {
+                if (a.getBolig() != null) {
+                    //Foreløpig så bruker vi ikke alle boligtyper som er definiert i lib.boligtype så jeg tester kun på disse det medfører at vi kan bare ha instanser av Leilighet eller Enebolig.
+                    if (t.equals(Boligtype.LEILIGHET) && a.getBolig() instanceof Leilighet) {
+                        annonseListeTmp.add(a);
+                    } else if (t.equals(Boligtype.ENEBOLIG) && a.getBolig() instanceof Enebolig) {
+                        annonseListeTmp.add(a);
+                    }
                 }
             }
+            kopierTilFiltrerteResultat();
         }
-        kopierTilFiltrerteResultat();
     }
 
     /**
-     * Filtrerer etter prisrange for utleie.
+     * Filtrerer etter prisrange for utleie. Trinn 3 i intern filtrering.
      *
      * @param min int
      * @param maks int
      */
-    public void filtrerEtterPrisRange(int min, int maks) {
-        for (Annonse a : annonseListeFiltrert) {
-            if (a.getBolig() != null) {
-                if (min <= a.getUtleiepris() && a.getUtleiepris() <= maks) {
-                    annonseListeTmp.add(a);
+    private void filtrerEtterPrisRange(int min, int maks) {
+        if (min != 0 && maks != 0) {//Hvis det blir sendt in tomme parametre
+            for (Annonse a : annonseListeFiltrert) {
+                if (a.getBolig() != null) {
+                    if (min <= a.getUtleiepris() && a.getUtleiepris() <= maks) {
+                        annonseListeTmp.add(a);
+                    }
                 }
             }
+            kopierTilFiltrerteResultat();
         }
-        kopierTilFiltrerteResultat();
     }
 
     /**
-     * Filtrere etter range for boareal.
+     * Filtrere etter range for boareal. Trinn 4 i itern filtrering.
      *
      * @param min
      * @param maks
      */
-    public void filtrerEtterBoArealRange(int min, int maks) {
-        for (Annonse a : annonseListeFiltrert) {
-            if (a.getBolig() != null) {
-                if (min <= a.getBolig().getBoAreal() && a.getBolig().getBoAreal() <= maks) {
-                    annonseListeTmp.add(a);
+    private void filtrerEtterBoArealRange(int min, int maks) {
+        if (min != 0 && maks != 0) {
+            for (Annonse a : annonseListeFiltrert) {
+                if (a.getBolig() != null) {
+                    if (min <= a.getBolig().getBoAreal() && a.getBolig().getBoAreal() <= maks) {
+                        annonseListeTmp.add(a);
+                    }
                 }
             }
+            kopierTilFiltrerteResultat();
         }
-        kopierTilFiltrerteResultat();
     }
 
     /**
      * Filtrer etter balkong for leilighet.
      */
-    public void filtrerEtterBalkong() {
+    private void filtrerEtterBalkong() {
         for (Annonse a : annonseListeFiltrert) {
             if (a.getBolig() != null && a.getBolig() instanceof Leilighet) {
                 Leilighet b = (Leilighet) a.getBolig();
@@ -153,7 +167,7 @@ public class AnnonseFilter {
      * Metoden skal returnere de boliger som har en tillegskrav som balkong,
      * fellesvaskeri, hage eller kjeller.
      */
-    public void filtrerEtterFellesvaskeri() {
+    private void filtrerEtterFellesvaskeri() {
         for (Annonse a : annonseListeFiltrert) {
             if (a.getBolig() != null && a.getBolig() instanceof Leilighet) {
                 Leilighet b = (Leilighet) a.getBolig();
@@ -171,7 +185,7 @@ public class AnnonseFilter {
      * hage dersom tomt arealen er 20% større enn boarealen. Vi kan låtses som
      * at slike er foreskriftene som definierer en hage :)
      */
-    public void filtrerEtterHage() {
+    private void filtrerEtterHage() {
         for (Annonse a : annonseListeFiltrert) {
             if (a.getBolig() != null && a.getBolig() instanceof Enebolig) {
                 Enebolig b = (Enebolig) a.getBolig();
@@ -186,7 +200,7 @@ public class AnnonseFilter {
     /**
      * Filtrer etter bolig dersom den har kjeller.
      */
-    public void filtrerEtterKjeller() {
+    private void filtrerEtterKjeller() {
         for (Annonse a : annonseListeFiltrert) {
             if (a.getBolig() != null && a.getBolig() instanceof Enebolig) {
                 Enebolig b = (Enebolig) a.getBolig();
