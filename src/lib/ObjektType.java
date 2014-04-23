@@ -4,7 +4,7 @@ package lib;
  *
  * @author espen
  */
-public enum ObjektTyper {
+public enum ObjektType {
     PERSONOBJ,
     BOLIGOBJ,
     ANNONSEOBJ,

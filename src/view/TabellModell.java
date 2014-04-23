@@ -10,7 +10,7 @@ import model.*;
  * Denne klassen opprettes fra VenstrePanel.java, og definerer tabellens funksjonalitet.
  * Under instansieringen opprettes bare en tom array, og standard kolonnenavn.
  * I det man skal legge inn data i tabellen blir disse overskrevet.
- * Tabellen fylles med data fra ArrayTilHTMLMetoder.settInnDataIModell()
+ * Tabellen fylles med data fra ControllerTabellOgOutput.settInnDataIModell()
  * @author espen
  */
 public class TabellModell extends AbstractTableModel {
