@@ -21,6 +21,7 @@ public class MainPanel extends JPanel{
         //Legger til tab og kobler med panelet.
         arkfaner.addTab("Megler", this.megler);
         arkfaner.addTab("Annonser", this.annonse);
+        arkfaner.setSelectedIndex(1);
         
         add(arkfaner);
     }
