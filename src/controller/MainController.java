@@ -80,8 +80,8 @@ public class MainController implements Serializable {
          * Man vil sende med resultatet fra søk i toppanel i stedet for hele
          * listen, der det er ønskelig.
          */
-        tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, Konstanter.BOLIGOBJ);
-        tabellControllerAnnonse.settInnDataITabell(annonseliste, annonseVindu, Konstanter.ANNONSEOBJ);
+        tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, ObjektType.BOLIGOBJ);
+        tabellControllerAnnonse.settInnDataITabell(annonseliste, annonseVindu, ObjektType.ANNONSEOBJ);
         tabellControllerMegler.settOppTabellLytter(meglerVindu);
         tabellControllerAnnonse.settOppTabellLytter(annonseVindu);
 
@@ -341,7 +341,7 @@ public class MainController implements Serializable {
                 "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.", false, tilgjenglig3);
 
 //        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu, Konstanter.PERSONOBJ);
-        tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, Konstanter.BOLIGOBJ);
+        tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, ObjektType.BOLIGOBJ);
         System.out.println(boligRegister.visRegister());
         System.out.println("================================================");
 

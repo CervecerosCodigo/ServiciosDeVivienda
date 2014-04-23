@@ -15,14 +15,14 @@ import javax.swing.event.*;
 import javax.swing.text.html.StyleSheet;
 import lib.BildeFilSti;
 import lib.Konstanter;
-import lib.Melding;
+import lib.*;
 import model.*;
 import view.*;
 
 public class ControllerTabellOgOutput {
 
     private Object[] tabellData;
-    private int datasettIBruk;
+    private ObjektType objekttype;
     private Collection liste;
     private StyleSheet css;
 
@@ -30,9 +30,9 @@ public class ControllerTabellOgOutput {
 
     }
     
-    public int getDatasettIBruk(){
-        return datasettIBruk;
-    }
+//    public int getDatasettIBruk(){
+//        return datasettIBruk;
+//    }
 
     /**
      * Tar i mot det vinduet tabellen skal settes for. Metoden oppretter en
@@ -51,7 +51,7 @@ public class ControllerTabellOgOutput {
             public void valueChanged(ListSelectionEvent e) {
                 int rad = tabell.getSelectedRow();
 
-                sendObjektFraTabellTilOutput(rad, datasettIBruk, tabellData, vindu);
+                sendObjektFraTabellTilOutput(rad, objekttype, tabellData, vindu);
             }
         });
     }
@@ -60,46 +60,45 @@ public class ControllerTabellOgOutput {
      * Oppretter en array med lengde av mottatt datasett. Denne metoden er
      * avhengig av søkeresultatene og må få inn parametere fra toppanel.
      */
-    public void settInnDataITabell(Collection liste, ArkfaneTemplate vindu, int datasettIBruk) {
+    public void settInnDataITabell(Collection liste, ArkfaneTemplate vindu, ObjektType objekttype) {
 
         String[] kolonneNavn = null;
 
-        switch (datasettIBruk) {
-            case Konstanter.PERSONOBJ:
+        switch (objekttype) {
+            case PERSONOBJ:
                 kolonneNavn = new String[]{"ID", "Fornavn", "Etternavn", "Epost"};
                 tabellData = liste.toArray();
                 this.liste = liste;
-                this.datasettIBruk = Konstanter.PERSONOBJ;
-                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.PERSONOBJ);
+                this.objekttype = ObjektType.PERSONOBJ;
+                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
                 break;
-            case Konstanter.BOLIGOBJ:
+            case BOLIGOBJ:
                 kolonneNavn = new String[]{"BoligID", "EierID", "Adresse", "Utleid"};
                 tabellData = liste.toArray();
                 this.liste = liste;
-                this.datasettIBruk = Konstanter.BOLIGOBJ;
-                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, datasettIBruk);
+                this.objekttype = ObjektType.BOLIGOBJ;
+                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
                 break;
-            case Konstanter.ANNONSEOBJ:
+            case ANNONSEOBJ:
                 kolonneNavn = new String[]{"AnnonseID", "Adresse", "Depositum", "Prs pr mnd"};
                 tabellData = liste.toArray();
                 this.liste = liste;
-                this.datasettIBruk = Konstanter.ANNONSEOBJ;
-                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, datasettIBruk);
+                this.objekttype = ObjektType.ANNONSEOBJ;
+                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
                 break;
-            case Konstanter.KONTRAKTOBJ:
+            case KONTRAKTOBJ:
                 kolonneNavn = new String[]{"KontraktID", "BoligID", "LeietakerID", "Varighet"};
                 tabellData = liste.toArray();
                 this.liste = liste;
-                this.datasettIBruk = Konstanter.KONTRAKTOBJ;
-                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.KONTRAKTOBJ);
+                this.objekttype = ObjektType.KONTRAKTOBJ;
+                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
                 break;
-            case Konstanter.SOKNADOBJ:
+            case SOKNADSOBJ:
                 kolonneNavn = new String[]{"AnnonseID", "Adresse", "Søkers fornavn", "Søkers etternavn"};
                 tabellData = liste.toArray();
                 this.liste = liste;
-                this.datasettIBruk = Konstanter.SOKNADOBJ;
-                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, Konstanter.SOKNADOBJ);
-            
+                this.objekttype = ObjektType.SOKNADSOBJ;
+                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
                 break;
         }
         vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
@@ -113,29 +112,29 @@ public class ControllerTabellOgOutput {
      * @param tabellData
      * @param vindu
      */
-    public void sendObjektFraTabellTilOutput(int valgtRad, int datasettIBruk, Object[] tabellData, ArkfaneTemplate vindu) {
+    public void sendObjektFraTabellTilOutput(int valgtRad, ObjektType objekttype, Object[] tabellData, ArkfaneTemplate vindu) {
         Object valgtObjekt = null;
         css = vindu.getSenterpanel().getStyleSheet();
         setStyleSheet();
 
-        switch (datasettIBruk) {
-            case Konstanter.PERSONOBJ:
+        switch (objekttype) {
+            case PERSONOBJ:
                 valgtObjekt = (Person) tabellData[valgtRad];
                 visPersonObjektHTMLOutput(valgtObjekt, vindu);
                 break;
-            case Konstanter.BOLIGOBJ:
+            case BOLIGOBJ:
                 valgtObjekt = (Bolig) tabellData[valgtRad];
                 visBoligObjektHTMLOutput(valgtObjekt, vindu);
                 break;
-            case Konstanter.ANNONSEOBJ:
+            case ANNONSEOBJ:
                 valgtObjekt = (Annonse) tabellData[valgtRad];
                 visAnnonseObjektHTMLOutput(valgtObjekt, vindu);
                 break;
-            case Konstanter.KONTRAKTOBJ:
+            case KONTRAKTOBJ:
                 valgtObjekt = (Kontrakt) tabellData[valgtRad];
                 visKontraktObjektHTMLOutput(valgtObjekt, vindu);
                 break;
-            case Konstanter.SOKNADOBJ:
+            case SOKNADSOBJ:
                 valgtObjekt = (Soknad) tabellData[valgtRad];
                 visSoknadObjektHTMLOutput(valgtObjekt, vindu);
                 break;

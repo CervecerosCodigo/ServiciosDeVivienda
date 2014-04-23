@@ -4,6 +4,7 @@ package view;
 import java.text.SimpleDateFormat;
 import javax.swing.table.AbstractTableModel;
 import lib.Konstanter;
+import lib.ObjektType;
 import model.*;
 
 /**
@@ -17,7 +18,7 @@ public class TabellModell extends AbstractTableModel {
 
     private Object[] mottattArray;
     private String[] overskrift;
-    private int datasettIBruk;
+    private ObjektType objekttype;
 
     public TabellModell() {
         this.overskrift = new String[0];
@@ -30,10 +31,10 @@ public class TabellModell extends AbstractTableModel {
      * @param liste
      * @param kolonneNavn
      */
-    public void fyllTabellMedInnhold(Object[] liste, String[] kolonneNavn, int datasettIBruk) {
+    public void fyllTabellMedInnhold(Object[] liste, String[] kolonneNavn, ObjektType objekttype) {
         this.mottattArray = liste;
         this.overskrift = kolonneNavn;
-        this.datasettIBruk = datasettIBruk;
+        this.objekttype = objekttype;
     }
 
     /**
@@ -65,7 +66,7 @@ public class TabellModell extends AbstractTableModel {
     @Override
     public Object getValueAt(int rad, int kolonne) {
         
-        if (datasettIBruk == Konstanter.BOLIGOBJ) {
+        if (objekttype == ObjektType.BOLIGOBJ) {
             Bolig bolig = null;
             bolig = (Bolig) mottattArray[rad];
             switch (kolonne) {
@@ -78,7 +79,7 @@ public class TabellModell extends AbstractTableModel {
                 case 3:
                     return bolig.isErUtleid();
             }
-        } else if (datasettIBruk == Konstanter.PERSONOBJ) {
+        } else if (objekttype == ObjektType.PERSONOBJ) {
 
             Person person = null;
             person = (Person) mottattArray[rad];
@@ -92,7 +93,7 @@ public class TabellModell extends AbstractTableModel {
                 case 3:
                     return person.getEpost();
             }
-        } else if (datasettIBruk == Konstanter.ANNONSEOBJ) {
+        } else if (objekttype == ObjektType.ANNONSEOBJ) {
             Annonse annonse = null;
             annonse = (Annonse) mottattArray[rad];
             switch (kolonne) {
@@ -105,7 +106,7 @@ public class TabellModell extends AbstractTableModel {
                 case 3:
                     return "kr. " + Konstanter.nf.format(annonse.getUtleiepris());
             }
-        } else if (datasettIBruk == Konstanter.KONTRAKTOBJ) {
+        } else if (objekttype == ObjektType.KONTRAKTOBJ) {
             Kontrakt kontrakt = null;
             kontrakt = (Kontrakt) mottattArray[rad];
             switch (kolonne) {
@@ -118,7 +119,7 @@ public class TabellModell extends AbstractTableModel {
                 case 3:
                     return kontrakt.getLeietidIMnd();
             }
-        } else if (datasettIBruk == Konstanter.SOKNADOBJ) {
+        } else if (objekttype == ObjektType.SOKNADSOBJ) {
             Soknad soknad = null;
             soknad = (Soknad) mottattArray[rad];
             switch (kolonne) {
