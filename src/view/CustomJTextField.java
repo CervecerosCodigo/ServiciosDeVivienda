@@ -19,6 +19,7 @@ public class CustomJTextField extends JPanel {
 
         textField = new JTextField(size);
         textField.setText(initText);
+        textField.setForeground(Color.GRAY);
 
         setLayout(new FlowLayout());
         add(textField);
@@ -41,6 +42,7 @@ public class CustomJTextField extends JPanel {
                 textField.setBackground(Color.WHITE);
                 if (textField.getText().equals("")) {
                     textField.setText(fieldName);
+                    textField.setForeground(Color.GRAY);
                     return;
                 }
                 if( !textField.getText().equals("") ){
