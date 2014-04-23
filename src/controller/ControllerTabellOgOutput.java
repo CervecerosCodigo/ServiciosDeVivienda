@@ -9,14 +9,13 @@ package controller;
  */
 
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.html.StyleSheet;
+import lib.BildeFilSti;
 import lib.Konstanter;
+import lib.Melding;
 import model.*;
 import view.*;
 
@@ -360,10 +359,12 @@ public class ControllerTabellOgOutput {
         }
         html.append("</table>");
         
-        String localImageSrc = ControllerTabellOgOutput.class.getClassLoader().getSystemResource("programdata").toString();
-        localImageSrc += "/77_1655132553.jpg";
-        
+//        String localImageSrc = ControllerTabellOgOutput.class.getClassLoader().getSystemResource("77_1655132553.jpg").toString();
 
+        
+        BildeFilSti bildefilsti = new BildeFilSti();
+        String localImageSrc = bildefilsti.getBoligFremsideBildeHTML(skalVises);
+        new Melding("Melding", "Kommenter vekk linje 374 i ControllerTabellOutput.java for å få vekk denne\n Skal fjerne meldingen etter at ha testet BildeFilSti på Windows.\n\n"+localImageSrc); 
         
         html.append("<table id='bildetabell'>");
         html.append("<tr id='bilderad'>");

@@ -28,7 +28,6 @@ public class CustomJTextField extends JPanel {
             @Override
             public void focusGained(FocusEvent e) {
                 if( textField.getText().equals(fieldName) ){
-                    textField.setBackground(Color.CYAN);
                     textField.setText("");
                 } else {
                     if( !testInput() )

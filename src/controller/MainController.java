@@ -15,8 +15,9 @@ import register.*;
 import search.AnnonseFilter;
 import search.FreeTextSearch;
 import search.SearchException;
-import test.search.TestAnnonseFilter;
-import test.search.TestFritekstSok;
+import test.filklasser.TestBildeFilSti;
+import test.searchklasser.TestAnnonseFilter;
+import test.searchklasser.TestFritekstSok;
 import view.*;
 
 /**
@@ -88,9 +89,7 @@ public class MainController implements Serializable {
         bunnController.settKnappeLytter(annonseVindu);
 
         ////////////////TEST AV SØKEKLASSER////////////////
-        
         //Kommenter av metodene for å kjøre test
-        
         //Test av filtrering fir boligsøker.
         TestAnnonseFilter testFilter = new TestAnnonseFilter(annonseliste);
 //        testFilter.testBoligSokerEtterParametre();
@@ -99,8 +98,14 @@ public class MainController implements Serializable {
 //        testFritekst.testSokAnnonseListe(annonseliste, "6");
 //        testFritekst.testSokBoligListe(boligliste, "grorud");
         ////////////////SLUTT AV TEST AV SØKEKLASSER////////////////
-    }
 
+        /////TEST FOR HJELPEKLASSER AV FILSTIER OG FILER//////
+//        for (Bolig a : boligliste) {
+//            TestBildeFilSti testBildefilsti = new TestBildeFilSti(a);
+//            return;//verden beste hack for å avbryte etter en iterasjon
+//        }
+        /////SLUTT PÅ TEST FOR HJELPEKLASSER AV FILSTIER OG FILER//////
+    }
 
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
         Calendar kalender = new GregorianCalendar(aar, mnd, dag);
