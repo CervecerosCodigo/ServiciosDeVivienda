@@ -47,6 +47,7 @@ public class MainController implements Serializable {
     private ControllerBunnPanel bunnController;
     private ControllerTabellOgOutput tabellControllerMegler;
     private ControllerTabellOgOutput tabellControllerAnnonse;
+    private ControllerToppPanelMegler toppPanelControllerMegler;
 
     public MainController(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
@@ -59,6 +60,7 @@ public class MainController implements Serializable {
         bunnController = new ControllerBunnPanel();
         tabellControllerMegler = new ControllerTabellOgOutput();
         tabellControllerAnnonse = new ControllerTabellOgOutput();
+        toppPanelControllerMegler = new ControllerToppPanelMegler(meglerVindu, personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
 
         this.personliste = personliste;
         this.boligliste = boligliste;

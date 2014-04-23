@@ -363,12 +363,7 @@ public class ControllerTabellOgOutput {
         String localImageSrc = ControllerTabellOgOutput.class.getClassLoader().getSystemResource("programdata").toString();
         localImageSrc += "/77_1655132553.jpg";
         
-        
-        Path p = Paths.get(localImageSrc);
-        Path toAbsolutePath = p.getParent();
-        
-//        String file = p.getFileName().toString();        
-        System.out.println(toAbsolutePath);
+
         
         html.append("<table id='bildetabell'>");
         html.append("<tr id='bilderad'>");
