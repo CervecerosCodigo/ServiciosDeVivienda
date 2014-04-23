@@ -47,6 +47,34 @@ public class TopPanelMegler extends AbstractPanel {
     public JButton getLagNyKnapp() {
         return lagNyKnapp;
     }
+   public JRadioButton getSoknaderRadio() {
+        return meglerRadioKnapper.getSoknaderRadio();
+    }
+
+    public JRadioButton getAnnonserRadio() {
+        return meglerRadioKnapper.getAnnonserRadio();
+    }
+
+    public JRadioButton getBoligerRadio() {
+        return meglerRadioKnapper.getBoligerRadio();
+    }
+
+    public JRadioButton getUtleiereRadio() {
+        return meglerRadioKnapper.getUtleiereRadio();
+    }
+
+    public JRadioButton getLeietakereRadio() {
+        return meglerRadioKnapper.getLeietakereRadio();
+    }    
+
+    public void leggTilRadioLytter(ActionListener lytter) {
+        meglerRadioKnapper.addRadioListener(lytter);
+    }
+
+    public void leggTilKnappeLytter(ActionListener lytter){
+        lagNyKnapp.addActionListener(lytter);
+        sokeKnapp.addActionListener(lytter);
+    }    
     
 }
 
