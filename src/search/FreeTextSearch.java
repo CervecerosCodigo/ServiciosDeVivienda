@@ -41,7 +41,7 @@ public class FreeTextSearch<T extends Searchable> {
                 s = s.toLowerCase();
                 if (s.contains(pattern)) {
                     resultList.add((T) o);
-                    System.out.println("Funnet: "+o.toString());
+//                    System.out.println("Funnet: "+o.toString());
                 }
             }
         }

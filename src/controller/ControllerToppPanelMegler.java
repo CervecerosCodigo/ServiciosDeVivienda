@@ -5,6 +5,7 @@ package controller;
 import java.awt.event.*;
 import java.util.*;
 import lib.Melding;
+import lib.ObjektType;
 import model.*;
 import search.FreeTextSearch;
 import view.ArkfaneTemplate;
@@ -13,14 +14,15 @@ public class ControllerToppPanelMegler<E> {
 
     ArkfaneTemplate vindu;
     private String radioNavnKlikket;
+    private ObjektType radioTypeValgt;
     private FreeTextSearch fsearch;
-    
+
     private HashSet<Person> personliste;
     private HashSet<Bolig> boligliste;
     private HashSet<Annonse> annonseliste;
     private HashSet<Kontrakt> kontraktliste;
     private LinkedHashSet<Soknad> soknadsliste;
-    
+
     private ListListener listListener;
 
     public ControllerToppPanelMegler(ArkfaneTemplate vindu, HashSet<Person> personliste, HashSet<Bolig> boligliste,
@@ -39,10 +41,9 @@ public class ControllerToppPanelMegler<E> {
         vindu.getToppanelMegler().leggTilRadioLytter(new RadioLytter());
         vindu.getToppanelMegler().leggTilKnappeLytter(new KnappeLytter());
 
-
     }
-    
-    public void setListListener(ListListener listListener){
+
+    public void setListListener(ListListener listListener) {
         this.listListener = listListener;
     }
 
@@ -56,23 +57,19 @@ public class ControllerToppPanelMegler<E> {
 
             try {
                 if (e.getSource().equals(vindu.getToppanelMegler().getBoligerRadio())) {
-                    radioNavnKlikket = vindu.getToppanelMegler().getBoligerRadio().getText();
+                    radioTypeValgt = ObjektType.BOLIGOBJ;
                 }
                 if (e.getSource().equals(vindu.getToppanelMegler().getLeietakereRadio())) {
-                    radioNavnKlikket = vindu.getToppanelMegler().getLeietakereRadio().getText();
-
+                    radioTypeValgt = ObjektType.PERSONOBJ;
                 }
                 if (e.getSource().equals(vindu.getToppanelMegler().getUtleiereRadio())) {
-                    radioNavnKlikket = vindu.getToppanelMegler().getUtleiereRadio().getText();
-
+                    radioTypeValgt = ObjektType.PERSONOBJ;
                 }
                 if (e.getSource().equals(vindu.getToppanelMegler().getAnnonserRadio())) {
-                    radioNavnKlikket = vindu.getToppanelMegler().getAnnonserRadio().getText();
-
+                    radioTypeValgt = ObjektType.ANNONSEOBJ;
                 }
                 if (e.getSource().equals(vindu.getToppanelMegler().getSoknaderRadio())) {
-                    radioNavnKlikket = vindu.getToppanelMegler().getSoknaderRadio().getText();
-
+                    radioTypeValgt = ObjektType.SOKNADSOBJ;
                 }
             } catch (NullPointerException npe) {
 
@@ -86,7 +83,7 @@ public class ControllerToppPanelMegler<E> {
      */
     class KnappeLytter implements ActionListener {
 
-        private ArrayList<Bolig> sokeResultat;
+        private ArrayList<E> sokeResultat;
         private String utskrift;
 
         @Override
@@ -96,21 +93,36 @@ public class ControllerToppPanelMegler<E> {
             }
             if (e.getSource().equals(vindu.getToppanelMegler().getSokeKnapp())) {
                 //TODO: Trenger å få tekstfeltet å gi tilbakemelding gjeldende regex
-                String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
-
-                //TODO: Dersom vi får tid må vi fjerne alle typer av slik hardkoding for swing komponentnavn
-                switch (radioNavnKlikket) {
-                    case "Boliger":
-                        sokeResultat = fsearch.searchForPattern(boligliste, soketekst);
-                        for (Object a : sokeResultat) {
-                            utskrift += a.toString();
-                        }
-//                        Melding.visMelding(soketekst, utskrift);
-                        break;
-                }
                 
-                if(listListener != null){
-                    listListener.listReady(sokeResultat);
+                String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
+                if (soketekst.equals("Søk") || soketekst.equals("")) {
+                    Melding.visMelding("Søk", "Søkefeltet er tomt");
+                } else {
+
+                    //TODO: Dersom vi får tid må vi fjerne alle typer av slik hardkoding for swing komponentnavn
+                    switch (radioTypeValgt) {
+                        case BOLIGOBJ:
+                            sokeResultat = fsearch.searchForPattern(boligliste, soketekst);
+                            break;
+                        case PERSONOBJ:
+                            sokeResultat = fsearch.searchForPattern(personliste, soketekst);
+                            break;
+                        case ANNONSEOBJ:
+                            sokeResultat = fsearch.searchForPattern(annonseliste, soketekst);
+                            break;
+                        case KONTRAKTOBJ:
+                            Melding.visMelding(radioTypeValgt.name(), "Vi har ingen radiobutton for kontrakter og toSearch er ikke implementert i kontrakt klasse enda.");
+                            break;
+                        case SOKNADSOBJ:
+                            Melding.visMelding(radioTypeValgt.name(), "Søkning etter søknader er ikke enda implemetert ettersom vi ikke har testet søkningen på LinkedHashSet enda.\nMer data trengs.");
+                            break;
+                        default: 
+                            Melding.visMelding("Søk", "Mangler valg");
+                    }
+
+                    if (listListener != null) {
+                        listListener.listReady(sokeResultat, radioTypeValgt);
+                    }
                 }
             }
 

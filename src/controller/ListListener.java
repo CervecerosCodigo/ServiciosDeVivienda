@@ -1,7 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
-import model.Bolig;
+import lib.ObjektType;
 
 /**
  * Interfacet brukes til kommunikasjon mellom controllere og lister. Brukes for
@@ -13,5 +13,5 @@ import model.Bolig;
  */
 public interface ListListener<E> {
 
-    public void listReady(ArrayList<E> liste);
+    public void listReady(ArrayList<E> liste, ObjektType obj);
 }

@@ -99,16 +99,22 @@ public class MainController implements Serializable {
         toppPanelControllerMegler.setListListener(new ListListener() {
 
             //TODO: Her må vi få brukt clearTableSelection() metoden som finnes i MainController;
-            
             @Override
-            public void listReady(ArrayList boligliste) {
-                String ut = "";
-                for (Object b : boligliste) {
-                    ut += b.toString();
+            public void listReady(ArrayList liste, ObjektType obj) {
+                switch (obj) {
+                    case BOLIGOBJ:
+                        tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
+                        liste.clear();
+                        break;
+                    case PERSONOBJ:
+                        tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
+                        liste.clear();
+                        break;
+                    case ANNONSEOBJ:
+                        tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
+                        liste.clear();
+                        break;
                 }
-//                Melding.visMelding("toppPanelControllerMegler", "Jeg har mottatt en boligliste\n"+ut);
-                tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, ObjektType.BOLIGOBJ);
-                boligliste.clear();
             }
         });
     }
