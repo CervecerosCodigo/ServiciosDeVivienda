@@ -11,7 +11,7 @@ public class Annonse implements Serializable, Searchable{
     private static final long serialVersionUID = Konstanter.SERNUM;
 
     private int annonseID;
-    private static int teller = 0;
+    private static int teller = 30000;
     private int depositum;
     private int utleiepris;
     private boolean erSynlig;

@@ -43,11 +43,12 @@ public class VenstrePanel extends AbstractPanel {
      */
     public void resizeKolonneBredde() {
         final TableColumnModel kolonneModell = tabell.getColumnModel();
+        Component comp = null;
         for (int kol = 0; kol < tabell.getColumnCount(); kol++) {
             int bredde = 50; //minste bredde
             for (int rad = 0; rad < tabell.getRowCount(); rad++) {
                 TableCellRenderer renderer = tabell.getCellRenderer(rad, kol);
-                Component comp = tabell.prepareRenderer(renderer, rad, kol);
+                comp = tabell.prepareRenderer(renderer, rad, kol);
                 bredde = Math.max(comp.getPreferredSize().width, bredde);
             }
             kolonneModell.getColumn(kol).setPreferredWidth(bredde);

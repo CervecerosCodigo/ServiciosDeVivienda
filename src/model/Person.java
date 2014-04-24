@@ -9,7 +9,7 @@ public abstract class Person implements Serializable, Searchable {
     private static final long serialVersionUID = Konstanter.SERNUM;
 
     private int personID;
-    private static int teller = 0;
+    private static int teller = 10000;
     private String fornavn;
     private String etternavn;
     private String epost;

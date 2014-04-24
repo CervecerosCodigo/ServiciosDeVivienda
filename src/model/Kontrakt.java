@@ -18,7 +18,7 @@ public class Kontrakt implements Serializable{
     private int depositum;
     private int leietidIMnd;
     private int kontraktID;
-    private static int teller = 0;
+    private static int teller = 40000;
     
     public Kontrakt( Annonse annonse, Person megler, Person leietaker, int leietidIMnd ){
         this.annonse = annonse;

@@ -9,7 +9,7 @@ public class Soknad implements Serializable, Searchable{
     private static final long serialVersionUID = Konstanter.SERNUM;
     
     private int soknadID;
-    private static int teller = 0;
+    private static int teller = 50000;
     private boolean erBehandlet;
     private boolean erGodkjent;
     private Annonse annonse;

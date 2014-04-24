@@ -77,7 +77,9 @@ public class TabellModell extends AbstractTableModel {
                 case 2:
                     return bolig.getAdresse();
                 case 3:
-                    return bolig.isErUtleid();
+                    if( bolig.isErUtleid() )
+                        return "Ja";
+                    return "Nei";
             }
         } else if (objekttype == ObjektType.PERSONOBJ) {
 
@@ -144,6 +146,12 @@ public class TabellModell extends AbstractTableModel {
     @Override
     public String getColumnName(int index) {
         return overskrift[index];
+    }
+    
+    
+    @Override
+    public Class getColumnClass(int c){
+        return getValueAt(0,c).getClass();
     }
     
 }
