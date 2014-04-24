@@ -23,7 +23,7 @@ public class CustomJTextField extends JPanel {
 
         setLayout(new FlowLayout());
         add(textField);
-
+        
         textField.addFocusListener(new FocusListener() {
 
             @Override
@@ -57,5 +57,12 @@ public class CustomJTextField extends JPanel {
     private boolean testInput() {
         return textField.getText().matches(pattern);
     }
-
+    
+    /**
+     * Returnerer tekst fra custom panel. Brukse for å få tilbake tekst som skrives i søkepanelen.
+     * @return String
+     */
+    public String getText(){
+        return textField.getText();
+    }
 }
