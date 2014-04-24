@@ -24,6 +24,7 @@ public class VenstrePanel extends AbstractPanel {
         tabell = new JTable(tabellModell);
 
         tabell.setFillsViewportHeight(true);
+        tabell.setAutoCreateRowSorter(true);
         add(new JScrollPane(tabell));
 
     }//End Constructor

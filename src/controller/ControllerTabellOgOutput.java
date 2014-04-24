@@ -49,7 +49,10 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
+                if( e.getValueIsAdjusting())
+                    return;
                 int rad = tabell.getSelectedRow();
+                rad = tabell.convertRowIndexToModel(rad);
 
                 sendObjektFraTabellTilOutput(rad, objekttype, tabellData, vindu);
             }
@@ -116,7 +119,7 @@ public class ControllerTabellOgOutput {
         Object valgtObjekt = null;
         css = vindu.getSenterpanel().getStyleSheet();
         setStyleSheet();
-
+        try{
         switch (objekttype) {
             case PERSONOBJ:
                 valgtObjekt = (Person) tabellData[valgtRad];
@@ -139,7 +142,9 @@ public class ControllerTabellOgOutput {
                 visSoknadObjektHTMLOutput(valgtObjekt, vindu);
                 break;
         }
-
+        }catch(ArrayIndexOutOfBoundsException aiobe){
+            
+        }
     }
 
     /**
