@@ -83,7 +83,7 @@ public class ControllerTabellOgOutput {
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
                 break;
             case ANNONSEOBJ:
-                kolonneNavn = new String[]{"AnnonseID", "Adresse", "Depositum", "Prs pr mnd"};
+                kolonneNavn = new String[]{"AnnonseID", "Adresse", "Depositum", "Pris pr mnd"};
                 tabellData = liste.toArray();
                 this.liste = liste;
                 this.objekttype = ObjektType.ANNONSEOBJ;
@@ -104,6 +104,7 @@ public class ControllerTabellOgOutput {
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
                 break;
         }
+//        vindu.getVenstrepanel().settTabellSortering();
         vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
         vindu.getVenstrepanel().resizeKolonneBredde();            
     }
