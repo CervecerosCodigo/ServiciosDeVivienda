@@ -16,10 +16,20 @@ public class Melding {
     public Melding(String metode, String melding) {
         this.metode = metode;
         this.melding = melding;
-        visMelding(metode, melding);
+//        visMelding(metode, melding);
     }
 
-    private void visMelding(String metode, String melding) {
+//    private void visMelding(String metode, String melding) {
+//        JOptionPane.showMessageDialog(null, melding, metode, JOptionPane.INFORMATION_MESSAGE);
+//    }
+    
+    /**
+     * En static metode for å vise meldinger.
+     * @param metode String
+     * @param melding String
+     */
+    public static void visMelding(String metode, String melding) {
         JOptionPane.showMessageDialog(null, melding, metode, JOptionPane.INFORMATION_MESSAGE);
     }
+    
 }
