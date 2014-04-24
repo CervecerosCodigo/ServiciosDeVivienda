@@ -116,6 +116,8 @@ public class ControllerToppPanelMegler<E> {
                         case SOKNADSOBJ:
                             Melding.visMelding(radioTypeValgt.name(), "Søkning etter søknader er ikke enda implemetert ettersom vi ikke har testet søkningen på LinkedHashSet enda.\nMer data trengs.");
                             break;
+                        default: 
+                            Melding.visMelding("Søk", "Mangler valg");
                     }
 
                     if (listListener != null) {
