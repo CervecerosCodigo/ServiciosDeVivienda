@@ -22,7 +22,7 @@ public class TestBildeFilSti {
         bildefilsti = new BildeFilSti();
 
         String b = bildefilsti.getBoligGalleryPath(testBolig);
-        new Melding(Konstanter.BILDEGALLERIER, b);
+        Melding.visMelding(Konstanter.BILDEGALLERIER, b);
     }
 
 }
