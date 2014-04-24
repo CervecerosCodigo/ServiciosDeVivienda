@@ -1,21 +1,11 @@
 package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
-import java.text.ParseException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import lib.*;
 import model.*;
 import register.*;
-import search.AnnonseFilter;
-import search.FreeTextSearch;
-import search.SearchException;
-import test.filklasser.TestBildeFilSti;
 import test.searchklasser.TestAnnonseFilter;
 import test.searchklasser.TestFritekstSok;
 import view.*;
@@ -105,6 +95,29 @@ public class MainController implements Serializable {
 //            return;//verden beste hack for å avbryte etter en iterasjon
 //        }
         /////SLUTT PÅ TEST FOR HJELPEKLASSER AV FILSTIER OG FILER//////
+        //Tester å få tak på listen fra toppPanelMegler
+        toppPanelControllerMegler.setListListener(new ListListener() {
+
+            //TODO: Her må vi få brukt clearTableSelection() metoden som finnes i MainController;
+            
+            @Override
+            public void listReady(ArrayList boligliste) {
+                String ut = "";
+                for (Object b : boligliste) {
+                    ut += b.toString();
+                }
+//                Melding.visMelding("toppPanelControllerMegler", "Jeg har mottatt en boligliste\n"+ut);
+                tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, ObjektType.BOLIGOBJ);
+                boligliste.clear();
+            }
+        });
+    }
+
+    /**
+     * Tømmer markering i tabellen i venstre panel
+     */
+    public void clearTableSelection() {
+        meglerVindu.getVenstrepanel().getTable().clearSelection();
     }
 
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
