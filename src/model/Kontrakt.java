@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import search.Searchable;
 
 /**
  * Kontrakt klassen er ganske spesiell ettersom denne skal bevare historikken
@@ -9,7 +10,7 @@ import java.io.Serializable;
  * fremtidig lagring. Dette blir egentlig dobbellagring men det er nødvendig
  * ettersom vi må se på dette som en "bevaring for fremtiden".
  */
-public class Kontrakt implements Serializable{
+public class Kontrakt implements Serializable, Searchable{
 
     private Annonse annonse;
     private Person megler;
@@ -83,4 +84,27 @@ public class Kontrakt implements Serializable{
                 + ", leietidIMnd=" + leietidIMnd + ", kontraktID=" + kontraktID + '}';
     }
 
+    /**
+     * Datafelt som blir returnert til meglersøk (fritekstsøk).
+     * @return String[] med datafelt.
+     */
+    @Override
+    public String[] toSearch() {
+        String[] searchFields = {
+            String.valueOf(annonse.getBoligID()), 
+            annonse.getBolig().getAdresse(), 
+            annonse.getBolig().getPoststed(), 
+            annonse.getBolig().getPostnummer(), 
+            megler.getEpost(), 
+            megler.getEtternavn(), 
+            megler.getFornavn(), 
+            megler.getTelefon(), 
+            leietaker.getEpost(), 
+            leietaker.getEtternavn(), 
+            leietaker.getFornavn(), 
+            leietaker.getTelefon(),
+            String.valueOf(kontraktID)
+        };
+        return searchFields;
+    }
 }

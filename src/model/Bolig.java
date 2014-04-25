@@ -190,9 +190,19 @@ public abstract class Bolig implements Serializable,  Searchable{
 //        return "Bolig{" + "boligID=" + boligID + " Adresse: " + adresse + ", personID=" + personID + ", meglerID=" + meglerID + ", erUtleid=" + erUtleid + '}';
 //    }
 
+    /**
+     * Datafelt som blir returnert til fritekssøk for megler.
+     * @return String[] med datafelt konvertert til string
+     */
     @Override
     public String[] toSearch() {
-        String[] searchFields = {String.valueOf(boligID), String.valueOf(personID), String.valueOf(meglerID), adresse, postnummer, poststed};
+        String[] searchFields = {
+            String.valueOf(boligID), 
+            String.valueOf(personID), 
+            String.valueOf(meglerID), 
+            adresse, 
+            postnummer, 
+            poststed};
         return searchFields;
     }
 }

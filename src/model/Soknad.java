@@ -4,10 +4,10 @@ import java.io.Serializable;
 import lib.Konstanter;
 import search.Searchable;
 
-public class Soknad implements Serializable, Searchable{
+public class Soknad implements Serializable, Searchable {
 
     private static final long serialVersionUID = Konstanter.SERNUM;
-    
+
     private int soknadID;
     private static int teller = 50000;
     private boolean erBehandlet;
@@ -25,6 +25,7 @@ public class Soknad implements Serializable, Searchable{
 
     /**
      * Brukes for serialsiering.
+     *
      * @return int
      */
     public static int getTeller() {
@@ -33,6 +34,7 @@ public class Soknad implements Serializable, Searchable{
 
     /**
      * Brukes for å gjeoprette telleren etter serialisering.
+     *
      * @param teller int
      */
     public static void setTeller(int teller) {
@@ -81,10 +83,17 @@ public class Soknad implements Serializable, Searchable{
                 + ", LeietakerID: " + leietaker.getPersonID() + ", AnnonseID: " + annonse.getAnnonseID() + "}";
     }
 
+    /**
+     * Returnerer datafelt til fritekstsøk for megler.
+     * @return String[] med datafelt.
+     */
     @Override
     public String[] toSearch() {
-        //TODO: Foreløpig implementerer jeg kun disse felt ettersom vi ikke har spsifisert for hvordan vi ønsker å finne søknader dvs hvilke søknadskriterier skal angis. 
-        String[] searchFields = {String.valueOf(soknadID), String.valueOf(annonse.getAnnonseID()), leietaker.getEpost()};
+        String[] searchFields = {
+            String.valueOf(soknadID),
+            String.valueOf(annonse.getAnnonseID()),
+            leietaker.getEpost()
+        };
         return searchFields;
     }
 

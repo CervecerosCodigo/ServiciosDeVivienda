@@ -122,9 +122,18 @@ public abstract class Person implements Serializable, Searchable {
         return "{" + "personID=" + personID + ", fornavn=" + fornavn + ", etternavn=" + etternavn + ", epost=" + epost + ", telefon=" + telefon + "}";
     }
     
+    /**
+     * Datafelt som blir returnert til fritekstsøk for megler.
+     * @return String[] med datafelt
+     */
     @Override
     public String[] toSearch(){
-        String[] searchFields = {String.valueOf(personID), fornavn, etternavn, epost, telefon};
+        String[] searchFields = {
+            String.valueOf(personID), 
+            fornavn, 
+            etternavn, 
+            epost, 
+            telefon};
         
         return searchFields;
     }
