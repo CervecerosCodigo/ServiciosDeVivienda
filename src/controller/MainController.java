@@ -114,6 +114,14 @@ public class MainController implements Serializable {
                         tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
                         liste.clear();
                         break;
+                    case KONTRAKTOBJ:
+                        tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
+                        liste.clear();
+                        break;
+                    case SOKNADSOBJ:
+                        tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
+                        liste.clear();
+                        break;
                 }
             }
         });
