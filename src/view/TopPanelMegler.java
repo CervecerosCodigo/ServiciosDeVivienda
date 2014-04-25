@@ -67,6 +67,10 @@ public class TopPanelMegler extends AbstractPanel {
     public JRadioButton getLeietakereRadio() {
         return meglerRadioKnapper.getLeietakereRadio();
     }
+    
+    public JRadioButton getKontraktRadio() {
+        return meglerRadioKnapper.getKontraktRadio();
+    }
 
     public void leggTilRadioLytter(ActionListener lytter) {
         meglerRadioKnapper.addRadioListener(lytter);
@@ -81,7 +85,7 @@ public class TopPanelMegler extends AbstractPanel {
 
 class MeglerRadioKnapper extends JPanel {
 
-    private JRadioButton soknaderRadio, annonserRadio, boligerRadio, utleiereRadio, leietakereRadio;
+    private JRadioButton soknaderRadio, annonserRadio, boligerRadio, utleiereRadio, leietakereRadio, kontraktRadio;
     private ButtonGroup radioGroup;
 
     public MeglerRadioKnapper() {
@@ -90,6 +94,7 @@ class MeglerRadioKnapper extends JPanel {
         boligerRadio = new JRadioButton("Boliger");
         utleiereRadio = new JRadioButton("Utleiere");
         leietakereRadio = new JRadioButton("Leietakere");
+        kontraktRadio = new JRadioButton("Kontrakt");
         radioGroup = new ButtonGroup();
 
         radioGroup.add(soknaderRadio);
@@ -97,9 +102,10 @@ class MeglerRadioKnapper extends JPanel {
         radioGroup.add(boligerRadio);
         radioGroup.add(utleiereRadio);
         radioGroup.add(leietakereRadio);
+        radioGroup.add(kontraktRadio);
 
         setVisible(true);
-        setPreferredSize(new Dimension(90, 110));
+        setPreferredSize(new Dimension(90, 130));//Endret til 130 fra 110 for å få plass med den nye radio button for kontrakter
         setLayout(new FlowLayout(FlowLayout.LEFT, 0, -1));
 
         add(soknaderRadio);
@@ -107,6 +113,7 @@ class MeglerRadioKnapper extends JPanel {
         add(boligerRadio);
         add(utleiereRadio);
         add(leietakereRadio);
+        add(kontraktRadio);
 
         soknaderRadio.setSelected(true);
     }
@@ -130,6 +137,10 @@ class MeglerRadioKnapper extends JPanel {
     public JRadioButton getLeietakereRadio() {
         return leietakereRadio;
     }
+    
+    public JRadioButton getKontraktRadio() {
+        return kontraktRadio;
+    }
 
     public void addRadioListener(ActionListener lytter) {
         boligerRadio.addActionListener(lytter);
@@ -137,6 +148,7 @@ class MeglerRadioKnapper extends JPanel {
         leietakereRadio.addActionListener(lytter);
         soknaderRadio.addActionListener(lytter);
         annonserRadio.addActionListener(lytter);
+        kontraktRadio.addActionListener(lytter);
 
     }
 }
