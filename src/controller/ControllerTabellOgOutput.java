@@ -13,8 +13,6 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.html.StyleSheet;
-import lib.BildeFilSti;
-import lib.Konstanter;
 import lib.*;
 import model.*;
 import view.*;
@@ -30,10 +28,6 @@ public class ControllerTabellOgOutput {
 
     }
     
-//    public int getDatasettIBruk(){
-//        return datasettIBruk;
-//    }
-
     /**
      * Tar i mot det vinduet tabellen skal settes for. Metoden oppretter en
      * lytter på tabellen som finner hvilken rad/objekt som er valgt.
@@ -104,9 +98,10 @@ public class ControllerTabellOgOutput {
                 vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
                 break;
         }
-//        vindu.getVenstrepanel().settTabellSortering();
+
         vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
         vindu.getVenstrepanel().resizeKolonneBredde();            
+        vindu.getVenstrepanel().settTabellSortering();        
     }
 
     /**

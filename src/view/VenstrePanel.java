@@ -15,6 +15,7 @@ public class VenstrePanel extends AbstractPanel {
 
     private JTable tabell;
     private TabellModell tabellModell;
+    private TableRowSorter<TabellModell> sorterer;
 
     public VenstrePanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
@@ -22,7 +23,9 @@ public class VenstrePanel extends AbstractPanel {
 
         tabellModell = new TabellModell();
         tabell = new JTable(tabellModell);
-
+        sorterer = new TableRowSorter<>( tabellModell );
+        
+        
         tabell.setFillsViewportHeight(true);
         
         add(new JScrollPane(tabell));
@@ -38,7 +41,7 @@ public class VenstrePanel extends AbstractPanel {
     }
     
     public void settTabellSortering(){
-        tabell.setAutoCreateRowSorter(true);
+        tabell.setRowSorter(sorterer);
     }
 
     /**
