@@ -40,7 +40,7 @@ public class ControllerToppPanelMegler<E> {
         //Setter lyttere i Toppanelet.
         vindu.getToppanelMegler().leggTilRadioLytter(new RadioLytter());
         vindu.getToppanelMegler().leggTilKnappeLytter(new KnappeLytter());
-
+        
     }
 
     public void setListListener(ListListener listListener) {
@@ -111,10 +111,11 @@ public class ControllerToppPanelMegler<E> {
                             sokeResultat = fsearch.searchForPattern(annonseliste, soketekst);
                             break;
                         case KONTRAKTOBJ:
-                            Melding.visMelding(radioTypeValgt.name(), "Vi har ingen radiobutton for kontrakter og toSearch er ikke implementert i kontrakt klasse enda.");
+                            //TODO: vi har ingen radiobutton for å søke etter kontrakter.
+                            sokeResultat = fsearch.searchForPattern(kontraktliste, soketekst);
                             break;
                         case SOKNADSOBJ:
-                            Melding.visMelding(radioTypeValgt.name(), "Søkning etter søknader er ikke enda implemetert ettersom vi ikke har testet søkningen på LinkedHashSet enda.\nMer data trengs.");
+                            sokeResultat = fsearch.searchForPattern(soknadsliste, soketekst);
                             break;
                         default: 
                             Melding.visMelding("Søk", "Mangler valg");
