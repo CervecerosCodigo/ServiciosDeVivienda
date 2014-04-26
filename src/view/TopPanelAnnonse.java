@@ -10,6 +10,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import lib.RegexTester;
 
 public class TopPanelAnnonse extends AbstractPanel {
 
@@ -135,10 +136,10 @@ public class TopPanelAnnonse extends AbstractPanel {
             bindestrekLabel = new JLabel("-");
             arealLabel = new JLabel("Areal");
             bindestrekLabel2 = new JLabel("-");
-            minPrisFelt = new CustomJTextField("min", null, 5);
-            maksPrisFelt = new CustomJTextField("maks", null, 5);
-            minArealFelt = new CustomJTextField("min", null, 5);
-            maksArealFelt = new CustomJTextField("maks", null, 5);
+            minPrisFelt = new CustomJTextField("min", RegexTester.PRIS, 5);
+            maksPrisFelt = new CustomJTextField("maks", RegexTester.PRIS, 5);
+            minArealFelt = new CustomJTextField("min", RegexTester.KVM_BOLIG, 5);
+            maksArealFelt = new CustomJTextField("maks", RegexTester.KVM_BOLIG, 5);
             fyllPanel = new JPanel();
 
             fyllPanel.setPreferredSize(new Dimension(120, 110));
