@@ -1,5 +1,7 @@
 package lib;
 
+import java.util.regex.PatternSyntaxException;
+
 /**
  * Klassen tester for vanligste reguljøre uttryck tværs over programmet. File:
  * RegexTester.java Package: model Project: ServiciosDeVivienda Mar 31, 2014
@@ -8,27 +10,30 @@ package lib;
  */
 public class RegexTester {
 
-    private static final String NAVN_PATTERN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}$";
-    private static final String EPOST_PATTERN = "^([a-zA-Z0-9])+([a-zA-Z0-9\\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\\._-]+)+$";
-    private static final String GATE_NAVN_PATTERN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s]?[A-ZÆØÅ]?[a-zæøå]*$";
-    private static final String GATE_NR_PATTERN = "^[1-9]{1}[0-9]{0,2}$";
-    private static final String POST_NUMMER_PATTERN = "^[0-9]{4}$";
-    private static final String POSTORT_NAVN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}$";
-    private static final String TEL_NUMMER_NORSK = "^[1-9]{1}[0-9]{7}$";
-    private static final String PERSONNUMMER = "^[0-9]{11}$";
-    private static final String YEAR = "^[1|2]{1}[0-9]{3}$";
-    private static final String MONTH_NUMMER = "^([0]{1}[1-9]{1})|([1]{1}[0-2]{1})$";
-    private static final String DAY_OF_MONTH_NUMMER = "^([0|1|2]{1}[0-9]{1})|([3]{1}[0|1]{1})$";
-    private static final String KVM_BOLIG = "^[1-9]{1}[0-9]{0,3}$";
-    private static final String KVM_TOMT = "^[1-9]{1}[0-9]{0,4}$";
-    private static final String ETASJE = "^[1-9]{1}[0-9]{0,1}$";
-    private static final String PRIS = "^[1-9]{1}[0-9]{0,5}$";
+    public static final String NAVN_PATTERN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}$";
+    public static final String EPOST_PATTERN = "^([a-zA-Z0-9])+([a-zA-Z0-9\\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\\._-]+)+$";
+    public static final String GATE_NAVN_PATTERN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s]?[A-ZÆØÅ]?[a-zæøå]*$";
+    public static final String GATE_NR_PATTERN = "^[1-9]{1}[0-9]{0,2}$";
+    public static final String POST_NUMMER_PATTERN = "^[0-9]{4}$";
+    public static final String POSTORT_NAVN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}$";
+    public static final String TEL_NUMMER_NORSK = "^[1-9]{1}[0-9]{7}$";
+    public static final String PERSONNUMMER = "^[0-9]{11}$";
+    public static final String YEAR = "^[1|2]{1}[0-9]{3}$";
+    public static final String MONTH_NUMMER = "^([0]{1}[1-9]{1})|([1]{1}[0-2]{1})$";
+    public static final String DAY_OF_MONTH_NUMMER = "^([0|1|2]{1}[0-9]{1})|([3]{1}[0|1]{1})$";
+    public static final String KVM_BOLIG = "^[1-9]{1}[0-9]{0,3}$";
+    public static final String KVM_TOMT = "^[1-9]{1}[0-9]{0,4}$";
+    public static final String ETASJE = "^[1-9]{1}[0-9]{0,1}$";
+    public static final String PRIS = "^[1-9]{1}[0-9]{0,5}$";
+    private static boolean erTestOK;
 
     public RegexTester() {
     }
 
     /**
-     * Tester dersom et navn innholder kun alfanumeriske tegn. Brukes kun på for- eller etternavn for seg ettersom denne atr ikke høyde for whitespaces. Navnet må begynne med stor bokstav.
+     * Tester dersom et navn innholder kun alfanumeriske tegn. Brukes kun på
+     * for- eller etternavn for seg ettersom denne atr ikke høyde for
+     * whitespaces. Navnet må begynne med stor bokstav.
      *
      * @param navn String
      * @return boolean
@@ -46,13 +51,15 @@ public class RegexTester {
     public static boolean testEpost(String epost) {
         return patternMatchOK(epost, EPOST_PATTERN);
     }
-    
+
     /**
-     * Tester norsk gatenavn. Et gatenavn kan bestå av 1 til 3 ord separert med blank tegn. Alle ord må begynne med stor bokstav.
+     * Tester norsk gatenavn. Et gatenavn kan bestå av 1 til 3 ord separert med
+     * blank tegn. Alle ord må begynne med stor bokstav.
+     *
      * @param gatenavn String
      * @return boolean
      */
-    public static boolean testGateNavn(String gatenavn){
+    public static boolean testGateNavn(String gatenavn) {
         return patternMatchOK(gatenavn, GATE_NAVN_PATTERN);
     }
 
@@ -79,6 +86,7 @@ public class RegexTester {
 
     /**
      * Tester på navn for en postort. Må begynne på stor bokstav.
+     *
      * @param postortnavn String
      * @return boolean
      */
@@ -191,7 +199,12 @@ public class RegexTester {
      * @return boolean
      */
     private static boolean patternMatchOK(String input, String regex) {
-        return input.matches(regex);
+        try {
+            erTestOK = input.matches(regex);
+        } catch (PatternSyntaxException e) {
+            System.out.println("Regex xception: input = " + input + " regex = " + regex);
+        }
+        return erTestOK;
     }
 
 }
