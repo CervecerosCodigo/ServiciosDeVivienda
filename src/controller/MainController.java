@@ -97,7 +97,10 @@ public class MainController implements Serializable {
 //            return;//verden beste hack for å avbryte etter en iterasjon
 //        }
         /////SLUTT PÅ TEST FOR HJELPEKLASSER AV FILSTIER OG FILER//////
-        //Tester å få tak på listen fra toppPanelMegler
+        /**
+         * Fyller inn data med søkeresultat som kommer fra
+         * ControllerToppPanelMegler
+         */
         toppPanelControllerMegler.setListListener(new ListListener() {
 
             //TODO: Her må vi få brukt clearTableSelection() metoden som finnes i MainController;
@@ -125,6 +128,25 @@ public class MainController implements Serializable {
                         liste.clear();
                         break;
                 }
+            }
+
+            @Override
+            public void listReady(HashSet liste, ObjektType obj) {
+                //Brukes ikke her
+            }
+        });
+
+        toppPanelControllerAnnonse.setListListener(new ListListener() {
+
+            @Override
+            public void listReady(ArrayList liste, ObjektType obj) {
+                //Brukes ikke her
+            }
+
+            @Override
+            public void listReady(HashSet liste, ObjektType obj) {
+                tabellControllerAnnonse.settInnDataITabell(liste, annonseVindu, obj);
+                liste.clear();
             }
         });
     }
