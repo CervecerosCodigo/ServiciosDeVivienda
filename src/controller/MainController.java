@@ -6,6 +6,7 @@ import java.util.*;
 import lib.*;
 import model.*;
 import register.*;
+import test.filklasser.TestBildeFilSti;
 import test.searchklasser.TestAnnonseFilter;
 import test.searchklasser.TestFritekstSok;
 import view.*;
@@ -308,7 +309,11 @@ public class MainController implements Serializable {
 
     public void opprettEneboligOgLeggIRegister(Boligtype boligtype, int antallEtasjer, boolean harKjeller, int tomtAreal, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
         Bolig enebolig = new Enebolig(boligtype, antallEtasjer, harKjeller, tomtAreal, personID, adresse, postnummer, poststed, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
-
+        
+        //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
+        BildeFilSti gallerimappe = new BildeFilSti();
+        gallerimappe.lagBildemappeForBolig(enebolig);
+        
         if (boligRegister.leggTilObjekt(enebolig)) {
             System.out.println("Enebolig er lagt inn i registeret.");
             return;
@@ -319,6 +324,10 @@ public class MainController implements Serializable {
     public void opprettLeilighetOgLeggIRegister(int etasjeNr, int balkongAreal, int bodAreal, boolean harHeis, boolean harGarsje, boolean harFellesvaskeri, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
 
         Bolig leilighet = new Leilighet(etasjeNr, balkongAreal, bodAreal, harHeis, harGarsje, harFellesvaskeri, personID, adresse, postnummer, poststed, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
+        
+        //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
+        BildeFilSti gallerimappe = new BildeFilSti();
+        gallerimappe.lagBildemappeForBolig(leilighet);
 
         if (boligRegister.leggTilObjekt(leilighet)) {
             System.out.println("Leilighet er lagt inn i registeret.");
@@ -390,6 +399,9 @@ public class MainController implements Serializable {
                 "0453", "Oslo", 75, 1970, "Trenger oppussing.", false, tilgjenglig1);
         opprettLeilighetOgLeggIRegister(2, 0, 10, true, false, true, 10004, "Groruddalen 1",
                 "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.", false, tilgjenglig3);
+        //Tester slik at mappen blir oprettet
+        opprettLeilighetOgLeggIRegister(2, 0, 10, true, false, true, 10004, "Pilestredet 35",
+                "0166", "Oslo", 300, 1950, "HiOA", false, tilgjenglig3);
 
 //        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu, Konstanter.PERSONOBJ);
         tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, ObjektType.BOLIGOBJ);
