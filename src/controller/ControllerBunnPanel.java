@@ -3,7 +3,7 @@ package controller;
 
 import java.awt.event.*;
 import javax.swing.JTable;
-import lib.Konstanter;
+import lib.ObjektType;
 import view.ArkfaneTemplate;
 
 
@@ -21,8 +21,8 @@ public class ControllerBunnPanel {
         vindu.getBunnpanel().addKnappeLytter( lytter = new KnappeLytter( vindu ));
     }
     
-    public void settDatasettIBruk( int datasettIBruk ){
-        lytter.settDatasettIBruk(datasettIBruk);
+    public void settDatasettIBruk( ObjektType objekttype ){
+        lytter.settDatasettIBruk(objekttype);
     }
     
     /**
@@ -31,7 +31,7 @@ public class ControllerBunnPanel {
     class KnappeLytter implements ActionListener{
 
         ArkfaneTemplate vindu;
-        int datasettIBruk;
+        ObjektType datasettIBruk;
         int raderITabell;
         
         public KnappeLytter( ArkfaneTemplate vindu ){
@@ -39,26 +39,26 @@ public class ControllerBunnPanel {
             
         }
         
-        public void settDatasettIBruk( int datasettIBruk ){
-            this.datasettIBruk = datasettIBruk;
+        public void settDatasettIBruk( ObjektType objekttype ){
+            this.datasettIBruk = objekttype;
         }
         
         @Override
         public void actionPerformed(ActionEvent e) {
             //datasettIBruk = ControllerTabellOgOutput.getDatasettIBruk();
             JTable tabell = vindu.getVenstrepanel().getTable();
-            raderITabell = vindu.getVenstrepanel().getTabellModell().getRowCount();
+            raderITabell = vindu.getVenstrepanel().getTable().getModel().getRowCount();
             /**
              * FixME
              * Kan ikke lage ferdig før vi har vinduer for oppretting/endring av objekter.
              */
             if( e.getSource().equals(vindu.getBunnpanel().getEndreKnapp())){
                 switch(datasettIBruk){
-                    case Konstanter.PERSONOBJ:
-                    case Konstanter.BOLIGOBJ:
-                    case Konstanter.ANNONSEOBJ:
-                    case Konstanter.KONTRAKTOBJ:
-                    case Konstanter.SOKNADOBJ:
+                    case PERSONOBJ:
+                    case BOLIGOBJ:
+                    case ANNONSEOBJ:
+                    case KONTRAKTOBJ:
+                    case SOKNADSOBJ:
                 }
             } else if(e.getSource().equals(vindu.getBunnpanel().getTilbakeKnapp())){
                 vindu.getVenstrepanel().getTable().changeSelection(tabell.getSelectedRow() -1, 0, false, false);

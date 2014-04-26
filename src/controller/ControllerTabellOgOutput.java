@@ -9,18 +9,29 @@ package controller;
  */
 
 
+import java.awt.Component;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.html.StyleSheet;
-import lib.BildeFilSti;
-import lib.Konstanter;
 import lib.*;
 import model.*;
 import view.*;
 
 public class ControllerTabellOgOutput {
 
+    private JTable tabell;
+    private TabellModell tabellModellBolig;
+    private TabellModell tabellModellPerson;
+    private TabellModell tabellModellAnnonse;
+    private TabellModell tabellModellKontrakt;
+    private TabellModell tabellModellSoknad;
+    
+    private TableRowSorter<TabellModell> sorterer;
+    
     private Object[] tabellData;
     private ObjektType objekttype;
     private Collection liste;
@@ -28,12 +39,14 @@ public class ControllerTabellOgOutput {
 
     public ControllerTabellOgOutput() {
 
+        tabellModellBolig = new TabellModellBolig();
+        tabellModellPerson = new TabellModellPerson();
+        tabellModellAnnonse = new TabellModellAnnonse();
+        tabellModellKontrakt = new TabellModellKontrakt();
+        tabellModellSoknad = new TabellModellSoknad();
+        sorterer = new TableRowSorter();                
     }
     
-//    public int getDatasettIBruk(){
-//        return datasettIBruk;
-//    }
-
     /**
      * Tar i mot det vinduet tabellen skal settes for. Metoden oppretter en
      * lytter på tabellen som finner hvilken rad/objekt som er valgt.
@@ -43,7 +56,7 @@ public class ControllerTabellOgOutput {
      */
     public void settOppTabellLytter(final ArkfaneTemplate vindu) {
         //Setter en lytter som finner raden som er valgt
-        final JTable tabell = vindu.getVenstrepanel().getTable();
+        tabell = vindu.getVenstrepanel().getTable();
         
         tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
@@ -69,46 +82,73 @@ public class ControllerTabellOgOutput {
 
         switch (objekttype) {
             case PERSONOBJ:
-                kolonneNavn = new String[]{"ID", "Fornavn", "Etternavn", "Epost"};
-                tabellData = liste.toArray();
-                this.liste = liste;
                 this.objekttype = ObjektType.PERSONOBJ;
-                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
+                this.liste = liste;
+                tabellData = liste.toArray();
+                tabellModellPerson.fyllTabellMedInnhold(tabellData);
+                vindu.getVenstrepanel().getTable().setModel(tabellModellPerson);                
+                tabellModellPerson.fireTableStructureChanged();
                 break;
             case BOLIGOBJ:
-                kolonneNavn = new String[]{"BoligID", "EierID", "Adresse", "Utleid"};
-                tabellData = liste.toArray();
-                this.liste = liste;
                 this.objekttype = ObjektType.BOLIGOBJ;
-                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
+                this.liste = liste;
+                tabellData = liste.toArray();
+                tabellModellBolig.fyllTabellMedInnhold(tabellData);
+                vindu.getVenstrepanel().getTable().setModel(tabellModellBolig);
+                tabellModellBolig.fireTableStructureChanged();
+                
                 break;
             case ANNONSEOBJ:
-                kolonneNavn = new String[]{"AnnonseID", "Adresse", "Depositum", "Pris pr mnd"};
+                this.objekttype = ObjektType.ANNONSEOBJ;
                 tabellData = liste.toArray();
                 this.liste = liste;
-                this.objekttype = ObjektType.ANNONSEOBJ;
-                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
+                tabellModellAnnonse.fyllTabellMedInnhold(tabellData);
+                vindu.getVenstrepanel().getTable().setModel(tabellModellAnnonse);                
+                tabellModellAnnonse.fireTableStructureChanged();
                 break;
             case KONTRAKTOBJ:
-                kolonneNavn = new String[]{"KontraktID", "BoligID", "LeietakerID", "Varighet"};
+                this.objekttype = ObjektType.KONTRAKTOBJ;
                 tabellData = liste.toArray();
                 this.liste = liste;
-                this.objekttype = ObjektType.KONTRAKTOBJ;
-                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
+                tabellModellKontrakt.fyllTabellMedInnhold(tabellData);
+                vindu.getVenstrepanel().getTable().setModel(tabellModellKontrakt);                 
+                tabellModellKontrakt.fireTableStructureChanged();                
                 break;
             case SOKNADSOBJ:
-                kolonneNavn = new String[]{"AnnonseID", "Adresse", "Søkers fornavn", "Søkers etternavn"};
+                this.objekttype = ObjektType.SOKNADSOBJ;                
                 tabellData = liste.toArray();
                 this.liste = liste;
-                this.objekttype = ObjektType.SOKNADSOBJ;
-                vindu.getVenstrepanel().getTabellModell().fyllTabellMedInnhold(tabellData, kolonneNavn, objekttype);
+                tabellModellSoknad.fyllTabellMedInnhold(tabellData);
+                vindu.getVenstrepanel().getTable().setModel(tabellModellSoknad);                 
+                tabellModellSoknad.fireTableStructureChanged();                                
                 break;
         }
-//        vindu.getVenstrepanel().settTabellSortering();
-        vindu.getVenstrepanel().getTabellModell().fireTableStructureChanged();
-        vindu.getVenstrepanel().resizeKolonneBredde();            
+        resizeKolonneBredde();            
+        vindu.getVenstrepanel().settTabellSortering();        
     }
 
+    /**
+     * Setter kolonnebredden etter innholdet i tabellen. Sammen med tabellens
+     * Auto-resize så blir tabellen fyllt ut i maks bredde, men samtidig med
+     * rett kolonnebredde.
+     */
+    public void resizeKolonneBredde() {
+        TableColumnModel kolonneModell = tabell.getColumnModel();
+        Component comp = null;
+        TableCellRenderer renderer = null;
+        
+        for (int kol = 0; kol < tabell.getColumnCount(); kol++) {
+            int bredde = 50; //minste bredde
+            for (int rad = 0; rad < tabell.getRowCount(); rad++) {
+                renderer = tabell.getCellRenderer(rad, kol);
+                comp = tabell.prepareRenderer(renderer, rad, kol);
+                bredde = Math.max(comp.getPreferredSize().width, bredde);
+            }
+            kolonneModell.getColumn(kol).setPreferredWidth(bredde);
+        }
+    }
+    
+    
     /**
      * Tar i mot data og bestemmer hvilken "HTML"-metode som skal kalles.
      * @param valgtRad

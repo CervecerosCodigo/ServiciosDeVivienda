@@ -72,10 +72,11 @@ public class MainController implements Serializable {
          * Man vil sende med resultatet fra søk i toppanel i stedet for hele
          * listen, der det er ønskelig.
          */
-        tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, ObjektType.BOLIGOBJ);
-        tabellControllerAnnonse.settInnDataITabell(annonseliste, annonseVindu, ObjektType.ANNONSEOBJ);
         tabellControllerMegler.settOppTabellLytter(meglerVindu);
+        tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, ObjektType.BOLIGOBJ);
+        
         tabellControllerAnnonse.settOppTabellLytter(annonseVindu);
+        tabellControllerAnnonse.settInnDataITabell(annonseliste, annonseVindu, ObjektType.ANNONSEOBJ);
 
         bunnController.settKnappeLytter(meglerVindu);
         bunnController.settKnappeLytter(annonseVindu);
