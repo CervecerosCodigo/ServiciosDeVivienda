@@ -43,6 +43,12 @@ public class ControllerToppPanelMegler<E> {
         
     }
 
+    /**
+     * Tar imot ListListener interfacet med hensikt til å sende events og data
+     * opp til overliggende controller (MainController).
+     * 
+     * @param listListener 
+     */
     public void setListListener(ListListener listListener) {
         this.listListener = listListener;
     }
@@ -123,7 +129,8 @@ public class ControllerToppPanelMegler<E> {
                         default: 
                             Melding.visMelding("Søk", "Mangler valg");
                     }
-
+                    
+                    //Sender søkeresultat til MainController via interface
                     if (listListener != null) {
                         listListener.listReady(sokeResultat, radioTypeValgt);
                     }
