@@ -106,12 +106,13 @@ public class BildeFilSti {
     public void lagBildemappeForBolig(Bolig bolig) {
         File filsti = new File(getBoligGalleryPath(bolig));
         try {
-            filsti.mkdirs();
+            if (filsti.mkdirs()) {
+                kopierStandardBilde(bolig);
+//            kopierStandardBilde2(bolig);
+            }
+
         } catch (SecurityException se) {
             Melding.visMelding("Sikkerhetsvarning", "Mislykket med å oprette gallerimappe\n" + se.getMessage());
-        } finally {
-            kopierStandardBilde(bolig);
-//            kopierStandardBilde2(bolig);
         }
     }
 
@@ -128,7 +129,7 @@ public class BildeFilSti {
         try {
             Files.copy(kildeFil.toPath(), destinasjonsFil.toPath());
         } catch (IOException ex) {
-            Melding.visMelding("kopierStandardBilde()", ex.getLocalizedMessage());
+            Melding.visMelding("kopierStandardBilde()", "IO Feil\n" + ex.getLocalizedMessage());
         }
     }
 
