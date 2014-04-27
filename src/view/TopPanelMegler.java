@@ -105,8 +105,8 @@ class MeglerRadioKnapper extends JPanel {
         radioGroup.add(kontraktRadio);
 
         setVisible(true);
-        setPreferredSize(new Dimension(90, 130));//Endret til 130 fra 110 for å få plass med den nye radio button for kontrakter
-        setLayout(new FlowLayout(FlowLayout.LEFT, 0, -1));
+        setPreferredSize(new Dimension(90, 115));//Endret til 130 fra 110 for å få plass med den nye radio button for kontrakter
+        setLayout(new FlowLayout(FlowLayout.LEFT, 0, -4));
 
         add(soknaderRadio);
         add(annonserRadio);

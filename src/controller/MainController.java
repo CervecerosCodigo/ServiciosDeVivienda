@@ -298,15 +298,6 @@ public class MainController implements Serializable {
         System.out.println("Leietaker ble ikke lagt inn i registeret.");
     }
 
-    public void opprettMeglerOgLeggIRegister(String fornavn, String etternavn, String epost, String tlfnr, int meglerID, String kontor) {
-        Person megler = new Megler(fornavn, etternavn, epost, tlfnr, meglerID, kontor);
-
-        if (personRegister.leggTilObjekt(megler)) {
-            System.out.println("Megler er lagt inn i registeret.");
-            return;
-        }
-        System.out.println("Megler ble ikke lagt inn i registeret.");
-    }
 
     public void opprettEneboligOgLeggIRegister(Boligtype boligtype, int antallEtasjer, boolean harKjeller, int tomtAreal, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
         Bolig enebolig = new Enebolig(boligtype, antallEtasjer, harKjeller, tomtAreal, personID, adresse, postnummer, poststed, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
@@ -357,7 +348,6 @@ public class MainController implements Serializable {
         Calendar utlopsdato2 = opprettKalenderobjekt(2014, 6, 30);
         Calendar utlopsdato3 = opprettKalenderobjekt(2014, 7, 1);
 
-        opprettMeglerOgLeggIRegister("Per", "Meglersen", "megler@serviciosdevivienda.no", "45673300", 1000, "Oslokontoret");
         opprettUtleierOgLeggIRegister("Hans", "Pedersen", "pedersen@boflott.no", "90006788", true, "Bo flott AS");
         opprettUtleierOgLeggIRegister("Petter", "Stordalen", "pstordalen@yahoo.com", "23904532", false, null);
         opprettUtleierOgLeggIRegister("Kristian", "Stormare", "kstor@stormare.no", "21304050", true, "Stormare AS");

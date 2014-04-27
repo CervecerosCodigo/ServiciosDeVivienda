@@ -6,20 +6,13 @@ package model;
 
 public class Megler extends Person {
 
-	private int meglerID;
+	private String brukernavn;
+	private String passord;
 	private String kontor;
 
-	public Megler(String fornavn, String etternavn, String epost, String telefon, int meglerID, String kontor) {
+	public Megler(String fornavn, String etternavn, String epost, String telefon, String kontor) {
 		
 		super(fornavn, etternavn, epost, telefon);
-		this.meglerID = meglerID;
 		this.kontor = kontor;
 	}
-
-    @Override
-    public String toString() {
-        return "Megler{personID " + super.getPersonID() + ", meglerID=" + meglerID + ", kontor=" + kontor + "}\n";
-    }
-
-        
 }
