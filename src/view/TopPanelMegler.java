@@ -19,7 +19,7 @@ public class TopPanelMegler extends AbstractPanel {
 
         super(borderTitle, dimHeight, dimWidth);
         meglerRadioKnapper = new MeglerRadioKnapper();
-        sokeFelt = new CustomJTextField("Søk", "", 22);
+        sokeFelt = new CustomJTextField("Søk", "", 17);
         sokeKnapp = new JButton("Søk");
         lagNyKnapp = new JButton("Lag ny");
 
