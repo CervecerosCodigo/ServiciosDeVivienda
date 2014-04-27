@@ -105,7 +105,7 @@ public class ControllerToppPanelMegler<E> {
                 
                 String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
                 if (soketekst.equals("Søk") || soketekst.equals("")) {
-                    Melding.visMelding("Søk", "Søkefeltet er tomt");
+                    Melding.visMelding("Søk", "Søkefeltet er tomt.\nBruk * for å vise hele registeret.");
                 } else {
 
                     //TODO: Dersom vi får tid må vi fjerne alle typer av slik hardkoding for swing komponentnavn
