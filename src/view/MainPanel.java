@@ -16,6 +16,8 @@ public class MainPanel extends JPanel{
         super( new GridLayout( 1, 1));
         this.megler = (JPanel) megler;
         this.annonse = (JPanel) annonse;
+        setBackground(new Color(210, 210, 210));
+        
         arkfaner = new JTabbedPane(JTabbedPane.TOP);
         
         //Legger til tab og kobler med panelet.
