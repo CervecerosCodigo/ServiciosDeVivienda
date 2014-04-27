@@ -1,9 +1,8 @@
 package serviciosdevivienda;
 
-import controller.*;
-import java.util.*;
 import javax.swing.SwingUtilities;
-import model.*;
+
+import controller.SkrivTilLesFraFil;
 
 /**
  *
