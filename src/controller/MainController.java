@@ -1,6 +1,7 @@
 package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import controller.registrer.ControllerUtleierFrame;
 import java.io.*;
 import java.util.*;
 import lib.*;
@@ -10,6 +11,7 @@ import test.filklasser.TestBildeFilSti;
 import test.searchklasser.TestAnnonseFilter;
 import test.searchklasser.TestFritekstSok;
 import view.*;
+import view.registrer.UtleierFrame;
 
 /**
  * Dette er hovedkontrolleren mellom GUI og funksjonalitet. Mer info siden..
@@ -41,6 +43,8 @@ public class MainController implements Serializable {
     private ControllerTabellOgOutput tabellControllerAnnonse;
     private ControllerToppPanelMegler toppPanelControllerMegler;
     private ControllerToppPanelAnnonse toppPanelControllerAnnonse;
+    
+    private ControllerUtleierFrame controllerUtleierFrame;
 
     public MainController(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
@@ -55,6 +59,8 @@ public class MainController implements Serializable {
         tabellControllerAnnonse = new ControllerTabellOgOutput();
         toppPanelControllerMegler = new ControllerToppPanelMegler(meglerVindu, personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerAnnonse = new ControllerToppPanelAnnonse(annonseVindu, annonseliste);
+        
+        controllerUtleierFrame = new ControllerUtleierFrame(new UtleierFrame(), personliste);
 
         this.personliste = personliste;
         this.boligliste = boligliste;
