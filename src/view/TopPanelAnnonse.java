@@ -2,6 +2,7 @@ package view;
 
 //Laget av Petter.
 //Editert av Lukas. Lagt til getters og lyttere for komponenter 26.04
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
@@ -26,6 +27,7 @@ public class TopPanelAnnonse extends AbstractPanel {
 
         setVisible(true);
         setLayout(new FlowLayout(FlowLayout.LEFT, 40, 0));
+      
 
         add(checkBoxKnappeGruppe);
         add(knappeGruppeHoyre);

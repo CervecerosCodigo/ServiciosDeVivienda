@@ -4,6 +4,7 @@ package controller;
 import controller.registrer.ControllerUtleierFrame;
 import java.io.*;
 import java.util.*;
+import javax.swing.JTable;
 import lib.*;
 import model.*;
 import register.*;
@@ -79,6 +80,7 @@ public class MainController implements Serializable {
          * Man vil sende med resultatet fra søk i toppanel i stedet for hele
          * listen, der det er ønskelig.
          */
+
         tabellControllerMegler.settOppTabellLytter(meglerVindu);
         tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, ObjektType.BOLIGOBJ);
         
