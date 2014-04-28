@@ -130,6 +130,8 @@ public class ControllerTabellOgOutput {
             vindu.getVenstrepanel().sorterTabellVedOppstart();
         } catch (ArrayIndexOutOfBoundsException aiobe) {
 
+        } catch (NullPointerException npe ){
+            
         }
     }
 
