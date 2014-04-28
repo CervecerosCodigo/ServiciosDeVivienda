@@ -11,6 +11,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import lib.Konstanter;
 import lib.RegexTester;
 
 public class TopPanelAnnonse extends AbstractPanel {
@@ -27,7 +28,7 @@ public class TopPanelAnnonse extends AbstractPanel {
 
         setVisible(true);
         setLayout(new FlowLayout(FlowLayout.LEFT, 40, 0));
-      
+        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);      
 
         add(checkBoxKnappeGruppe);
         add(knappeGruppeHoyre);
@@ -145,9 +146,10 @@ public class TopPanelAnnonse extends AbstractPanel {
             fyllPanel = new JPanel();
 
             fyllPanel.setPreferredSize(new Dimension(120, 110));
-
+            fyllPanel.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
             setVisible(true);
             setLayout(new FlowLayout());
+            setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
 
             add(postStedBox);
             add(boligTypeBox);
@@ -231,7 +233,13 @@ public class TopPanelAnnonse extends AbstractPanel {
             setVisible(true);
             setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
             setPreferredSize(new Dimension(90, 110));
-
+            setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+            
+            balkongCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+            fellesvaskCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+            hageCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+            kjellerCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+            
             add(balkongCheckBox);
             add(fellesvaskCheckBox);
             add(hageCheckBox);

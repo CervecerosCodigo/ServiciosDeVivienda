@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
+import lib.Konstanter;
 
 
 public class MainPanel extends JPanel{
@@ -18,7 +19,7 @@ public class MainPanel extends JPanel{
         super( new GridLayout( 1, 1));
         this.megler = (JPanel) megler;
         this.annonse = (JPanel) annonse;
-        setBackground(new Color(210, 210, 210));
+        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         
         arkfaner = new JTabbedPane(JTabbedPane.TOP);
         

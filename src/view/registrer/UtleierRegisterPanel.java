@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
+import lib.Konstanter;
 import lib.RegexTester;
 import view.CustomJTextField;
 
@@ -37,6 +38,7 @@ public class UtleierRegisterPanel extends JPanel {
         Dimension dim = getPreferredSize();
         dim.width = 400;
         setPreferredSize(dim);
+        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         //Labels
         fornavnLabel = new JLabel("Fornavn: ");
         etternavnLabel = new JLabel("Etternavn: ");
@@ -52,6 +54,7 @@ public class UtleierRegisterPanel extends JPanel {
         erRepresentatForField = new CustomJTextField("Navn på representat", RegexTester.NAVN_PATTERN, BREDDE1);
         //Cheboxes
         erRepresentantCheckBox = new JCheckBox();
+        erRepresentantCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         //Knapper
         avbrytButton = new JButton("Avbryt");
         lagreButton = new JButton("Lagre");

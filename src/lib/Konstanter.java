@@ -1,6 +1,7 @@
 package lib;
 
 import controller.ControllerTabellOgOutput;
+import java.awt.Color;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
@@ -52,12 +53,10 @@ public class Konstanter {
      */
     public static final String STANDARDBILDE = "1.jpg";
 
-    public static final int PERSONOBJ = 1;
-    public static final int BOLIGOBJ = 2;
-    public static final int ANNONSEOBJ = 3;
-    public static final int KONTRAKTOBJ = 4;
-    public static final int SOKNADOBJ = 5;
 
     public static NumberFormat nf = NumberFormat.getIntegerInstance();
     public static SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+    
+
+    public static final Color BAKGRUNNSFARGEPANEL = new Color(220, 230, 250);
 }

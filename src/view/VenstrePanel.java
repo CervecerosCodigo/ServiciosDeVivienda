@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.*;
+import lib.Konstanter;
 
 /**
  * Denne klassen er et JPanel (arvet) som inneholder tabellen. Den definerer
@@ -22,7 +23,7 @@ public class VenstrePanel extends AbstractPanel {
     public VenstrePanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
         setLayout(new GridLayout(1, 1));
-
+        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         tabell = new JTable();
         tabell.setAutoCreateRowSorter(true);
         tabell.setFillsViewportHeight(true);

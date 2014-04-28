@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
+import lib.Konstanter;
 
 
 
@@ -21,7 +22,7 @@ public class SenterPanel extends AbstractPanel{
     public SenterPanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
         setLayout( new GridLayout(1, 1));
-        
+        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         output = new JEditorPane();
         kit = new HTMLEditorKit();
         dok = kit.createDefaultDocument();

@@ -9,6 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import lib.Konstanter;
 
 public class LoggInnDialog extends JDialog {
 	
@@ -27,7 +28,7 @@ public class LoggInnDialog extends JDialog {
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		setSize(180, 180);
-		
+		setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
 		add(brukernavnLabel);
 		add(brukernavnFelt);
 		add(passordLabel);

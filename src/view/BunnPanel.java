@@ -4,6 +4,7 @@ package view;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import lib.Konstanter;
 
 public class BunnPanel extends AbstractPanel {
 
@@ -13,6 +14,7 @@ public class BunnPanel extends AbstractPanel {
         super(borderTitle, dimHeight, dimWidth);
 
         setLayout(new GridLayout(1, 1));
+        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         endre = new JButton("Endre");
         frem = new JButton("Frem");
         tilbake = new JButton("Tilbake");

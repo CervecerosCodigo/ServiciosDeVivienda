@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import lib.Konstanter;
 
 public abstract class AbstractPanel extends JPanel{
 
@@ -24,7 +25,7 @@ public abstract class AbstractPanel extends JPanel{
         dim.width = this.dimWidth;
         setPreferredSize(dim);
         
-        //setBackground(new Color(210, 210, 210));
+        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
 
         Border innerBorder = BorderFactory.createTitledBorder(this.borderTitle);
         Border outerBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);

@@ -8,6 +8,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import lib.Konstanter;
 
 public class TopPanelMegler extends AbstractPanel {
 
@@ -25,7 +26,7 @@ public class TopPanelMegler extends AbstractPanel {
 
         setLayout(new FlowLayout(FlowLayout.LEADING, 40, 0));
         setVisible(true);
-
+        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         add(meglerRadioKnapper);
         add(sokeFelt);
         add(sokeKnapp);
@@ -107,7 +108,16 @@ class MeglerRadioKnapper extends JPanel {
         setVisible(true);
         setPreferredSize(new Dimension(90, 115));//Endret til 130 fra 110 for å få plass med den nye radio button for kontrakter
         setLayout(new FlowLayout(FlowLayout.LEFT, 0, -4));
-
+        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+        
+        soknaderRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+        annonserRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+        boligerRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+        utleiereRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+        leietakereRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+        kontraktRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+        
+        
         add(soknaderRadio);
         add(annonserRadio);
         add(boligerRadio);
