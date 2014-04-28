@@ -1,9 +1,11 @@
 package view;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import javax.swing.*;
+
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeListener;
 
 
 public class MainPanel extends JPanel{
@@ -27,6 +29,9 @@ public class MainPanel extends JPanel{
         
         add(arkfaner);
     }
-
-
+    
+    public void addTabListener(ChangeListener lytter) {
+    	this.arkfaner.addChangeListener(lytter);
+    }
+    
 }

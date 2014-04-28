@@ -22,5 +22,9 @@ public class StartGUI extends JFrame {
         innhold = new MainPanel( megler, annonse );
         add( innhold );
     }
+    
+    public MainPanel getMainPanel() {
+    	return innhold;
+    }
 
 }

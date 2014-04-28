@@ -2,6 +2,7 @@ package view;
 
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -34,13 +35,10 @@ public class LoggInnDialog extends JDialog {
 		add(loggInnKnapp);
 		add(avbrytKnapp);
 	}
-
-	public JButton getLoggInnKnapp() {
-		return loggInnKnapp;
-	}
-
-	public JButton getAvbrytKnapp() {
-		return avbrytKnapp;
+	
+	public void addKnappeListener(ActionListener lytter) {
+		this.loggInnKnapp.addActionListener(lytter);
+		this.avbrytKnapp.addActionListener(lytter);
 	}
 	
 }

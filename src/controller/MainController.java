@@ -39,6 +39,7 @@ public class MainController implements Serializable {
     private ArkfaneTemplate meglerVindu;
     private ArkfaneTemplate annonseVindu;
     private StartGUI startGUI;
+    private InnloggingController innloggingController;
     private ControllerBunnPanel bunnController;
     private ControllerTabellOgOutput tabellControllerMegler;
     private ControllerTabellOgOutput tabellControllerAnnonse;
@@ -55,6 +56,7 @@ public class MainController implements Serializable {
         annonseVindu = new ArkfaneTemplate("annonse");
         startGUI = new StartGUI(meglerVindu, annonseVindu);
 
+        innloggingController = new InnloggingController(startGUI);
         bunnController = new ControllerBunnPanel();
         tabellControllerMegler = new ControllerTabellOgOutput();
         tabellControllerAnnonse = new ControllerTabellOgOutput();
