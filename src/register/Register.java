@@ -42,5 +42,9 @@ public abstract class Register<T> implements Serializable{
         }
         return info;
     }
+    
+    public Collection getDatasett(){
+        return collection;
+    }
 
 }

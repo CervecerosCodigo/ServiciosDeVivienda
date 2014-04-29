@@ -25,16 +25,29 @@ public class ControllerTabellOgOutput {
     private TabellModell tabellModellAnnonse;
     private TabellModell tabellModellKontrakt;
     private TabellModell tabellModellSoknad;
+    
+    private HashSet<Person> personliste;
+    private HashSet<Bolig> boligliste;
+    private HashSet<Kontrakt> kontraktliste;
+    private HashSet<Annonse> annonseliste;
+    private LinkedHashSet<Soknad> soknadsliste;    
 
     private DefaultTableCellRenderer rightRenderer;
-    //private TableRowSorter<TabellModell> sorterer;
 
     private Object[] tabellData;
     private ObjektType objekttype;
     private Collection liste;
     private StyleSheet css;
 
-    public ControllerTabellOgOutput() {
+    public ControllerTabellOgOutput(HashSet<Person> personliste, HashSet<Bolig> boligliste,
+            HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
+            LinkedHashSet<Soknad> soknadsliste) {
+        
+        this.personliste = personliste;
+        this.boligliste = boligliste;
+        this.annonseliste = annonseliste;
+        this.kontraktliste = kontraktliste;
+        this.soknadsliste = soknadsliste;        
 
         tabellModellBolig = new TabellModellBolig();
         tabellModellPerson = new TabellModellPerson();

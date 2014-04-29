@@ -58,8 +58,8 @@ public class MainController implements Serializable {
 
         innloggingController = new InnloggingController(startGUI);
         bunnController = new ControllerBunnPanel();
-        tabellControllerMegler = new ControllerTabellOgOutput();
-        tabellControllerAnnonse = new ControllerTabellOgOutput();
+        tabellControllerMegler = new ControllerTabellOgOutput(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
+        tabellControllerAnnonse = new ControllerTabellOgOutput(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerMegler = new ControllerToppPanelMegler(meglerVindu, personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerAnnonse = new ControllerToppPanelAnnonse(annonseVindu, annonseliste);
         
@@ -163,114 +163,9 @@ public class MainController implements Serializable {
         });
     }
 
-    /**
-     * Tømmer markering i tabellen i venstre panel
-     */
-    public void clearTableSelection() {
-        meglerVindu.getVenstrepanel().getTable().clearSelection();
-    }
-
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
         Calendar kalender = new GregorianCalendar(aar, mnd, dag);
         return kalender;
-    }
-
-/////////////////////////////////////////////////////////////////////////
-    /**
-     * //Annonsevinduet// Finn boliger basert på Areal minimum, Areal maksimum,
-     * Max leiepris, Antall rom, Boligtype, Poststed
-     */
-/////////////////////////////////////////////////////////////////////////
-    /**
-     * //Metoder for SøkeGUI// Tar i mot epost fra GUI. Kaller så opp
-     * hjelpemetoden finnePersonIDBasertPaaEpost for å få tak i personID til
-     * personen, og deretter leter etter denne personens boliger.
-     */
-    public void finnBoligerRegistrertPaaEier(String epost) {
-
-        int personID = finnePersonIDBasertPaaEpost(epost);
-
-        if (personID != -1) {
-            System.out.println("Boligeier " + personID + " har følgende boliger:");
-
-            Iterator<Bolig> iter2 = boligliste.iterator();
-            while (iter2.hasNext()) {
-                Bolig temp = iter2.next();
-                if (temp.getPersonID() == personID) {
-                    try {
-                        System.out.println("Bolig: " + temp.getBoligID());
-                    } catch (NoSuchElementException nse) {
-                        //System.out.println(" Ingen boliger");
-                    }
-                }
-            }//End while
-        }
-        System.out.println("Fant ingen personer med epost " + epost + " !");
-
-    }//End method
-
-    public void finnBoligerRegistrertPaaAdresse(String adresse) {
-
-        int teller = 0;
-
-        Iterator<Bolig> iter2 = boligliste.iterator();
-        while (iter2.hasNext()) {
-            Bolig temp = iter2.next();
-            if (temp.getAdresse().equals(adresse)) {
-                try {
-                    System.out.println("Bolig: " + temp.getBoligID() + " finnes på " + adresse);
-                    teller++;
-                } catch (NoSuchElementException nse) {
-                    //System.out.println(" Ingen boliger");
-                }
-            }
-        }//End while
-        if (teller == 0) {
-            System.out.println("Fant ingen boliger på den adressen!");
-        }
-    }//End method
-
-    /**
-     * @param epost
-     * @return Hjelpemetode som tar i mot epostadresse og returnerer personID
-     * til personen. Returnerer -1 om personen ikke finnes.
-     */
-    int finnePersonIDBasertPaaEpost(String epost) {
-
-        int personID = -1;
-
-        Iterator<Person> iter = personliste.iterator();
-
-        while (iter.hasNext()) {
-            Person temp = iter.next();
-            if (temp.getEpost().equals(epost)) {
-                try {
-                    personID = temp.getPersonID();
-                } catch (NoSuchElementException nse) {
-                    System.out.println("Fant ikke personen!");
-                }
-            }
-        }//End while        
-
-        return personID;
-    }
-
-    /**
-     *
-     * @param kontraktNr
-     * @return
-     */
-    public Kontrakt finneKontrakterBasertPaaKontraktNr(int kontraktNr) {
-        Kontrakt retur = null;
-        Iterator<Kontrakt> iter = kontraktliste.iterator();
-
-        while (iter.hasNext()) {
-            retur = iter.next();
-            if (retur.getAnnonseID() == kontraktNr) {
-                return retur;
-            }
-        }
-        return null;
     }
 
     public Bolig finnBoligFraBoligID(int id) {
