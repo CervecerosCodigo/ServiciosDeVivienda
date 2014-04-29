@@ -7,8 +7,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import view.CustomJButton;
+import view.CustomJCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -28,8 +28,8 @@ public class UtleierRegisterPanel extends AbstractPanel {
 
     private JLabel fornavnLabel, etternavnLabel, epostLabel, telefonLabel, erRepresntantLabel, erRepresentatnForLabel;
     private CustomJTextField fornavnField, etternavnField, epostField, telefonField, erRepresentatForField;
-    private JCheckBox erRepresentantCheckBox;
-    private JButton avbrytButton, lagreButton;
+    private CustomJCheckBox erRepresentantCheckBox;
+    private CustomJButton avbrytButton, lagreButton;
 
     private static final int BREDDE1 = 10;
     private static final int BREDDE2 = 5;
@@ -53,11 +53,10 @@ public class UtleierRegisterPanel extends AbstractPanel {
         telefonField = new CustomJTextField("XX XX XX XX", RegexTester.TEL_NUMMER_NORSK, BREDDE1);
         erRepresentatForField = new CustomJTextField("Navn på representat", RegexTester.NAVN_PATTERN, BREDDE1);
         //Cheboxes
-        erRepresentantCheckBox = new JCheckBox();
-        erRepresentantCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+        erRepresentantCheckBox = new CustomJCheckBox();
         //Knapper
-        avbrytButton = new JButton("Avbryt");
-        lagreButton = new JButton("Lagre");
+        avbrytButton = new CustomJButton("Avbryt");
+        lagreButton = new CustomJButton("Lagre");
         
         //Oppstartkriterier
         erRepresentatnForLabel.setEnabled(false);
@@ -222,15 +221,15 @@ public class UtleierRegisterPanel extends AbstractPanel {
         return erRepresentatForField;
     }
 
-    public JButton getLagreButton() {
+    public CustomJButton getLagreButton() {
         return lagreButton;
     }
 
-    public JButton getAvbrytButton() {
+    public CustomJButton getAvbrytButton() {
         return avbrytButton;
     }
     
-    public JCheckBox getErRepresentantCheckBox() {
+    public CustomJCheckBox getErRepresentantCheckBox() {
         return erRepresentantCheckBox;
     }
     
@@ -257,7 +256,7 @@ public class UtleierRegisterPanel extends AbstractPanel {
         this.erRepresentatForField = erRepresentatForField;
     }
 
-    public void setErRepresentantCheckBox(JCheckBox erRepresentantCheckBox) {
+    public void setErRepresentantCheckBox(CustomJCheckBox erRepresentantCheckBox) {
         this.erRepresentantCheckBox = erRepresentantCheckBox;
     }
     

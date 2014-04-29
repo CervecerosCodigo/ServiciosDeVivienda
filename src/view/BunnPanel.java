@@ -3,35 +3,35 @@ package view;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
+import view.CustomJButton;
 import lib.Konstanter;
 
 public class BunnPanel extends AbstractPanel {
 
-    private JButton endre, frem, tilbake;
+    private CustomJButton endre, frem, tilbake;
 
     public BunnPanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
 
         setLayout(new GridLayout(1, 1));
-        endre = new JButton("Endre");
-        frem = new JButton("Frem");
-        tilbake = new JButton("Tilbake");
+        endre = new CustomJButton("Endre");
+        frem = new CustomJButton("Frem");
+        tilbake = new CustomJButton("Tilbake");
 
         add(endre);
         add(tilbake);
         add(frem);
     }
 
-    public JButton getEndreKnapp() {
+    public CustomJButton getEndreKnapp() {
         return endre;
     }
 
-    public JButton getTilbakeKnapp() {
+    public CustomJButton getTilbakeKnapp() {
         return tilbake;
     }
 
-    public JButton getFremKnapp() {
+    public CustomJButton getFremKnapp() {
         return frem;
     }
 

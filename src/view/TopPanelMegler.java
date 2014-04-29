@@ -5,24 +5,24 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
+import view.CustomJButton;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import view.CustomJRadioButton;
 import lib.Konstanter;
 
 public class TopPanelMegler extends AbstractPanel {
 
     private MeglerRadioKnapper meglerRadioKnapper;
     private CustomJTextField sokeFelt;
-    private JButton sokeKnapp, lagNyKnapp;
+    private CustomJButton sokeKnapp, lagNyKnapp;
 
     TopPanelMegler(String borderTitle, int dimHeight, int dimWidth) {
 
         super(borderTitle, dimHeight, dimWidth);
         meglerRadioKnapper = new MeglerRadioKnapper();
         sokeFelt = new CustomJTextField("Søk", "", 17);
-        sokeKnapp = new JButton("Søk");
-        lagNyKnapp = new JButton("Lag ny");
+        sokeKnapp = new CustomJButton("Søk");
+        lagNyKnapp = new CustomJButton("Lag ny");
 
         setLayout(new FlowLayout(FlowLayout.LEADING, 40, 0));
         setVisible(true);
@@ -40,35 +40,35 @@ public class TopPanelMegler extends AbstractPanel {
         return sokeFelt;
     }
 
-    public JButton getSokeKnapp() {
+    public CustomJButton getSokeKnapp() {
         return sokeKnapp;
     }
 
-    public JButton getLagNyKnapp() {
+    public CustomJButton getLagNyKnapp() {
         return lagNyKnapp;
     }
 
-    public JRadioButton getSoknaderRadio() {
+    public CustomJRadioButton getSoknaderRadio() {
         return meglerRadioKnapper.getSoknaderRadio();
     }
 
-    public JRadioButton getAnnonserRadio() {
+    public CustomJRadioButton getAnnonserRadio() {
         return meglerRadioKnapper.getAnnonserRadio();
     }
 
-    public JRadioButton getBoligerRadio() {
+    public CustomJRadioButton getBoligerRadio() {
         return meglerRadioKnapper.getBoligerRadio();
     }
 
-    public JRadioButton getUtleiereRadio() {
+    public CustomJRadioButton getUtleiereRadio() {
         return meglerRadioKnapper.getUtleiereRadio();
     }
 
-    public JRadioButton getLeietakereRadio() {
+    public CustomJRadioButton getLeietakereRadio() {
         return meglerRadioKnapper.getLeietakereRadio();
     }
     
-    public JRadioButton getKontraktRadio() {
+    public CustomJRadioButton getKontraktRadio() {
         return meglerRadioKnapper.getKontraktRadio();
     }
 
@@ -85,16 +85,16 @@ public class TopPanelMegler extends AbstractPanel {
 
 class MeglerRadioKnapper extends AbstractPanel {
 
-    private JRadioButton soknaderRadio, annonserRadio, boligerRadio, utleiereRadio, leietakereRadio, kontraktRadio;
+    private CustomJRadioButton soknaderRadio, annonserRadio, boligerRadio, utleiereRadio, leietakereRadio, kontraktRadio;
     private ButtonGroup radioGroup;
 
     public MeglerRadioKnapper() {
-        soknaderRadio = new JRadioButton("Søknader");
-        annonserRadio = new JRadioButton("Annonser");
-        boligerRadio = new JRadioButton("Boliger");
-        utleiereRadio = new JRadioButton("Utleiere");
-        leietakereRadio = new JRadioButton("Leietakere");
-        kontraktRadio = new JRadioButton("Kontrakt");
+        soknaderRadio = new CustomJRadioButton("Søknader");
+        annonserRadio = new CustomJRadioButton("Annonser");
+        boligerRadio = new CustomJRadioButton("Boliger");
+        utleiereRadio = new CustomJRadioButton("Utleiere");
+        leietakereRadio = new CustomJRadioButton("Leietakere");
+        kontraktRadio = new CustomJRadioButton("Kontrakt");
         radioGroup = new ButtonGroup();
 
         radioGroup.add(soknaderRadio);
@@ -108,14 +108,6 @@ class MeglerRadioKnapper extends AbstractPanel {
         setPreferredSize(new Dimension(90, 115));//Endret til 130 fra 110 for å få plass med den nye radio button for kontrakter
         setLayout(new FlowLayout(FlowLayout.LEFT, 0, -4));
         
-        soknaderRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
-        annonserRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
-        boligerRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
-        utleiereRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
-        leietakereRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
-        kontraktRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
-        
-        
         add(soknaderRadio);
         add(annonserRadio);
         add(boligerRadio);
@@ -126,27 +118,27 @@ class MeglerRadioKnapper extends AbstractPanel {
         soknaderRadio.setSelected(true);
     }
 
-    public JRadioButton getSoknaderRadio() {
+    public CustomJRadioButton getSoknaderRadio() {
         return soknaderRadio;
     }
 
-    public JRadioButton getAnnonserRadio() {
+    public CustomJRadioButton getAnnonserRadio() {
         return annonserRadio;
     }
 
-    public JRadioButton getBoligerRadio() {
+    public CustomJRadioButton getBoligerRadio() {
         return boligerRadio;
     }
 
-    public JRadioButton getUtleiereRadio() {
+    public CustomJRadioButton getUtleiereRadio() {
         return utleiereRadio;
     }
 
-    public JRadioButton getLeietakereRadio() {
+    public CustomJRadioButton getLeietakereRadio() {
         return leietakereRadio;
     }
     
-    public JRadioButton getKontraktRadio() {
+    public CustomJRadioButton getKontraktRadio() {
         return kontraktRadio;
     }
 

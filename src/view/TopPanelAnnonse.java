@@ -6,8 +6,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import view.CustomJButton;
+import view.CustomJCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,13 +18,13 @@ public class TopPanelAnnonse extends AbstractPanel {
 
     private KnappeGruppeHoyre knappeGruppeHoyre;
     private CheckBoxKnappeGruppe checkBoxKnappeGruppe;
-    private JButton sokeKnapp;
+    private CustomJButton sokeKnapp;
 
     public TopPanelAnnonse(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
         knappeGruppeHoyre = new KnappeGruppeHoyre();
         checkBoxKnappeGruppe = new CheckBoxKnappeGruppe();
-        sokeKnapp = new JButton("Søk");
+        sokeKnapp = new CustomJButton("Søk");
 
         setVisible(true);
         setLayout(new FlowLayout(FlowLayout.LEFT, 40, 0));
@@ -43,7 +43,7 @@ public class TopPanelAnnonse extends AbstractPanel {
         return checkBoxKnappeGruppe;
     }
 
-    public JButton getSokeKnapp() {
+    public CustomJButton getSokeKnapp() {
         return sokeKnapp;
     }
 
@@ -71,19 +71,19 @@ public class TopPanelAnnonse extends AbstractPanel {
         return knappeGruppeHoyre.getMaksArealFelt();
     }
 
-    public JCheckBox getBalkongCheckBox() {
+    public CustomJCheckBox getBalkongCheckBox() {
         return checkBoxKnappeGruppe.getBalkongCheckBox();
     }
 
-    public JCheckBox getFellesvaskCheckBox() {
+    public CustomJCheckBox getFellesvaskCheckBox() {
         return checkBoxKnappeGruppe.getFellesvaskCheckBox();
     }
 
-    public JCheckBox getHageCheckBox() {
+    public CustomJCheckBox getHageCheckBox() {
         return checkBoxKnappeGruppe.getHageCheckBox();
     }
 
-    public JCheckBox getKjellerCheckBox() {
+    public CustomJCheckBox getKjellerCheckBox() {
         return checkBoxKnappeGruppe.getKjellerCheckBox();
     }
     ////////////SLUTTT PÅ GETTERS////////////
@@ -220,22 +220,17 @@ public class TopPanelAnnonse extends AbstractPanel {
      */
     private class CheckBoxKnappeGruppe extends AbstractPanel {
 
-        private JCheckBox balkongCheckBox, fellesvaskCheckBox, hageCheckBox, kjellerCheckBox;
+        private CustomJCheckBox balkongCheckBox, fellesvaskCheckBox, hageCheckBox, kjellerCheckBox;
 
         public CheckBoxKnappeGruppe() {
-            balkongCheckBox = new JCheckBox("Balkong");
-            fellesvaskCheckBox = new JCheckBox("Fellesvask");
-            hageCheckBox = new JCheckBox("Hage");
-            kjellerCheckBox = new JCheckBox("Kjeller");
+            balkongCheckBox = new CustomJCheckBox("Balkong");
+            fellesvaskCheckBox = new CustomJCheckBox("Fellesvask");
+            hageCheckBox = new CustomJCheckBox("Hage");
+            kjellerCheckBox = new CustomJCheckBox("Kjeller");
 
             setVisible(true);
             setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
             setPreferredSize(new Dimension(90, 110));
-            
-            balkongCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
-            fellesvaskCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
-            hageCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
-            kjellerCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
             
             add(balkongCheckBox);
             add(fellesvaskCheckBox);
@@ -243,19 +238,19 @@ public class TopPanelAnnonse extends AbstractPanel {
             add(kjellerCheckBox);
         }
 
-        public JCheckBox getBalkongCheckBox() {
+        public CustomJCheckBox getBalkongCheckBox() {
             return balkongCheckBox;
         }
 
-        public JCheckBox getFellesvaskCheckBox() {
+        public CustomJCheckBox getFellesvaskCheckBox() {
             return fellesvaskCheckBox;
         }
 
-        public JCheckBox getHageCheckBox() {
+        public CustomJCheckBox getHageCheckBox() {
             return hageCheckBox;
         }
 
-        public JCheckBox getKjellerCheckBox() {
+        public CustomJCheckBox getKjellerCheckBox() {
             return kjellerCheckBox;
         }
 
