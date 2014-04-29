@@ -26,7 +26,6 @@ public class TopPanelMegler extends AbstractPanel {
 
         setLayout(new FlowLayout(FlowLayout.LEADING, 40, 0));
         setVisible(true);
-        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         add(meglerRadioKnapper);
         add(sokeFelt);
         add(sokeKnapp);
@@ -84,7 +83,7 @@ public class TopPanelMegler extends AbstractPanel {
 
 }
 
-class MeglerRadioKnapper extends JPanel {
+class MeglerRadioKnapper extends AbstractPanel {
 
     private JRadioButton soknaderRadio, annonserRadio, boligerRadio, utleiereRadio, leietakereRadio, kontraktRadio;
     private ButtonGroup radioGroup;
@@ -108,7 +107,6 @@ class MeglerRadioKnapper extends JPanel {
         setVisible(true);
         setPreferredSize(new Dimension(90, 115));//Endret til 130 fra 110 for å få plass med den nye radio button for kontrakter
         setLayout(new FlowLayout(FlowLayout.LEFT, 0, -4));
-        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         
         soknaderRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         annonserRadio.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);

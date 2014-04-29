@@ -23,12 +23,10 @@ public class VenstrePanel extends AbstractPanel {
     public VenstrePanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
         setLayout(new GridLayout(1, 1));
-        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         tabell = new JTable();
         tabell.setAutoCreateRowSorter(true);
         tabell.setFillsViewportHeight(true);
         tabell.setShowGrid(true);        
-        
         tabell.setGridColor(Color.gray);
         tabell.setSelectionBackground(new Color(210, 210, 210));
         tabell.setSelectionForeground(Color.BLACK);

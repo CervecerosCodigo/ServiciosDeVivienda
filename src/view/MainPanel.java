@@ -6,20 +6,18 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
-import lib.Konstanter;
 
 
-public class MainPanel extends JPanel{
+public class MainPanel extends AbstractPanel{
 
     private JPanel megler;
     private JPanel annonse;
     private JTabbedPane arkfaner;
     
     public MainPanel(ArkfaneTemplate megler, ArkfaneTemplate annonse){
-        super( new GridLayout( 1, 1));
+        setLayout( new GridLayout( 1, 1)) ;
         this.megler = (JPanel) megler;
         this.annonse = (JPanel) annonse;
-        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         
         arkfaner = new JTabbedPane(JTabbedPane.TOP);
         

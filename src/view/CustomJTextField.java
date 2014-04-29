@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import lib.Konstanter;
 
-public class CustomJTextField extends JPanel {
+public class CustomJTextField extends AbstractPanel {
 
     private JTextField textField;
     private String fieldName;
@@ -24,7 +24,6 @@ public class CustomJTextField extends JPanel {
 
         setLayout(new FlowLayout());
         add(textField);
-        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         
         textField.addFocusListener(new FocusListener() {
 

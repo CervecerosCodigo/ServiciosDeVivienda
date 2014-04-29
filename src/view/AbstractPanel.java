@@ -31,6 +31,10 @@ public abstract class AbstractPanel extends JPanel{
         Border outerBorder = BorderFactory.createEmptyBorder(0, 0, 0, 0);
         setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
     }
-
+    
+    public AbstractPanel(){
+        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+    }
+    
 
 }

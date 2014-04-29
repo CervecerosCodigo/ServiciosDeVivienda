@@ -3,10 +3,9 @@ package view;
 
 import java.awt.BorderLayout;
 import javax.swing.*;
-import lib.Konstanter;
 import lib.VinduStorrelse;
 
-public class ArkfaneTemplate extends JPanel {
+public class ArkfaneTemplate extends AbstractPanel {
 
     private JPanel toppanel;
     private BunnPanel bunnpanel;
@@ -16,7 +15,6 @@ public class ArkfaneTemplate extends JPanel {
     public ArkfaneTemplate(String valgtToppanel) {
         setLayout(new BorderLayout());
         setVisible(true);
-        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         
         bunnpanel = new BunnPanel("", VinduStorrelse.BUNNPANEL.getHEIGHT(), 
                 VinduStorrelse.BUNNPANEL.getWIDTH());

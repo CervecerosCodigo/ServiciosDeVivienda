@@ -28,7 +28,6 @@ public class TopPanelAnnonse extends AbstractPanel {
 
         setVisible(true);
         setLayout(new FlowLayout(FlowLayout.LEFT, 40, 0));
-        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);      
 
         add(checkBoxKnappeGruppe);
         add(knappeGruppeHoyre);
@@ -125,7 +124,7 @@ public class TopPanelAnnonse extends AbstractPanel {
     /**
      * Privat klasse for kombobokser og tekstfelter
      */
-    private class KnappeGruppeHoyre extends JPanel {
+    private class KnappeGruppeHoyre extends AbstractPanel {
 
         private JComboBox postStedBox, boligTypeBox;
         private JLabel prisLabel, bindestrekLabel, arealLabel, bindestrekLabel2;
@@ -149,7 +148,6 @@ public class TopPanelAnnonse extends AbstractPanel {
             fyllPanel.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
             setVisible(true);
             setLayout(new FlowLayout());
-            setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
 
             add(postStedBox);
             add(boligTypeBox);
@@ -220,7 +218,7 @@ public class TopPanelAnnonse extends AbstractPanel {
     /**
      * Privat klasse for sjekkbokser
      */
-    private class CheckBoxKnappeGruppe extends JPanel {
+    private class CheckBoxKnappeGruppe extends AbstractPanel {
 
         private JCheckBox balkongCheckBox, fellesvaskCheckBox, hageCheckBox, kjellerCheckBox;
 
@@ -233,7 +231,6 @@ public class TopPanelAnnonse extends AbstractPanel {
             setVisible(true);
             setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
             setPreferredSize(new Dimension(90, 110));
-            setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
             
             balkongCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
             fellesvaskCheckBox.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);

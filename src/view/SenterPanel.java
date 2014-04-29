@@ -22,7 +22,6 @@ public class SenterPanel extends AbstractPanel{
     public SenterPanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
         setLayout( new GridLayout(1, 1));
-        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         output = new JEditorPane();
         kit = new HTMLEditorKit();
         dok = kit.createDefaultDocument();

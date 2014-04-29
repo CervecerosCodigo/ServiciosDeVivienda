@@ -15,6 +15,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import lib.Konstanter;
 import lib.RegexTester;
+import view.AbstractPanel;
 import view.CustomJTextField;
 
 /**
@@ -23,7 +24,7 @@ import view.CustomJTextField;
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
-public class UtleierRegisterPanel extends JPanel {
+public class UtleierRegisterPanel extends AbstractPanel {
 
     private JLabel fornavnLabel, etternavnLabel, epostLabel, telefonLabel, erRepresntantLabel, erRepresentatnForLabel;
     private CustomJTextField fornavnField, etternavnField, epostField, telefonField, erRepresentatForField;
@@ -38,7 +39,6 @@ public class UtleierRegisterPanel extends JPanel {
         Dimension dim = getPreferredSize();
         dim.width = 400;
         setPreferredSize(dim);
-        setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         //Labels
         fornavnLabel = new JLabel("Fornavn: ");
         etternavnLabel = new JLabel("Etternavn: ");

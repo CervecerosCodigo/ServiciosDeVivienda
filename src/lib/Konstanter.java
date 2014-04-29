@@ -58,5 +58,9 @@ public class Konstanter {
     public static SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     
 
-    public static final Color BAKGRUNNSFARGEPANEL = new Color(220, 230, 250);
+    public static final Color BAKGRUNNSFARGEPANEL = new Color(200, 210, 240); //Lys blå
+//    public static final Color BAKGRUNNSFARGEPANEL = new Color(193, 205, 193); //Honey Dew
+    
+    
+    
 }
