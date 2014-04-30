@@ -1,9 +1,11 @@
 package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import controller.registrer.ControllerRegistrerBolig;
 import controller.registrer.ControllerUtleierFrame;
 import java.io.*;
 import java.util.*;
+import javax.swing.JFrame;
 import javax.swing.JTable;
 import lib.*;
 import model.*;
@@ -47,6 +49,8 @@ public class MainController implements Serializable {
     private ControllerToppPanelAnnonse toppPanelControllerAnnonse;
     
     private ControllerUtleierFrame controllerUtleierFrame;
+    //Tester å bruke den nye klassen for registrering av bolig
+    private ControllerRegistrerBolig controllerRegistrerBolig;
 
     public MainController(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
@@ -64,6 +68,7 @@ public class MainController implements Serializable {
         toppPanelControllerAnnonse = new ControllerToppPanelAnnonse(annonseVindu, annonseliste);
         
         controllerUtleierFrame = new ControllerUtleierFrame(new UtleierFrame(), personliste);
+        controllerRegistrerBolig = new ControllerRegistrerBolig(null, new JFrame("Test"));
 
         this.personliste = personliste;
         this.boligliste = boligliste;

@@ -17,34 +17,18 @@ public class CustomRegPanel extends AbstractPanel {
     /**
      * En konstruktør som har pålagt antall rader og kolonner for panelen.
      *
+     * @param tittel
      * @param rader int som setter antall rader
      * @param kolonner int som setter antall kolonner
      */
-    public CustomRegPanel(int rader, int kolonner) {
-        layout = new GridLayout();
-        layout.setRows(rader);
-        layout.setColumns(kolonner);
+    public CustomRegPanel(String tittel, int rader, int kolonner) {
+        super();
+        layout = new GridLayout(rader, kolonner);
+        setLayout(layout);
+
+        setVisible(true);
     }
 
-    /**
-     * Setter antall rader og kolonner i panelen.
-     *
-     * @param rader int
-     * @param kolonner int
-     */
-    public void setGrid(int rader, int kolonner) {
-        layout.setRows(rader);
-        layout.setColumns(kolonner);
-    }
+  
 
-    /**
-     * Setter mellomrom imellom komponentene.
-     *
-     * @param x
-     * @param y
-     */
-    public void setPadding(int x, int y) {
-        layout.setHgap(x);
-        layout.setVgap(y);
-    }
 }
