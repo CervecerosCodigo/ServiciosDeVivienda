@@ -8,6 +8,11 @@ package controller;
  * skal vises i.
  */
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -25,12 +30,12 @@ public class ControllerTabellOgOutput {
     private TabellModell tabellModellAnnonse;
     private TabellModell tabellModellKontrakt;
     private TabellModell tabellModellSoknad;
-    
+
     private HashSet<Person> personliste;
     private HashSet<Bolig> boligliste;
     private HashSet<Kontrakt> kontraktliste;
     private HashSet<Annonse> annonseliste;
-    private LinkedHashSet<Soknad> soknadsliste;    
+    private LinkedHashSet<Soknad> soknadsliste;
 
     private DefaultTableCellRenderer rightRenderer;
 
@@ -39,22 +44,25 @@ public class ControllerTabellOgOutput {
     private Collection liste;
     private StyleSheet css;
 
+    private JPopupMenu tabellMeny, tabellMenyPerson;
+    private JMenu menyvalgBolig, menyvalgPerson, menyvalgAnnonse, menyvalgKontrakt, menyvalgSoknad;
+    private JMenuItem menyvalgNy, menyvalgEndre, menyvalgSlett, menyvalgPubliserToggle, menyvalgForesporsel;
+
     public ControllerTabellOgOutput(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
             LinkedHashSet<Soknad> soknadsliste) {
-        
+
         this.personliste = personliste;
         this.boligliste = boligliste;
         this.annonseliste = annonseliste;
         this.kontraktliste = kontraktliste;
-        this.soknadsliste = soknadsliste;        
+        this.soknadsliste = soknadsliste;
 
         tabellModellBolig = new TabellModellBolig();
         tabellModellPerson = new TabellModellPerson();
         tabellModellAnnonse = new TabellModellAnnonse();
         tabellModellKontrakt = new TabellModellKontrakt();
         tabellModellSoknad = new TabellModellSoknad();
-        //sorterer = new TableRowSorter();       
 
         rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -70,6 +78,8 @@ public class ControllerTabellOgOutput {
     public void settOppTabellLytter(final ArkfaneTemplate vindu) {
         //Setter en lytter som finner raden som er valgt
         tabell = vindu.getVenstrepanel().getTable();
+        popupMenyForTabell();
+        tabell.setComponentPopupMenu(tabellMeny);
 
         tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
@@ -83,6 +93,100 @@ public class ControllerTabellOgOutput {
 
                 sendObjektFraTabellTilOutput(rad, objekttype, tabellData, vindu);
             }
+        });
+
+        /**
+         * Lytter for dobbelklikk i tabellen.
+         */
+        tabell.addMouseListener(new MouseAdapter() {
+
+            TabellModell modell = null;
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JTable temp = (JTable) e.getSource();
+                if (e.getClickCount() == 2) {
+                    int rad = temp.getSelectedRow();
+                    rad = tabell.convertRowIndexToModel(rad);
+
+                    if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
+                        System.out.println("Bolig");
+                    } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
+                        System.out.println("Person");
+                    } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
+                        System.out.println("Annonse");
+                    } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
+                        System.out.println("Kontrakt");
+                    } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
+                        System.out.println("Søknad");
+                    }
+
+                }//end if
+            }//end method
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+
+                    if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
+                        System.out.println("Bolig");
+                    } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
+                        System.out.println("Person");
+                    } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
+                        System.out.println("Annonse");
+                    } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
+                        System.out.println("Kontrakt");
+                    } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
+                        System.out.println("Søknad");
+                    }
+                    tabellMeny.show(e.getComponent(), e.getX(), e.getY());
+                }
+
+            }
+        });
+    }
+
+    public void popupMenyForTabell() {
+        tabellMeny = new JPopupMenu();
+        
+        //tabellMenyPerson = new JPopupMenu();
+
+        menyvalgPerson = new JMenu("Person");
+        menyvalgBolig = new JMenu("Bolig");
+        menyvalgAnnonse = new JMenu("Annonse");
+        menyvalgKontrakt = new JMenu("Kontrakt");
+        menyvalgSoknad = new JMenu("Søknad");
+        menyvalgNy = new JMenuItem("Ny");
+        menyvalgEndre = new JMenuItem("Endre");
+        menyvalgSlett = new JMenuItem("Slett");
+        
+        tabellMeny.add(menyvalgPerson);
+        tabellMeny.add(menyvalgBolig);
+        tabellMeny.add(menyvalgAnnonse);
+        tabellMeny.add(menyvalgKontrakt);
+        tabellMeny.add(menyvalgSoknad);
+        
+        menyvalgPerson.add(menyvalgNy);
+        menyvalgPerson.add(menyvalgEndre);
+        menyvalgPerson.add(menyvalgSlett);
+        
+        
+
+
+//        menyvalgPerson.addActionListener(new ActionListener() {
+//
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                //JOptionPane.showMessageDialog(null, "Du oppretter ny bolig!");
+//            }
+//        });
+        menyvalgPerson.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+             
+            }
+            
         });
     }
 
@@ -143,8 +247,8 @@ public class ControllerTabellOgOutput {
             vindu.getVenstrepanel().sorterTabellVedOppstart();
         } catch (ArrayIndexOutOfBoundsException aiobe) {
 
-        } catch (NullPointerException npe ){
-            
+        } catch (NullPointerException npe) {
+
         }
     }
 
@@ -210,6 +314,27 @@ public class ControllerTabellOgOutput {
     }
 
     /**
+     * //Metoder for SøkeGUI// Tar i mot epost fra GUI. Kaller så opp
+     * hjelpemetoden finnePersonIDBasertPaaEpost for å få tak i personID til
+     * personen, og deretter leter etter denne personens boliger.
+     */
+    public ArrayList<Bolig> finnBoligerRegistrertPaaEier(int personID) {
+
+        ArrayList<Bolig> boliger = new ArrayList<>();
+        if (personID != -1) {
+
+            Iterator<Bolig> iter2 = boligliste.iterator();
+            while (iter2.hasNext()) {
+                Bolig temp = iter2.next();
+                if (temp.getPersonID() == personID) {
+                    boliger.add(temp);
+                }
+            }//End while
+        }
+        return boliger;
+    }//End method
+
+    /**
      * Tar imot data fra sendObjektFraTabellTilOutput-metoden. Denne metoden
      * skriver ut Personobjekter som HTML til output (JEditorPane)
      *
@@ -242,31 +367,61 @@ public class ControllerTabellOgOutput {
         html.append("<h1><u>".concat(skalVises.getClass().getSimpleName()).concat("</u></h1>"));
         html.append("<table id= 'personinfo'>");
         html.append("<tr>");
-        html.append("<td>ID");
+        html.append("<td><b>ID</b>");
         html.append("</td>");
         html.append("<td>");
         html.append(skalVises.getPersonID());
         html.append("</td>");
         html.append("</tr>");
         html.append("<tr>");
-        html.append("<td>Navn");
+        html.append("<td><b>Navn</b>");
         html.append("</td>");
         html.append("<td>".concat(skalVises.getFornavn().concat(" ".concat(skalVises.getEtternavn()))));
         html.append("</td>");
         html.append("</tr>");
         html.append("<tr>");
-        html.append("<td>Tlfnr");
+        html.append("<td><b>Tlfnr</b>");
         html.append("</td>");
         html.append("<td>".concat(skalVises.getTelefon()));
         html.append("</td>");
         html.append("</tr>");
         html.append("<tr>");
-        html.append("<td>Epost");
+        html.append("<td><b>Epost</b>");
         html.append("</td>");
         html.append("<td>".concat(skalVises.getEpost()));
         html.append("</td>");
         html.append("</tr>");
         html.append("</table>");
+
+        if (utleier != null) {
+
+            ArrayList<Bolig> boliger = finnBoligerRegistrertPaaEier(utleier.getPersonID());
+            String tabellRad = new String("");
+            html.append("<br><br>");
+            html.append("<h3><u>".concat(skalVises.getFornavn().concat(" ").concat(skalVises.getEtternavn())));
+            html.append(" har følgende boliger:</u></h3>");
+            html.append("<table id='boligerPrPerson'>");
+            Iterator<Bolig> iter = boliger.iterator();
+            while (iter.hasNext()) {
+                Bolig temp = iter.next();
+
+                html.append("<tr id='boligerPrPersonRad'>");
+                html.append("<td id='boligerPrPersonKol1'>");
+                html.append("<b>BoligID:</b> ");
+                html.append(temp.getBoligID());
+                html.append("</td>");
+                html.append("<td id='boligerPrPersonKol2'>");
+                html.append("<b>Boligtype:</b> ".concat(temp.getClass().getSimpleName()));
+                html.append("<td id='boligerPrPersonKol3'>");
+                html.append("<b>Adresse:</b> ".concat(temp.getAdresse()));
+                html.append("</td>");
+                html.append("<td id='boligerPrPersonKol4'>");
+                html.append("<b>Er utleid:</b> ".concat(temp.isErUtleid() ? "Ja" : "Nei"));
+                html.append("</td>");
+                html.append("</tr>");
+            }
+            html.append("</table>");
+        }//End if
 
         output.setText(html.toString());
     }
@@ -653,12 +808,12 @@ public class ControllerTabellOgOutput {
 
         css.addRule("h1 {text-align: center}");
         css.addRule("h1 {font-size: 16}");
-//        css.addRule("body {background-color: #cecece}");
+        css.addRule("body {font-family: mono-space}");
         css.addRule("body {border: 1px solid #cecece}");
 
         //CSS for Bolig
         css.addRule(".boligData {width: 150px}");
-        css.addRule(".boligText {width: 80px}");
+        css.addRule(".boligText {width: 90px}");
         css.addRule("#boliginfo {font-size: 12");
         css.addRule("#boliginfo {border-spacing: 0}");
         css.addRule("#boliginfo {border: 1px solid #cecece}");
@@ -671,9 +826,17 @@ public class ControllerTabellOgOutput {
 
         //CSS for Annonser
         css.addRule(".annonseData {width: 150px}");
-        css.addRule(".annonseText {width: 80px}");
+        css.addRule(".annonseText {width: 100px}");
         css.addRule("#annonseinfo {font-size: 12");
         css.addRule("#annonseinfo {border-spacing: 0}");
         css.addRule("#annonseinfo {border: 1px solid #cecece}");
+
+        //CSS for boliger registrert på person
+        css.addRule("#boligerPrPerson {border-spacing: 0}");
+        css.addRule("#boligerPrPersonKol1 {width: 100px}");
+        css.addRule("#boligerPrPersonKol2 {width: 120px}");
+        css.addRule("#boligerPrPersonKol3 {width: 200px}");
+        css.addRule("#boligerPrPersonKol4 {width: 100px}");
+
     }
 }

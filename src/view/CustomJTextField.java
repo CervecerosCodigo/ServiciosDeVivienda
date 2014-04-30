@@ -1,12 +1,8 @@
 package view;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.JPanel;
 import javax.swing.JTextField;
-import lib.Konstanter;
 
 public class CustomJTextField extends AbstractPanel {
 
@@ -20,6 +16,7 @@ public class CustomJTextField extends AbstractPanel {
 
         textField = new JTextField(size);
         textField.setText(initText);
+        textField.setBackground(Color.WHITE);
         textField.setForeground(Color.GRAY);
 
         setLayout(new FlowLayout());
@@ -31,8 +28,11 @@ public class CustomJTextField extends AbstractPanel {
             public void focusGained(FocusEvent e) {
                 if( textField.getText().equals(fieldName) ){
                     textField.setText("");
+                    textField.setBackground(Color.WHITE);
+                    textField.setForeground(Color.GRAY);                    
                 } else {
                     if( !testInput() )
+                        textField.setForeground(Color.white);
                         textField.setBackground(Color.red);
                 }
                 
@@ -40,15 +40,21 @@ public class CustomJTextField extends AbstractPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                textField.setBackground(Color.WHITE);
+                //textField.setBackground(Color.WHITE);
                 if (textField.getText().equals("")) {
                     textField.setText(fieldName);
                     textField.setForeground(Color.GRAY);
+                    textField.setBackground(Color.WHITE);                    
                     return;
-                }
-                if( !textField.getText().equals("") ){
-                    if( !testInput() )
-                        textField.setBackground(Color.red);
+                }else{
+                    if( !testInput() ){
+                        textField.setForeground(Color.white);
+                        textField.setBackground(Color.RED);
+                    }else{
+                        textField.setForeground(Color.GRAY); 
+                        textField.setBackground(Color.WHITE);
+                       
+                    }
                 }
             }
         });
