@@ -2,14 +2,12 @@
 package view.registrer;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
-import lib.Melding;
 
 /**
- * 
+ * TODO: Denne klassen skal endres slik at den motsvarer samme desing som det er nå tatt frem for alle registreringsvinduer.
  * File: UtleierFrame.java
  Package: view.registrer
  Project: ServiciosDeVivienda
