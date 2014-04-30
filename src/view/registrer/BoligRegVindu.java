@@ -1,10 +1,12 @@
 package view.registrer;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -22,9 +24,10 @@ import view.CustomJTextField;
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
-public class BoligRegVindu extends AbstractRegistreringsVindu {
+public class BoligRegVindu extends JFrame {
 
-    private CustomRegPanel panelLabels, panelFields;
+    //private CustomRegPanel panelLabels, panelFields;
+    private CustomSubPanel toppPanel, venstrePanel, senterPanel, hoyrePanel, bunnPanel;
     private BorderLayout borderLayout;
     private JLabel boligTypeLabel, eierLabel, meglerLabel, adresseLabel, postNrLabel, postStedLabel, boArealLabel, byggeArLabel, erUtleidLabel, beskrivelseLabel;
     private CustomJRadioButton leilighetRButton, eneboligRButton;
@@ -35,10 +38,26 @@ public class BoligRegVindu extends AbstractRegistreringsVindu {
     private CustomJButton avbrytButton, lagreButton;
 
     public BoligRegVindu(String tittel) {
-        super(tittel, 400, 500);
-        panelLabels = new CustomRegPanel(tittel, 12, 1);
-        panelFields = new CustomRegPanel(tittel, 12, 1);
-        borderLayout = new BorderLayout();
+        super(tittel);
+        setSize(1000, 700);
+        
+        //borderLayout = new BorderLayout();
+        setLayout(new BorderLayout());
+        
+        toppPanel = new CustomSubPanel("Topp", 50, 0);
+        venstrePanel = new CustomSubPanel("Venstre", 0, 150);
+        senterPanel = new CustomSubPanel("Senter", 0, 0);
+        hoyrePanel = new CustomSubPanel("Høyre", 0, 150);
+        bunnPanel = new CustomSubPanel("Bunn", 50, 0);
+        
+        add(toppPanel, BorderLayout.NORTH );
+        add(venstrePanel, BorderLayout.WEST );
+        add(senterPanel, BorderLayout.CENTER );
+        //add(hoyrePanel, BorderLayout.EAST );
+        add(bunnPanel, BorderLayout.SOUTH );
+       // panelLabels = new CustomRegPanel(tittel, 12, 1);
+        //panelFields = new CustomRegPanel(tittel, 12, 1);
+        
 
         boligTypeLabel = new JLabel("Boligtype: ");
         eierLabel = new JLabel("Eier ID: ");
@@ -71,48 +90,50 @@ public class BoligRegVindu extends AbstractRegistreringsVindu {
         radioButtons.add(leilighetRButton);
         radioButtons.add(eneboligRButton);
 
-        panelLabels.add(boligTypeLabel);
-        panelLabels.add(eierLabel);
-        panelLabels.add(meglerLabel);
-        panelLabels.add(adresseLabel);
-        panelLabels.add(postNrLabel);
-        panelLabels.add(postStedLabel);
-        panelLabels.add(boArealLabel);
-        panelLabels.add(byggeArLabel);
-        panelLabels.add(erUtleidLabel);
-        panelLabels.add(beskrivelseLabel);
+        toppPanel.add(adresseField);
+        venstrePanel.add(boligTypeLabel);
+//        panelLabels.add(boligTypeLabel);
+//        panelLabels.add(eierLabel);
+//        panelLabels.add(meglerLabel);
+//        panelLabels.add(adresseLabel);
+//        panelLabels.add(postNrLabel);
+//        panelLabels.add(postStedLabel);
+//        panelLabels.add(boArealLabel);
+//        panelLabels.add(byggeArLabel);
+//        panelLabels.add(erUtleidLabel);
+//        panelLabels.add(beskrivelseLabel);
 
-        JPanel radioKnapperPanel = new JPanel(new FlowLayout());
-        radioKnapperPanel.add(leilighetRButton);
-        radioKnapperPanel.add(eneboligRButton);
-        Border innerBorderBoligType = BorderFactory.createTitledBorder("Boligtype");
-        Border outerBorderBoligType = BorderFactory.createEmptyBorder(0,0,0,0);
-        radioKnapperPanel.setBorder(BorderFactory.createCompoundBorder(outerBorderBoligType, innerBorderBoligType));
-        
-        
-        panelFields.add(radioKnapperPanel);
-        panelFields.add(eierField);
-        panelFields.add(meglerField);
-        panelFields.add(adresseField);
-        panelFields.add(postNrField);
-        panelFields.add(postStedField);
-        panelFields.add(boArealField);
-        panelFields.add(byggeArField);
-        panelFields.add(erUtleidCheckBox);
-        panelFields.add(beskrivelseTextArea);
-        Border innerBorderGen = BorderFactory.createTitledBorder("Generelt");
-        Border outerBorderGen = BorderFactory.createEmptyBorder(0,0,0,0);
-        panelFields.setBorder(BorderFactory.createCompoundBorder(outerBorderGen, innerBorderGen));
+//        JPanel radioKnapperPanel = new JPanel(new FlowLayout());
+//        radioKnapperPanel.add(leilighetRButton);
+//        radioKnapperPanel.add(eneboligRButton);
+//        Border innerBorderBoligType = BorderFactory.createTitledBorder("Boligtype");
+//        Border outerBorderBoligType = BorderFactory.createEmptyBorder(0,0,0,0);
+//        radioKnapperPanel.setBorder(BorderFactory.createCompoundBorder(outerBorderBoligType, innerBorderBoligType));
+//        
+//        
+//        panelFields.add(radioKnapperPanel);
+//        panelFields.add(eierField);
+//        panelFields.add(meglerField);
+//        panelFields.add(adresseField);
+//        panelFields.add(postNrField);
+//        panelFields.add(postStedField);
+//        panelFields.add(boArealField);
+//        panelFields.add(byggeArField);
+//        panelFields.add(erUtleidCheckBox);
+//        panelFields.add(beskrivelseTextArea);
+//        Border innerBorderGen = BorderFactory.createTitledBorder("Generelt");
+//        Border outerBorderGen = BorderFactory.createEmptyBorder(0,0,0,0);
+//        panelFields.setBorder(BorderFactory.createCompoundBorder(outerBorderGen, innerBorderGen));
         
 
         
-        JPanel knapperPanel = new JPanel(new FlowLayout());
-        knapperPanel.add(avbrytButton);
-        knapperPanel.add(lagreButton);
-        panelFields.add(knapperPanel);
-
-        add(panelLabels, BorderLayout.WEST);
-        add(panelFields, BorderLayout.CENTER);
+//        JPanel knapperPanel = new JPanel(new FlowLayout());
+//        knapperPanel.add(avbrytButton);
+//        knapperPanel.add(lagreButton);
+//        panelFields.add(knapperPanel);
+//
+//        add(panelLabels, BorderLayout.WEST);
+//        add(panelFields, BorderLayout.CENTER);
 //        this.pack();
         setVisible(true);
 
