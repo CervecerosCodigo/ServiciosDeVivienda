@@ -17,4 +17,12 @@ public class Megler extends Person {
 		this.passord = passord;
 		this.kontor = kontor;
 	}
+
+	public String getBrukernavn() {
+		return brukernavn;
+	}
+
+	public String getPassord() {
+		return passord;
+	}
 }
