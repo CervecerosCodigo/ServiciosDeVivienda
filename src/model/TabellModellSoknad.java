@@ -9,7 +9,7 @@ public class TabellModellSoknad extends TabellModell {
 
     @Override
     public Object getValueAt(int rad, int kolonne) {
-        Soknad soknad = (Soknad) mottattArray[rad];
+        Soknad soknad = (Soknad) mottattArray.get(rad);
         switch (kolonne) {
             case 0:
                 return soknad.getAnnonseObjekt().getAnnonseID();

@@ -9,7 +9,7 @@ public class TabellModellPerson extends TabellModell {
 
     @Override
     public Object getValueAt(int rad, int kolonne) {
-        Person person = (Person) mottattArray[rad];        
+        Person person = (Person) mottattArray.get(rad);        
         switch (kolonne) {
             case 0:
                 return person.getPersonID();

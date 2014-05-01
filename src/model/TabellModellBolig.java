@@ -19,7 +19,7 @@ public class TabellModellBolig extends TabellModell {
 
     @Override
     public Object getValueAt(int rad, int kolonne) {
-        bolig = (Bolig) super.mottattArray[rad];
+        bolig = (Bolig) super.mottattArray.get(rad);
         switch (kolonne) {
             case 0:
                 return bolig.getBoligID();

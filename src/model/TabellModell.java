@@ -1,27 +1,34 @@
 package model;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
-public abstract class TabellModell extends AbstractTableModel {
+public abstract class TabellModell<E> extends DefaultTableModel {
 
-    Object[] mottattArray;
+    ArrayList<E> mottattArray;
     String[] overskrift;
     DefaultTableModel modell;
 
     public TabellModell() {
-        
-        
+
+        mottattArray = new ArrayList<>();
     }
 
-    public void fyllTabellMedInnhold(Object[] liste) {
+    public void fyllTabellMedInnhold(ArrayList<E> liste) {
         this.mottattArray = liste;
     }
 
     @Override
     public int getRowCount() {
-        return mottattArray.length;
+        int str = 0;
+        try {
+            str = mottattArray.size();
+        } catch (NullPointerException npe) {
+
+        }
+        return str;
     }
 
     /**
@@ -41,7 +48,7 @@ public abstract class TabellModell extends AbstractTableModel {
 
     @Override
     public Class getColumnClass(int c) {
-        if (mottattArray.length > 0) {
+        if (mottattArray.size() > 0) {
             return getValueAt(0, c).getClass();
         }
         return null;
@@ -53,5 +60,4 @@ public abstract class TabellModell extends AbstractTableModel {
         return null;
     }
 
-    
 }

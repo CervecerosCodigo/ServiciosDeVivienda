@@ -16,7 +16,7 @@ public class TabellModellAnnonse extends TabellModell {
 
     @Override
     public Object getValueAt(int rad, int kolonne) {
-        Annonse annonse = (Annonse) super.mottattArray[rad];
+        Annonse annonse = (Annonse) super.mottattArray.get(rad);
         switch (kolonne) {
             case 0:
                 return annonse.getAnnonseID();

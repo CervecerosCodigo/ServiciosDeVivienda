@@ -11,12 +11,20 @@ import javax.swing.JOptionPane;
  */
 public class Melding {
 
-    String metode, melding;
+    private String metode, melding, sporsmaal, overskrift, standardvalg;
+    private static String[] alternativer;
 
     public Melding(String metode, String melding) {
         this.metode = metode;
         this.melding = melding;
 //        visMelding(metode, melding);
+    }
+    
+    public Melding(String sporsmaal, String overskrift, String standardvalg){
+        this.sporsmaal = sporsmaal;
+        this.overskrift = overskrift;
+        this.standardvalg = standardvalg;
+        this.alternativer = new String[]{"Ja", "Nei"};
     }
 
 //    private void visMelding(String metode, String melding) {
@@ -30,6 +38,22 @@ public class Melding {
      */
     public static void visMelding(String metode, String melding) {
         JOptionPane.showMessageDialog(null, melding, metode, JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    
+    /**
+     * Metode for å bekrefte noe. 
+     * @param sporsmaal Spørsmålet som stilles brukeren
+     * @param overskrift Overskriften på meldingsboksen
+     * @param standardvalg Standardvalget som er foretrukket
+     * @return 
+     */
+    public static int visBekreftelseDialog(String sporsmaal, String overskrift, String standardvalg){
+        int valg = JOptionPane.showOptionDialog(null,
+                        sporsmaal, overskrift,
+                        JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                        null, alternativer, standardvalg);
+        return valg;
     }
     
 }

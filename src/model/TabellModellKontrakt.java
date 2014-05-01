@@ -9,7 +9,7 @@ public class TabellModellKontrakt extends TabellModell {
 
     @Override
     public Object getValueAt(int rad, int kolonne) {
-        Kontrakt kontrakt = (Kontrakt) mottattArray[rad];
+        Kontrakt kontrakt = (Kontrakt) mottattArray.get(rad);
         switch (kolonne) {
             case 0:
                 return kontrakt.getAnnonseID();

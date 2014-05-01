@@ -32,7 +32,7 @@ public class ControllerTabellOgOutput {
 
     private DefaultTableCellRenderer rightRenderer;
 
-    private Object[] tabellData;
+    private ArrayList<Object> tabellData;
     private ObjektType objekttype;
     private Collection liste;
     private StyleSheet css;
@@ -59,6 +59,7 @@ public class ControllerTabellOgOutput {
         this.annonseliste = annonseliste;
         this.kontraktliste = kontraktliste;
         this.soknadsliste = soknadsliste;
+        
 
         tabellModellBolig = new TabellModellBolig(annonseliste);
         tabellModellPerson = new TabellModellPerson();
@@ -70,6 +71,7 @@ public class ControllerTabellOgOutput {
         rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 
         tabellMeny = new JPopupMenu();
+        
 
         menyvalgPerson = new JMenu("Person");
         menyvalgBolig = new JMenu("Bolig");
@@ -284,33 +286,38 @@ public class ControllerTabellOgOutput {
         tabell.removeAll();
     }
 
+    /**
+     * Metoden finner boligen som skal slettes. Om den ikke er utleid får
+     * brukeren spørsmål om å slette.
+     */
     public void slettBolig() {
 
-        Bolig valgtObjekt = (Bolig) tabellData[valgtRadItabell];
-        String[] alternativer = {"Ja", "Nei"};
+        Boolean ok = true;
+        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
         if (valgtObjekt != null) {
             if (!valgtObjekt.isErUtleid()) {
-                int valg = JOptionPane.showOptionDialog(null,
-                        "Ønsker du virkelig å slette boligen?", "Slette bolig",
-                        JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
-                        null, alternativer, "Nei");
+                int valg = Melding.visBekreftelseDialog("Ønsker du virkelig å slette boligen?", 
+                        "Slette bolig", "Nei");
+
                 if (valg == 0) {
                     try {
-                        System.out.println(tabellData.length);
-                        valgtRadItabell = tabell.convertRowIndexToView(valgtRadItabell);
-                        
                         tabellModellBolig.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
-                        System.out.println(tabellData.length);
+                        tabellData.remove(valgtRadItabell);
+                        ok = boligliste.remove(valgtObjekt);
+                        if(ok){
+                            Melding.visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " er slettet");
+                        }else{
+                            Melding.visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " ble IKKE slettet");
+                        }
                     } catch (ArrayIndexOutOfBoundsException aiobe) {
 
                     }
 
-                    //boligliste.remove(valgtObjekt);
                 } else {
 
                 }
-            }
-        }
+            }//end if
+        }//end if
     }
 
     /**
@@ -322,7 +329,7 @@ public class ControllerTabellOgOutput {
 
         int rad;
         Annonse temp;
-        Bolig valgtObjekt = (Bolig) tabellData[valgtRadItabell];
+        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
         if (valgtObjekt != null) {
             if (!valgtObjekt.isErUtleid()) {
 
@@ -354,31 +361,29 @@ public class ControllerTabellOgOutput {
      * avhengig av søkeresultatene og må få inn parametere fra toppanel.
      */
     public void settInnDataITabell(Collection innkommendeDatasett, ArkfaneTemplate vindu, ObjektType objekttypeEnum) {
-
-        Vector<Bolig> boliger = new Vector<>();
+        
+        tabellData = new ArrayList<>();
+        Iterator<?> iter = innkommendeDatasett.iterator();
+        while(iter.hasNext()){
+            tabellData.add(iter.next());
+        }
         
         try {
             switch (objekttypeEnum) {
                 case PERSONOBJ:
                     this.objekttype = ObjektType.PERSONOBJ;
-                    this.liste = innkommendeDatasett;
-                    tabellData = innkommendeDatasett.toArray();
                     tabellModellPerson.fyllTabellMedInnhold(tabellData);
                     tabell.setModel(tabellModellPerson);
                     tabellModellPerson.fireTableStructureChanged();
                     break;
                 case BOLIGOBJ:
                     this.objekttype = ObjektType.BOLIGOBJ;
-                    this.liste = innkommendeDatasett;
-                    tabellData = innkommendeDatasett.toArray();
                     tabellModellBolig.fyllTabellMedInnhold(tabellData);
                     tabell.setModel(tabellModellBolig);
                     tabellModellBolig.fireTableStructureChanged();
                     break;
                 case ANNONSEOBJ:
                     this.objekttype = ObjektType.ANNONSEOBJ;
-                    tabellData = innkommendeDatasett.toArray();
-                    this.liste = innkommendeDatasett;
                     tabellModellAnnonse.fyllTabellMedInnhold(tabellData);
                     vindu.getVenstrepanel().getTable().setModel(tabellModellAnnonse);
                     tabellModellAnnonse.fireTableStructureChanged();
@@ -387,16 +392,12 @@ public class ControllerTabellOgOutput {
                     break;
                 case KONTRAKTOBJ:
                     this.objekttype = ObjektType.KONTRAKTOBJ;
-                    tabellData = innkommendeDatasett.toArray();
-                    this.liste = innkommendeDatasett;
                     tabellModellKontrakt.fyllTabellMedInnhold(tabellData);
                     vindu.getVenstrepanel().getTable().setModel(tabellModellKontrakt);
                     tabellModellKontrakt.fireTableStructureChanged();
                     break;
                 case SOKNADSOBJ:
                     this.objekttype = ObjektType.SOKNADSOBJ;
-                    tabellData = innkommendeDatasett.toArray();
-                    this.liste = innkommendeDatasett;
                     tabellModellSoknad.fyllTabellMedInnhold(tabellData);
                     vindu.getVenstrepanel().getTable().setModel(tabellModellSoknad);
                     tabellModellSoknad.fireTableStructureChanged();
@@ -441,30 +442,30 @@ public class ControllerTabellOgOutput {
      * @param tabellData Arrayen tabellen er bygget på.
      * @param vindu Vinduet som skal vise resultatet.
      */
-    public void sendObjektFraTabellTilOutput(int valgtRad, ObjektType objekttype, Object[] tabellData, ArkfaneTemplate vindu) {
+    public void sendObjektFraTabellTilOutput(int valgtRad, ObjektType objekttype, ArrayList tabellData, ArkfaneTemplate vindu) {
         Object valgtObjekt = null;
         css = vindu.getSenterpanel().getStyleSheet();
         setStyleSheet();
         try {
             switch (objekttype) {
                 case PERSONOBJ:
-                    valgtObjekt = (Person) tabellData[valgtRad];
+                    valgtObjekt = (Person) tabellData.get(valgtRad);
                     visPersonObjektHTMLOutput(valgtObjekt, vindu);
                     break;
                 case BOLIGOBJ:
-                    valgtObjekt = (Bolig) tabellData[valgtRad];
+                    valgtObjekt = (Bolig) tabellData.get(valgtRad);
                     visBoligObjektHTMLOutput(valgtObjekt, vindu);
                     break;
                 case ANNONSEOBJ:
-                    valgtObjekt = (Annonse) tabellData[valgtRad];
+                    valgtObjekt = (Annonse) tabellData.get(valgtRad);
                     visAnnonseObjektHTMLOutput(valgtObjekt, vindu);
                     break;
                 case KONTRAKTOBJ:
-                    valgtObjekt = (Kontrakt) tabellData[valgtRad];
+                    valgtObjekt = (Kontrakt) tabellData.get(valgtRad);
                     visKontraktObjektHTMLOutput(valgtObjekt, vindu);
                     break;
                 case SOKNADSOBJ:
-                    valgtObjekt = (Soknad) tabellData[valgtRad];
+                    valgtObjekt = (Soknad) tabellData.get(valgtRad);
                     visSoknadObjektHTMLOutput(valgtObjekt, vindu);
                     break;
             }
