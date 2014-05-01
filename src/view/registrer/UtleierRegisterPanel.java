@@ -60,7 +60,7 @@ public class UtleierRegisterPanel extends AbstractPanel {
         
         //Oppstartkriterier
         erRepresentatnForLabel.setEnabled(false);
-        erRepresentatForField.setEnabled(false);//Det går ikke å skru av denne
+        erRepresentatForField.setEnabled(false);
 
         erRepresentantCheckBox.addActionListener(new ActionListener() {
 
