@@ -18,7 +18,7 @@ public class CustomJTextField extends AbstractPanel {
         textField.setText(initText);
         textField.setBackground(Color.WHITE);
         textField.setForeground(Color.GRAY);
-
+        
         setLayout(new FlowLayout());
         add(textField);
         
@@ -71,5 +71,15 @@ public class CustomJTextField extends AbstractPanel {
      */
     public String getText(){
         return textField.getText();
+    }
+    
+
+    /**
+     * Gjør det mulig å deaktivere feltet etter behov.
+     * @param isEnabled boolean
+     */
+    @Override
+    public void setEnabled(boolean isEnabled){
+        textField.setEnabled(isEnabled);
     }
 }
