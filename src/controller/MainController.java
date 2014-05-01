@@ -167,6 +167,7 @@ public class MainController implements Serializable {
 
             @Override
             public void listReady(HashSet liste, ObjektType obj) {
+                tabellControllerAnnonse.tomTabellOgKlargjorForNyttDatasett();
                 tabellControllerAnnonse.settInnDataITabell(liste, annonseVindu, obj);
                 liste.clear();
             }
