@@ -2,17 +2,23 @@ package view.registrer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.swing.BorderFactory;
-import static javax.swing.BorderFactory.createLineBorder;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.border.Border;
+import lib.Melding;
 import lib.RegexTester;
 import view.CustomJButton;
 import view.CustomJCheckBox;
@@ -28,12 +34,16 @@ import view.CustomJTextField;
  */
 public class BoligRegVindu extends JFrame {
 
+    ///PANELER///
     private CustomSubPanel toppPanel, venstrePanel, senterPanel, hoyrePanel, bunnPanel;
     private BorderLayout borderLayout;
-
+    private CustomSubPanel boligPanel, leilighetPanel, eneboligPanel;
+    ///SLUTT PÅ PANELER///
+    //
     ///BOLIG///
-    private JLabel boligTypeLabel, eierLabel, meglerLabel, adresseLabel, postNrLabel, postStedLabel, boArealLabel, byggeArLabel, erUtleidLabel, beskrivelseLabel;
+    private JLabel boligTypeLabel, eierLabel, meglerLabel, adresseLabel, postNrLabel, postStedLabel, boArealLabel, byggeArLabel, erUtleidLabel, beskrivelseLabel, tilgjengeligForUtleieLabel;
     private CustomJRadioButton leilighetRButton, eneboligRButton;
+    private JComboBox dagCombo, manedCombo, arCombo;
     private ButtonGroup radioButtons;
     private CustomJTextField eierField, meglerField, adresseField, postNrField, postStedField, boArealField, byggeArField;
     private JCheckBox erUtleidCheckBox;
@@ -65,7 +75,7 @@ public class BoligRegVindu extends JFrame {
         toppPanel = new CustomSubPanel("Topp", 50, 0);
         venstrePanel = new CustomSubPanel("Venstre", 0, 300);
         senterPanel = new CustomSubPanel("Senter", 0, 0);
-        hoyrePanel = new CustomSubPanel("Høyre", 0, 150);
+        hoyrePanel = new CustomSubPanel("Høyre", 0, 300);
         bunnPanel = new CustomSubPanel("Bunn", 50, 0);
 
         add(toppPanel, BorderLayout.NORTH);
@@ -96,6 +106,7 @@ public class BoligRegVindu extends JFrame {
         postStedLabel = new JLabel("Poststed: ");
         boArealLabel = new JLabel("Boareal: ");
         byggeArLabel = new JLabel("Byggeår: ");
+        tilgjengeligForUtleieLabel = new JLabel("Kan leies fra: ");
         erUtleidLabel = new JLabel("Utleid: ");
         beskrivelseLabel = new JLabel("Beskrivelse: ");
 
@@ -106,6 +117,9 @@ public class BoligRegVindu extends JFrame {
         postStedField = new CustomJTextField("Oslo", RegexTester.POSTORT_NAVN, 10);
         boArealField = new CustomJTextField("XX(X)", RegexTester.KVM_BOLIG, 10);
         byggeArField = new CustomJTextField("XXXX", RegexTester.YEAR, 10);
+        dagCombo = new JComboBox<>();
+        manedCombo = new JComboBox<>();
+        arCombo = new JComboBox<>();
         erUtleidCheckBox = new CustomJCheckBox();
         beskrivelseTextArea = new JTextArea(5, 11);
         beskrivelseTextArea.setBorder(BorderFactory.createLineBorder(Color.gray));
@@ -118,11 +132,11 @@ public class BoligRegVindu extends JFrame {
         harHeisLabel = new JLabel("Heis: ");
         harGarasjeLabel = new JLabel("Garasje: ");
         harFellesVaskeri = new JLabel("Fellesvaskeri: ");
-        
+
         etasjeNrField = new CustomJTextField("XX", RegexTester.ETASJE, 10);
         balkongArealField = new CustomJTextField("XX", RegexTester.KVM_BOLIG, 10);
         bodArealField = new CustomJTextField("XX", RegexTester.KVM_BOLIG, 10);
-        
+
         harHeisCheckBox = new CustomJCheckBox();
         harGarasjeCheckBox = new CustomJCheckBox();
         harFellesVaskeriCheckbox = new CustomJCheckBox();
@@ -132,10 +146,10 @@ public class BoligRegVindu extends JFrame {
         antallEtasjerLabel = new JLabel("Antall etasjer");
         tomtArealLabel = new JLabel("Tomt areal");
         harKjellerLabel = new JLabel("Kjeller");
-        
+
         antallEtasjerField = new CustomJTextField("XX", RegexTester.PRIS, 10);
         tomtArealField = new CustomJTextField("XX", RegexTester.KVM_TOMT, 10);
-        
+
         harKjellerCheckBox = new CustomJCheckBox();
         ///SLUTT PÅ DATAFELT FOR ENEBOLIG///
         //
@@ -144,8 +158,12 @@ public class BoligRegVindu extends JFrame {
         //--//--//--//--//
         ////////START PÅ GENERELL REGISTRERING AV BOLIG////////
         GridBagLayout BoligLayout = new GridBagLayout();
-        CustomSubPanel boligPanel = new CustomSubPanel(BoligLayout);
+        boligPanel = new CustomSubPanel(BoligLayout);
         GridBagConstraints gcBolig = new GridBagConstraints();
+        CustomSubPanel datoPickPanel = new CustomSubPanel(new FlowLayout());
+        datoPickPanel.add(arCombo);
+        datoPickPanel.add(manedCombo);
+        datoPickPanel.add(dagCombo);
 
         //Rad 1
         gcBolig.gridx = 0;
@@ -201,11 +219,18 @@ public class BoligRegVindu extends JFrame {
         //Rad 8
         gcBolig.gridx = 0;
         gcBolig.gridy++;
+        boligPanel.add(tilgjengeligForUtleieLabel, gcBolig);
+        gcBolig.gridx++;
+        boligPanel.add(datoPickPanel, gcBolig);
+
+        //Rad 9
+        gcBolig.gridx = 0;
+        gcBolig.gridy++;
         boligPanel.add(erUtleidLabel, gcBolig);
         gcBolig.gridx++;
         boligPanel.add(erUtleidCheckBox, gcBolig);
 
-        //Rad 9
+        //Rad 10
         gcBolig.gridx = 0;
         gcBolig.gridy++;
         gcBolig.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -218,14 +243,88 @@ public class BoligRegVindu extends JFrame {
 
         ////////START PÅ REGISTRERING AV LEILIGHET////////
         GridBagLayout leilighetLayout = new GridBagLayout();
-        CustomSubPanel leilighetPanel = new CustomSubPanel(leilighetLayout);
+        leilighetPanel = new CustomSubPanel(leilighetLayout);
         GridBagConstraints gcLeilighet = new GridBagConstraints();
-        //sluttet her
+
+        //Rad 1
+        gcLeilighet.gridx = 0;
+        gcLeilighet.gridy = 0;
+        gcLeilighet.anchor = GridBagConstraints.LINE_START;
+        leilighetPanel.add(etasjeNrLabel, gcLeilighet);
+
+        gcLeilighet.gridx++;
+        gcLeilighet.anchor = GridBagConstraints.LINE_START;
+        leilighetPanel.add(etasjeNrField, gcLeilighet);
+
+        //Rad 2
+        gcLeilighet.gridx = 0;
+        gcLeilighet.gridy++;
+        leilighetPanel.add(balkongArealLabel, gcLeilighet);
+        gcLeilighet.gridx++;
+        leilighetPanel.add(balkongArealField, gcLeilighet);
+
+        //Rad 3
+        gcLeilighet.gridx = 0;
+        gcLeilighet.gridy++;
+        leilighetPanel.add(bodArealLabel, gcLeilighet);
+        gcLeilighet.gridx++;
+        leilighetPanel.add(bodArealField, gcLeilighet);
+
+        //Rad 4
+        gcLeilighet.gridx = 0;
+        gcLeilighet.gridy++;
+        leilighetPanel.add(harHeisLabel, gcLeilighet);
+        gcLeilighet.gridx++;
+        leilighetPanel.add(harHeisCheckBox, gcLeilighet);
+
+        //Rad 5
+        gcLeilighet.gridx = 0;
+        gcLeilighet.gridy++;
+        leilighetPanel.add(harGarasjeLabel, gcLeilighet);
+        gcLeilighet.gridx++;
+        leilighetPanel.add(harGarasjeCheckBox, gcLeilighet);
+
+        //Rad 6
+        gcLeilighet.gridx = 0;
+        gcLeilighet.gridy++;
+        leilighetPanel.add(harFellesVaskeri, gcLeilighet);
+        gcLeilighet.gridx++;
+        leilighetPanel.add(harFellesVaskeriCheckbox, gcLeilighet);
+
         senterPanel.add(leilighetPanel);
         ////////SLUTT PÅ REGISTRERING AV LEILIGHET////////
-
+        //
         ////////START PÅ REGISTRERING AV ENEBOLIG////////
+        GridBagLayout eneboligLayout = new GridBagLayout();
+        eneboligPanel = new CustomSubPanel(BoligLayout);
+        GridBagConstraints gcEnebolig = new GridBagConstraints();
+
+        //Rad 1
+        gcEnebolig.gridx = 0;
+        gcEnebolig.gridy = 0;
+        gcEnebolig.anchor = GridBagConstraints.LINE_START;
+        eneboligPanel.add(antallEtasjerLabel, gcEnebolig);
+
+        gcEnebolig.gridx++;
+        gcEnebolig.anchor = GridBagConstraints.LINE_START;
+        eneboligPanel.add(antallEtasjerField, gcEnebolig);
+
+        //Rad 2
+        gcEnebolig.gridx = 0;
+        gcEnebolig.gridy++;
+        eneboligPanel.add(tomtArealLabel, gcEnebolig);
+        gcEnebolig.gridx++;
+        eneboligPanel.add(tomtArealField, gcEnebolig);
+        //Rad 2
+        gcEnebolig.gridx = 0;
+        gcEnebolig.gridy++;
+        eneboligPanel.add(harKjellerLabel, gcEnebolig);
+        gcEnebolig.gridx++;
+        eneboligPanel.add(harKjellerCheckBox, gcEnebolig);
+
+        hoyrePanel.add(eneboligPanel);
         ////////SLUTT PÅ REGISTRERING AV ENEBOLIG////////
+        //
         ///START PÅ AVBRYT OG LAGREKNAPPER///
         avbrytButton = new CustomJButton("Avbryt");
         lagreButton = new CustomJButton("Lagre");
@@ -236,9 +335,164 @@ public class BoligRegVindu extends JFrame {
         knappContainer.add(knappPanel, BorderLayout.EAST);
         bunnPanel.add(knappContainer);
         ///SLUTT PÅ AVBRYT OG LAGRE KNAPPER///
+        //
+        ///START PÅ AKTIVERING OG DEAKTIVERING AV KOMPONENTER///
+        leilighetRButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deaktiverAlleKomponenter();
+                aktiverBoligKomponenter();
+                aktiverLeilighetKomponenter();
+            }
+        });
 
+        eneboligRButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deaktiverAlleKomponenter();
+                aktiverBoligKomponenter();
+                aktiverEneboligKomponenter();
+            }
+        });
+        ///SLUTT PÅ AKTIVERING OG DEAKTIVERING AV KOMPONENTER///
+        //
+        ///LUKKE VINDU///
+        avbrytButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+        ///SLUTT PÅ LUKKE VINDU///
+        fyllDatoComboBoxerMndAr();
+        setAntallDager();
+
+        ///START VALG AV DATO///
+        /**
+         * Dersom man endrer år elle måned endres antall dager i comboboksen for
+         * dager
+         */
+        arCombo.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setAntallDager();
+            }
+        });
+        manedCombo.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setAntallDager();
+            }
+        });
+        ///SLUTT PÅ VALG AV DATO///
+
+        deaktiverAlleKomponenter();
         setVisible(true);
+        
+        //--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+        //                SLUTT PÅ KONSTRUKTØR                  //
+        //--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+    }
 
+    private void deaktiverAlleKomponenter() {
+        Component[] compBolig = boligPanel.getComponents();
+        Component[] compLeilighet = leilighetPanel.getComponents();
+        Component[] compEnebolig = eneboligPanel.getComponents();
+
+        for (Component comp1 : compBolig) {
+            comp1.setEnabled(false);
+        }
+        for (Component comp1 : compLeilighet) {
+            comp1.setEnabled(false);
+        }
+        for (Component comp1 : compEnebolig) {
+            comp1.setEnabled(false);
+        }
+        //Må sette disse manuellt ettersom de ikke vil fungere som resten
+        arCombo.setEnabled(false);
+        manedCombo.setEnabled(false);
+        dagCombo.setEnabled(false);
+    }
+
+    private void aktiverBoligKomponenter() {
+        Component[] compBolig = boligPanel.getComponents();
+        for (Component comp1 : compBolig) {
+            comp1.setEnabled(true);
+        }
+        //Må sette disse manuellt ettersom de ikke vil fungere som resten
+        arCombo.setEnabled(true);
+        manedCombo.setEnabled(true);
+        dagCombo.setEnabled(true);
+    }
+
+    private void aktiverLeilighetKomponenter() {
+        Component[] compLeilighet = leilighetPanel.getComponents();
+        for (Component comp1 : compLeilighet) {
+            comp1.setEnabled(true);
+        }
+    }
+
+    private void aktiverEneboligKomponenter() {
+        Component[] compEnebolig = eneboligPanel.getComponents();
+        for (Component comp1 : compEnebolig) {
+            comp1.setEnabled(true);
+        }
+    }
+
+    /**
+     * Fyller combobokser for år og måneder.
+     */
+    private void fyllDatoComboBoxerMndAr() {
+        int ar = Calendar.getInstance().get(Calendar.YEAR);
+
+        for (int i = ar; i <= (ar + 10); i++) {
+            arCombo.addItem(i);
+        }
+        for (int i = 1; i <= 12; i++) {
+            String mnd = String.valueOf(i);
+            if (i < 10) {
+                mnd = "0" + mnd;
+            }
+            manedCombo.addItem(mnd);
+        }
+
+    }
+
+    /**
+     * Setter antall dager for comboboxen etter at man har valgt år og måned.
+     */
+    private void setAntallDager() {
+        dagCombo.removeAllItems();
+        int ar = Integer.parseInt(arCombo.getSelectedItem().toString());
+        int mnd = Integer.parseInt(manedCombo.getSelectedItem().toString());
+        int dager = getAntallDager(ar, mnd);
+
+        for (int i = 1; i <= dager; i++) {
+            String dag = String.valueOf(i);
+            if (i < 10) {
+                dag = "0" + dag;
+            }
+            dagCombo.addItem(dag);
+        }
+
+//        Melding.visMelding("", "År: "+ar+"\nMåned:"+mnd+"\nAntall dager:"+getAntallDager(ar, mnd));
+    }
+
+    /**
+     * Returnerer antall dager i en måned girr år og måned.
+     *
+     * @param ar
+     * @param mnd
+     * @return int antall dager mellom 1 og 31
+     */
+    private int getAntallDager(int ar, int mnd) {
+        Calendar cal = new GregorianCalendar(ar, mnd - 1, 1);
+        int antallDager = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        return antallDager;
     }
 
 }
