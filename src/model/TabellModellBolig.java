@@ -3,6 +3,7 @@ package model;
 
 import java.util.Collection;
 import java.util.Iterator;
+import javax.swing.table.DefaultTableModel;
 
 
 public class TabellModellBolig extends TabellModell {
@@ -13,6 +14,7 @@ public class TabellModellBolig extends TabellModell {
     public TabellModellBolig(Collection annonseliste){
         super.overskrift = new String[]{"BoligID", "Adresse", "Annonsert","Utleid"};
         this.annonseliste = annonseliste;
+        
     }
 
     @Override

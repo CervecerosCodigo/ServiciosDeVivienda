@@ -48,6 +48,8 @@ public class ControllerTabellOgOutput {
             menyvalgForesporsel,
             menyvalgAksepter, menyvalgAvvis;
 
+    private int valgtRadItabell;
+
     public ControllerTabellOgOutput(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
             LinkedHashSet<Soknad> soknadsliste) {
@@ -112,6 +114,7 @@ public class ControllerTabellOgOutput {
                 try {
                     int rad = tabell.getSelectedRow();
                     rad = tabell.convertRowIndexToModel(rad);
+                    valgtRadItabell = rad;
 
                     sendObjektFraTabellTilOutput(rad, objekttype, tabellData, vindu);
                 } catch (ArrayIndexOutOfBoundsException aiobe) {
@@ -217,7 +220,7 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Du oppretter ny Bolig!");
+                slettBolig();
             }
 
         });
@@ -281,48 +284,69 @@ public class ControllerTabellOgOutput {
         tabell.removeAll();
     }
 
+    public void slettBolig() {
+
+        Bolig valgtObjekt = (Bolig) tabellData[valgtRadItabell];
+        String[] alternativer = {"Ja", "Nei"};
+        if (valgtObjekt != null) {
+            if (!valgtObjekt.isErUtleid()) {
+                int valg = JOptionPane.showOptionDialog(null,
+                        "Ønsker du virkelig å slette boligen?", "Slette bolig",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                        null, alternativer, "Nei");
+                if (valg == 0) {
+                    try {
+                        System.out.println(tabellData.length);
+                        valgtRadItabell = tabell.convertRowIndexToView(valgtRadItabell);
+                        
+                        tabellModellBolig.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
+                        System.out.println(tabellData.length);
+                    } catch (ArrayIndexOutOfBoundsException aiobe) {
+
+                    }
+
+                    //boligliste.remove(valgtObjekt);
+                } else {
+
+                }
+            }
+        }
+    }
+
     /**
-     * Om boligen er publisert så tas den av nett.
-     * Om den ikke er publisert så sjekkes det om boligen finnes i annonseregistert.
-     * Omden gjør det så åpned vindu for å endre annonsen, ellers lages det ny tom annonse.
+     * Om boligen er publisert så tas den av nett. Om den ikke er publisert så
+     * sjekkes det om boligen finnes i annonseregistert. Omden gjør det så åpned
+     * vindu for å endre annonsen, ellers lages det ny tom annonse.
      */
     public void toggleBoligPubliserSomAnnonseEllerIkke() {
 
         int rad;
-        Bolig valgtObjekt;
         Annonse temp;
-        try {
-            rad = tabell.getSelectedRow();
-            rad = tabell.convertRowIndexToModel(rad);
+        Bolig valgtObjekt = (Bolig) tabellData[valgtRadItabell];
+        if (valgtObjekt != null) {
+            if (!valgtObjekt.isErUtleid()) {
 
-            valgtObjekt = (Bolig) tabellData[rad];
-            
-            if(!valgtObjekt.isErUtleid()){
-                
                 //Sjekker om boligen ligger i annonseregisteret
                 Iterator<Annonse> iter = annonseliste.iterator();
-                while(iter.hasNext()){
+                while (iter.hasNext()) {
                     temp = iter.next();
-                    if(temp.getBoligID() == valgtObjekt.getBoligID()){
-                        if(temp.isErSynlig()){
+                    if (temp.getBoligID() == valgtObjekt.getBoligID()) {
+                        if (temp.isErSynlig()) {
                             temp.setErSynlig(false);
-                        }else{
+                        } else {
                             //Åpne annonseobjektet for endring før man publiserer på nytt
                         }
                         return;
                     }//end if
                 }//end while
-                
+
                 //Boligen ligger ikke i annonseregisteret. Lager ny annonse.
                 //Legg annonse i annonseregister
-                
-            }else{
+            } else {
                 //Boligen er utleid og kan ikke legges i annonseregisteret
             }
-                
-        } catch (ArrayIndexOutOfBoundsException aiobe) {
+        }//end if
 
-        }
     }
 
     /**
@@ -331,6 +355,8 @@ public class ControllerTabellOgOutput {
      */
     public void settInnDataITabell(Collection innkommendeDatasett, ArkfaneTemplate vindu, ObjektType objekttypeEnum) {
 
+        Vector<Bolig> boliger = new Vector<>();
+        
         try {
             switch (objekttypeEnum) {
                 case PERSONOBJ:

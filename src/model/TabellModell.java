@@ -2,16 +2,18 @@ package model;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 
 public abstract class TabellModell extends AbstractTableModel {
 
     Object[] mottattArray;
     String[] overskrift;
+    DefaultTableModel modell;
 
     public TabellModell() {
         
+        
     }
-
 
     public void fyllTabellMedInnhold(Object[] liste) {
         this.mottattArray = liste;
@@ -24,7 +26,8 @@ public abstract class TabellModell extends AbstractTableModel {
 
     /**
      * Returnerer antall kolonner i tabellen.
-     * @return 
+     *
+     * @return
      */
     @Override
     public int getColumnCount() {
@@ -35,20 +38,20 @@ public abstract class TabellModell extends AbstractTableModel {
     public String getColumnName(int index) {
         return overskrift[index];
     }
-    
-    
+
     @Override
-    public Class getColumnClass(int c){
-        if( mottattArray.length > 0){
-            return getValueAt(0,c).getClass();
+    public Class getColumnClass(int c) {
+        if (mottattArray.length > 0) {
+            return getValueAt(0, c).getClass();
         }
         return null;
     }
 
     @Override
     public Object getValueAt(int rad, int kolonne) {
-        
+
         return null;
     }
+
     
 }
