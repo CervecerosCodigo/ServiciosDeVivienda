@@ -31,6 +31,7 @@ public class VenstrePanel extends AbstractPanel {
         tabell.setGridColor(Color.gray);
         tabell.setSelectionBackground(new Color(210, 210, 210));
         tabell.setSelectionForeground(Color.BLACK);
+
         
         add(new JScrollPane(tabell));
 

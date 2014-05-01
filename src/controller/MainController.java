@@ -125,22 +125,27 @@ public class MainController implements Serializable {
             public void listReady(ArrayList liste, ObjektType obj) {
                 switch (obj) {
                     case BOLIGOBJ:
+                        tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
                         tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
                         liste.clear();
                         break;
                     case PERSONOBJ:
+                        tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
                         tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
                         liste.clear();
                         break;
                     case ANNONSEOBJ:
+                        tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
                         tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
                         liste.clear();
                         break;
                     case KONTRAKTOBJ:
+                        tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
                         tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
                         liste.clear();
                         break;
                     case SOKNADSOBJ:
+                        tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
                         tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
                         liste.clear();
                         break;

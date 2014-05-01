@@ -24,13 +24,6 @@ import view.*;
 
 public class ControllerTabellOgOutput {
 
-    private JTable tabell;
-    private TabellModell tabellModellBolig;
-    private TabellModell tabellModellPerson;
-    private TabellModell tabellModellAnnonse;
-    private TabellModell tabellModellKontrakt;
-    private TabellModell tabellModellSoknad;
-
     private HashSet<Person> personliste;
     private HashSet<Bolig> boligliste;
     private HashSet<Kontrakt> kontraktliste;
@@ -44,9 +37,16 @@ public class ControllerTabellOgOutput {
     private Collection liste;
     private StyleSheet css;
 
-    private JPopupMenu tabellMeny, tabellMenyPerson;
-    private JMenu menyvalgBolig, menyvalgPerson, menyvalgAnnonse, menyvalgKontrakt, menyvalgSoknad;
-    private JMenuItem menyvalgNy, menyvalgEndre, menyvalgSlett, menyvalgPubliserToggle, menyvalgForesporsel;
+    private JTable tabell;
+    private TabellModell tabellModellBolig, tabellModellPerson, tabellModellAnnonse,
+            tabellModellKontrakt, tabellModellSoknad;
+    private JPopupMenu tabellMeny;
+    private JMenu menyvalgBolig, menyvalgPerson, menyvalgAnnonse, menyvalgSoknad;
+    private JMenuItem menyvalgNyPerson, menyvalgEndrePerson, menyvalgSlettPerson,
+            menyvalgNyBolig, menyvalgEndreBolig, menyvalgSlettBolig,
+            menyvalgForesporsel,
+            menyvalgAksepter, menyvalgAvvis;
+    private JCheckBoxMenuItem menyvalgPubliserToggle;
 
     public ControllerTabellOgOutput(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
@@ -66,6 +66,23 @@ public class ControllerTabellOgOutput {
 
         rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+
+        tabellMeny = new JPopupMenu();
+
+        menyvalgPerson = new JMenu("Person");
+        menyvalgBolig = new JMenu("Bolig");
+        menyvalgAnnonse = new JMenu("Annonse");
+        menyvalgSoknad = new JMenu("Søknad");
+        menyvalgNyPerson = new JMenuItem("Ny");
+        menyvalgEndrePerson = new JMenuItem("Endre");
+        menyvalgSlettPerson = new JMenuItem("Slett");
+        menyvalgNyBolig = new JMenuItem("Ny");
+        menyvalgEndreBolig = new JMenuItem("Endre");
+        menyvalgSlettBolig = new JMenuItem("Slett");
+        menyvalgForesporsel = new JMenuItem("Send forespørsel");
+        menyvalgAksepter = new JMenuItem("Aksepter søknad");
+        menyvalgAvvis = new JMenuItem("Avvis søknad");
+        menyvalgPubliserToggle = new JCheckBoxMenuItem("Publiser bolig");
     }
 
     /**
@@ -78,7 +95,7 @@ public class ControllerTabellOgOutput {
     public void settOppTabellLytter(final ArkfaneTemplate vindu) {
         //Setter en lytter som finner raden som er valgt
         tabell = vindu.getVenstrepanel().getTable();
-        popupMenyForTabell();
+        lyttereForPopupMenyITabell();
         tabell.setComponentPopupMenu(tabellMeny);
 
         tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -88,10 +105,15 @@ public class ControllerTabellOgOutput {
                 if (e.getValueIsAdjusting()) {
                     return;
                 }
-                int rad = tabell.getSelectedRow();
-                rad = tabell.convertRowIndexToModel(rad);
+                try {
+                    int rad = tabell.getSelectedRow();
+                    rad = tabell.convertRowIndexToModel(rad);
 
-                sendObjektFraTabellTilOutput(rad, objekttype, tabellData, vindu);
+                    sendObjektFraTabellTilOutput(rad, objekttype, tabellData, vindu);
+                } catch (ArrayIndexOutOfBoundsException aiobe) {
+
+                }
+
             }
         });
 
@@ -128,16 +150,36 @@ public class ControllerTabellOgOutput {
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON3) {
 
-                    if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
-                        System.out.println("Bolig");
-                    } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
-                        System.out.println("Person");
-                    } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
-                        System.out.println("Annonse");
-                    } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
-                        System.out.println("Kontrakt");
-                    } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
-                        System.out.println("Søknad");
+                    tabellMeny.removeAll();
+                    
+                    try {
+                        if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
+                            tabellMeny.add(menyvalgBolig);
+                            menyvalgBolig.add(menyvalgNyBolig);
+                            menyvalgBolig.add(menyvalgEndreBolig);
+                            menyvalgBolig.add(menyvalgSlettBolig);
+                            menyvalgBolig.add(menyvalgPubliserToggle);
+                        } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
+                            tabellMeny.add(menyvalgPerson);
+                            tabellMeny.add(menyvalgBolig);
+                            menyvalgPerson.add(menyvalgNyPerson);
+                            menyvalgPerson.add(menyvalgEndrePerson);
+                            menyvalgPerson.add(menyvalgSlettPerson);
+                            menyvalgBolig.add(menyvalgNyBolig);
+                            menyvalgBolig.add(menyvalgEndreBolig);
+                            menyvalgBolig.add(menyvalgSlettBolig);
+                        } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
+                            tabellMeny.add(menyvalgAnnonse);
+                            menyvalgAnnonse.add(menyvalgForesporsel);
+                        } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
+
+                        } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
+                            tabellMeny.add(menyvalgSoknad);
+                            menyvalgSoknad.add(menyvalgAksepter);
+                            menyvalgSoknad.add(menyvalgAvvis);
+                        }
+                    } catch (ClassCastException cce) {
+
                     }
                     tabellMeny.show(e.getComponent(), e.getX(), e.getY());
                 }
@@ -146,48 +188,29 @@ public class ControllerTabellOgOutput {
         });
     }
 
-    public void popupMenyForTabell() {
-        tabellMeny = new JPopupMenu();
-        
-        //tabellMenyPerson = new JPopupMenu();
+    public void lyttereForPopupMenyITabell() {
 
-        menyvalgPerson = new JMenu("Person");
-        menyvalgBolig = new JMenu("Bolig");
-        menyvalgAnnonse = new JMenu("Annonse");
-        menyvalgKontrakt = new JMenu("Kontrakt");
-        menyvalgSoknad = new JMenu("Søknad");
-        menyvalgNy = new JMenuItem("Ny");
-        menyvalgEndre = new JMenuItem("Endre");
-        menyvalgSlett = new JMenuItem("Slett");
-        
-        tabellMeny.add(menyvalgPerson);
-        tabellMeny.add(menyvalgBolig);
-        tabellMeny.add(menyvalgAnnonse);
-        tabellMeny.add(menyvalgKontrakt);
-        tabellMeny.add(menyvalgSoknad);
-        
-        menyvalgPerson.add(menyvalgNy);
-        menyvalgPerson.add(menyvalgEndre);
-        menyvalgPerson.add(menyvalgSlett);
-        
-        
-
-
-//        menyvalgPerson.addActionListener(new ActionListener() {
-//
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                //JOptionPane.showMessageDialog(null, "Du oppretter ny bolig!");
-//            }
-//        });
-        menyvalgPerson.addMouseListener(new MouseAdapter() {
+        menyvalgNyBolig.addActionListener(new ActionListener() {
 
             @Override
-            public void mouseEntered(MouseEvent e) {
-             
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Du oppretter ny Bolig!");
             }
-            
+
         });
+        menyvalgNyPerson.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+            }
+        });
+
+    }
+
+    public void tomTabellOgKlargjorForNyttDatasett() {
+        tabell.clearSelection();
+        tabell.removeAll();
     }
 
     /**
@@ -203,7 +226,7 @@ public class ControllerTabellOgOutput {
                     this.liste = liste;
                     tabellData = liste.toArray();
                     tabellModellPerson.fyllTabellMedInnhold(tabellData);
-                    vindu.getVenstrepanel().getTable().setModel(tabellModellPerson);
+                    tabell.setModel(tabellModellPerson);
                     tabellModellPerson.fireTableStructureChanged();
                     break;
                 case BOLIGOBJ:
@@ -211,7 +234,7 @@ public class ControllerTabellOgOutput {
                     this.liste = liste;
                     tabellData = liste.toArray();
                     tabellModellBolig.fyllTabellMedInnhold(tabellData);
-                    vindu.getVenstrepanel().getTable().setModel(tabellModellBolig);
+                    tabell.setModel(tabellModellBolig);
                     tabellModellBolig.fireTableStructureChanged();
                     break;
                 case ANNONSEOBJ:
