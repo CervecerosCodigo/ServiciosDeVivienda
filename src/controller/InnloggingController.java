@@ -50,7 +50,7 @@ public class InnloggingController {
 			else if(e.getSource() == loggInnDialog.getLoggInnKnapp()) {
 				
 				if(loggInnDialog.getBrukernavnFelt().getText().equals(adminMegler.getBrukernavn()) 
-					&& loggInnDialog.getPassordFelt().getPassword().equals(adminMegler.getPassord())) {
+					& (String.valueOf(loggInnDialog.getPassordFelt().getPassword())).equals(adminMegler.getPassord())) {
 					
 					startGUI.getMainPanel().getTabbedPane().setSelectedIndex(0);
 					loggInnDialog.dispose();
@@ -58,7 +58,7 @@ public class InnloggingController {
 					innlogget = true;
 				}
 				
-				JOptionPane.showMessageDialog(null, "Feil brukernavn eller passord", "Prøv igjen", JOptionPane.ERROR_MESSAGE);
+				else JOptionPane.showMessageDialog(null, "Feil brukernavn eller passord", "Prøv igjen", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
