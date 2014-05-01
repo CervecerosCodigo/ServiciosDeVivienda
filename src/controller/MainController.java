@@ -68,7 +68,7 @@ public class MainController implements Serializable {
         toppPanelControllerAnnonse = new ControllerToppPanelAnnonse(annonseVindu, annonseliste);
         
         controllerUtleierFrame = new ControllerUtleierFrame(new UtleierFrame(), personliste);
-        controllerRegistrerBolig = new ControllerRegistrerBolig(null, new JFrame("Test"));
+        controllerRegistrerBolig = new ControllerRegistrerBolig(new JFrame("Test"), null);
 
         this.personliste = personliste;
         this.boligliste = boligliste;
