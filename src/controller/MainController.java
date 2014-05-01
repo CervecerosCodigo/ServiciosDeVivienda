@@ -88,10 +88,10 @@ public class MainController implements Serializable {
          * listen, der det er ønskelig.
          */
 
-        tabellControllerMegler.settOppTabellLytter(meglerVindu);
+        tabellControllerMegler.settOppTabellLyttere(meglerVindu);
         tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, ObjektType.BOLIGOBJ);
         
-        tabellControllerAnnonse.settOppTabellLytter(annonseVindu);
+        tabellControllerAnnonse.settOppTabellLyttere(annonseVindu);
         tabellControllerAnnonse.settInnDataITabell(annonseliste, annonseVindu, ObjektType.ANNONSEOBJ);
 
         bunnController.settKnappeLytter(meglerVindu);
