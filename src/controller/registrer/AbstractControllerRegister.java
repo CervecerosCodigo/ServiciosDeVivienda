@@ -18,10 +18,30 @@ public abstract class AbstractControllerRegister<E> {
     2. En som tar imot et objekt og Jpanel for å populere denne med data fra registeret med hensikt å endre registrerte data.
     */
     
-    private HashSet<E> set;
     private JFrame frame;
+    private HashSet<E> set;
+    private Object obj;
     
+    /**
+     * Brukes for registrering.
+     * @param frame
+     * @param set 
+     */
     public AbstractControllerRegister(HashSet<E> set, JFrame frame){
         
     }
+
+    /**
+     * Brukes for endring eller sletting av et alerede eksisterende objekt.
+     * @param obj
+     * @param set 
+     */
+    public AbstractControllerRegister(HashSet<E> set, Object obj) {
+        this.set = set;
+        this.obj = obj;
+    }
+
+    
+
+    
 }
