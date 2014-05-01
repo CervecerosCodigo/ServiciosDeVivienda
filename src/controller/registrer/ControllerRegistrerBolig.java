@@ -3,6 +3,7 @@ package controller.registrer;
 
 import java.util.HashSet;
 import javax.swing.JFrame;
+import model.Bolig;
 import view.registrer.BoligRegVindu;
 
 /**
@@ -12,17 +13,19 @@ import view.registrer.BoligRegVindu;
  * Apr 29, 2014
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
-public class ControllerRegistrerBolig extends AbstractControllerRegister<Object>{
+public class ControllerRegistrerBolig extends AbstractControllerRegister{
     
-    private BoligRegVindu regVindu;
+    private BoligRegVindu boligRegVindu;
 
-    public ControllerRegistrerBolig(HashSet<Object> set, JFrame frame) {
-        super(set, frame);
+    public ControllerRegistrerBolig(JFrame frame, HashSet<Bolig> boligSet) {
+        super(boligSet, frame);
         
-        regVindu = new BoligRegVindu("Registrering av boliger");
+        boligRegVindu = new BoligRegVindu("Registrering av boliger");
     }
 
     
-    
+    public void getBoligData(){
+        
+    }
 
 }

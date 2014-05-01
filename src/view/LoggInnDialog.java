@@ -1,6 +1,7 @@
 package view;
 
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
@@ -9,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
 import lib.Konstanter;
 
 public class LoggInnDialog extends JDialog {
@@ -27,8 +29,13 @@ public class LoggInnDialog extends JDialog {
 		avbrytKnapp = new JButton("Avbryt");
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
-		setSize(180, 180);
+		setSize(180, 150);
+		setResizable(false);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(getParent());
 		setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+		setUndecorated(true);
+		
 		add(brukernavnLabel);
 		add(brukernavnFelt);
 		add(passordLabel);
@@ -42,5 +49,20 @@ public class LoggInnDialog extends JDialog {
 		this.avbrytKnapp.addActionListener(lytter);
 	}
 	
+	public JButton getLoggInnKnapp() {
+		return loggInnKnapp;
+	}
+
+	public JButton getAvbrytKnapp() {
+		return avbrytKnapp;
+	}
+	
+	public JTextField getBrukernavnFelt() {
+		return brukernavnFelt;
+	}
+	
+	public JPasswordField getPassordFelt() {
+		return passordFelt;
+	}
 }
 

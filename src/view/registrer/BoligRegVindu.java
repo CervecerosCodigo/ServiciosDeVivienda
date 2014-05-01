@@ -24,6 +24,7 @@ import view.CustomJButton;
 import view.CustomJCheckBox;
 import view.CustomJRadioButton;
 import view.CustomJTextField;
+import view.VenstrePanel;
 
 /**
  *
@@ -392,7 +393,7 @@ public class BoligRegVindu extends JFrame {
 
         deaktiverAlleKomponenter();
         setVisible(true);
-        
+
         //--//--//--//--//--//--//--//--//--//--//--//--//--//--//
         //                SLUTT PÅ KONSTRUKTØR                  //
         //--//--//--//--//--//--//--//--//--//--//--//--//--//--//
@@ -493,6 +494,275 @@ public class BoligRegVindu extends JFrame {
         Calendar cal = new GregorianCalendar(ar, mnd - 1, 1);
         int antallDager = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         return antallDager;
+    }
+
+    
+    //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+    //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //||//                      GETTERS OG SETTERS                      //||//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+    //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+    
+    
+    public CustomSubPanel getToppPanel() {
+        return toppPanel;
+    }
+
+    public void setToppPanel(CustomSubPanel toppPanel) {
+        this.toppPanel = toppPanel;
+    }
+
+    public CustomSubPanel getVenstrePanel() {
+        return venstrePanel;
+    }
+
+    public void setVenstrePanel(CustomSubPanel venstrePanel) {
+        this.venstrePanel = venstrePanel;
+    }
+
+    public CustomSubPanel getHoyrePanel() {
+        return hoyrePanel;
+    }
+
+    public void setHoyrePanel(CustomSubPanel hoyrePanel) {
+        this.hoyrePanel = hoyrePanel;
+    }
+
+    public CustomSubPanel getBoligPanel() {
+        return boligPanel;
+    }
+
+    public void setBoligPanel(CustomSubPanel boligPanel) {
+        this.boligPanel = boligPanel;
+    }
+
+    public CustomSubPanel getLeilighetPanel() {
+        return leilighetPanel;
+    }
+
+    public void setLeilighetPanel(CustomSubPanel leilighetPanel) {
+        this.leilighetPanel = leilighetPanel;
+    }
+
+    public CustomSubPanel getEneboligPanel() {
+        return eneboligPanel;
+    }
+
+    public void setEneboligPanel(CustomSubPanel eneboligPanel) {
+        this.eneboligPanel = eneboligPanel;
+    }
+
+    public CustomJRadioButton getLeilighetRButton() {
+        return leilighetRButton;
+    }
+
+    public void setLeilighetRButton(CustomJRadioButton leilighetRButton) {
+        this.leilighetRButton = leilighetRButton;
+    }
+
+    public CustomJRadioButton getEneboligRButton() {
+        return eneboligRButton;
+    }
+
+    public void setEneboligRButton(CustomJRadioButton eneboligRButton) {
+        this.eneboligRButton = eneboligRButton;
+    }
+
+    public JComboBox getDagCombo() {
+        return dagCombo;
+    }
+
+    public void setDagCombo(JComboBox dagCombo) {
+        this.dagCombo = dagCombo;
+    }
+
+    public JComboBox getManedCombo() {
+        return manedCombo;
+    }
+
+    public void setManedCombo(JComboBox manedCombo) {
+        this.manedCombo = manedCombo;
+    }
+
+    public JComboBox getArCombo() {
+        return arCombo;
+    }
+
+    public void setArCombo(JComboBox arCombo) {
+        this.arCombo = arCombo;
+    }
+
+    public ButtonGroup getRadioButtons() {
+        return radioButtons;
+    }
+
+    public void setRadioButtons(ButtonGroup radioButtons) {
+        this.radioButtons = radioButtons;
+    }
+
+    public CustomJTextField getEierField() {
+        return eierField;
+    }
+
+    public void setEierField(CustomJTextField eierField) {
+        this.eierField = eierField;
+    }
+
+    public CustomJTextField getMeglerField() {
+        return meglerField;
+    }
+
+    public void setMeglerField(CustomJTextField meglerField) {
+        this.meglerField = meglerField;
+    }
+
+    public CustomJTextField getAdresseField() {
+        return adresseField;
+    }
+
+    public void setAdresseField(CustomJTextField adresseField) {
+        this.adresseField = adresseField;
+    }
+
+    public CustomJTextField getPostNrField() {
+        return postNrField;
+    }
+
+    public void setPostNrField(CustomJTextField postNrField) {
+        this.postNrField = postNrField;
+    }
+
+    public CustomJTextField getPostStedField() {
+        return postStedField;
+    }
+
+    public void setPostStedField(CustomJTextField postStedField) {
+        this.postStedField = postStedField;
+    }
+
+    public CustomJTextField getBoArealField() {
+        return boArealField;
+    }
+
+    public void setBoArealField(CustomJTextField boArealField) {
+        this.boArealField = boArealField;
+    }
+
+    public CustomJTextField getByggeArField() {
+        return byggeArField;
+    }
+
+    public void setByggeArField(CustomJTextField byggeArField) {
+        this.byggeArField = byggeArField;
+    }
+
+    public JCheckBox getErUtleidCheckBox() {
+        return erUtleidCheckBox;
+    }
+
+    public void setErUtleidCheckBox(JCheckBox erUtleidCheckBox) {
+        this.erUtleidCheckBox = erUtleidCheckBox;
+    }
+
+    public JTextArea getBeskrivelseTextArea() {
+        return beskrivelseTextArea;
+    }
+
+    public void setBeskrivelseTextArea(JTextArea beskrivelseTextArea) {
+        this.beskrivelseTextArea = beskrivelseTextArea;
+    }
+
+    public CustomJTextField getEtasjeNrField() {
+        return etasjeNrField;
+    }
+
+    public void setEtasjeNrField(CustomJTextField etasjeNrField) {
+        this.etasjeNrField = etasjeNrField;
+    }
+
+    public CustomJTextField getBalkongArealField() {
+        return balkongArealField;
+    }
+
+    public void setBalkongArealField(CustomJTextField balkongArealField) {
+        this.balkongArealField = balkongArealField;
+    }
+
+    public CustomJTextField getBodArealField() {
+        return bodArealField;
+    }
+
+    public void setBodArealField(CustomJTextField bodArealField) {
+        this.bodArealField = bodArealField;
+    }
+
+    public CustomJCheckBox getHarHeisCheckBox() {
+        return harHeisCheckBox;
+    }
+
+    public void setHarHeisCheckBox(CustomJCheckBox harHeisCheckBox) {
+        this.harHeisCheckBox = harHeisCheckBox;
+    }
+
+    public CustomJCheckBox getHarGarasjeCheckBox() {
+        return harGarasjeCheckBox;
+    }
+
+    public void setHarGarasjeCheckBox(CustomJCheckBox harGarasjeCheckBox) {
+        this.harGarasjeCheckBox = harGarasjeCheckBox;
+    }
+
+    public CustomJCheckBox getHarFellesVaskeriCheckbox() {
+        return harFellesVaskeriCheckbox;
+    }
+
+    public void setHarFellesVaskeriCheckbox(CustomJCheckBox harFellesVaskeriCheckbox) {
+        this.harFellesVaskeriCheckbox = harFellesVaskeriCheckbox;
+    }
+
+    public CustomJTextField getAntallEtasjerField() {
+        return antallEtasjerField;
+    }
+
+    public void setAntallEtasjerField(CustomJTextField antallEtasjerField) {
+        this.antallEtasjerField = antallEtasjerField;
+    }
+
+    public CustomJTextField getTomtArealField() {
+        return tomtArealField;
+    }
+
+    public void setTomtArealField(CustomJTextField tomtArealField) {
+        this.tomtArealField = tomtArealField;
+    }
+
+    public CustomJCheckBox getHarKjellerCheckBox() {
+        return harKjellerCheckBox;
+    }
+
+    public void setHarKjellerCheckBox(CustomJCheckBox harKjellerCheckBox) {
+        this.harKjellerCheckBox = harKjellerCheckBox;
+    }
+
+    public CustomJButton getLagreButton() {
+        return lagreButton;
+    }
+
+    public void setLagreButton(CustomJButton lagreButton) {
+        this.lagreButton = lagreButton;
     }
 
 }
