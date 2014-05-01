@@ -21,6 +21,7 @@ public class StartGUI extends JFrame {
         setResizable(false);
         setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         innhold = new MainPanel( megler, annonse );
+        this.setLocationRelativeTo(null);
         add( innhold );
     }
     

@@ -29,6 +29,10 @@ public class MainPanel extends AbstractPanel{
         add(arkfaner);
     }
     
+    public JTabbedPane getTabbedPane() {
+    	return arkfaner;
+    }
+    
     public void addTabListener(ChangeListener lytter) {
     	this.arkfaner.addChangeListener(lytter);
     }

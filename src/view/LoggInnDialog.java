@@ -28,7 +28,11 @@ public class LoggInnDialog extends JDialog {
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		setSize(180, 180);
+		setResizable(false);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(getParent());
 		setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
+		
 		add(brukernavnLabel);
 		add(brukernavnFelt);
 		add(passordLabel);
@@ -41,6 +45,13 @@ public class LoggInnDialog extends JDialog {
 		this.loggInnKnapp.addActionListener(lytter);
 		this.avbrytKnapp.addActionListener(lytter);
 	}
-	
+
+	public JButton getLoggInnKnapp() {
+		return loggInnKnapp;
+	}
+
+	public JButton getAvbrytKnapp() {
+		return avbrytKnapp;
+	}
 }
 
