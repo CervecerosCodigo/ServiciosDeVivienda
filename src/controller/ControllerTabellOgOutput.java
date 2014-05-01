@@ -36,6 +36,7 @@ public class ControllerTabellOgOutput {
     private ObjektType objekttype;
     private Collection liste;
     private StyleSheet css;
+    private JEditorPane output;
 
     private JTable tabell;
     private TabellModell tabellModellBolig, tabellModellPerson, tabellModellAnnonse,
@@ -43,10 +44,9 @@ public class ControllerTabellOgOutput {
     private JPopupMenu tabellMeny;
     private JMenu menyvalgBolig, menyvalgPerson, menyvalgAnnonse, menyvalgSoknad;
     private JMenuItem menyvalgNyPerson, menyvalgEndrePerson, menyvalgSlettPerson,
-            menyvalgNyBolig, menyvalgEndreBolig, menyvalgSlettBolig,
+            menyvalgNyBolig, menyvalgEndreBolig, menyvalgSlettBolig, menyvalgPubliserToggle,
             menyvalgForesporsel,
             menyvalgAksepter, menyvalgAvvis;
-    private JCheckBoxMenuItem menyvalgPubliserToggle;
 
     public ControllerTabellOgOutput(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
@@ -58,7 +58,7 @@ public class ControllerTabellOgOutput {
         this.kontraktliste = kontraktliste;
         this.soknadsliste = soknadsliste;
 
-        tabellModellBolig = new TabellModellBolig();
+        tabellModellBolig = new TabellModellBolig(annonseliste);
         tabellModellPerson = new TabellModellPerson();
         tabellModellAnnonse = new TabellModellAnnonse();
         tabellModellKontrakt = new TabellModellKontrakt();
@@ -82,7 +82,7 @@ public class ControllerTabellOgOutput {
         menyvalgForesporsel = new JMenuItem("Send forespørsel");
         menyvalgAksepter = new JMenuItem("Aksepter søknad");
         menyvalgAvvis = new JMenuItem("Avvis søknad");
-        menyvalgPubliserToggle = new JCheckBoxMenuItem("Publiser bolig");
+        menyvalgPubliserToggle = new JMenuItem("Endre publiseringsstatus");
     }
 
     /**
@@ -90,12 +90,16 @@ public class ControllerTabellOgOutput {
      * lytter på tabellen som finner hvilken rad/objekt som er valgt.
      * valueChanged-metoden sender også valgt objekt til output.
      *
-     * @param vindu
+     * @param vindu Tar i mot det vinduet som metoden gjelder for.
      */
-    public void settOppTabellLytter(final ArkfaneTemplate vindu) {
-        //Setter en lytter som finner raden som er valgt
+    public void settOppTabellLyttere(final ArkfaneTemplate vindu) {
+
         tabell = vindu.getVenstrepanel().getTable();
-        lyttereForPopupMenyITabell();
+
+        //Kaller opp metoden som lager lyttere for popupmenyen i tabellen.
+        settOpplyttereForPopupMenyITabell();
+
+        //Kobler popupmenyen til tabellen.
         tabell.setComponentPopupMenu(tabellMeny);
 
         tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -122,8 +126,7 @@ public class ControllerTabellOgOutput {
          */
         tabell.addMouseListener(new MouseAdapter() {
 
-            TabellModell modell = null;
-
+//            TabellModell modell = null;
             @Override
             public void mouseClicked(MouseEvent e) {
                 JTable temp = (JTable) e.getSource();
@@ -150,8 +153,9 @@ public class ControllerTabellOgOutput {
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON3) {
 
+                    //Tømmer menyen før den tegnes på nytt.
                     tabellMeny.removeAll();
-                    
+
                     try {
                         if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
                             tabellMeny.add(menyvalgBolig);
@@ -188,9 +192,28 @@ public class ControllerTabellOgOutput {
         });
     }
 
-    public void lyttereForPopupMenyITabell() {
+    /**
+     * Setter lyttere for popupmenyen i tabellen.
+     */
+    public void settOpplyttereForPopupMenyITabell() {
 
         menyvalgNyBolig.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Du oppretter ny Bolig!");
+            }
+
+        });
+        menyvalgEndreBolig.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Du oppretter ny Bolig!");
+            }
+
+        });
+        menyvalgSlettBolig.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -205,42 +228,131 @@ public class ControllerTabellOgOutput {
                 JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
             }
         });
+        menyvalgEndrePerson.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+            }
+        });
+        menyvalgSlettPerson.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+            }
+        });
+        menyvalgForesporsel.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+            }
+        });
+        menyvalgAksepter.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+            }
+        });
+        menyvalgAvvis.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+            }
+        });
+        menyvalgPubliserToggle.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleBoligPubliserSomAnnonseEllerIkke();
+            }
+        });
 
     }
 
+    /**
+     * Tømmer tabellen før nytt datasett settes.
+     */
     public void tomTabellOgKlargjorForNyttDatasett() {
         tabell.clearSelection();
         tabell.removeAll();
     }
 
     /**
+     * Om boligen er publisert så tas den av nett.
+     * Om den ikke er publisert så sjekkes det om boligen finnes i annonseregistert.
+     * Omden gjør det så åpned vindu for å endre annonsen, ellers lages det ny tom annonse.
+     */
+    public void toggleBoligPubliserSomAnnonseEllerIkke() {
+
+        int rad;
+        Bolig valgtObjekt;
+        Annonse temp;
+        try {
+            rad = tabell.getSelectedRow();
+            rad = tabell.convertRowIndexToModel(rad);
+
+            valgtObjekt = (Bolig) tabellData[rad];
+            
+            if(!valgtObjekt.isErUtleid()){
+                
+                //Sjekker om boligen ligger i annonseregisteret
+                Iterator<Annonse> iter = annonseliste.iterator();
+                while(iter.hasNext()){
+                    temp = iter.next();
+                    if(temp.getBoligID() == valgtObjekt.getBoligID()){
+                        if(temp.isErSynlig()){
+                            temp.setErSynlig(false);
+                        }else{
+                            //Åpne annonseobjektet for endring før man publiserer på nytt
+                        }
+                        return;
+                    }//end if
+                }//end while
+                
+                //Boligen ligger ikke i annonseregisteret. Lager ny annonse.
+                //Legg annonse i annonseregister
+                
+            }else{
+                //Boligen er utleid og kan ikke legges i annonseregisteret
+            }
+                
+        } catch (ArrayIndexOutOfBoundsException aiobe) {
+
+        }
+    }
+
+    /**
      * Oppretter en array med lengde av mottatt datasett. Denne metoden er
      * avhengig av søkeresultatene og må få inn parametere fra toppanel.
      */
-    public void settInnDataITabell(Collection liste, ArkfaneTemplate vindu, ObjektType objekttype) {
+    public void settInnDataITabell(Collection innkommendeDatasett, ArkfaneTemplate vindu, ObjektType objekttypeEnum) {
 
         try {
-            switch (objekttype) {
+            switch (objekttypeEnum) {
                 case PERSONOBJ:
                     this.objekttype = ObjektType.PERSONOBJ;
-                    this.liste = liste;
-                    tabellData = liste.toArray();
+                    this.liste = innkommendeDatasett;
+                    tabellData = innkommendeDatasett.toArray();
                     tabellModellPerson.fyllTabellMedInnhold(tabellData);
                     tabell.setModel(tabellModellPerson);
                     tabellModellPerson.fireTableStructureChanged();
                     break;
                 case BOLIGOBJ:
                     this.objekttype = ObjektType.BOLIGOBJ;
-                    this.liste = liste;
-                    tabellData = liste.toArray();
+                    this.liste = innkommendeDatasett;
+                    tabellData = innkommendeDatasett.toArray();
                     tabellModellBolig.fyllTabellMedInnhold(tabellData);
                     tabell.setModel(tabellModellBolig);
                     tabellModellBolig.fireTableStructureChanged();
                     break;
                 case ANNONSEOBJ:
                     this.objekttype = ObjektType.ANNONSEOBJ;
-                    tabellData = liste.toArray();
-                    this.liste = liste;
+                    tabellData = innkommendeDatasett.toArray();
+                    this.liste = innkommendeDatasett;
                     tabellModellAnnonse.fyllTabellMedInnhold(tabellData);
                     vindu.getVenstrepanel().getTable().setModel(tabellModellAnnonse);
                     tabellModellAnnonse.fireTableStructureChanged();
@@ -249,16 +361,16 @@ public class ControllerTabellOgOutput {
                     break;
                 case KONTRAKTOBJ:
                     this.objekttype = ObjektType.KONTRAKTOBJ;
-                    tabellData = liste.toArray();
-                    this.liste = liste;
+                    tabellData = innkommendeDatasett.toArray();
+                    this.liste = innkommendeDatasett;
                     tabellModellKontrakt.fyllTabellMedInnhold(tabellData);
                     vindu.getVenstrepanel().getTable().setModel(tabellModellKontrakt);
                     tabellModellKontrakt.fireTableStructureChanged();
                     break;
                 case SOKNADSOBJ:
                     this.objekttype = ObjektType.SOKNADSOBJ;
-                    tabellData = liste.toArray();
-                    this.liste = liste;
+                    tabellData = innkommendeDatasett.toArray();
+                    this.liste = innkommendeDatasett;
                     tabellModellSoknad.fyllTabellMedInnhold(tabellData);
                     vindu.getVenstrepanel().getTable().setModel(tabellModellSoknad);
                     tabellModellSoknad.fireTableStructureChanged();
@@ -297,12 +409,11 @@ public class ControllerTabellOgOutput {
     }
 
     /**
-     * Tar i mot data og bestemmer hvilken "HTML"-metode som skal kalles.
+     * Tar i mot data og bestemmer hvilken "HTML"-metode som skal brukes.
      *
-     * @param valgtRad
-     * @param datasettIBruk
-     * @param tabellData
-     * @param vindu
+     * @param valgtRad Raden i arrayen som skal vises.
+     * @param tabellData Arrayen tabellen er bygget på.
+     * @param vindu Vinduet som skal vise resultatet.
      */
     public void sendObjektFraTabellTilOutput(int valgtRad, ObjektType objekttype, Object[] tabellData, ArkfaneTemplate vindu) {
         Object valgtObjekt = null;
@@ -337,9 +448,7 @@ public class ControllerTabellOgOutput {
     }
 
     /**
-     * //Metoder for SøkeGUI// Tar i mot epost fra GUI. Kaller så opp
-     * hjelpemetoden finnePersonIDBasertPaaEpost for å få tak i personID til
-     * personen, og deretter leter etter denne personens boliger.
+     * Hjelpemetode som returnerer alle boliger registrert på en eier.
      */
     public ArrayList<Bolig> finnBoligerRegistrertPaaEier(int personID) {
 
@@ -361,13 +470,12 @@ public class ControllerTabellOgOutput {
      * Tar imot data fra sendObjektFraTabellTilOutput-metoden. Denne metoden
      * skriver ut Personobjekter som HTML til output (JEditorPane)
      *
-     * @param valgtObjekt
-     * @param vindu
+     * @param valgtObjekt Objektet som skal vises i Output
+     * @param vindu Vinduet som skal vise resultatet
      */
     public void visPersonObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
 
-        JEditorPane output = vindu.getSenterpanel().getEditorPane();
-        Collection<Person> personliste = liste;
+        output = vindu.getSenterpanel().getEditorPane();
 
         Person skalVises = (Person) valgtObjekt;
         Megler megler = null;
@@ -416,10 +524,10 @@ public class ControllerTabellOgOutput {
         html.append("</tr>");
         html.append("</table>");
 
+        //Hvis objektet er utleier så skal boligene til personen finnes og vises.
         if (utleier != null) {
 
             ArrayList<Bolig> boliger = finnBoligerRegistrertPaaEier(utleier.getPersonID());
-            String tabellRad = new String("");
             html.append("<br><br>");
             html.append("<h3><u>".concat(skalVises.getFornavn().concat(" ").concat(skalVises.getEtternavn())));
             html.append(" har følgende boliger:</u></h3>");
@@ -453,12 +561,11 @@ public class ControllerTabellOgOutput {
      * Tar imot data fra sendObjektFraTabellTilOutput-metoden. Denne metoden
      * skriver ut Boligobjekter som HTML til output (JEditorPane)
      *
-     * @param valgtObjekt
-     * @param vindu
+     * @param valgtObjekt Objektet som skal vises.
+     * @param vindu Hvilket vindu resultatet skal vises i.
      */
     public void visBoligObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
-        JEditorPane output = vindu.getSenterpanel().getEditorPane();
-        Collection<Bolig> boligliste = liste;
+        output = vindu.getSenterpanel().getEditorPane();
         Bolig skalVises = (Bolig) valgtObjekt;
         Leilighet leilighet = null;
         Enebolig enebolig = null;
@@ -603,10 +710,8 @@ public class ControllerTabellOgOutput {
         }
         html.append("</table>");
 
-//        String localImageSrc = ControllerTabellOgOutput.class.getClassLoader().getSystemResource("77_1655132553.jpg").toString();
         BildeFilSti bildefilsti = new BildeFilSti();
         String localImageSrc = bildefilsti.getBoligFremsideBildeHTML(skalVises);
-        //new Melding("Melding", "Kommenter vekk linje 374 i ControllerTabellOutput.java for å få vekk denne\n Skal fjerne meldingen etter at ha testet BildeFilSti på Windows.\n\n"+localImageSrc); 
 
         html.append("<table id='bildetabell'>");
         html.append("<tr id='bilderad'>");
@@ -626,9 +731,14 @@ public class ControllerTabellOgOutput {
         output.setText(html.toString());
     }
 
+    /**
+     * Viser Annonsene i Output-vinduet.
+     *
+     * @param valgtObjekt Objektet som skal vises i output.
+     * @param vindu Vinduet som skal vise resultatet
+     */
     public void visAnnonseObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
-        JEditorPane output = vindu.getSenterpanel().getEditorPane();
-        Collection<Annonse> annonseliste = liste;
+        output = vindu.getSenterpanel().getEditorPane();
         Annonse skalVises = (Annonse) valgtObjekt;
 
         Leilighet leilighet = null;
@@ -763,12 +873,9 @@ public class ControllerTabellOgOutput {
             html.append("</tr>");
         }
         html.append("</table>");
-        //html.append("<hr class='linjeEn'>");
 
-//        String localImageSrc = ControllerTabellOgOutput.class.getClassLoader().getSystemResource("77_1655132553.jpg").toString();
         BildeFilSti bildefilsti = new BildeFilSti();
         String localImageSrc = bildefilsti.getBoligFremsideBildeHTML(skalVises.getBolig());
-        //new Melding("Melding", "Kommenter vekk linje 374 i ControllerTabellOutput.java for å få vekk denne\n Skal fjerne meldingen etter at ha testet BildeFilSti på Windows.\n\n"+localImageSrc);         
 
         html.append("<table id='bildetabell'>");
 
@@ -825,7 +932,7 @@ public class ControllerTabellOgOutput {
     }
 
     /**
-     * Denne metoden definerer CSS-oppsettet for HTML-utskriftene.
+     * Definerer CSS-oppsettet for HTML-utskriftene.
      */
     public void setStyleSheet() {
 
