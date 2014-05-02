@@ -37,7 +37,7 @@ public class MainController implements Serializable {
     private HashSet<Bolig> boligliste;
     private HashSet<Kontrakt> kontraktliste;
     private HashSet<Annonse> annonseliste;
-    private LinkedHashSet<Soknad> soknadsliste;
+    private HashSet<Soknad> soknadsliste;
 
     private ArkfaneTemplate meglerVindu;
     private ArkfaneTemplate annonseVindu;
@@ -55,21 +55,18 @@ public class MainController implements Serializable {
 
     public MainController(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
-            LinkedHashSet<Soknad> soknadsliste) {
+            HashSet<Soknad> soknadsliste) {
 
         meglerVindu = new ArkfaneTemplate("megler");
         annonseVindu = new ArkfaneTemplate("annonse");
         startGUI = new StartGUI(meglerVindu, annonseVindu);
 
         innloggingController = new InnloggingController(startGUI);
-        bunnController = new ControllerBunnPanel();
+        bunnController = new ControllerBunnPanel(boligliste, personliste, annonseliste);
         tabellControllerMegler = new ControllerTabellOgOutput(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         tabellControllerAnnonse = new ControllerTabellOgOutput(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerMegler = new ControllerToppPanelMegler(meglerVindu, personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerAnnonse = new ControllerToppPanelAnnonse(annonseVindu, annonseliste);
-        
-
-        
 
         this.personliste = personliste;
         this.boligliste = boligliste;
@@ -98,23 +95,7 @@ public class MainController implements Serializable {
         bunnController.settKnappeLytter(meglerVindu);
         bunnController.settKnappeLytter(annonseVindu);
 
-        ////////////////TEST AV SØKEKLASSER////////////////
-        //Kommenter av metodene for å kjøre test
-        //Test av filtrering fir boligsøker.
-        TestAnnonseFilter testFilter = new TestAnnonseFilter(annonseliste);
-//        testFilter.testBoligSokerEtterParametre();
 
-        TestFritekstSok testFritekst = new TestFritekstSok();
-//        testFritekst.testSokAnnonseListe(annonseliste, "6");
-//        testFritekst.testSokBoligListe(boligliste, "grorud");
-        ////////////////SLUTT AV TEST AV SØKEKLASSER////////////////
-
-        /////TEST FOR HJELPEKLASSER AV FILSTIER OG FILER//////
-//        for (Bolig a : boligliste) {
-//            TestBildeFilSti testBildefilsti = new TestBildeFilSti(a);
-//            return;//verden beste hack for å avbryte etter en iterasjon
-//        }
-        /////SLUTT PÅ TEST FOR HJELPEKLASSER AV FILSTIER OG FILER//////
         /**
          * Fyller inn data med søkeresultat som kommer fra
          * ControllerToppPanelMegler
@@ -173,7 +154,15 @@ public class MainController implements Serializable {
             }
         });
         
-    }
+        tabellControllerMegler.setTabellListener(new TabellListener() {
+
+            @Override
+            public void tabellOppdatert(ArrayList tabellData, TabellModell modell) {
+                bunnController.settOppTabellData(tabellData, modell);
+            }
+        });
+        
+    }//END CONSTRUCTOR
 
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
         Calendar kalender = new GregorianCalendar(aar, mnd, dag);

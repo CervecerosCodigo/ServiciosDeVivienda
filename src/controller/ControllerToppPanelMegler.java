@@ -28,13 +28,13 @@ public class ControllerToppPanelMegler<E> {
     private HashSet<Bolig> boligliste;
     private HashSet<Annonse> annonseliste;
     private HashSet<Kontrakt> kontraktliste;
-    private LinkedHashSet<Soknad> soknadsliste;
+    private HashSet<Soknad> soknadsliste;
 
     private ListListener listListener;
 
     public ControllerToppPanelMegler(ArkfaneTemplate vindu, HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
-            LinkedHashSet<Soknad> soknadsliste) {
+            HashSet<Soknad> soknadsliste) {
         this.vindu = vindu;
         this.personliste = personliste;
         this.boligliste = boligliste;
