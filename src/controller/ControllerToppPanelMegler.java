@@ -111,7 +111,7 @@ public class ControllerToppPanelMegler<E> {
                 new ControllerRegistrerBolig(boligliste);
             }
             if(e.getSource().equals(vindu.getToppanelMegler().getNyUtleierItem())){
-                new ControllerRegistrerUtleier(new UtleierRegVindu("Registrer utleier"), personliste);
+                new ControllerRegistrerUtleier(personliste);
             }
             if(e.getSource().equals(vindu.getToppanelMegler().getNyAnnonseItem())){
                 
