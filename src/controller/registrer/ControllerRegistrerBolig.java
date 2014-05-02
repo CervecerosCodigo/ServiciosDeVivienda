@@ -4,9 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import lib.BildeFilSti;
+import lib.Boligtype;
 import lib.Melding;
 import lib.RegexTester;
 import model.Bolig;
+import model.Enebolig;
 import model.Leilighet;
 import view.registrer.BoligRegVindu;
 
@@ -136,7 +139,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
     private boolean kontrollerDataEnebolig() {
         boolean[] eneboligOK = new boolean[2];
 
-        eneboligOK[0] = RegexTester.testEtasje(String.valueOf(etasjeNr));
+        eneboligOK[0] = RegexTester.testEtasje(String.valueOf(antallEtasjer));
         eneboligOK[1] = RegexTester.testKVMtomt(String.valueOf(tomtAreal));
         for (int i = 0; i < eneboligOK.length; i++) {
             if (!eneboligOK[i]) {
@@ -157,17 +160,61 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         getBoligData();
         getLeilighetData();
 
+        //Kontroller generelle datafelt for bolig
         if (!kontrollerDataBolig()) {
             Melding.visMelding("Boligregstrering", "Feil i skjema for bolig.");
             return false;
+            //Kontrollerer leilighetsfelt
         } else if (!kontrollerDataLeilighet()) {
             Melding.visMelding("Boligregstrering", "Feil i skjema for leilighet.");
             return false;
         } else {
             Leilighet leilighet = new Leilighet(etasjeNr, balkongAreal, bodAreal, harHeis, harGarasje, harFellesVaskeri, eierID, adresse, postNr, postSted, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
-            //public Leilighet(int etasjeNr, int balkongAreal, int bodAreal, boolean harHeis, boolean harGarsje, boolean harFellesvaskeri, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie)
+
             if (set.add(leilighet)) {
                 Melding.visMelding("Boligregstrering", "Ny leilighet er registrert");
+
+                //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
+                BildeFilSti gallerimappe = new BildeFilSti();
+                gallerimappe.lagBildemappeForBolig(leilighet);
+
+                return true;
+            } else {
+                Melding.visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
+            }
+        }
+        return false;
+    }
+
+    
+    /**
+     * Foretar registrering av en ny enebolig.
+     * @return boolean
+     */
+    private boolean registrerNyEnebolig() {
+
+        //Henter data fra GUI
+        getBoligData();
+        getEneboligData();
+
+        //Kontroller generelle datafelt for bolig
+        if (!kontrollerDataBolig()) {
+            Melding.visMelding("Boligregstrering", "Feil i skjema for bolig.");
+            return false;
+            //Kontrollerer leilighetsfelt
+        } else if (!kontrollerDataEnebolig()) {
+            Melding.visMelding("Boligregstrering", "Feil i skjema for enebolig.");
+            return false;
+        } else {
+            Enebolig enebolig = new Enebolig(Boligtype.ENEBOLIG, antallEtasjer, harKjeller, tomtAreal, eierID, adresse, postNr, postSted, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
+
+            if (set.add(enebolig)) {
+                Melding.visMelding("Boligregstrering", "Ny enebolig er registrert");
+
+                //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
+                BildeFilSti gallerimappe = new BildeFilSti();
+                gallerimappe.lagBildemappeForBolig(enebolig);
+
                 return true;
             } else {
                 Melding.visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
@@ -186,7 +233,13 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
             if (e.getSource().equals(bRegVindu.getLagreButton())) {
 //                Melding.visMelding("Lagre", "Lagre knapp for ny bolig er kliket\n og fanget opp o kontroller");
                 if (bRegVindu.getLeilighetRButton().isSelected()) {
-                    registrerNyLeilighet();
+                    if(registrerNyLeilighet()){
+                        bRegVindu.dispose();
+                    }
+                }else if(bRegVindu.getEneboligRButton().isSelected()){
+                    if(registrerNyEnebolig()){
+                        bRegVindu.dispose();
+                    }
                 }
             }
         }

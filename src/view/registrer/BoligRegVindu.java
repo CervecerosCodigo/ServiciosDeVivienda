@@ -1,7 +1,6 @@
 package view.registrer;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -10,21 +9,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import lib.Melding;
+import lib.GuiSizes;
 import lib.RegexTester;
 import view.CustomJButton;
 import view.CustomJCheckBox;
 import view.CustomJRadioButton;
 import view.CustomJTextField;
-import view.VenstrePanel;
 
 /**
  *
@@ -111,19 +108,22 @@ public class BoligRegVindu extends JFrame {
         erUtleidLabel = new JLabel("Utleid: ");
         beskrivelseLabel = new JLabel("Beskrivelse: ");
 
-        eierField = new CustomJTextField("XXXX", RegexTester.PRIS, 10);
-        meglerField = new CustomJTextField("XXXX", RegexTester.PRIS, 10);
-        adresseField = new CustomJTextField("Gate", RegexTester.GATE_ADRESSE, 10);//TODO: Her må det endres til gateadresse + husnummer regex
-        postNrField = new CustomJTextField("XXXX", RegexTester.POST_NUMMER_PATTERN, 10);
-        postStedField = new CustomJTextField("Oslo", RegexTester.POSTORT_NAVN, 10);
-        boArealField = new CustomJTextField("XX(X)", RegexTester.KVM_BOLIG, 10);
-        byggeArField = new CustomJTextField("XXXX", RegexTester.YEAR, 10);
+        eierField = new CustomJTextField("#####", RegexTester.PRIS, GuiSizes.FIELD_MEDIUM);
+        meglerField = new CustomJTextField("#####", RegexTester.PRIS, GuiSizes.FIELD_MEDIUM);
+        adresseField = new CustomJTextField("Gate vei 10 B", RegexTester.GATE_ADRESSE, GuiSizes.FIELD_MEDIUM);//TODO: Her må det endres til gateadresse + husnummer regex
+        postNrField = new CustomJTextField("XXXX", RegexTester.POST_NUMMER_PATTERN, GuiSizes.FIELD_MEDIUM);
+        postStedField = new CustomJTextField("Oslo", RegexTester.POSTORT_NAVN, GuiSizes.FIELD_MEDIUM);
+        boArealField = new CustomJTextField("XX(X)", RegexTester.KVM_BOLIG, GuiSizes.FIELD_MEDIUM);
+        byggeArField = new CustomJTextField("XXXX", RegexTester.YEAR, GuiSizes.FIELD_MEDIUM);
         dagCombo = new JComboBox<>();
         manedCombo = new JComboBox<>();
         arCombo = new JComboBox<>();
         erUtleidCheckBox = new CustomJCheckBox();
-        beskrivelseTextArea = new JTextArea(5, 11);
-        beskrivelseTextArea.setBorder(BorderFactory.createLineBorder(Color.gray));
+        beskrivelseTextArea = new JTextArea(GuiSizes.TEXTAREA_ROW_MEDIUM, GuiSizes.TEXTAREA_COL_MEDIUM);
+//        beskrivelseTextArea.setPreferredSize(new Dimension(200, 200));
+        beskrivelseTextArea.setLineWrap(true);
+        beskrivelseTextArea.setWrapStyleWord(true);
+        JScrollPane beskrivelseScroll = new JScrollPane(beskrivelseTextArea);
         ///SLUTT PÅ DATAFELT FOR BOLIG///
         //
         ///START PÅ DATAFELT FOR LEILIGHET///
@@ -134,9 +134,9 @@ public class BoligRegVindu extends JFrame {
         harGarasjeLabel = new JLabel("Garasje: ");
         harFellesVaskeri = new JLabel("Fellesvaskeri: ");
 
-        etasjeNrField = new CustomJTextField("XX", RegexTester.ETASJE, 10);
-        balkongArealField = new CustomJTextField("XX", RegexTester.KVM_BOLIG, 10);
-        bodArealField = new CustomJTextField("XX", RegexTester.KVM_BOLIG, 10);
+        etasjeNrField = new CustomJTextField("XX", RegexTester.ETASJE, GuiSizes.FIELD_MEDIUM);
+        balkongArealField = new CustomJTextField("XX", RegexTester.KVM_BOLIG, GuiSizes.FIELD_MEDIUM);
+        bodArealField = new CustomJTextField("XX", RegexTester.KVM_BOLIG, GuiSizes.FIELD_MEDIUM);
 
         harHeisCheckBox = new CustomJCheckBox();
         harGarasjeCheckBox = new CustomJCheckBox();
@@ -148,8 +148,8 @@ public class BoligRegVindu extends JFrame {
         tomtArealLabel = new JLabel("Tomt areal");
         harKjellerLabel = new JLabel("Kjeller");
 
-        antallEtasjerField = new CustomJTextField("XX", RegexTester.PRIS, 10);
-        tomtArealField = new CustomJTextField("XX", RegexTester.KVM_TOMT, 10);
+        antallEtasjerField = new CustomJTextField("XX", RegexTester.PRIS, GuiSizes.FIELD_MEDIUM);
+        tomtArealField = new CustomJTextField("XX", RegexTester.KVM_TOMT, GuiSizes.FIELD_MEDIUM);
 
         harKjellerCheckBox = new CustomJCheckBox();
         ///SLUTT PÅ DATAFELT FOR ENEBOLIG///
@@ -158,8 +158,8 @@ public class BoligRegVindu extends JFrame {
         //    LAYOUT    //
         //--//--//--//--//
         ////////START PÅ GENERELL REGISTRERING AV BOLIG////////
-        GridBagLayout BoligLayout = new GridBagLayout();
-        boligPanel = new CustomSubPanel(BoligLayout);
+        GridBagLayout boligLayout = new GridBagLayout();
+        boligPanel = new CustomSubPanel(boligLayout);
         GridBagConstraints gcBolig = new GridBagConstraints();
         CustomSubPanel datoPickPanel = new CustomSubPanel(new FlowLayout());
         datoPickPanel.add(arCombo);
@@ -237,7 +237,10 @@ public class BoligRegVindu extends JFrame {
         gcBolig.anchor = GridBagConstraints.FIRST_LINE_START;
         boligPanel.add(beskrivelseLabel, gcBolig);
         gcBolig.gridx++;
-        boligPanel.add(beskrivelseTextArea, gcBolig);
+//        gcBolig.gridy++;
+        boligPanel.add(beskrivelseScroll, gcBolig);
+        
+
 
         venstrePanel.add(boligPanel);
         ////////SLUTT PÅ GENERELL REGISTRERING AV BOLIG////////
@@ -297,7 +300,7 @@ public class BoligRegVindu extends JFrame {
         //
         ////////START PÅ REGISTRERING AV ENEBOLIG////////
         GridBagLayout eneboligLayout = new GridBagLayout();
-        eneboligPanel = new CustomSubPanel(BoligLayout);
+        eneboligPanel = new CustomSubPanel(boligLayout);
         GridBagConstraints gcEnebolig = new GridBagConstraints();
 
         //Rad 1
@@ -417,6 +420,7 @@ public class BoligRegVindu extends JFrame {
         arCombo.setEnabled(false);
         manedCombo.setEnabled(false);
         dagCombo.setEnabled(false);
+        beskrivelseTextArea.setEditable(false);
         lagreButton.setEnabled(false);
     }
 
@@ -429,6 +433,7 @@ public class BoligRegVindu extends JFrame {
         arCombo.setEnabled(true);
         manedCombo.setEnabled(true);
         dagCombo.setEnabled(true);
+        beskrivelseTextArea.setEditable(true);
         lagreButton.setEnabled(true);
     }
 
