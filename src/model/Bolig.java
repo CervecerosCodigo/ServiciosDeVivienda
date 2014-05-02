@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 import lib.Konstanter;
 import search.*;
 
@@ -176,6 +177,46 @@ public abstract class Bolig implements Serializable,  Searchable{
         tilgjengeligForUtleie = new GregorianCalendar(ar, mnd, dag);
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 71 * hash + Objects.hashCode(this.adresse);
+        hash = 71 * hash + Objects.hashCode(this.postnummer);
+        hash = 71 * hash + Objects.hashCode(this.poststed);
+        hash = 71 * hash + this.boAreal;
+        hash = 71 * hash + this.byggeAr;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Bolig other = (Bolig) obj;
+        if (!Objects.equals(this.adresse, other.adresse)) {
+            return false;
+        }
+        if (!Objects.equals(this.postnummer, other.postnummer)) {
+            return false;
+        }
+        if (!Objects.equals(this.poststed, other.poststed)) {
+            return false;
+        }
+        if (this.boAreal != other.boAreal) {
+            return false;
+        }
+        if (this.byggeAr != other.byggeAr) {
+            return false;
+        }
+        return true;
+    }
+
+    
+    
     /**
      * En generell to string på de fleste datafelt.
      *

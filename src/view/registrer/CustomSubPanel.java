@@ -3,6 +3,7 @@ package view.registrer;
 
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.awt.event.ActionListener;
 import view.AbstractPanel;
 
 public class CustomSubPanel extends AbstractPanel {
@@ -18,6 +19,10 @@ public class CustomSubPanel extends AbstractPanel {
     public CustomSubPanel(LayoutManager layout) {
         setLayout(layout);
         setVisible(true);
+    }
+
+    void addUtleierPanelListener(ActionListener actionListener) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

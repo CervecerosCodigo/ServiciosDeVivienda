@@ -1,4 +1,4 @@
-package view.registrer;
+package gamleklasser;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;

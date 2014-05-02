@@ -2,13 +2,20 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 //Modifisert av Lukas 24.04.14, implemtering av søk, se git for detaljer.
 
+import controller.registrer.ControllerRegistrerBolig;
+import controller.registrer.ControllerRegistrerUtleier;
+import java.awt.Component;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.JPopupMenu;
 import lib.Melding;
 import lib.ObjektType;
 import model.*;
 import search.FreeTextSearch;
 import view.ArkfaneTemplate;
+import view.CustomJButton;
+import view.registrer.BoligRegVindu;
+import view.registrer.UtleierRegVindu;
 
 public class ControllerToppPanelMegler<E> {
 
@@ -97,8 +104,17 @@ public class ControllerToppPanelMegler<E> {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(vindu.getToppanelMegler().getLagNyKnapp())) {
-
+            if (e.getSource().equals(vindu.getToppanelMegler().getNyAnnonseItem())) {
+                
+            }
+            if(e.getSource().equals(vindu.getToppanelMegler().getNyBoligItem())){
+                new ControllerRegistrerBolig(new BoligRegVindu("Registrer bolig"), boligliste);
+            }
+            if(e.getSource().equals(vindu.getToppanelMegler().getNyUtleierItem())){
+                new ControllerRegistrerUtleier(new UtleierRegVindu("Registrer utleier"), personliste);
+            }
+            if(e.getSource().equals(vindu.getToppanelMegler().getNyAnnonseItem())){
+                
             }
             if (e.getSource().equals(vindu.getToppanelMegler().getSokeKnapp())) {
                 //TODO: Trenger å få tekstfeltet å gi tilbakemelding gjeldende regex

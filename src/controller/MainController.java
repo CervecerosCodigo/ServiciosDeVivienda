@@ -2,7 +2,7 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import controller.registrer.ControllerRegistrerBolig;
-import controller.registrer.ControllerUtleierFrame;
+import controller.registrer.ControllerRegistrerUtleier;
 import java.io.*;
 import java.util.*;
 import javax.swing.JFrame;
@@ -14,7 +14,8 @@ import test.filklasser.TestBildeFilSti;
 import test.searchklasser.TestAnnonseFilter;
 import test.searchklasser.TestFritekstSok;
 import view.*;
-import view.registrer.UtleierFrame;
+import view.registrer.*;
+import view.registrer.UtleierRegVindu;
 
 /**
  * Dette er hovedkontrolleren mellom GUI og funksjonalitet. Mer info siden..
@@ -48,7 +49,7 @@ public class MainController implements Serializable {
     private ControllerToppPanelMegler toppPanelControllerMegler;
     private ControllerToppPanelAnnonse toppPanelControllerAnnonse;
     
-    private ControllerUtleierFrame controllerUtleierFrame;
+    private ControllerRegistrerUtleier controllerRegistrerUtleier;
     //Tester å bruke den nye klassen for registrering av bolig
     private ControllerRegistrerBolig controllerRegistrerBolig;
 
@@ -67,8 +68,8 @@ public class MainController implements Serializable {
         toppPanelControllerMegler = new ControllerToppPanelMegler(meglerVindu, personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerAnnonse = new ControllerToppPanelAnnonse(annonseVindu, annonseliste);
         
-        controllerUtleierFrame = new ControllerUtleierFrame(new UtleierFrame(), personliste);
-        controllerRegistrerBolig = new ControllerRegistrerBolig(new JFrame("Test"), null);
+
+        
 
         this.personliste = personliste;
         this.boligliste = boligliste;
@@ -89,10 +90,10 @@ public class MainController implements Serializable {
          */
 
         tabellControllerMegler.settOppTabellLyttere(meglerVindu);
-        tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, ObjektType.BOLIGOBJ);
+        tabellControllerMegler.settInnDataITabell(boligliste, ObjektType.BOLIGOBJ);
         
         tabellControllerAnnonse.settOppTabellLyttere(annonseVindu);
-        tabellControllerAnnonse.settInnDataITabell(annonseliste, annonseVindu, ObjektType.ANNONSEOBJ);
+        tabellControllerAnnonse.settInnDataITabell(annonseliste, ObjektType.ANNONSEOBJ);
 
         bunnController.settKnappeLytter(meglerVindu);
         bunnController.settKnappeLytter(annonseVindu);
@@ -120,33 +121,32 @@ public class MainController implements Serializable {
          */
         toppPanelControllerMegler.setListListener(new ListListener() {
 
-            //TODO: Her må vi få brukt clearTableSelection() metoden som finnes i MainController;
             @Override
-            public void listReady(ArrayList liste, ObjektType obj) {
-                switch (obj) {
+            public void listReady(ArrayList liste, ObjektType objekttype) {
+                switch (objekttype) {
                     case BOLIGOBJ:
                         tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
-                        tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
+                        tabellControllerMegler.settInnDataITabell(liste,  objekttype);
                         liste.clear();
                         break;
                     case PERSONOBJ:
                         tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
-                        tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
+                        tabellControllerMegler.settInnDataITabell(liste, objekttype);
                         liste.clear();
                         break;
                     case ANNONSEOBJ:
                         tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
-                        tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
+                        tabellControllerMegler.settInnDataITabell(liste, objekttype);
                         liste.clear();
                         break;
                     case KONTRAKTOBJ:
                         tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
-                        tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
+                        tabellControllerMegler.settInnDataITabell(liste, objekttype);
                         liste.clear();
                         break;
                     case SOKNADSOBJ:
                         tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
-                        tabellControllerMegler.settInnDataITabell(liste, meglerVindu, obj);
+                        tabellControllerMegler.settInnDataITabell(liste, objekttype);
                         liste.clear();
                         break;
                 }
@@ -166,12 +166,13 @@ public class MainController implements Serializable {
             }
 
             @Override
-            public void listReady(HashSet liste, ObjektType obj) {
+            public void listReady(HashSet liste, ObjektType objekttype) {
                 tabellControllerAnnonse.tomTabellOgKlargjorForNyttDatasett();
-                tabellControllerAnnonse.settInnDataITabell(liste, annonseVindu, obj);
+                tabellControllerAnnonse.settInnDataITabell(liste, objekttype);
                 liste.clear();
             }
         });
+        
     }
 
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
@@ -311,7 +312,7 @@ public class MainController implements Serializable {
                 "0166", "Oslo", 300, 1950, "HiOA", false, tilgjenglig3);
 
 //        ArrayTilHTMLMetoder.settInnDataITabell(personliste, meglerVindu, Konstanter.PERSONOBJ);
-        tabellControllerMegler.settInnDataITabell(boligliste, meglerVindu, ObjektType.BOLIGOBJ);
+        tabellControllerMegler.settInnDataITabell(boligliste, ObjektType.BOLIGOBJ);
         System.out.println(boligRegister.visRegister());
         System.out.println("================================================");
 

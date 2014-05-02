@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Objects;
 import search.Searchable;
 
 /**
@@ -76,6 +77,30 @@ public class Kontrakt implements Serializable, Searchable{
     public int getLeietidIMnd(){
         return leietidIMnd;
     }    
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 83 * hash + Objects.hashCode(this.annonse);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Kontrakt other = (Kontrakt) obj;
+        if (!Objects.equals(this.annonse, other.annonse)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
     @Override
     public String toString() {

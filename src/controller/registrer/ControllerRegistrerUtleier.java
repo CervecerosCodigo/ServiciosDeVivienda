@@ -7,9 +7,7 @@ import lib.Melding;
 import lib.RegexTester;
 import model.Person;
 import model.Utleier;
-import view.CustomJTextField;
-import view.registrer.UtleierFrame;
-import view.registrer.UtleierRegisterPanel;
+import view.registrer.UtleierRegVindu;
 
 /**
  *
@@ -18,28 +16,28 @@ import view.registrer.UtleierRegisterPanel;
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
-public class ControllerUtleierFrame {
+public class ControllerRegistrerUtleier {
 
-    UtleierFrame utleierFrame;
+    UtleierRegVindu vindu;
     HashSet<Person> personRegister;
 
-    public ControllerUtleierFrame(UtleierFrame utleierFrame, HashSet<Person> personRegister) {
-        this.utleierFrame = utleierFrame;
+    public ControllerRegistrerUtleier(UtleierRegVindu vindu, HashSet<Person> personRegister) {
+        this.vindu = vindu;
         this.personRegister = personRegister;
 
         //Legger til lytter
-        utleierFrame.getUtleierPanel().addUtleierPanelListener(new KnappLytter());
+        vindu.addUtleierPanelListener(new KnappLytter());
     }
 
     private void registrerUtleier() {
-        String fnavn = utleierFrame.getUtleierPanel().getFornavnField().getText();
-        String enavn = utleierFrame.getUtleierPanel().getEtternavnField().getText();
-        String epost = utleierFrame.getUtleierPanel().getEpostField().getText();
-        String telnr = utleierFrame.getUtleierPanel().getTelefonField().getText();
-        boolean erRepresentant = utleierFrame.getUtleierPanel().getErRepresentantCheckBox().isSelected();
+        String fnavn = vindu.getFornavnField().getText();
+        String enavn = vindu.getEtternavnField().getText();
+        String epost = vindu.getEpostField().getText();
+        String telnr = vindu.getTelefonField().getText();
+        boolean erRepresentant = vindu.getErRepresentantCheckBox().isSelected();
         String erRepresentantFor = "";
         if (erRepresentant) {
-            erRepresentantFor = utleierFrame.getUtleierPanel().getErRepresentatForField().getText();
+            erRepresentantFor = vindu.getErRepresentatForField().getText();
         }
 
         boolean fnavnOK = RegexTester.testNavn(fnavn);
@@ -66,7 +64,7 @@ public class ControllerUtleierFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(utleierFrame.getUtleierPanel().getLagreButton())) {
+            if (e.getSource().equals(vindu.getLagreButton())) {
 //                Melding.visMelding("Controller utleier frame", "Lagre knapp trukket");
                 registrerUtleier();
             }

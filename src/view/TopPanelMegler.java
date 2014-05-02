@@ -3,33 +3,56 @@ package view;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
-
 import javax.swing.ButtonGroup;
 import view.CustomJButton;
-import javax.swing.JPanel;
 import view.CustomJRadioButton;
-import lib.Konstanter;
+import view.registrer.CustomSubPanel;
 
 public class TopPanelMegler extends AbstractPanel {
 
+    private CustomSubPanel sokePanel, knappePanel, panelbeholder;
     private MeglerRadioKnapper meglerRadioKnapper;
     private CustomJTextField sokeFelt;
-    private CustomJButton sokeKnapp, lagNyKnapp;
+    private CustomJButton sokeKnapp, nyKontraktItem, nyUtleierItem, nyBoligItem, nyAnnonseItem;
+    
+    private final static int BREDDE = 140, HOYDE = 30;
 
     TopPanelMegler(String borderTitle, int dimHeight, int dimWidth) {
 
         super(borderTitle, dimHeight, dimWidth);
+        
         meglerRadioKnapper = new MeglerRadioKnapper();
+        panelbeholder = new CustomSubPanel("", 150, 300);
+        panelbeholder.setLayout(new FlowLayout());
+        
+        sokePanel = new CustomSubPanel(new FlowLayout());
+        knappePanel = new CustomSubPanel(new FlowLayout());        
+        knappePanel.setPreferredSize(new Dimension(300, 150));
+        
         sokeFelt = new CustomJTextField("Søk", "", 17);
         sokeKnapp = new CustomJButton("Søk");
-        lagNyKnapp = new CustomJButton("Lag ny");
-
-        setLayout(new FlowLayout(FlowLayout.LEADING, 40, 0));
-        setVisible(true);
+        nyKontraktItem = new CustomJButton("Ny kontrakt", BREDDE, HOYDE);
+        nyUtleierItem = new CustomJButton("Ny utleier", BREDDE, HOYDE);
+        nyBoligItem = new CustomJButton("Ny bolig", BREDDE, HOYDE);
+        nyAnnonseItem = new CustomJButton("Ny annonse", BREDDE, HOYDE);
+        
         add(meglerRadioKnapper);
-        add(sokeFelt);
-        add(sokeKnapp);
-        add(lagNyKnapp);
+        add(panelbeholder);
+        panelbeholder.add(sokePanel);
+        panelbeholder.add(knappePanel);
+        
+        sokePanel.add(sokeFelt);
+        sokePanel.add(sokeKnapp);
+        knappePanel.add(nyUtleierItem);
+        knappePanel.add(nyBoligItem);
+        knappePanel.add(nyAnnonseItem);
+        knappePanel.add(nyKontraktItem);
+
+
+
+        
+        setLayout(new FlowLayout(FlowLayout.LEADING, 40, 0));
+        setVisible(true);        
     }
 
     public MeglerRadioKnapper getMeglerRadioKnapper() {
@@ -44,8 +67,20 @@ public class TopPanelMegler extends AbstractPanel {
         return sokeKnapp;
     }
 
-    public CustomJButton getLagNyKnapp() {
-        return lagNyKnapp;
+    public CustomJButton getNyKontraktItem() {
+        return nyKontraktItem;
+    }
+
+    public CustomJButton getNyUtleierItem() {
+        return nyUtleierItem;
+    }
+
+    public CustomJButton getNyBoligItem() {
+        return nyBoligItem;
+    }
+
+    public CustomJButton getNyAnnonseItem() {
+        return nyAnnonseItem;
     }
 
     public CustomJRadioButton getSoknaderRadio() {
@@ -77,10 +112,14 @@ public class TopPanelMegler extends AbstractPanel {
     }
 
     public void leggTilKnappeLytter(ActionListener lytter) {
-        lagNyKnapp.addActionListener(lytter);
+        nyKontraktItem.addActionListener(lytter);
         sokeKnapp.addActionListener(lytter);
+        nyAnnonseItem.addActionListener(lytter);
+        nyBoligItem.addActionListener(lytter);
+        nyUtleierItem.addActionListener(lytter);
     }
-
+    
+    
 }
 
 class MeglerRadioKnapper extends AbstractPanel {

@@ -32,6 +32,7 @@ public class ControllerTabellOgOutput {
 
     private DefaultTableCellRenderer rightRenderer;
 
+    private ArkfaneTemplate vindu;
     private ArrayList<Object> tabellData;
     private ObjektType objekttype;
     private Collection liste;
@@ -59,7 +60,6 @@ public class ControllerTabellOgOutput {
         this.annonseliste = annonseliste;
         this.kontraktliste = kontraktliste;
         this.soknadsliste = soknadsliste;
-        
 
         tabellModellBolig = new TabellModellBolig(annonseliste);
         tabellModellPerson = new TabellModellPerson();
@@ -72,7 +72,6 @@ public class ControllerTabellOgOutput {
 
         tabellMeny = new JPopupMenu();
         
-
         menyvalgPerson = new JMenu("Person");
         menyvalgBolig = new JMenu("Bolig");
         menyvalgAnnonse = new JMenu("Annonse");
@@ -98,7 +97,8 @@ public class ControllerTabellOgOutput {
      */
     public void settOppTabellLyttere(final ArkfaneTemplate vindu) {
 
-        tabell = vindu.getVenstrepanel().getTable();
+        this.vindu = vindu;
+        tabell = this.vindu.getVenstrepanel().getTable();
 
         //Kaller opp metoden som lager lyttere for popupmenyen i tabellen.
         settOpplyttereForPopupMenyITabell();
@@ -116,13 +116,14 @@ public class ControllerTabellOgOutput {
                 try {
                     int rad = tabell.getSelectedRow();
                     rad = tabell.convertRowIndexToModel(rad);
+                    
+                    //Lagrer raden i en klassevariabel, som brukes i andre metoder.
                     valgtRadItabell = rad;
 
-                    sendObjektFraTabellTilOutput(rad, objekttype, tabellData, vindu);
+                    sendObjektFraTabellTilOutput(rad, objekttype, tabellData );
                 } catch (ArrayIndexOutOfBoundsException aiobe) {
 
                 }
-
             }
         });
 
@@ -131,7 +132,6 @@ public class ControllerTabellOgOutput {
          */
         tabell.addMouseListener(new MouseAdapter() {
 
-//            TabellModell modell = null;
             @Override
             public void mouseClicked(MouseEvent e) {
                 JTable temp = (JTable) e.getSource();
@@ -206,7 +206,7 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Du oppretter ny Bolig!");
+                
             }
 
         });
@@ -214,7 +214,7 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Du oppretter ny Bolig!");
+                
             }
 
         });
@@ -230,42 +230,42 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+                
             }
         });
         menyvalgEndrePerson.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+                
             }
         });
         menyvalgSlettPerson.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+                slettPerson();
             }
         });
         menyvalgForesporsel.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+                
             }
         });
         menyvalgAksepter.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+                
             }
         });
         menyvalgAvvis.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Du oppretter ny Person!");
+                
             }
         });
         menyvalgPubliserToggle.addActionListener(new ActionListener() {
@@ -275,7 +275,6 @@ public class ControllerTabellOgOutput {
                 toggleBoligPubliserSomAnnonseEllerIkke();
             }
         });
-
     }
 
     /**
@@ -296,27 +295,63 @@ public class ControllerTabellOgOutput {
         Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
         if (valgtObjekt != null) {
             if (!valgtObjekt.isErUtleid()) {
-                int valg = Melding.visBekreftelseDialog("Ønsker du virkelig å slette boligen?", 
+                int valg = Melding.visBekreftelseDialog("Ønsker du virkelig å slette boligen?",
                         "Slette bolig", "Nei");
-
                 if (valg == 0) {
                     try {
                         tabellModellBolig.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
                         tabellData.remove(valgtRadItabell);
                         ok = boligliste.remove(valgtObjekt);
-                        if(ok){
+                        if (ok) {
                             Melding.visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " er slettet");
-                        }else{
+                        } else {
                             Melding.visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " ble IKKE slettet");
                         }
                     } catch (ArrayIndexOutOfBoundsException aiobe) {
-
                     }
-
                 } else {
-
                 }
             }//end if
+        }//end if
+    }
+
+    /**
+     * Metoden finner person som skal slettes. Om den ikke har boliger
+     * registrert får brukeren spørsmål om å slette.
+     */
+    public void slettPerson() {
+
+        Boolean ok = true;
+        Person valgtObjekt = (Person) tabellData.get(valgtRadItabell);
+        ArrayList<Integer> registrerteBoliger = new ArrayList<>();
+        Iterator<Bolig> iter = boligliste.iterator();
+        while (iter.hasNext()) {
+            Bolig temp = iter.next();
+            if (temp.getPersonID() == valgtObjekt.getPersonID()) {
+                registrerteBoliger.add(temp.getBoligID());
+            }
+        }
+        if (registrerteBoliger.size() > 0) {
+            Melding.visMelding(null, valgtObjekt.getFornavn() + " " + valgtObjekt.getEtternavn()
+                    + " er registrert med boliger.\n"
+                    + "Kan ikke utføre slettingen.");
+        } else {
+            int valg = Melding.visBekreftelseDialog("Ønsker du virkelig å slette personen fra systemet?",
+                    "Slette person", "Nei");
+            if (valg == 0) {
+                try {
+                    tabellModellPerson.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
+                    tabellData.remove(valgtRadItabell);
+                    ok = personliste.remove(valgtObjekt);
+                    if (ok) {
+                        Melding.visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " er slettet");
+                    } else {
+                        Melding.visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " ble IKKE slettet");
+                    }
+                } catch (ArrayIndexOutOfBoundsException aiobe) {
+                }
+            } else {
+            }
         }//end if
     }
 
@@ -360,14 +395,14 @@ public class ControllerTabellOgOutput {
      * Oppretter en array med lengde av mottatt datasett. Denne metoden er
      * avhengig av søkeresultatene og må få inn parametere fra toppanel.
      */
-    public void settInnDataITabell(Collection innkommendeDatasett, ArkfaneTemplate vindu, ObjektType objekttypeEnum) {
-        
+    public void settInnDataITabell(Collection innkommendeDatasett, ObjektType objekttypeEnum) {
+
         tabellData = new ArrayList<>();
         Iterator<?> iter = innkommendeDatasett.iterator();
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             tabellData.add(iter.next());
         }
-        
+
         try {
             switch (objekttypeEnum) {
                 case PERSONOBJ:
@@ -385,7 +420,7 @@ public class ControllerTabellOgOutput {
                 case ANNONSEOBJ:
                     this.objekttype = ObjektType.ANNONSEOBJ;
                     tabellModellAnnonse.fyllTabellMedInnhold(tabellData);
-                    vindu.getVenstrepanel().getTable().setModel(tabellModellAnnonse);
+                    tabell.setModel(tabellModellAnnonse);
                     tabellModellAnnonse.fireTableStructureChanged();
                     tabell.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
                     tabell.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
@@ -393,19 +428,17 @@ public class ControllerTabellOgOutput {
                 case KONTRAKTOBJ:
                     this.objekttype = ObjektType.KONTRAKTOBJ;
                     tabellModellKontrakt.fyllTabellMedInnhold(tabellData);
-                    vindu.getVenstrepanel().getTable().setModel(tabellModellKontrakt);
+                    tabell.setModel(tabellModellKontrakt);
                     tabellModellKontrakt.fireTableStructureChanged();
                     break;
                 case SOKNADSOBJ:
                     this.objekttype = ObjektType.SOKNADSOBJ;
                     tabellModellSoknad.fyllTabellMedInnhold(tabellData);
-                    vindu.getVenstrepanel().getTable().setModel(tabellModellSoknad);
+                    tabell.setModel(tabellModellSoknad);
                     tabellModellSoknad.fireTableStructureChanged();
                     break;
             }
-
             resizeKolonneBredde();
-
             vindu.getVenstrepanel().sorterTabellVedOppstart();
         } catch (ArrayIndexOutOfBoundsException aiobe) {
 
@@ -442,7 +475,7 @@ public class ControllerTabellOgOutput {
      * @param tabellData Arrayen tabellen er bygget på.
      * @param vindu Vinduet som skal vise resultatet.
      */
-    public void sendObjektFraTabellTilOutput(int valgtRad, ObjektType objekttype, ArrayList tabellData, ArkfaneTemplate vindu) {
+    public void sendObjektFraTabellTilOutput(int valgtRad, ObjektType objekttype, ArrayList tabellData) {
         Object valgtObjekt = null;
         css = vindu.getSenterpanel().getStyleSheet();
         setStyleSheet();
@@ -450,23 +483,23 @@ public class ControllerTabellOgOutput {
             switch (objekttype) {
                 case PERSONOBJ:
                     valgtObjekt = (Person) tabellData.get(valgtRad);
-                    visPersonObjektHTMLOutput(valgtObjekt, vindu);
+                    visPersonObjektHTMLOutput(valgtObjekt);
                     break;
                 case BOLIGOBJ:
                     valgtObjekt = (Bolig) tabellData.get(valgtRad);
-                    visBoligObjektHTMLOutput(valgtObjekt, vindu);
+                    visBoligObjektHTMLOutput(valgtObjekt);
                     break;
                 case ANNONSEOBJ:
                     valgtObjekt = (Annonse) tabellData.get(valgtRad);
-                    visAnnonseObjektHTMLOutput(valgtObjekt, vindu);
+                    visAnnonseObjektHTMLOutput(valgtObjekt);
                     break;
                 case KONTRAKTOBJ:
                     valgtObjekt = (Kontrakt) tabellData.get(valgtRad);
-                    visKontraktObjektHTMLOutput(valgtObjekt, vindu);
+                    visKontraktObjektHTMLOutput(valgtObjekt);
                     break;
                 case SOKNADSOBJ:
                     valgtObjekt = (Soknad) tabellData.get(valgtRad);
-                    visSoknadObjektHTMLOutput(valgtObjekt, vindu);
+                    visSoknadObjektHTMLOutput(valgtObjekt);
                     break;
             }
         } catch (ArrayIndexOutOfBoundsException aiobe) {
@@ -498,9 +531,8 @@ public class ControllerTabellOgOutput {
      * skriver ut Personobjekter som HTML til output (JEditorPane)
      *
      * @param valgtObjekt Objektet som skal vises i Output
-     * @param vindu Vinduet som skal vise resultatet
      */
-    public void visPersonObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
+    public void visPersonObjektHTMLOutput(Object valgtObjekt) {
 
         output = vindu.getSenterpanel().getEditorPane();
 
@@ -589,9 +621,8 @@ public class ControllerTabellOgOutput {
      * skriver ut Boligobjekter som HTML til output (JEditorPane)
      *
      * @param valgtObjekt Objektet som skal vises.
-     * @param vindu Hvilket vindu resultatet skal vises i.
      */
-    public void visBoligObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
+    public void visBoligObjektHTMLOutput(Object valgtObjekt) {
         output = vindu.getSenterpanel().getEditorPane();
         Bolig skalVises = (Bolig) valgtObjekt;
         Leilighet leilighet = null;
@@ -764,7 +795,7 @@ public class ControllerTabellOgOutput {
      * @param valgtObjekt Objektet som skal vises i output.
      * @param vindu Vinduet som skal vise resultatet
      */
-    public void visAnnonseObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
+    public void visAnnonseObjektHTMLOutput(Object valgtObjekt) {
         output = vindu.getSenterpanel().getEditorPane();
         Annonse skalVises = (Annonse) valgtObjekt;
 
@@ -950,11 +981,11 @@ public class ControllerTabellOgOutput {
 
     }
 
-    public void visKontraktObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
+    public void visKontraktObjektHTMLOutput(Object valgtObjekt) {
 
     }
 
-    public void visSoknadObjektHTMLOutput(Object valgtObjekt, ArkfaneTemplate vindu) {
+    public void visSoknadObjektHTMLOutput(Object valgtObjekt) {
 
     }
 

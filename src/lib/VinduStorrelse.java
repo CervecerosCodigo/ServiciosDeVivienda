@@ -19,7 +19,6 @@ public enum VinduStorrelse {
     VENSTREPANEL (0,400),
     SENTERPANEL (0,0);
     
-    
     private final int WIDTH;
     private final int HEIGHT;
 

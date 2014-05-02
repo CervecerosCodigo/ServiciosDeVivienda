@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Objects;
 import lib.Konstanter;
 import search.Searchable;
 
@@ -77,6 +78,35 @@ public class Soknad implements Serializable, Searchable {
         this.erGodkjent = erGodkjent;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 11 * hash + Objects.hashCode(this.annonse);
+        hash = 11 * hash + Objects.hashCode(this.leietaker);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Soknad other = (Soknad) obj;
+        if (!Objects.equals(this.annonse, other.annonse)) {
+            return false;
+        }
+        if (!Objects.equals(this.leietaker, other.leietaker)) {
+            return false;
+        }
+        return true;
+    }
+
+    
+    
+    
     @Override
     public String toString() {
         return "Søknad{SøknadID: " + soknadID + ", Er behandlet? " + erBehandlet + ", Er godkjent? " + erGodkjent
