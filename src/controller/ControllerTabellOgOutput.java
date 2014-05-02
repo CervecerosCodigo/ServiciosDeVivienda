@@ -7,6 +7,7 @@ package controller;
  * setInnDataITabell tar i mot datasettet som skal vises, og hvilket vindu de
  * skal vises i.
  */
+import controller.registrer.ControllerRegistrerBolig;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -71,7 +72,7 @@ public class ControllerTabellOgOutput {
         rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 
         tabellMeny = new JPopupMenu();
-        
+
         menyvalgPerson = new JMenu("Person");
         menyvalgBolig = new JMenu("Bolig");
         menyvalgAnnonse = new JMenu("Annonse");
@@ -116,11 +117,11 @@ public class ControllerTabellOgOutput {
                 try {
                     int rad = tabell.getSelectedRow();
                     rad = tabell.convertRowIndexToModel(rad);
-                    
+
                     //Lagrer raden i en klassevariabel, som brukes i andre metoder.
                     valgtRadItabell = rad;
 
-                    sendObjektFraTabellTilOutput(rad, objekttype, tabellData );
+                    sendObjektFraTabellTilOutput(rad, objekttype, tabellData);
                 } catch (ArrayIndexOutOfBoundsException aiobe) {
 
                 }
@@ -206,7 +207,7 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
             }
 
         });
@@ -214,7 +215,9 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                Bolig bolig = endreBoligObjekt();
+                if( bolig != null )
+                    new ControllerRegistrerBolig(boligliste, bolig);
             }
 
         });
@@ -230,14 +233,14 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
             }
         });
         menyvalgEndrePerson.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
             }
         });
         menyvalgSlettPerson.addActionListener(new ActionListener() {
@@ -251,21 +254,21 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
             }
         });
         menyvalgAksepter.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
             }
         });
         menyvalgAvvis.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
             }
         });
         menyvalgPubliserToggle.addActionListener(new ActionListener() {
@@ -283,6 +286,15 @@ public class ControllerTabellOgOutput {
     public void tomTabellOgKlargjorForNyttDatasett() {
         tabell.clearSelection();
         tabell.removeAll();
+    }
+
+    public Bolig endreBoligObjekt() {
+
+        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
+        if (valgtObjekt != null) {
+            return valgtObjekt;
+        }
+        return null;
     }
 
     /**
