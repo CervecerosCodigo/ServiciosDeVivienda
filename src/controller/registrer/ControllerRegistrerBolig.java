@@ -11,6 +11,7 @@ import lib.RegexTester;
 import model.Bolig;
 import model.Enebolig;
 import model.Leilighet;
+import view.CustomJTextField;
 import view.registrer.BoligRegVindu;
 
 /**
@@ -43,11 +44,39 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
     private boolean harKjeller;
     ///SLUTT PÅ DATAFELT FOR ENEBOLIG///
 
+    /**
+     * En kontruktør for registrering av en ny bolig.
+     * @param boligSet HashSet<Bolig>
+     */
     public ControllerRegistrerBolig(HashSet<Bolig> boligSet) {
         super(boligSet);
 
         bRegVindu = new BoligRegVindu("Registrering av boliger");
         bRegVindu.setKnappeLytter(new KnappeLytter());
+    }
+    
+    /**
+     * En konstruktør som brukes for endring av en bolig.
+     * @param boligSet HashSet<Bolig>
+     * @param bolig Bolig
+     */
+    public ControllerRegistrerBolig(HashSet<Bolig> boligSet, Bolig bolig){
+        super(boligSet, bolig);
+        /*
+        Hente opp en bolig.
+        Gjør alle endringer som skal gjøres.
+        Slett den boligen fra registeret.
+        Sett inn det boligobjektet inn i registeret igjenn.
+        */
+        bRegVindu = new BoligRegVindu("Endre bolig");
+        
+        
+        
+        if(bolig instanceof Leilighet){
+            bRegVindu.getLeilighetRButton().setEnabled(true);
+        }else if(bolig instanceof Enebolig){
+            bRegVindu.getLeilighetRButton().setEnabled(true);
+        }
     }
 
     /**
