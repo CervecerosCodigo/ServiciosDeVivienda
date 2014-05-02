@@ -1,47 +1,45 @@
-
 package controller.registrer;
 
 import java.util.HashSet;
 import javax.swing.JFrame;
 
 /**
- * 
- * File: AbstractControllerRegister.java
- * Project: ServiciosDeVivienda
- * Apr 29, 2014
+ * Abstrakt klasse for registrering og endring av oppførte data i registrene.
+ * File: AbstractControllerRegister.java Project: ServiciosDeVivienda Apr 29,
+ * 2014
+ *
  * @author Lukas David Larsed, s198569@stud.hioa.no
+ * @param <E>
  */
 public abstract class AbstractControllerRegister<E> {
-    /*
-    Her skal jeg har to kontruktører. 
-    1. Som tar i mot et set og en Jpanel slik at jeg kan ta imot data fra gui for å registrere denne.
-    2. En som tar imot et objekt og Jpanel for å populere denne med data fra registeret med hensikt å endre registrerte data.
-    */
-    
-    private JFrame frame;
-    private HashSet<E> set;
-    private Object obj;
-    
+
     /**
-     * Brukes for registrering.
-     * @param frame
-     * @param set 
+     * Set ver det register i hvilket det skal tilføres eller endres data.
      */
-    public AbstractControllerRegister(HashSet<E> set, JFrame frame){
-        
+    final HashSet<E> set;
+    /**
+     * Referanse til eksisterende objekt som skal endres i settet.
+     */
+    Object obj;
+
+    /**
+     * Konstruktør for registrering av en ny bolig.
+     *
+     * @param set
+     */
+    public AbstractControllerRegister(HashSet<E> set) {
+        this.set = set;
     }
 
     /**
-     * Brukes for endring eller sletting av et alerede eksisterende objekt.
+     * Konstruktør for andring av en ny bolig.
+     *
      * @param obj
-     * @param set 
+     * @param set
      */
     public AbstractControllerRegister(HashSet<E> set, Object obj) {
         this.set = set;
         this.obj = obj;
     }
 
-    
-
-    
 }
