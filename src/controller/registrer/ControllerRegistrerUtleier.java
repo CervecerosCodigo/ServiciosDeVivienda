@@ -21,8 +21,8 @@ public class ControllerRegistrerUtleier {
     UtleierRegVindu vindu;
     HashSet<Person> personRegister;
 
-    public ControllerRegistrerUtleier(UtleierRegVindu vindu, HashSet<Person> personRegister) {
-        this.vindu = vindu;
+    public ControllerRegistrerUtleier(HashSet<Person> personRegister) {
+        this.vindu = new UtleierRegVindu("Registrer utleier");
         this.personRegister = personRegister;
 
         //Legger til lytter

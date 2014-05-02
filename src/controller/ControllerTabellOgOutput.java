@@ -8,6 +8,7 @@ package controller;
  * skal vises i.
  */
 import controller.registrer.ControllerRegistrerBolig;
+import controller.registrer.ControllerRegistrerUtleier;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -207,7 +208,7 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new ControllerRegistrerBolig(boligliste);
             }
 
         });
@@ -233,14 +234,14 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new ControllerRegistrerUtleier(personliste);
             }
         });
         menyvalgEndrePerson.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                /////////////////////////////////////////
             }
         });
         menyvalgSlettPerson.addActionListener(new ActionListener() {
@@ -254,21 +255,21 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //////////////////////////////////////////////////
             }
         });
         menyvalgAksepter.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //////////////////////////////////////////////////
             }
         });
         menyvalgAvvis.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //////////////////////////////////////////////////
             }
         });
         menyvalgPubliserToggle.addActionListener(new ActionListener() {
