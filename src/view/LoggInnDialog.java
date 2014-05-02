@@ -36,6 +36,8 @@ public class LoggInnDialog extends JDialog {
 		setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
 		setUndecorated(true);
 		
+		this.getRootPane().setDefaultButton(loggInnKnapp);
+		
 		add(brukernavnLabel);
 		add(brukernavnFelt);
 		add(passordLabel);
