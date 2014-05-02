@@ -3,14 +3,14 @@ package view;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+
 import javax.swing.ButtonGroup;
-import view.CustomJButton;
-import view.CustomJRadioButton;
+
 import view.registrer.CustomSubPanel;
 
 public class TopPanelMegler extends AbstractPanel {
 
-    private CustomSubPanel sokePanel, knappePanel, panelbeholder;
+    private CustomSubPanel sokePanel, knappePanel;
     private MeglerRadioKnapper meglerRadioKnapper;
     private CustomJTextField sokeFelt;
     private CustomJButton sokeKnapp, nyKontraktItem, nyUtleierItem, nyBoligItem, nyAnnonseItem;
@@ -22,13 +22,8 @@ public class TopPanelMegler extends AbstractPanel {
         super(borderTitle, dimHeight, dimWidth);
         
         meglerRadioKnapper = new MeglerRadioKnapper();
-        panelbeholder = new CustomSubPanel("", 150, 300);
-        panelbeholder.setLayout(new FlowLayout());
-        
         sokePanel = new CustomSubPanel(new FlowLayout());
-        knappePanel = new CustomSubPanel(new FlowLayout());        
-        knappePanel.setPreferredSize(new Dimension(300, 150));
-        
+        knappePanel = new CustomSubPanel(new FlowLayout());
         sokeFelt = new CustomJTextField("Søk", "", 17);
         sokeKnapp = new CustomJButton("Søk");
         nyKontraktItem = new CustomJButton("Ny kontrakt", BREDDE, HOYDE);
@@ -37,9 +32,8 @@ public class TopPanelMegler extends AbstractPanel {
         nyAnnonseItem = new CustomJButton("Ny annonse", BREDDE, HOYDE);
         
         add(meglerRadioKnapper);
-        add(panelbeholder);
-        panelbeholder.add(sokePanel);
-        panelbeholder.add(knappePanel);
+        add(sokePanel);
+        add(knappePanel);
         
         sokePanel.add(sokeFelt);
         sokePanel.add(sokeKnapp);
@@ -48,11 +42,11 @@ public class TopPanelMegler extends AbstractPanel {
         knappePanel.add(nyAnnonseItem);
         knappePanel.add(nyKontraktItem);
 
-
-
-        
         setLayout(new FlowLayout(FlowLayout.LEADING, 40, 0));
-        setVisible(true);        
+        setVisible(true);
+        
+        sokePanel.setPreferredSize(new Dimension(350,35));
+        knappePanel.setPreferredSize(new Dimension(270,70));
     }
 
     public MeglerRadioKnapper getMeglerRadioKnapper() {
@@ -144,7 +138,7 @@ class MeglerRadioKnapper extends AbstractPanel {
         radioGroup.add(kontraktRadio);
 
         setVisible(true);
-        setPreferredSize(new Dimension(90, 115));//Endret til 130 fra 110 for å få plass med den nye radio button for kontrakter
+        setPreferredSize(new Dimension(90, 115));
         setLayout(new FlowLayout(FlowLayout.LEFT, 0, -4));
         
         add(soknaderRadio);

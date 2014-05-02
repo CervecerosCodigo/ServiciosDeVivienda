@@ -28,7 +28,7 @@ public class TopPanelAnnonse extends AbstractPanel {
 
         setVisible(true);
         setLayout(new FlowLayout(FlowLayout.LEFT, 40, 0));
-
+        
         add(checkBoxKnappeGruppe);
         add(knappeGruppeHoyre);
         add(sokeKnapp);
