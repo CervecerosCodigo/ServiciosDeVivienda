@@ -15,7 +15,7 @@ public class TopPanelMegler extends AbstractPanel {
     private CustomJTextField sokeFelt;
     private CustomJButton sokeKnapp, nyKontraktItem, nyUtleierItem, nyBoligItem, nyAnnonseItem;
     
-    private final static int BREDDE = 140, HOYDE = 30;
+    private final static int BREDDE = 128, HOYDE = 30;
 
     TopPanelMegler(String borderTitle, int dimHeight, int dimWidth) {
 
