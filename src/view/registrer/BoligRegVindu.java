@@ -113,7 +113,7 @@ public class BoligRegVindu extends JFrame {
 
         eierField = new CustomJTextField("XXXX", RegexTester.PRIS, 10);
         meglerField = new CustomJTextField("XXXX", RegexTester.PRIS, 10);
-        adresseField = new CustomJTextField("Gate", RegexTester.GATE_NAVN_PATTERN, 10);//TODO: Her må det endres til gateadresse + husnummer regex
+        adresseField = new CustomJTextField("Gate", RegexTester.GATE_ADRESSE, 10);//TODO: Her må det endres til gateadresse + husnummer regex
         postNrField = new CustomJTextField("XXXX", RegexTester.POST_NUMMER_PATTERN, 10);
         postStedField = new CustomJTextField("Oslo", RegexTester.POSTORT_NAVN, 10);
         boArealField = new CustomJTextField("XX(X)", RegexTester.KVM_BOLIG, 10);
@@ -417,6 +417,7 @@ public class BoligRegVindu extends JFrame {
         arCombo.setEnabled(false);
         manedCombo.setEnabled(false);
         dagCombo.setEnabled(false);
+        lagreButton.setEnabled(false);
     }
 
     private void aktiverBoligKomponenter() {
@@ -428,6 +429,7 @@ public class BoligRegVindu extends JFrame {
         arCombo.setEnabled(true);
         manedCombo.setEnabled(true);
         dagCombo.setEnabled(true);
+        lagreButton.setEnabled(true);
     }
 
     private void aktiverLeilighetKomponenter() {
@@ -496,7 +498,6 @@ public class BoligRegVindu extends JFrame {
         return antallDager;
     }
 
-    
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
     //||//                                                              //||//
@@ -515,8 +516,6 @@ public class BoligRegVindu extends JFrame {
     //||//                                                              //||//
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
-    
-    
     public CustomSubPanel getToppPanel() {
         return toppPanel;
     }
@@ -763,6 +762,25 @@ public class BoligRegVindu extends JFrame {
 
     public void setLagreButton(CustomJButton lagreButton) {
         this.lagreButton = lagreButton;
+    }
+
+    //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+    //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //||//                          LYTTER                              //||//
+    //||//                                                              //||//
+    //||//                                                              //||//
+    //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+    //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+    /**
+     * Legger til en ekstern lytter slik at ved å klikke "lagre" blir data sendt
+     * inn til controller.
+     *
+     * @param lytter
+     */
+    public void setKnappeLytter(ActionListener lytter) {
+        lagreButton.addActionListener(lytter);
     }
 
 }

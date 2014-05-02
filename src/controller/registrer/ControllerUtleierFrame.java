@@ -62,7 +62,7 @@ public class ControllerUtleierFrame {
         }
     }
 
-    class KnappLytter implements ActionListener {
+    private class KnappLytter implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
