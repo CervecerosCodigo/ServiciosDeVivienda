@@ -82,4 +82,13 @@ public class CustomJTextField extends AbstractPanel {
     public void setEnabled(boolean isEnabled){
         textField.setEnabled(isEnabled);
     }
+    
+    /**
+     * Setter en ny tekst i feltet.
+     * @param text String
+     */
+    public void setText(String text){
+        textField.setText(text);
+    }
+    
 }
