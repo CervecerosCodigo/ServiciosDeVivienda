@@ -70,6 +70,9 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         */
         bRegVindu = new BoligRegVindu("Endre bolig");
         
+        //Fyller inn felt i bolig med data
+        bRegVindu.getEierField().setText(String.valueOf(bolig.getPersonID()));
+        bRegVindu.getAdresseField().setText(bolig.getAdresse());
         
         
         if(bolig instanceof Leilighet){
