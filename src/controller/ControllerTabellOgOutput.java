@@ -30,7 +30,9 @@ public class ControllerTabellOgOutput {
     private HashSet<Bolig> boligliste;
     private HashSet<Kontrakt> kontraktliste;
     private HashSet<Annonse> annonseliste;
-    private LinkedHashSet<Soknad> soknadsliste;
+    private HashSet<Soknad> soknadsliste;
+
+    private TabellListener tabellListener;
 
     private DefaultTableCellRenderer rightRenderer;
 
@@ -55,7 +57,7 @@ public class ControllerTabellOgOutput {
 
     public ControllerTabellOgOutput(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
-            LinkedHashSet<Soknad> soknadsliste) {
+            HashSet<Soknad> soknadsliste) {
 
         this.personliste = personliste;
         this.boligliste = boligliste;
@@ -88,6 +90,10 @@ public class ControllerTabellOgOutput {
         menyvalgAksepter = new JMenuItem("Aksepter søknad");
         menyvalgAvvis = new JMenuItem("Avvis søknad");
         menyvalgPubliserToggle = new JMenuItem("Endre publiseringsstatus");
+    }
+
+    public void setTabellListener(TabellListener lytter) {
+        tabellListener = lytter;
     }
 
     /**
@@ -217,8 +223,9 @@ public class ControllerTabellOgOutput {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Bolig bolig = endreBoligObjekt();
-                if( bolig != null )
+                if (bolig != null) {
                     new ControllerRegistrerBolig(boligliste, bolig);
+                }
             }
 
         });
@@ -405,11 +412,12 @@ public class ControllerTabellOgOutput {
     }
 
     /**
-     * Oppretter en array med lengde av mottatt datasett. Denne metoden er
+     * Oppretter en arraylist med lengde av mottatt datasett. Denne metoden er
      * avhengig av søkeresultatene og må få inn parametere fra toppanel.
      */
     public void settInnDataITabell(Collection innkommendeDatasett, ObjektType objekttypeEnum) {
 
+        TabellModell modellIBruk = null;
         tabellData = new ArrayList<>();
         Iterator<?> iter = innkommendeDatasett.iterator();
         while (iter.hasNext()) {
@@ -423,12 +431,14 @@ public class ControllerTabellOgOutput {
                     tabellModellPerson.fyllTabellMedInnhold(tabellData);
                     tabell.setModel(tabellModellPerson);
                     tabellModellPerson.fireTableStructureChanged();
+                    modellIBruk = tabellModellPerson;
                     break;
                 case BOLIGOBJ:
                     this.objekttype = ObjektType.BOLIGOBJ;
                     tabellModellBolig.fyllTabellMedInnhold(tabellData);
                     tabell.setModel(tabellModellBolig);
                     tabellModellBolig.fireTableStructureChanged();
+                    modellIBruk = tabellModellBolig;
                     break;
                 case ANNONSEOBJ:
                     this.objekttype = ObjektType.ANNONSEOBJ;
@@ -437,27 +447,35 @@ public class ControllerTabellOgOutput {
                     tabellModellAnnonse.fireTableStructureChanged();
                     tabell.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
                     tabell.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+                    modellIBruk = tabellModellAnnonse;
                     break;
                 case KONTRAKTOBJ:
                     this.objekttype = ObjektType.KONTRAKTOBJ;
                     tabellModellKontrakt.fyllTabellMedInnhold(tabellData);
                     tabell.setModel(tabellModellKontrakt);
                     tabellModellKontrakt.fireTableStructureChanged();
+                    modellIBruk = tabellModellKontrakt;
                     break;
                 case SOKNADSOBJ:
                     this.objekttype = ObjektType.SOKNADSOBJ;
                     tabellModellSoknad.fyllTabellMedInnhold(tabellData);
                     tabell.setModel(tabellModellSoknad);
                     tabellModellSoknad.fireTableStructureChanged();
+                    modellIBruk = tabellModellSoknad;
                     break;
             }
             resizeKolonneBredde();
             vindu.getVenstrepanel().sorterTabellVedOppstart();
+
+            if (tabellListener != null) {
+                tabellListener.tabellOppdatert(tabellData, modellIBruk);
+            }
         } catch (ArrayIndexOutOfBoundsException aiobe) {
 
         } catch (NullPointerException npe) {
 
         }
+
     }
 
     /**

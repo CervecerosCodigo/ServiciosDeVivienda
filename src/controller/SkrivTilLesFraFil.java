@@ -12,7 +12,7 @@ public class SkrivTilLesFraFil {
     private HashSet<Bolig> boligliste;
     private HashSet<Kontrakt> kontraktliste;
     private HashSet<Annonse> annonseliste;
-    private LinkedHashSet<Soknad> soknadsliste;
+    private HashSet<Soknad> soknadsliste;
 
     private MainController mainController;
 
@@ -74,7 +74,7 @@ public class SkrivTilLesFraFil {
             boligliste = (HashSet<Bolig>) in.readObject();
             annonseliste = (HashSet<Annonse>) in.readObject();
             kontraktliste = (HashSet<Kontrakt>) in.readObject();
-            soknadsliste = (LinkedHashSet<Soknad>) in.readObject();
+            soknadsliste = (HashSet<Soknad>) in.readObject();
 
             Person.setTeller(in.readInt());
             Bolig.setTeller(in.readInt());

@@ -17,7 +17,7 @@ public class Soknadregister<Soknad> extends Register<Soknad> implements Serializ
      *
      * @param soknadRegister
      */
-    public Soknadregister( LinkedHashSet<Soknad> soknadRegister ){
+    public Soknadregister( HashSet<Soknad> soknadRegister ){
 
         super.collection = soknadRegister;
     }
