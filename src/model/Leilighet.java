@@ -14,12 +14,23 @@ public class Leilighet extends Bolig {
     private boolean harFellesvaskeri;
 
     /**
-     * En tom konstruktør for Leilighet
+     * Kontruktør for oprettelse av en ny bolig.
+     * @param etasjeNr
+     * @param balkongAreal
+     * @param bodAreal
+     * @param harHeis
+     * @param harGarsje
+     * @param harFellesvaskeri
+     * @param personID PersonID til Eier
+     * @param adresse
+     * @param postnummer
+     * @param poststed
+     * @param boAreal
+     * @param byggeAr
+     * @param beskrivelse
+     * @param erUtleid
+     * @param tilgjengeligForUtleie 
      */
-//    public Leilighet(){
-//        //Utgår fra et teller for boligID blir oppdatert etter arv prinsippet
-//    }
-    
     public Leilighet(int etasjeNr, int balkongAreal, int bodAreal, boolean harHeis, boolean harGarsje, boolean harFellesvaskeri, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
         super(personID, adresse, postnummer, poststed, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
         boligtype = Boligtype.LEILIGHET;
@@ -86,13 +97,9 @@ public class Leilighet extends Bolig {
     public void setHarFellesvaskeri(boolean harFellesvaskeri) {
         this.harFellesvaskeri = harFellesvaskeri;
     }
-    
-    
 
 //    @Override
 //    public String toString() {
 //        return super.toString() + "boligtype=" + boligtype + ", etasjeNr=" + etasjeNr + ", balkongAreal=" + balkongAreal + ", bodAreal=" + bodAreal + ", harHeis=" + harHeis + ", harGarsje=" + harGarsje + ", harFellesvaskeri=" + harFellesvaskeri + '}';
 //    }
-    
-    
 }

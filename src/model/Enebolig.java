@@ -11,13 +11,21 @@ public class Enebolig extends Bolig {
     private int tomtAreal;
 
     /**
-     * En tom konstruktør for Enebolig.
+     * Kontruktør for oprettesle av en enebolig.
+     * @param boligtype
+     * @param antallEtasjer
+     * @param harKjeller
+     * @param tomtAreal
+     * @param personID EierID
+     * @param adresse
+     * @param postnummer
+     * @param poststed
+     * @param boAreal
+     * @param byggeAr
+     * @param beskrivelse
+     * @param erUtleid
+     * @param tilgjengeligForUtleie 
      */
-//    public Enebolig() {
-//    }
-
-    
-    //TODO: alle getter og setter samt toString()
     public Enebolig(Boligtype boligtype, int antallEtasjer, boolean harKjeller, int tomtAreal, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
         super(personID, adresse, postnummer, poststed, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
         this.boligtype = boligtype;
@@ -58,13 +66,8 @@ public class Enebolig extends Bolig {
         this.tomtAreal = tomtAreal;
     }
 
-    
-    
-    
 //    @Override
 //    public String toString() {
 //        return super.toString() + "boligtype=" + boligtype + ", antallEtasjer=" + antallEtasjer + ", harKjeller=" + harKjeller + ", tomtAreal=" + tomtAreal + '}';
 //    }
-    
-    
 }
