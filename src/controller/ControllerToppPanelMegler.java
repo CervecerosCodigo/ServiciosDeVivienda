@@ -108,7 +108,7 @@ public class ControllerToppPanelMegler<E> {
                 
             }
             if(e.getSource().equals(vindu.getToppanelMegler().getNyBoligItem())){
-                new ControllerRegistrerBolig(new BoligRegVindu("Registrer bolig"), boligliste);
+                new ControllerRegistrerBolig(boligliste);
             }
             if(e.getSource().equals(vindu.getToppanelMegler().getNyUtleierItem())){
                 new ControllerRegistrerUtleier(new UtleierRegVindu("Registrer utleier"), personliste);
