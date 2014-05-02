@@ -26,17 +26,17 @@ public abstract class Bolig implements Serializable,  Searchable{
     private String pathBildemappe; //Denne variabeln skal peke til en mappe med samme navn som biligID der vi lagrer bildene om boligen. Si at boligID er 1234 da vil den peke til "img/1234". Det er ikke sikket at vi trenger denne variabeln ettersom path i hvilken alt er lagret kan vi hente opp fra boligID
 
     /**
-     * Bolig.
+     * Konstruktør for oprettelse av en ny bolig.
      *
-     * @param personID
-     * @param adresse
-     * @param postnummer
+     * @param personID - En referanse til eier av boligen. 
+     * @param adresse - Adresse for boligen 
+     * @param postnummer - Postnummer fir siffrer
      * @param poststed
-     * @param boAreal
-     * @param byggeAr
-     * @param beskrivelse
-     * @param erUtleid
-     * @param tilgjengeligForUtleie
+     * @param boAreal - kvm
+     * @param byggeAr - kvm
+     * @param beskrivelse - String med beskrivelse av objektet.
+     * @param erUtleid - boolean
+     * @param tilgjengeligForUtleie - Når er boligen tilgjengelig for utleie. Et kalenderobjekt med dato.
      */
     public Bolig(int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
         boligID = ++teller;
