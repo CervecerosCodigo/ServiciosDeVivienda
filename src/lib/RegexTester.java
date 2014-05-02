@@ -14,6 +14,11 @@ public class RegexTester {
     public static final String EPOST_PATTERN = "^([a-zA-Z0-9])+([a-zA-Z0-9\\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\\._-]+)+$";
     public static final String GATE_NAVN_PATTERN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s]?[A-ZÆØÅ]?[a-zæøå]*$";
     public static final String GATE_NR_PATTERN = "^[1-9]{1}[0-9]{0,2}$";
+    /**
+     * Denne pattern tar for seg en gateadresse som begynner med stor bokstav og kan bestå av opp til tre ord, deretter må det komme et nummer og frivillig kan det komme en stor bokstav for som markerer trappeoppgangen.<br>
+     * <u>Dette er foretrukket måte for å kontrollere riktig gateadresse.</u>
+     */
+    public static final String GATE_ADRESSE = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s][1-9]{1}[0-9]{0,2}?[\\s]?[A-ZÆØÅ]{0,1}$";
     public static final String POST_NUMMER_PATTERN = "^[0-9]{4}$";
     public static final String POSTORT_NAVN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}$";
     public static final String TEL_NUMMER_NORSK = "^[1-9]{1}[0-9]{7}$";
@@ -25,6 +30,11 @@ public class RegexTester {
     public static final String KVM_TOMT = "^[1-9]{1}[0-9]{0,4}$";
     public static final String ETASJE = "^[1-9]{1}[0-9]{0,1}$";
     public static final String PRIS = "^[1-9]{1}[0-9]{0,5}$";
+    /**
+     * Dette er ID variabel som kan brukes for å teste på alle ID nummer som for
+     * person, bolig mm.
+     */
+    public static final String ID = "^[1-4]{1}[0-9]{4}$";
     private static boolean erTestOK;
 
     public RegexTester() {
@@ -188,6 +198,27 @@ public class RegexTester {
      */
     public static boolean testPris(String pris) {
         return patternMatchOK(pris, PRIS);
+    }
+
+    /**
+     * Tester dersom skrevet inn ID er riktig. Kan brukes på alle ID nummere som
+     * er brukt i programmet. Som for person, bolig annonse mm.
+     *
+     * @param IDinn
+     * @return boolean
+     */
+    public static boolean testID(String IDinn) {
+        return patternMatchOK(IDinn, ID);
+    }
+    
+    /**
+     * Tester for en gateadresse som begynner med stor bokstav og kan bestå av opp til tre ord, deretter må det komme et nummer og frivillig kan det komme en stor bokstav for som markerer trappeoppgangen.<br>
+     * <u>Dette er foretrukket måte for å kontrollere riktig gateadresse.</u>
+     * @param gateAdresse String
+     * @return boolean
+     */
+    public static boolean testGateadresse(String gateAdresse){
+        return patternMatchOK(gateAdresse, GATE_ADRESSE);
     }
 
     /**
