@@ -31,7 +31,6 @@ public class MainController implements Serializable {
     private Register annonseRegister;
     private Register kontraktRegister;
     private Register soknadRegister;
-    private Postregister postRegister;
 
     private HashSet<Person> personliste;
     private HashSet<Bolig> boligliste;
@@ -43,7 +42,7 @@ public class MainController implements Serializable {
     private ArkfaneTemplate annonseVindu;
     private StartGUI startGUI;
     private InnloggingController innloggingController;
-    private ControllerBunnPanel bunnController;
+
     private ControllerTabellOgOutput tabellControllerMegler;
     private ControllerTabellOgOutput tabellControllerAnnonse;
     private ControllerToppPanelMegler toppPanelControllerMegler;
@@ -62,7 +61,7 @@ public class MainController implements Serializable {
         startGUI = new StartGUI(meglerVindu, annonseVindu);
 
         innloggingController = new InnloggingController(startGUI);
-        bunnController = new ControllerBunnPanel(boligliste, personliste, annonseliste);
+        
         tabellControllerMegler = new ControllerTabellOgOutput(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         tabellControllerAnnonse = new ControllerTabellOgOutput(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerMegler = new ControllerToppPanelMegler(meglerVindu, personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
@@ -92,8 +91,7 @@ public class MainController implements Serializable {
         tabellControllerAnnonse.settOppTabellLyttere(annonseVindu);
         tabellControllerAnnonse.settInnDataITabell(annonseliste, ObjektType.ANNONSEOBJ);
 
-        bunnController.settKnappeLytter(meglerVindu);
-        bunnController.settKnappeLytter(annonseVindu);
+
 
 
         /**
@@ -154,13 +152,6 @@ public class MainController implements Serializable {
             }
         });
         
-        tabellControllerMegler.setTabellListener(new TabellListener() {
-
-            @Override
-            public void tabellOppdatert(ArrayList tabellData, TabellModell modell) {
-                bunnController.settOppTabellData(tabellData, modell);
-            }
-        });
         
     }//END CONSTRUCTOR
 

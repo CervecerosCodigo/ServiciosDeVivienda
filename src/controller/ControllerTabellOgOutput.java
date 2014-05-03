@@ -31,9 +31,8 @@ public class ControllerTabellOgOutput {
     private HashSet<Kontrakt> kontraktliste;
     private HashSet<Annonse> annonseliste;
     private HashSet<Soknad> soknadsliste;
-
-    private TabellListener tabellListener;
-
+    private ControllerBunnPanel bunnController;
+    
     private DefaultTableCellRenderer rightRenderer;
 
     private ArkfaneTemplate vindu;
@@ -64,6 +63,8 @@ public class ControllerTabellOgOutput {
         this.annonseliste = annonseliste;
         this.kontraktliste = kontraktliste;
         this.soknadsliste = soknadsliste;
+        
+        bunnController = new ControllerBunnPanel(boligliste, personliste, annonseliste);
 
         tabellModellBolig = new TabellModellBolig(annonseliste);
         tabellModellPerson = new TabellModellPerson();
@@ -90,11 +91,11 @@ public class ControllerTabellOgOutput {
         menyvalgAksepter = new JMenuItem("Aksepter søknad");
         menyvalgAvvis = new JMenuItem("Avvis søknad");
         menyvalgPubliserToggle = new JMenuItem("Endre publiseringsstatus");
+        
+
     }
 
-    public void setTabellListener(TabellListener lytter) {
-        tabellListener = lytter;
-    }
+
 
     /**
      * Tar i mot det vinduet tabellen skal settes for. Metoden oppretter en
@@ -106,6 +107,7 @@ public class ControllerTabellOgOutput {
     public void settOppTabellLyttere(final ArkfaneTemplate vindu) {
 
         this.vindu = vindu;
+        bunnController.settKnappeLytter(vindu);
         tabell = this.vindu.getVenstrepanel().getTable();
 
         //Kaller opp metoden som lager lyttere for popupmenyen i tabellen.
@@ -467,9 +469,8 @@ public class ControllerTabellOgOutput {
             resizeKolonneBredde();
             vindu.getVenstrepanel().sorterTabellVedOppstart();
 
-            if (tabellListener != null) {
-                tabellListener.tabellOppdatert(tabellData, modellIBruk);
-            }
+            bunnController.settOppTabellData(tabellData, modellIBruk);
+            
         } catch (ArrayIndexOutOfBoundsException aiobe) {
 
         } catch (NullPointerException npe) {
