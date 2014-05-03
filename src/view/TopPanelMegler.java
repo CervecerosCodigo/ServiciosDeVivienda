@@ -205,27 +205,29 @@ public class TopPanelMegler extends AbstractPanel {
     	public StatistikkPanel() {
     		super(new GridLayout(2,1));
     		ledigeBoligerAntall = new JLabel("0"); // Startverdi
-    		ledigeBoliger = new JLabel("ledige boliger.");
+    		ledigeBoliger = new JLabel("Ledige boliger:");
     		kontrakterAntall = new JLabel("0"); // Startverdi
-    		kontrakter = new JLabel("kontrakter hittil i år.");
-    		Panel1 = new CustomSubPanel(new FlowLayout());
-    		Panel2 = new CustomSubPanel(new FlowLayout());
+    		kontrakter = new JLabel("Kontrakter hittil i år:");
+    		Panel1 = new CustomSubPanel(new FlowLayout(FlowLayout.LEFT));
+    		Panel2 = new CustomSubPanel(new FlowLayout(FlowLayout.LEFT));
     		
-    		Panel1.add(ledigeBoligerAntall);
     		Panel1.add(ledigeBoliger);
-    		Panel2.add(kontrakterAntall);
+    		Panel1.add(ledigeBoligerAntall);
     		Panel2.add(kontrakter);
+    		Panel2.add(kontrakterAntall);
     		add(Panel1);
     		add(Panel2);
     		
     		Panel1.setPreferredSize(new Dimension(230,30));
     		Panel2.setPreferredSize(new Dimension(230,30));
-    		Panel1.setBackground(new Color(211,222,255));
-    		Panel2.setBackground(new Color(211,222,255));
+    		
+    		ledigeBoligerAntall.setForeground(Color.GRAY);
+    		ledigeBoliger.setForeground(Color.GRAY);
+    		kontrakterAntall.setForeground(Color.GRAY);
+    		kontrakter.setForeground(Color.GRAY);
     		
     		setPreferredSize(new Dimension(230,60));
     		setVisible(true);
-    		setBorder(BorderFactory.createLoweredSoftBevelBorder());
     	}
     	
     	public void OppdaterStatistikk(int ledigeBoligerAntall, int kontrakterAntall) {
