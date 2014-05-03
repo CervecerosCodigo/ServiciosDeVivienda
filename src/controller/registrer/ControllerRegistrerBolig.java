@@ -2,17 +2,25 @@ package controller.registrer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import lib.BildeFilSti;
+import lib.BoligBilde;
 import lib.Boligtype;
+import lib.Konstanter;
 import lib.Melding;
 import lib.RegexTester;
 import model.Bolig;
 import model.Enebolig;
 import model.Leilighet;
-import view.CustomJTextField;
 import view.registrer.BoligRegVindu;
 
 /**
@@ -47,6 +55,12 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
     private int antallEtasjer, tomtAreal;
     private boolean harKjeller;
     ///SLUTT PÅ DATAFELT FOR ENEBOLIG///
+    //
+    ///START PÅ BILDEBEHANDLING///
+    private BoligBilde boligBilde;
+    private JFileChooser fc;
+    private FileFilter ff;
+    ///STOPP PÅ BILDEBEHANDLING///
 
     /**
      * En kontruktør for registrering av en ny bolig.
@@ -56,6 +70,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
     public ControllerRegistrerBolig(HashSet<Bolig> boligSet) {
         super(boligSet);
         erNyregistrering = true;
+        boligBilde = new BoligBilde();
         bRegVindu = new BoligRegVindu("Registrering av boliger");
         bRegVindu.setKnappeLytter(new KnappeLytter());
     }
@@ -69,6 +84,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
     public ControllerRegistrerBolig(HashSet<Bolig> boligSet, Bolig bolig) {
         super(boligSet, bolig);
         erNyregistrering = false;
+        boligBilde = new BoligBilde();
         this.bolig = bolig;
 
         bRegVindu = new BoligRegVindu("Endre bolig");
@@ -88,6 +104,8 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
             bRegVindu.getErUtleidCheckBox().setSelected(true);
         }
         bRegVindu.getBeskrivelseTextArea().setText(bolig.getBeskrivelse());
+        //Setter opp teller for bilder
+        bRegVindu.getBildeResultatLabel().setText(String.valueOf(boligBilde.antallBilder(bolig)));
 
         if (bolig instanceof Leilighet) {
             bRegVindu.getLeilighetRButton().setSelected(true);
@@ -335,12 +353,15 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
             Leilighet leilighet = new Leilighet(etasjeNr, balkongAreal, bodAreal, harHeis, harGarasje, harFellesVaskeri, eierID, adresse, postNr, postSted, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
 
             if (set.add(leilighet)) {
-                Melding.visMelding("Boligregstrering", "Ny leilighet er registrert");
+//                Melding.visMelding("Boligregstrering", "Ny leilighet er registrert");
 
                 //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
                 BildeFilSti gallerimappe = new BildeFilSti();
                 gallerimappe.lagBildemappeForBolig(leilighet);
 
+                //Setter lokal klasse referanse til det nye objektet for å lagre bilder
+                bolig = leilighet;
+                
                 return true;
             } else {
                 Melding.visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
@@ -372,11 +393,14 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
             Enebolig enebolig = new Enebolig(Boligtype.ENEBOLIG, antallEtasjer, harKjeller, tomtAreal, eierID, adresse, postNr, postSted, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
 
             if (set.add(enebolig)) {
-                Melding.visMelding("Boligregstrering", "Ny enebolig er registrert");
+//                Melding.visMelding("Boligregstrering", "Ny enebolig er registrert");
 
                 //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
                 BildeFilSti gallerimappe = new BildeFilSti();
                 gallerimappe.lagBildemappeForBolig(enebolig);
+                
+                //Setter lokal klasse referanse til det nye objektet for å lagre bilder
+                bolig = enebolig;
 
                 return true;
             } else {
@@ -384,6 +408,51 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
             }
         }
         return false;
+    }
+
+    /**
+     * Laster opp første eller ekstra bilder for en alerede eksisterende
+     * boligobjekt. Endrer størrelse på bilde og setter inkrementell filnavn
+     * deretter lagrer bilde i galleriet for bildet.
+     *
+     * @param bolig
+     */
+    private void lastOppEkstraBilde(Bolig bolig) {
+        fc = new JFileChooser();
+        ff = new FileNameExtensionFilter("*.jpg", "jpg");
+        fc.setFileFilter(ff);
+        int valg = fc.showOpenDialog(null);
+        if (valg == JFileChooser.APPROVE_OPTION) {
+            File fil = fc.getSelectedFile();
+            try {
+                boligBilde.lagreNyttBildeForBolig(bolig, fil);
+
+                //Spørsmål om flere bilder
+                int valg2 = JOptionPane.showOptionDialog(null, "Bilde er nå lastet opp.\nØnsker du å laste opp flere bilder?", "Laste opp flere bilder?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, Konstanter.VALG_JA_NEI, Konstanter.VALG_JA_NEI[0]);
+                if (valg2 == JOptionPane.YES_OPTION) {
+                    lastOppEkstraBilde(bolig);
+                } else {
+                    bRegVindu.dispose();
+                }
+
+            } catch (IOException ex) {
+                Melding.visMelding("Lagre ny bilde", "IO Exception\nve lagring av nytt bilde");
+            }
+        }
+    }
+
+    /**
+     * Brukes for å laste opp bilder for en nyregistrert bolig. Ettersom vi ikke
+     * kan laste opp bilder før boligen blitt registrert så gjør vi det på slik
+     * måte.
+     *
+     * @param bolig
+     */
+    private void lastOppBildeForNyBolig(Bolig bolig) {
+        int valg2 = JOptionPane.showOptionDialog(null, "Boligen er nå registrert.\nØnsker du å laste opp et eller flere bilder?\n(Du kan også gjøre det seinere)", "Bilder for ny bolig?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, Konstanter.VALG_JA_NEI, Konstanter.VALG_JA_NEI[0]);
+        if (valg2 == JOptionPane.YES_OPTION) {
+            lastOppEkstraBilde(bolig);
+        } 
     }
 
     /**
@@ -398,10 +467,12 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
                 if (erNyregistrering) {
                     if (bRegVindu.getLeilighetRButton().isSelected()) {
                         if (registrerNyLeilighet()) {
+                            lastOppBildeForNyBolig(bolig);
                             bRegVindu.dispose();
                         }
                     } else if (bRegVindu.getEneboligRButton().isSelected()) {
                         if (registrerNyEnebolig()) {
+                            lastOppBildeForNyBolig(bolig);
                             bRegVindu.dispose();
                         }
                     }
@@ -413,6 +484,8 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
                     }
 
                 }
+            } else if (e.getSource().equals(bRegVindu.getBildeButton())) {
+                lastOppEkstraBilde(bolig);
             }
         }
     }
