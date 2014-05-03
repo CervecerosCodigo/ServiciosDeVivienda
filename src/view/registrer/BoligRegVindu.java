@@ -109,7 +109,7 @@ public class BoligRegVindu extends JFrame {
         beskrivelseLabel = new JLabel("Beskrivelse: ");
 
         eierField = new CustomJTextField("#####", RegexTester.PRIS, GuiSizes.FIELD_MEDIUM);
-        meglerField = new CustomJTextField("#####", RegexTester.PRIS, GuiSizes.FIELD_MEDIUM);
+        meglerField = new CustomJTextField("10001", RegexTester.PRIS, GuiSizes.FIELD_MEDIUM);
         adresseField = new CustomJTextField("Gate vei 10 B", RegexTester.GATE_ADRESSE, GuiSizes.FIELD_MEDIUM);//TODO: Her må det endres til gateadresse + husnummer regex
         postNrField = new CustomJTextField("XXXX", RegexTester.POST_NUMMER_PATTERN, GuiSizes.FIELD_MEDIUM);
         postStedField = new CustomJTextField("Oslo", RegexTester.POSTORT_NAVN, GuiSizes.FIELD_MEDIUM);
@@ -239,8 +239,6 @@ public class BoligRegVindu extends JFrame {
         gcBolig.gridx++;
 //        gcBolig.gridy++;
         boligPanel.add(beskrivelseScroll, gcBolig);
-        
-
 
         venstrePanel.add(boligPanel);
         ////////SLUTT PÅ GENERELL REGISTRERING AV BOLIG////////
@@ -424,7 +422,7 @@ public class BoligRegVindu extends JFrame {
         lagreButton.setEnabled(false);
     }
 
-    private void aktiverBoligKomponenter() {
+    public void aktiverBoligKomponenter() {
         Component[] compBolig = boligPanel.getComponents();
         for (Component comp1 : compBolig) {
             comp1.setEnabled(true);
@@ -437,14 +435,14 @@ public class BoligRegVindu extends JFrame {
         lagreButton.setEnabled(true);
     }
 
-    private void aktiverLeilighetKomponenter() {
+    public void aktiverLeilighetKomponenter() {
         Component[] compLeilighet = leilighetPanel.getComponents();
         for (Component comp1 : compLeilighet) {
             comp1.setEnabled(true);
         }
     }
 
-    private void aktiverEneboligKomponenter() {
+    public void aktiverEneboligKomponenter() {
         Component[] compEnebolig = eneboligPanel.getComponents();
         for (Component comp1 : compEnebolig) {
             comp1.setEnabled(true);

@@ -2,6 +2,7 @@ package controller.registrer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import lib.BildeFilSti;
@@ -27,6 +28,9 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
 
     private BoligRegVindu bRegVindu;
 
+    private boolean erNyregistrering;//Dersom boligen skal registreres som ny eller editeres
+    private Bolig bolig;//Midlertidlig boligobjekt som brukes i samband med oppdatering
+
     ///START PÅ DATAFELT FOR BOLIG///
     private String adresse, postNr, postSted, beskrivelse;
     private boolean erUtleid;
@@ -46,40 +50,167 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
 
     /**
      * En kontruktør for registrering av en ny bolig.
+     *
      * @param boligSet HashSet<Bolig>
      */
     public ControllerRegistrerBolig(HashSet<Bolig> boligSet) {
         super(boligSet);
-
+        erNyregistrering = true;
         bRegVindu = new BoligRegVindu("Registrering av boliger");
         bRegVindu.setKnappeLytter(new KnappeLytter());
     }
-    
+
     /**
      * En konstruktør som brukes for endring av en bolig.
+     *
      * @param boligSet HashSet<Bolig>
      * @param bolig Bolig
      */
-    public ControllerRegistrerBolig(HashSet<Bolig> boligSet, Bolig bolig){
+    public ControllerRegistrerBolig(HashSet<Bolig> boligSet, Bolig bolig) {
         super(boligSet, bolig);
-        /*
-        Hente opp en bolig.
-        Gjør alle endringer som skal gjøres.
-        Slett den boligen fra registeret.
-        Sett inn det boligobjektet inn i registeret igjenn.
-        */
+        erNyregistrering = false;
+        this.bolig = bolig;
+
         bRegVindu = new BoligRegVindu("Endre bolig");
-        
-        //Fyller inn felt i bolig med data
+        bRegVindu.setKnappeLytter(new KnappeLytter());
+
+        //Fyller inn felt i bolig panelen med data
         bRegVindu.getEierField().setText(String.valueOf(bolig.getPersonID()));
         bRegVindu.getAdresseField().setText(bolig.getAdresse());
-        
-        
-        if(bolig instanceof Leilighet){
-            bRegVindu.getLeilighetRButton().setEnabled(true);
-        }else if(bolig instanceof Enebolig){
-            bRegVindu.getLeilighetRButton().setEnabled(true);
+        bRegVindu.getPostNrField().setText(bolig.getPostnummer());
+        bRegVindu.getPostStedField().setText(bolig.getPoststed());
+        bRegVindu.getBoArealField().setText(String.valueOf(bolig.getBoAreal()));
+        bRegVindu.getByggeArField().setText(String.valueOf(bolig.getByggeAr()));
+        bRegVindu.getArCombo().setSelectedItem(bolig.getTilgjengeligForUtleie().get(Calendar.YEAR));
+        bRegVindu.getManedCombo().setSelectedItem(bolig.getTilgjengeligForUtleie().get(Calendar.MONTH));
+        bRegVindu.getDagCombo().setSelectedItem(bolig.getTilgjengeligForUtleie().get(Calendar.DAY_OF_MONTH));
+        if (bolig.isErUtleid()) {
+            bRegVindu.getErUtleidCheckBox().setSelected(true);
         }
+        bRegVindu.getBeskrivelseTextArea().setText(bolig.getBeskrivelse());
+
+        if (bolig instanceof Leilighet) {
+            bRegVindu.getLeilighetRButton().setSelected(true);
+            bRegVindu.aktiverBoligKomponenter();
+            bRegVindu.aktiverLeilighetKomponenter();
+            //Setter opp datafelt for leilighet
+            bRegVindu.getEtasjeNrField().setText(String.valueOf(((Leilighet) bolig).getEtasjeNr()));
+            bRegVindu.getBalkongArealField().setText(String.valueOf(((Leilighet) bolig).getBalkongAreal()));
+            bRegVindu.getBoArealField().setText(String.valueOf(String.valueOf(((Leilighet) bolig).getBodAreal())));
+            bRegVindu.getHarHeisCheckBox().setSelected(((Leilighet) bolig).isHarHeis());
+            bRegVindu.getHarGarasjeCheckBox().setSelected(((Leilighet) bolig).isHarGarsje());
+            bRegVindu.getHarFellesVaskeriCheckbox().setSelected(((Leilighet) bolig).isHarFellesvaskeri());
+        } else if (bolig instanceof Enebolig) {
+            bRegVindu.getEneboligRButton().setSelected(true);
+            bRegVindu.aktiverBoligKomponenter();
+            bRegVindu.aktiverEneboligKomponenter();
+            //Setter opp datafelt for enebolig
+            bRegVindu.getAntallEtasjerField().setText(String.valueOf(((Enebolig) bolig).getAntallEtasjer()));
+            bRegVindu.getTomtArealField().setText(String.valueOf(((Enebolig) bolig).getTomtAreal()));
+            bRegVindu.getHarKjellerCheckBox().setSelected(((Enebolig) bolig).isHarKjeller());
+        }
+
+    }
+
+    /**
+     * Brukes KUN i samband med oppdatering av eksisterende boligobjekt. Dersom
+     * alle felt i GUI er ok tillater den til å gå videre.
+     *
+     * @return boolean
+     */
+    private boolean kontrollerDataForSletting(Bolig bolig) {
+        getBoligData();
+        if (bolig instanceof Leilighet) {
+            getLeilighetData();
+            if (kontrollerDataBolig() && kontrollerDataLeilighet()) {
+                return true;
+            }
+        } else if (bolig instanceof Enebolig) {
+            getEneboligData();
+            if (kontrollerDataBolig() && kontrollerDataEnebolig()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Brukes i samband med oppdatering av registrert boligobjekt. Sletter
+     * objektet fra settet for å nngå dobbellagring.
+     *
+     * @param bolig
+     * @return
+     */
+    private boolean slettBoligFraSet(Bolig bolig) {
+
+        if (kontrollerDataForSletting(bolig)) {
+            if (super.set.remove(bolig)) {
+                return true;
+            }
+        }
+        Melding.visMelding("slettBoligFraSet", "Bolig ble IKKE slettet fra set");
+        return false;
+    }
+
+    /**
+     * Brukes i samband med oppdatering av en bolig. Overskriver alle datafelt i
+     * et boligobjekt med ny informasjon hentet fra GUI.
+     *
+     * @param bolig
+     * @return Bolig
+     */
+    private Bolig oppdaterBoligObjekt(Bolig bolig) {
+        //Henter generelle boligparametre
+        getBoligData();
+
+        //Setter generelle datafelt for bolig
+        bolig.setPersonID(eierID);
+        bolig.setAdresse(adresse);
+        bolig.setPostnummer(postNr);
+        bolig.setPoststed(postSted);
+        bolig.setBoAreal(boAreal);
+        bolig.setByggeAr(byggeAr);
+        bolig.setTilgjengeligForUtleie(tilgjengeligForUtleie);
+        bolig.setErUtleid(erUtleid);
+        bolig.setBeskrivelse(beskrivelse);
+
+        if (bolig instanceof Leilighet) {
+
+            getLeilighetData();
+
+            ((Leilighet) bolig).setEtasjeNr(etasjeNr);
+            ((Leilighet) bolig).setBalkongAreal(balkongAreal);
+            ((Leilighet) bolig).setBodAreal(bodAreal);
+            ((Leilighet) bolig).setHarHeis(harHeis);
+            ((Leilighet) bolig).setHarGarsje(harGarasje);
+            ((Leilighet) bolig).setHarFellesvaskeri(harFellesVaskeri);
+
+        } else if (bolig instanceof Enebolig) {
+
+            getEneboligData();
+
+            ((Enebolig) bolig).setAntallEtasjer(antallEtasjer);
+            ((Enebolig) bolig).setTomtAreal(tomtAreal);
+            ((Enebolig) bolig).setHarKjeller(harKjeller);
+        }
+
+        return bolig;
+    }
+
+    /**
+     * Legger tillbake boligobjektet til set etter at det er oppdatert.
+     *
+     * @param bolig
+     * @return
+     */
+    private boolean skrivOppdateringTilBoligSet(Bolig bolig) {
+        if (super.set.add(bolig)) {
+            Melding.visMelding("skrivOppdateringTilBoligSet", "Boligen ble oppdatert i registret");
+            return true;
+        }
+        Melding.visMelding("skrivOppdateringTilBoligSet", "Boligen ble IKKE oppdatert i registret");
+
+        return false;
     }
 
     /**
@@ -218,9 +349,9 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         return false;
     }
 
-    
     /**
      * Foretar registrering av en ny enebolig.
+     *
      * @return boolean
      */
     private boolean registrerNyEnebolig() {
@@ -263,15 +394,24 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(bRegVindu.getLagreButton())) {
-//                Melding.visMelding("Lagre", "Lagre knapp for ny bolig er kliket\n og fanget opp o kontroller");
-                if (bRegVindu.getLeilighetRButton().isSelected()) {
-                    if(registrerNyLeilighet()){
+
+                if (erNyregistrering) {
+                    if (bRegVindu.getLeilighetRButton().isSelected()) {
+                        if (registrerNyLeilighet()) {
+                            bRegVindu.dispose();
+                        }
+                    } else if (bRegVindu.getEneboligRButton().isSelected()) {
+                        if (registrerNyEnebolig()) {
+                            bRegVindu.dispose();
+                        }
+                    }
+                } else {
+                    //Sletter eksisterende bolig i set, oppdaterer alle datafelt og skriver det tilbake til settet.
+                    if (slettBoligFraSet(bolig)) {
+                        skrivOppdateringTilBoligSet(oppdaterBoligObjekt(bolig));
                         bRegVindu.dispose();
                     }
-                }else if(bRegVindu.getEneboligRButton().isSelected()){
-                    if(registrerNyEnebolig()){
-                        bRegVindu.dispose();
-                    }
+
                 }
             }
         }
