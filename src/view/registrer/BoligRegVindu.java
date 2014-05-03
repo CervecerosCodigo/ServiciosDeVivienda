@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
@@ -35,17 +36,19 @@ public class BoligRegVindu extends JFrame {
     ///PANELER///
     private CustomSubPanel toppPanel, venstrePanel, senterPanel, hoyrePanel, bunnPanel;
     private BorderLayout borderLayout;
-    private CustomSubPanel boligPanel, leilighetPanel, eneboligPanel;
+    private CustomSubPanel boligPanel, leilighetPanel, eneboligPanel, bildePanel;
     ///SLUTT PÅ PANELER///
     //
     ///BOLIG///
-    private JLabel boligTypeLabel, eierLabel, meglerLabel, adresseLabel, postNrLabel, postStedLabel, boArealLabel, byggeArLabel, erUtleidLabel, beskrivelseLabel, tilgjengeligForUtleieLabel;
+    private final JLabel boligTypeLabel, eierLabel, meglerLabel, adresseLabel, postNrLabel, postStedLabel, boArealLabel, byggeArLabel, erUtleidLabel, beskrivelseLabel, tilgjengeligForUtleieLabel, bildeLabel;
+    private JLabel bildeResultatLabel;
     private CustomJRadioButton leilighetRButton, eneboligRButton;
     private JComboBox dagCombo, manedCombo, arCombo;
     private ButtonGroup radioButtons;
     private CustomJTextField eierField, meglerField, adresseField, postNrField, postStedField, boArealField, byggeArField;
     private JCheckBox erUtleidCheckBox;
     private JTextArea beskrivelseTextArea;
+    private CustomJButton bildeButton;
     //TODO: Legg til kalenderfelt for registrering av tilgjenglighet for utleie
     ///BOLIG SLUTT///
     //
@@ -123,7 +126,12 @@ public class BoligRegVindu extends JFrame {
 //        beskrivelseTextArea.setPreferredSize(new Dimension(200, 200));
         beskrivelseTextArea.setLineWrap(true);
         beskrivelseTextArea.setWrapStyleWord(true);
+        beskrivelseTextArea.setMargin(new Insets(3, 3, 3, 3));
         JScrollPane beskrivelseScroll = new JScrollPane(beskrivelseTextArea);
+
+        bildeLabel = new JLabel("Antall bilder: ");
+        bildeResultatLabel = new JLabel("");
+        bildeButton = new CustomJButton("Last opp bilde");
         ///SLUTT PÅ DATAFELT FOR BOLIG///
         //
         ///START PÅ DATAFELT FOR LEILIGHET///
@@ -240,6 +248,20 @@ public class BoligRegVindu extends JFrame {
 //        gcBolig.gridy++;
         boligPanel.add(beskrivelseScroll, gcBolig);
 
+        //Rad 11 BILDER
+        gcBolig.gridx = 0;
+        gcBolig.gridy++;
+        boligPanel.add(bildeLabel, gcBolig);
+        gcBolig.gridx++;
+        boligPanel.add(bildeResultatLabel, gcBolig);
+
+        //Rad 12
+        gcBolig.gridx = 0;
+        gcBolig.gridy++;
+//        boligPanel.add(bildeLabel, gcBolig);
+        gcBolig.gridx++;
+        boligPanel.add(bildeButton, gcBolig);
+
         venstrePanel.add(boligPanel);
         ////////SLUTT PÅ GENERELL REGISTRERING AV BOLIG////////
 
@@ -345,6 +367,7 @@ public class BoligRegVindu extends JFrame {
                 deaktiverAlleKomponenter();
                 aktiverBoligKomponenter();
                 aktiverLeilighetKomponenter();
+                bildeButton.setEnabled(false);
             }
         });
 
@@ -355,6 +378,7 @@ public class BoligRegVindu extends JFrame {
                 deaktiverAlleKomponenter();
                 aktiverBoligKomponenter();
                 aktiverEneboligKomponenter();
+                bildeButton.setEnabled(false);
             }
         });
         ///SLUTT PÅ AKTIVERING OG DEAKTIVERING AV KOMPONENTER///
@@ -767,6 +791,22 @@ public class BoligRegVindu extends JFrame {
         this.lagreButton = lagreButton;
     }
 
+    public JLabel getBildeResultatLabel() {
+        return bildeResultatLabel;
+    }
+
+    public void setBildeResultatLabel(JLabel bildeResultatLabel) {
+        this.bildeResultatLabel = bildeResultatLabel;
+    }
+
+    public CustomJButton getBildeButton() {
+        return bildeButton;
+    }
+
+    public void setBildeButton(CustomJButton bildeButton) {
+        this.bildeButton = bildeButton;
+    }
+
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
     //||//                                                              //||//
@@ -784,6 +824,7 @@ public class BoligRegVindu extends JFrame {
      */
     public void setKnappeLytter(ActionListener lytter) {
         lagreButton.addActionListener(lytter);
+        bildeButton.addActionListener(lytter);
     }
 
 }
