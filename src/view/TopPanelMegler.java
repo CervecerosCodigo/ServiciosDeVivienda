@@ -208,8 +208,8 @@ public class TopPanelMegler extends AbstractPanel {
     		ledigeBoliger = new JLabel("ledige boliger.");
     		kontrakterAntall = new JLabel("0"); // Startverdi
     		kontrakter = new JLabel("kontrakter hittil i år.");
-    		Panel1 = new CustomSubPanel(new FlowLayout(FlowLayout.LEFT));
-    		Panel2 = new CustomSubPanel(new FlowLayout(FlowLayout.LEFT));
+    		Panel1 = new CustomSubPanel(new FlowLayout());
+    		Panel2 = new CustomSubPanel(new FlowLayout());
     		
     		Panel1.add(ledigeBoligerAntall);
     		Panel1.add(ledigeBoliger);
@@ -218,12 +218,14 @@ public class TopPanelMegler extends AbstractPanel {
     		add(Panel1);
     		add(Panel2);
     		
-    		Panel1.setPreferredSize(new Dimension(230,35));
-    		Panel2.setPreferredSize(new Dimension(230,35));
+    		Panel1.setPreferredSize(new Dimension(230,30));
+    		Panel2.setPreferredSize(new Dimension(230,30));
+    		Panel1.setBackground(new Color(211,222,255));
+    		Panel2.setBackground(new Color(211,222,255));
     		
-    		setPreferredSize(new Dimension(230,70));
+    		setPreferredSize(new Dimension(230,60));
     		setVisible(true);
-    		setBorder(BorderFactory.createTitledBorder("Statistikk"));
+    		setBorder(BorderFactory.createLoweredSoftBevelBorder());
     	}
     	
     	public void OppdaterStatistikk(int ledigeBoligerAntall, int kontrakterAntall) {
