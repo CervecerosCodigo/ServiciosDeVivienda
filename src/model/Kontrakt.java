@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Objects;
+
 import search.Searchable;
 
 /**
@@ -20,12 +22,14 @@ public class Kontrakt implements Serializable, Searchable{
     private int depositum;
     private int leietidIMnd;
     private int kontraktID;
+    private Calendar datoOpprettet;
     private static int teller = 40000;
     
-    public Kontrakt( Annonse annonse, Person megler, Person leietaker, int leietidIMnd ){
+    public Kontrakt( Annonse annonse, Person megler, Person leietaker, int leietidIMnd, Calendar datoOpprettet){
         this.annonse = annonse;
         this.megler = megler;
         this.leietaker = leietaker;
+        this.datoOpprettet = datoOpprettet;
         
         kontraktID = ++teller;
         this.leietidIMnd = leietidIMnd;
@@ -50,6 +54,10 @@ public class Kontrakt implements Serializable, Searchable{
     
     public int getAnnonseID() {
         return annonse.getAnnonseID();
+    }
+    
+    public Calendar getDatoOpprettet() {
+    	return datoOpprettet;
     }
     
     //Må editeres når Bolig er klart.

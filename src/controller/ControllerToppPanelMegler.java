@@ -2,20 +2,23 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 //Modifisert av Lukas 24.04.14, implemtering av søk, se git for detaljer.
 
-import controller.registrer.ControllerRegistrerBolig;
-import controller.registrer.ControllerRegistrerUtleier;
-import java.awt.Component;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.JPopupMenu;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
+
 import lib.Melding;
 import lib.ObjektType;
-import model.*;
+import model.Annonse;
+import model.Bolig;
+import model.Kontrakt;
+import model.Person;
+import model.Soknad;
 import search.FreeTextSearch;
 import view.ArkfaneTemplate;
-import view.CustomJButton;
-import view.registrer.BoligRegVindu;
-import view.registrer.UtleierRegVindu;
+import controller.registrer.ControllerRegistrerBolig;
+import controller.registrer.ControllerRegistrerUtleier;
 
 public class ControllerToppPanelMegler<E> {
 
@@ -48,6 +51,33 @@ public class ControllerToppPanelMegler<E> {
         vindu.getToppanelMegler().leggTilRadioLytter(new RadioLytter());
         vindu.getToppanelMegler().leggTilKnappeLytter(new KnappeLytter());
         
+        OppdaterStatistikk();
+    }
+    
+    /**
+     * Hjelpemetode som går igjennom registeret, og teller opp ledige boliger, samt antall kontrakter hittil i år.
+     * Sender denne informasjonen videre til TopPanelMegler.java for oppdatering der.
+     */
+    private void OppdaterStatistikk() {
+    	
+    	int antallLedigeBoliger = 0;
+    	int antallKontrakter = 0;
+    	Calendar dagsDato = Calendar.getInstance();
+    	Integer dagensAar = dagsDato.get(dagsDato.YEAR);
+    	
+    	for(Bolig boligIterator : boligliste)
+    		if(boligIterator.isErUtleid() == false)
+    			antallLedigeBoliger++;
+    	
+    	for(Kontrakt kontraktIterator : kontraktliste) {
+    		Calendar dato = kontraktIterator.getDatoOpprettet();
+    		int kontraktOpprettetAar = dato.get(dato.YEAR);
+    		
+    		if(kontraktOpprettetAar == dagensAar)
+    			antallKontrakter++;
+    	}
+    	
+    	vindu.getToppanelMegler().getStatistikkPanel().OppdaterStatistikk(antallLedigeBoliger, antallKontrakter);
     }
 
     /**
@@ -156,5 +186,5 @@ public class ControllerToppPanelMegler<E> {
         }
 
     }
-
+    
 }
