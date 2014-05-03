@@ -93,7 +93,23 @@ public class BildeFilSti {
      * @return String
      */
     public String getBoligFremsideBildeHTML(Bolig bolig) {
+        if (erGalleriMappeTom(bolig)) {
+            return "file:" + getAbsolutePathToStandardBilde();
+        }
         return "file:" + getBoligFremsideBilde(bolig);
+    }
+
+    /**
+     * Kontroller dersom mappa med galleribilder for boligobjektet er tomt. Hvis
+     * ja så er det ju ingen idee å lese noe derfra og da leser vi inn
+     * standardbilde for visning.
+     *
+     * @param bolig
+     * @return boolean
+     */
+    private boolean erGalleriMappeTom(Bolig bolig) {
+        String sti = getBoligGalleryPath(bolig);
+        return new File(sti).listFiles().length == 0;
     }
 
     /**
@@ -107,8 +123,9 @@ public class BildeFilSti {
         File filsti = new File(getBoligGalleryPath(bolig));
         try {
             if (filsti.mkdirs()) {
-                kopierStandardBilde(bolig);
-//            kopierStandardBilde2(bolig);
+                //Trenger ikke å kopiere standardbilde lengre da det bildet blir lest inn fra felles mappe dersom boligens eget galleri er tomt
+//                kopierStandardBilde(bolig);
+//                kopierStandardBilde2(bolig);
             }
 
         } catch (SecurityException se) {

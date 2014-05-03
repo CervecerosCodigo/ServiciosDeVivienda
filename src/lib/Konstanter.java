@@ -53,6 +53,20 @@ public class Konstanter {
      */
     public static final String STANDARDBILDE = "1.jpg";
 
+    /**
+     * Standard bredde for bilde.
+     */
+    public static final int BILDE_WIDTH = 405;
+    
+    /**
+     * Standard høyde for bilde.
+     */
+    public static final int BILDE_HEIGHT = 270;
+    
+    /**
+     * Brukes i feks JOptionPane for å sette lokalisert melding i knapper.
+     */
+    public static final Object[] VALG_JA_NEI = {"Ja", "Nei"};
 
     public static NumberFormat nf = NumberFormat.getIntegerInstance();
     public static SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
