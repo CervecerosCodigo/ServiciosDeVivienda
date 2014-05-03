@@ -2,11 +2,19 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 //Modifisert av Lukas 24.04.14, implemtering av søk, se git for detaljer.
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import lib.Melding;
 import lib.ObjektType;
@@ -52,7 +60,13 @@ public class ControllerToppPanelMegler<E> {
         vindu.getToppanelMegler().leggTilKnappeLytter(new KnappeLytter());
         
         OppdaterStatistikk();
+        hentOgSetLogo();
     }
+    
+    private void hentOgSetLogo() {
+    	
+    }
+    
     
     /**
      * Hjelpemetode som går igjennom registeret, og teller opp ledige boliger, samt antall kontrakter hittil i år.
