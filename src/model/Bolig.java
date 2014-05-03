@@ -149,6 +149,10 @@ public abstract class Bolig implements Serializable,  Searchable{
         this.erUtleid = erUtleid;
     }
 
+    public Calendar getTilgjengeligForUtleie() {
+        return tilgjengeligForUtleie;
+    }
+    
     public String getPathBildemappe() {
         return pathBildemappe;
     }
