@@ -22,7 +22,6 @@ import view.registrer.CustomSubPanel;
 public class ComboDatoVelger extends CustomSubPanel {
 
     private final JComboBox dagCombo, manedCombo, arCombo;
-    private CustomSubPanel datoPickPanel;
 
     /**
      * En tom konstruktør som setter opp comboboksen med årstall 10 år
@@ -188,6 +187,14 @@ public class ComboDatoVelger extends CustomSubPanel {
 
         getManedCombo().setSelectedItem(leggTilNullForran(mnd));
         getDagCombo().setSelectedItem(leggTilNullForran(dag));
+    }
+    
+    /**
+     * Returnere et ferdig kalenderobjekt utefra valgt dato.
+     * @return 
+     */
+    public Calendar opprettKalenderobjekt() {
+        return new GregorianCalendar(getAr(), getManed(), getManed());
     }
 
     /**
