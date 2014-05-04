@@ -152,7 +152,7 @@ public class ControllerTabellOgOutput {
                     if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
                         System.out.println("Bolig");
                     } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
-                        System.out.println("Person");
+                        new ControllerRegistrerUtleier(personliste, (Person) tabellData.get(rad));
                     } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
                         System.out.println("Annonse");
                     } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
@@ -250,7 +250,8 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                /////////////////////////////////////////
+                //FIXME:
+                new ControllerRegistrerUtleier(personliste, (Person) tabellData.get(3));
             }
         });
         menyvalgSlettPerson.addActionListener(new ActionListener() {
