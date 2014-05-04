@@ -52,6 +52,7 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
         super(personRegister, person);
         erNyregistrering = false;
         this.uRegVindu = new UtleierRegVindu("Endre opplysninger for utleier");
+        visDataFraRegister(person);
         //Legger til en lytter
         uRegVindu.addUtleierPanelListener(new KnappLytter());
     }
@@ -66,10 +67,11 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
         uRegVindu.getEtternavnField().setText(person.getEtternavn());
         uRegVindu.getEpostField().setText(person.getEpost());
         uRegVindu.getTelefonField().setText(person.getTelefon());
-        if (((Utleier) person).isErRepresentant()) {
-            uRegVindu.getErRepresentantCheckBox().setSelected(((Utleier) person).isErRepresentant());
-            uRegVindu.getErRepresentatForField().setText(((Utleier) person).getErRepresentantFor());
-
+        if (person instanceof Utleier) {
+            if (((Utleier) person).isErRepresentant()) {
+                uRegVindu.getErRepresentantCheckBox().setSelected(((Utleier) person).isErRepresentant());
+                uRegVindu.getErRepresentatForField().setText(((Utleier) person).getErRepresentantFor());
+            }
         }
     }
 
@@ -127,8 +129,10 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
                 person.setEpost(epost);
                 person.setTelefon(telnr);
                 if (uRegVindu.getErRepresentantCheckBox().isSelected()) {
-                    ((Utleier) person).setErRepresentant(true);
-                    ((Utleier) person).setErRepresentantFor(erRepresentantFor);
+                    if (person instanceof Utleier) {
+                        ((Utleier) person).setErRepresentant(true);
+                        ((Utleier) person).setErRepresentantFor(erRepresentantFor);
+                    }
                 }
             }
             //Skriver objektet tilbake til set
@@ -148,9 +152,10 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
 
         getDataGUI();
 
-        if (kontrollerHentetData()) {//Sluttet her
+        if (kontrollerHentetData()) {
             Person utleier = new Utleier(fnavn, enavn, epost, telnr, erRepresentant, erRepresentantFor);
-            super.set.add(utleier);
+//            super.set.add(utleier);
+            super.registrerObjekt((Utleier) utleier);
             StringBuilder melding = new StringBuilder();
             melding.append("En ny person er registrert:\n").append(fnavn).append(" ").append(enavn).append("\n").append(epost);
             Melding.visMelding("Ny utleier", melding.toString());
@@ -168,7 +173,7 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
                     registrerNyUtleier();
                 } else {
                     //Her skal vi lagre en oppdatering
-                    kontrollerDataOgOppdater((Person) obj);
+                    kontrollerDataOgOppdater((Utleier) obj);
                 }
             }
         }
