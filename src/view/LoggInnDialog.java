@@ -29,12 +29,12 @@ public class LoggInnDialog extends JDialog {
 		avbrytKnapp = new JButton("Avbryt");
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
-		setSize(180, 150);
+		setSize(180, 180);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(getParent());
 		setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
-		setUndecorated(true);
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
 		this.getRootPane().setDefaultButton(loggInnKnapp);
 		

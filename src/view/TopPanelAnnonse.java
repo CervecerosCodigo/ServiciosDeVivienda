@@ -6,11 +6,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+
 import view.CustomJButton;
 import view.CustomJCheckBox;
+import view.registrer.CustomSubPanel;
+
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import lib.BildeFilSti;
 import lib.Konstanter;
 import lib.RegexTester;
 
@@ -19,19 +25,26 @@ public class TopPanelAnnonse extends AbstractPanel {
     private KnappeGruppeHoyre knappeGruppeHoyre;
     private CheckBoxKnappeGruppe checkBoxKnappeGruppe;
     private CustomJButton sokeKnapp;
+    private ImageIcon bilde;
+    private JLabel bildeLabel;
 
     public TopPanelAnnonse(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
         knappeGruppeHoyre = new KnappeGruppeHoyre();
         checkBoxKnappeGruppe = new CheckBoxKnappeGruppe();
         sokeKnapp = new CustomJButton("Søk");
-
+        bilde = new ImageIcon(new BildeFilSti().getAbsoluteGalleryPath()+"/default/boligLogo.png");
+        bildeLabel = new JLabel(bilde);
+        
         setVisible(true);
-        setLayout(new FlowLayout(FlowLayout.LEFT, 40, 0));
+        setLayout(new FlowLayout(FlowLayout.LEFT, 30, 0));
         
         add(checkBoxKnappeGruppe);
         add(knappeGruppeHoyre);
         add(sokeKnapp);
+        add(bildeLabel);
+        
+        bildeLabel.setPreferredSize(new Dimension(bilde.getIconWidth(), bilde.getIconHeight()));
     }
 
     ////////////GETTERS////////////
@@ -129,7 +142,7 @@ public class TopPanelAnnonse extends AbstractPanel {
         private JComboBox postStedBox, boligTypeBox;
         private JLabel prisLabel, bindestrekLabel, arealLabel, bindestrekLabel2;
         private CustomJTextField minPrisFelt, maksPrisFelt, minArealFelt, maksArealFelt;
-        private JPanel fyllPanel;
+        private CustomSubPanel fyllPanel;
 
         public KnappeGruppeHoyre() {
             postStedBox = new JComboBox<>();
@@ -142,10 +155,8 @@ public class TopPanelAnnonse extends AbstractPanel {
             maksPrisFelt = new CustomJTextField("maks", RegexTester.PRIS, 5);
             minArealFelt = new CustomJTextField("min", RegexTester.KVM_BOLIG, 5);
             maksArealFelt = new CustomJTextField("maks", RegexTester.KVM_BOLIG, 5);
-            fyllPanel = new JPanel();
+            fyllPanel = new CustomSubPanel(null);
 
-            fyllPanel.setPreferredSize(new Dimension(120, 110));
-            fyllPanel.setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
             setVisible(true);
             setLayout(new FlowLayout());
 
@@ -160,6 +171,8 @@ public class TopPanelAnnonse extends AbstractPanel {
             add(minArealFelt);
             add(bindestrekLabel2);
             add(maksArealFelt);
+            
+            fyllPanel.setPreferredSize(new Dimension(30,110));
 
         }
 
