@@ -42,4 +42,22 @@ public abstract class AbstractControllerRegister<E> {
         this.obj = obj;
     }
 
+    /**
+     * Sletter et objekt i registeret som brukes hos kontrolleren.
+     *
+     * @param e
+     * @return
+     */
+    public boolean slettObjekt(E e) {
+        return set.remove(e);
+    }
+    
+    /**
+     * Legger til et objekt i registeret av den type som brukes i kontrolleren.
+     * @param e
+     * @return 
+     */
+    public boolean registrerObjekt(E e) {
+        return set.add(e);
+    }
 }

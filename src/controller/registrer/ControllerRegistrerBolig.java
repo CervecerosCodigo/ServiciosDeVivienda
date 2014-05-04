@@ -93,6 +93,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         bRegVindu.setKnappeLytter(new KnappeLytter());
 
         //Fyller inn felt i bolig panelen med data
+        //FIXME: Dette borde egentlig flyttes til en egen metode
         bRegVindu.getEierField().setText(String.valueOf(bolig.getPersonID()));
         bRegVindu.getAdresseField().setText(bolig.getAdresse());
         bRegVindu.getPostNrField().setText(bolig.getPostnummer());

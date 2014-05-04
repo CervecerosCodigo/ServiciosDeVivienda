@@ -10,9 +10,25 @@ public class Utleier extends Person {
 		
 		super(fornavn, etternavn, epost, telefon);
 		this.erRepresentant = erRepresentant;
-		this.erRepresentantFor = this.erRepresentantFor;
+		this.erRepresentantFor = erRepresentantFor;
 	}
 
+    public boolean isErRepresentant() {
+        return erRepresentant;
+    }
+
+    public void setErRepresentant(boolean erRepresentant) {
+        this.erRepresentant = erRepresentant;
+    }
+
+    public String getErRepresentantFor() {
+        return erRepresentantFor;
+    }
+
+    public void setErRepresentantFor(String erRepresentantFor) {
+        this.erRepresentantFor = erRepresentantFor;
+    }
+        
     @Override
     public String toString() {
         return super.toString() + " (Utleier)";
