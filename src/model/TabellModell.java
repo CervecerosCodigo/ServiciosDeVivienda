@@ -31,6 +31,11 @@ public abstract class TabellModell<E> extends DefaultTableModel {
         return str;
     }
 
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return false;
+    }
+
     /**
      * Returnerer antall kolonner i tabellen.
      *

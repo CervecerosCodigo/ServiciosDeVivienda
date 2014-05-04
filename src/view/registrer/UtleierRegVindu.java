@@ -16,8 +16,8 @@ import view.CustomJTextField;
 
 public class UtleierRegVindu extends AbstractRegistreringsPanel {
 
-    private String tittel;
 
+    
     private JLabel fornavnLabel, etternavnLabel, epostLabel, telefonLabel, erRepresntantLabel, erRepresentatnForLabel;
     private CustomJTextField fornavnField, etternavnField, epostField, telefonField, erRepresentatForField;
     private CustomJCheckBox erRepresentantCheckBox;
@@ -26,7 +26,7 @@ public class UtleierRegVindu extends AbstractRegistreringsPanel {
     public UtleierRegVindu(String tittel) {
         super(350, 250, tittel);
 
-        senterPanel = new CustomSubPanel("", 0, 0);
+        senterPanel = new CustomSubPanel("", 0, 0, new GridBagLayout());
         add(senterPanel);
 
         fornavnLabel = new JLabel("Fornavn: ");
@@ -75,7 +75,6 @@ public class UtleierRegVindu extends AbstractRegistreringsPanel {
 
     public void opprettLayout() {
 
-        senterPanel.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
 
         //Rad 1
