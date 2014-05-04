@@ -14,9 +14,8 @@ import view.CustomJButton;
 import view.CustomJCheckBox;
 import view.CustomJTextField;
 
-public class UtleierRegVindu extends JFrame {
+public class UtleierRegVindu extends AbstractRegistreringsPanel {
 
-    private CustomSubPanel panel;
     private String tittel;
 
     private JLabel fornavnLabel, etternavnLabel, epostLabel, telefonLabel, erRepresntantLabel, erRepresentatnForLabel;
@@ -25,13 +24,10 @@ public class UtleierRegVindu extends JFrame {
     private CustomJButton avbrytButton, lagreButton;
 
     public UtleierRegVindu(String tittel) {
-        super(tittel);
-        setSize(350, 250);
-        setLayout(new BorderLayout());
-        setVisible(true);
+        super(350, 250, tittel);
 
-        panel = new CustomSubPanel("", 0, 0);
-        add(panel);
+        senterPanel = new CustomSubPanel("", 0, 0);
+        add(senterPanel);
 
         fornavnLabel = new JLabel("Fornavn: ");
         etternavnLabel = new JLabel("Etternavn: ");
@@ -79,7 +75,7 @@ public class UtleierRegVindu extends JFrame {
 
     public void opprettLayout() {
 
-        panel.setLayout(new GridBagLayout());
+        senterPanel.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
 
         //Rad 1
@@ -91,13 +87,13 @@ public class UtleierRegVindu extends JFrame {
         gc.fill = GridBagConstraints.NONE;
         gc.anchor = GridBagConstraints.LINE_START;
         gc.insets = new Insets(0, 0, 0, 5);
-        panel.add(fornavnLabel, gc);
+        senterPanel.add(fornavnLabel, gc);
 
         gc.gridx = 1;
         gc.weightx = 1;        
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
-        panel.add(fornavnField, gc);
+        senterPanel.add(fornavnField, gc);
 
         //Rad 2
         gc.weightx = 1;
@@ -107,13 +103,13 @@ public class UtleierRegVindu extends JFrame {
 
         gc.anchor = GridBagConstraints.LINE_START;
         gc.insets = new Insets(0, 0, 0, 5);
-        panel.add(etternavnLabel, gc);
+        senterPanel.add(etternavnLabel, gc);
 
         gc.gridx = 1;
 //        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
-        panel.add(etternavnField, gc);
+        senterPanel.add(etternavnField, gc);
 
         //Rad 3
         gc.weightx = 1;
@@ -123,13 +119,13 @@ public class UtleierRegVindu extends JFrame {
         gc.gridy++;
         gc.anchor = GridBagConstraints.LINE_START;
         gc.insets = new Insets(0, 0, 0, 5);
-        panel.add(epostLabel, gc);
+        senterPanel.add(epostLabel, gc);
 
         gc.gridx = 1;
 //        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
-        panel.add(epostField, gc);
+        senterPanel.add(epostField, gc);
 
         //Rad 4
         gc.weightx = 1;
@@ -139,13 +135,13 @@ public class UtleierRegVindu extends JFrame {
         gc.gridy++;
         gc.anchor = GridBagConstraints.LINE_START;
         gc.insets = new Insets(0, 0, 0, 5);
-        panel.add(telefonLabel, gc);
+        senterPanel.add(telefonLabel, gc);
 
         gc.gridx = 1;
 //        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
-        panel.add(telefonField, gc);
+        senterPanel.add(telefonField, gc);
 
         //Rad 5
         gc.weightx = 1;
@@ -155,13 +151,13 @@ public class UtleierRegVindu extends JFrame {
         gc.gridy++;
         gc.anchor = GridBagConstraints.LINE_START;
         gc.insets = new Insets(0, 0, 0, 5);
-        panel.add(erRepresntantLabel, gc);
+        senterPanel.add(erRepresntantLabel, gc);
 
         gc.gridx = 1;
 //        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
-        panel.add(erRepresentantCheckBox, gc);
+        senterPanel.add(erRepresentantCheckBox, gc);
 
         //Rad 6
         gc.weightx = 1;
@@ -171,13 +167,13 @@ public class UtleierRegVindu extends JFrame {
         gc.gridy++;
         gc.anchor = GridBagConstraints.LINE_START;
         gc.insets = new Insets(0, 0, 0, 5);
-        panel.add(erRepresentatnForLabel, gc);
+        senterPanel.add(erRepresentatnForLabel, gc);
 
         gc.gridx = 1;
 //        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
-        panel.add(erRepresentatForField, gc);
+        senterPanel.add(erRepresentatForField, gc);
 
         //Rad 7
         gc.weightx = 0.1;
@@ -187,12 +183,12 @@ public class UtleierRegVindu extends JFrame {
         gc.gridy++;
         gc.anchor = GridBagConstraints.LINE_END;
         gc.insets = new Insets(0, 0, 0, 5);
-        panel.add(avbrytButton, gc);
+        senterPanel.add(avbrytButton, gc);
 
         gc.gridx = 2;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
-        panel.add(lagreButton, gc);
+        senterPanel.add(lagreButton, gc);
     }
 
     //Getters
