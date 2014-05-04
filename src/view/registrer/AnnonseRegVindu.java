@@ -12,6 +12,7 @@ import lib.Boligtype;
 import lib.RegexTester;
 import model.Bolig;
 import model.Enebolig;
+import view.ComboDatoVelger;
 import view.CustomJButton;
 import view.CustomJCheckBox;
 import view.CustomJTextField;
@@ -24,6 +25,7 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel{
     private JLabel depositumLabel, utleieprisLabel, utlopsdatoLabel, tilgjengligFraDatoLabel, eiersKravLabel, erAnnonseSynligLabel;
     private CustomJTextField depositum, utleiepris;
     private CustomJCheckBox erSynligSomAnnonse;
+    private ComboDatoVelger utlopsDato, tilgjengligFraDato;
     private JTextArea eiersKrav;
     private CustomJButton avbrytButton, lagreButton;
     
@@ -56,6 +58,8 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel{
         utleieprisLabel = new JLabel("Utleiepris:");
         utlopsdatoLabel = new JLabel("Annonsen utløper:");
         tilgjengligFraDatoLabel = new JLabel("Tilgjenglig fra:");
+        utlopsDato = new ComboDatoVelger();
+        tilgjengligFraDato = new ComboDatoVelger();
         eiersKravLabel = new JLabel("Krav fra eier:");
         erAnnonseSynligLabel = new JLabel("Allerede publisert?");
         depositum = new CustomJTextField("Depositum", RegexTester.PRIS, 10);
@@ -255,7 +259,7 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel{
         gc.weightx = 1;        
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(null, gc);
+        venstrePanel.add(tilgjengligFraDato, gc);
         
         //Rad 4
         gc.weightx = 1;
@@ -272,7 +276,7 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel{
         gc.weightx = 1;        
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(null, gc);
+        venstrePanel.add(utlopsDato, gc);
         
         //Rad 5
         gc.weightx = 1;
@@ -348,6 +352,15 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel{
         return boligEierTlfInfo;
     }
 
+    public ComboDatoVelger getUtlopsDato() {
+        return utlopsDato;
+    }
+
+    public ComboDatoVelger getTilgjengligFraDato() {
+        return tilgjengligFraDato;
+    }
+
+    
 
     public CustomJTextField getDepositum() {
         return depositum;

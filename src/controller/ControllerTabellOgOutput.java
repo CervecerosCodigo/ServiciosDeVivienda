@@ -7,6 +7,7 @@ package controller;
  * setInnDataITabell tar i mot datasettet som skal vises, og hvilket vindu de
  * skal vises i.
  */
+import controller.registrer.ControllerRegistrerAnnonse;
 import controller.registrer.ControllerRegistrerBolig;
 import controller.registrer.ControllerRegistrerUtleier;
 import java.awt.Component;
@@ -398,14 +399,14 @@ public class ControllerTabellOgOutput {
                         if (temp.isErSynlig()) {
                             temp.setErSynlig(false);
                         } else {
-                            //Åpne annonseobjektet for endring før man publiserer på nytt
+                            new ControllerRegistrerAnnonse(annonseliste, personliste, temp);
                         }
                         return;
                     }//end if
                 }//end while
 
-                //Boligen ligger ikke i annonseregisteret. Lager ny annonse.
-                //Legg annonse i annonseregister
+                new ControllerRegistrerAnnonse(annonseliste, personliste, valgtObjekt);
+                
             } else {
                 //Boligen er utleid og kan ikke legges i annonseregisteret
             }
