@@ -16,30 +16,63 @@ import view.registrer.UtleierRegVindu;
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
-public class ControllerRegistrerUtleier {
+public class ControllerRegistrerUtleier extends AbstractControllerRegister {
 
-    UtleierRegVindu vindu;
+    //Generelle datafelt
+    UtleierRegVindu uRegVindu;
     HashSet<Person> personRegister;
 
+    //Datafelt for personopplysninger
+    private String fnavn, enavn, epost, telnr, erRepresentantFor;
+    private boolean erRepresentant;
+
+    /**
+     * Konstruktøren blir brukt i samband med registrering av en ny bolig.
+     *
+     * @param personRegister
+     */
     public ControllerRegistrerUtleier(HashSet<Person> personRegister) {
-        this.vindu = new UtleierRegVindu("Registrer utleier");
-        this.personRegister = personRegister;
+        super(personRegister);
+        this.uRegVindu = new UtleierRegVindu("Registrer utleier");
+//        this.personRegister = personRegister;//Dette var gamle måten å gjøre det på før vi hadde en superklasse.
 
         //Legger til lytter
-        vindu.addUtleierPanelListener(new KnappLytter());
+        uRegVindu.addUtleierPanelListener(new KnappLytter());
     }
 
-    private void registrerUtleier() {
-        String fnavn = vindu.getFornavnField().getText();
-        String enavn = vindu.getEtternavnField().getText();
-        String epost = vindu.getEpostField().getText();
-        String telnr = vindu.getTelefonField().getText();
-        boolean erRepresentant = vindu.getErRepresentantCheckBox().isSelected();
-        String erRepresentantFor = "";
-        if (erRepresentant) {
-            erRepresentantFor = vindu.getErRepresentatForField().getText();
-        }
+    /**
+     * Konstruktøren blir brukt ved endring av en eksisterende utleier.
+     *
+     * @param personRegister
+     * @param person
+     */
+    public ControllerRegistrerUtleier(HashSet<Person> personRegister, Person person) {
+        super(personRegister, person);
+        this.uRegVindu = new UtleierRegVindu("Endre opplysninger for utleier");
+        //Legger til en lytter
+        uRegVindu.addUtleierPanelListener(new KnappLytter());
+    }
 
+    /**
+     * Setter alle datafelt i klassen med data fra GUI.
+     */
+    private void getDataGUI() {
+        fnavn = uRegVindu.getFornavnField().getText();
+        enavn = uRegVindu.getEtternavnField().getText();
+        epost = uRegVindu.getEpostField().getText();
+        telnr = uRegVindu.getTelefonField().getText();
+        erRepresentant = uRegVindu.getErRepresentantCheckBox().isSelected();
+        erRepresentantFor = "";
+        if (erRepresentant) {
+            erRepresentantFor = uRegVindu.getErRepresentatForField().getText();
+        }
+    }
+
+    /**
+     * Kontrollerer hentet data fra bruker med regex 
+     * @return 
+     */
+    private boolean kontrollerHentetData() {
         boolean fnavnOK = RegexTester.testNavn(fnavn);
         boolean enavnOK = RegexTester.testNavn(enavn);
         boolean epostOK = RegexTester.testEpost(epost);
@@ -49,9 +82,28 @@ public class ControllerRegistrerUtleier {
             erRepresentantForOK = RegexTester.testNavn(erRepresentantFor);
         }
 
-        if (fnavnOK && enavnOK && epostOK && telnrOK && erRepresentantForOK) {
+        return fnavnOK && enavnOK && epostOK && telnrOK && erRepresentantForOK;
+    }
+
+    /**
+     * Registrere en ny utleier
+     */
+    private void registrerUtleier() {
+
+        getDataGUI();
+
+//        boolean fnavnOK = RegexTester.testNavn(fnavn);
+//        boolean enavnOK = RegexTester.testNavn(enavn);
+//        boolean epostOK = RegexTester.testEpost(epost);
+//        boolean telnrOK = RegexTester.testTelNummerNorsk(telnr);
+//        boolean erRepresentantForOK = true;
+//        if (erRepresentant) {
+//            erRepresentantForOK = RegexTester.testNavn(erRepresentantFor);
+//        }
+
+        if (kontrollerHentetData()) {//Sluttet her
             Person utleier = new Utleier(fnavn, enavn, epost, telnr, erRepresentant, erRepresentantFor);
-            personRegister.add(utleier);
+            super.set.add(utleier);
             StringBuilder melding = new StringBuilder();
             melding.append("En ny person er registrert:\n").append(fnavn).append(" ").append(enavn).append("\n").append(epost);
             Melding.visMelding("Ny utleier", melding.toString());
@@ -64,7 +116,7 @@ public class ControllerRegistrerUtleier {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(vindu.getLagreButton())) {
+            if (e.getSource().equals(uRegVindu.getLagreButton())) {
 //                Melding.visMelding("Controller utleier frame", "Lagre knapp trukket");
                 registrerUtleier();
             }

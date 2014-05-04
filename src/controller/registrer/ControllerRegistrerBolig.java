@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.Locale;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import lib.BildeFilSti;
@@ -361,7 +363,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
 
                 //Setter lokal klasse referanse til det nye objektet for å lagre bilder
                 bolig = leilighet;
-                
+
                 return true;
             } else {
                 Melding.visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
@@ -398,7 +400,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
                 //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
                 BildeFilSti gallerimappe = new BildeFilSti();
                 gallerimappe.lagBildemappeForBolig(enebolig);
-                
+
                 //Setter lokal klasse referanse til det nye objektet for å lagre bilder
                 bolig = enebolig;
 
@@ -419,6 +421,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
      */
     private void lastOppEkstraBilde(Bolig bolig) {
         fc = new JFileChooser();
+        fc.setLocale(Locale.GERMAN);
         ff = new FileNameExtensionFilter("*.jpg", "jpg");
         fc.setFileFilter(ff);
         int valg = fc.showOpenDialog(null);
@@ -452,7 +455,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         int valg2 = JOptionPane.showOptionDialog(null, "Boligen er nå registrert.\nØnsker du å laste opp et eller flere bilder?\n(Du kan også gjøre det seinere)", "Bilder for ny bolig?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, Konstanter.VALG_JA_NEI, Konstanter.VALG_JA_NEI[0]);
         if (valg2 == JOptionPane.YES_OPTION) {
             lastOppEkstraBilde(bolig);
-        } 
+        }
     }
 
     /**
