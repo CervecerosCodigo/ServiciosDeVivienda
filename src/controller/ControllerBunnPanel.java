@@ -93,7 +93,7 @@ public class ControllerBunnPanel {
                         new ControllerRegistrerBolig(boligliste, (Bolig)tabellData.get(valgtRad));
                     }
                     if (tabell.getModel() instanceof TabellModellAnnonse) {
-
+                        
                     }
                 } catch (ArrayIndexOutOfBoundsException aoibe) {
                     System.out.println("Feil");

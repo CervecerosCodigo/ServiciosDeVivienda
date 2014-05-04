@@ -31,11 +31,9 @@ import view.CustomJTextField;
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
-public class BoligRegVindu extends JFrame {
+public class BoligRegVindu extends AbstractRegistreringsPanel {
 
     ///PANELER///
-    private CustomSubPanel toppPanel, venstrePanel, senterPanel, hoyrePanel, bunnPanel;
-    private BorderLayout borderLayout;
     private CustomSubPanel boligPanel, leilighetPanel, eneboligPanel, bildePanel;
     ///SLUTT PÅ PANELER///
     //
@@ -63,15 +61,13 @@ public class BoligRegVindu extends JFrame {
     private CustomJTextField antallEtasjerField, tomtArealField;
     private CustomJCheckBox harKjellerCheckBox;
     ///ENEBOLIG SLUTT///
-
+    
     private CustomJButton avbrytButton, lagreButton;
 
     public BoligRegVindu(String tittel) {
-        super(tittel);
-        setSize(1000, 700);
+        super(1000, 700, tittel);
 
-        setLayout(new BorderLayout());
-
+        
         ///PANELER///
         toppPanel = new CustomSubPanel("Topp", 50, 0);
         venstrePanel = new CustomSubPanel("Venstre", 0, 300);
