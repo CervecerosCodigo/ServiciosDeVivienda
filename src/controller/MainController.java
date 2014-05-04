@@ -283,10 +283,10 @@ public class MainController implements Serializable {
         opprettLeilighetOgLeggIRegister(2, 5, 5, true, true, true, 10002, "Knatten 22",
                 "1453", "Lørenskog", 70, 1950, "Koselig leilighet med mye potensiale.",
                 false, tilgjenglig3);
-        opprettLeilighetOgLeggIRegister(7, 0, 10, true, false, true, 10003, "Groruddalen 1",
-                "0453", "Oslo", 75, 1970, "Trenger oppussing.", false, tilgjenglig1);
-        opprettLeilighetOgLeggIRegister(2, 0, 10, true, false, true, 10004, "Groruddalen 1",
-                "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.", false, tilgjenglig3);
+//        opprettLeilighetOgLeggIRegister(7, 0, 10, true, false, true, 10003, "Groruddalen 1",
+//                "0453", "Oslo", 75, 1970, "Trenger oppussing.", false, tilgjenglig1);
+//        opprettLeilighetOgLeggIRegister(2, 0, 10, true, false, true, 10004, "Groruddalen 1",
+//                "0453", "Oslo", 75, 1970, "Ligger i skygge for solen.", false, tilgjenglig3);
         //Tester slik at mappen blir oprettet
         opprettLeilighetOgLeggIRegister(2, 0, 10, true, false, true, 10004, "Pilestredet 35",
                 "0166", "Oslo", 300, 1950, "HiOA", false, tilgjenglig3);
