@@ -20,6 +20,12 @@ public class CustomSubPanel extends AbstractPanel {
         setLayout(layout);
         setVisible(true);
     }
+    
+    public CustomSubPanel(String borderNavn, int hoyde, int bredde, LayoutManager layout) {
+        super(borderNavn, hoyde, bredde);
+        setLayout(layout);
+        setVisible(true);
+    }
 
     void addUtleierPanelListener(ActionListener actionListener) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

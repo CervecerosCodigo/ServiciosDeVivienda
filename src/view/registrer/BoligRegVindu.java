@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
 
     ///PANELER///
     private CustomSubPanel boligPanel, leilighetPanel, eneboligPanel, bildePanel;
+    private CustomSubPanel boligTypePanel, datoPickPanel, knappContainer, knappPanel;
     ///SLUTT PÅ PANELER///
     //
     ///BOLIG///
@@ -65,20 +67,26 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
     private CustomJButton avbrytButton, lagreButton;
 
     public BoligRegVindu(String tittel) {
-        super(1000, 700, tittel);
+        super(600, 600, tittel);
 
         
         ///PANELER///
-        toppPanel = new CustomSubPanel("Topp", 50, 0);
-        venstrePanel = new CustomSubPanel("Venstre", 0, 300);
-        senterPanel = new CustomSubPanel("Senter", 0, 0);
-        hoyrePanel = new CustomSubPanel("Høyre", 0, 300);
-        bunnPanel = new CustomSubPanel("Bunn", 50, 0);
+        toppPanel = new CustomSubPanel("Velg boligtype", 50, 0);
+        venstrePanel = new CustomSubPanel("Felles", 0, 300);
+        senterPanel = new CustomSubPanel("", 0, 0, new GridLayout(2, 1));
+        bunnPanel = new CustomSubPanel("", 50, 0);
+
+        boligTypePanel = new CustomSubPanel(new FlowLayout());
+        boligPanel = new CustomSubPanel(new GridBagLayout());
+        leilighetPanel = new CustomSubPanel("Leilighet", 250, 200, new GridBagLayout());        
+        eneboligPanel = new CustomSubPanel("Enebolig", 250, 200, new GridBagLayout());         
+        datoPickPanel = new CustomSubPanel(new FlowLayout());
+        knappContainer = new CustomSubPanel(new BorderLayout());
+        knappPanel = new CustomSubPanel(new FlowLayout());
 
         add(toppPanel, BorderLayout.NORTH);
         add(venstrePanel, BorderLayout.WEST);
         add(senterPanel, BorderLayout.CENTER);
-        add(hoyrePanel, BorderLayout.EAST);
         add(bunnPanel, BorderLayout.SOUTH);
         ///PANELER///
         //
@@ -88,7 +96,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         radioButtons = new ButtonGroup();
         radioButtons.add(leilighetRButton);
         radioButtons.add(eneboligRButton);
-        CustomSubPanel boligTypePanel = new CustomSubPanel(new FlowLayout());
+        
         boligTypePanel.add(leilighetRButton);
         boligTypePanel.add(eneboligRButton);
         toppPanel.add(boligTypePanel);
@@ -162,10 +170,9 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         //    LAYOUT    //
         //--//--//--//--//
         ////////START PÅ GENERELL REGISTRERING AV BOLIG////////
-        GridBagLayout boligLayout = new GridBagLayout();
-        boligPanel = new CustomSubPanel(boligLayout);
+
         GridBagConstraints gcBolig = new GridBagConstraints();
-        CustomSubPanel datoPickPanel = new CustomSubPanel(new FlowLayout());
+
         datoPickPanel.add(arCombo);
         datoPickPanel.add(manedCombo);
         datoPickPanel.add(dagCombo);
@@ -262,8 +269,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         ////////SLUTT PÅ GENERELL REGISTRERING AV BOLIG////////
 
         ////////START PÅ REGISTRERING AV LEILIGHET////////
-        GridBagLayout leilighetLayout = new GridBagLayout();
-        leilighetPanel = new CustomSubPanel(leilighetLayout);
+
         GridBagConstraints gcLeilighet = new GridBagConstraints();
 
         //Rad 1
@@ -315,8 +321,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         ////////SLUTT PÅ REGISTRERING AV LEILIGHET////////
         //
         ////////START PÅ REGISTRERING AV ENEBOLIG////////
-        GridBagLayout eneboligLayout = new GridBagLayout();
-        eneboligPanel = new CustomSubPanel(boligLayout);
+
         GridBagConstraints gcEnebolig = new GridBagConstraints();
 
         //Rad 1
@@ -342,14 +347,13 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         gcEnebolig.gridx++;
         eneboligPanel.add(harKjellerCheckBox, gcEnebolig);
 
-        hoyrePanel.add(eneboligPanel);
+        senterPanel.add(eneboligPanel);
         ////////SLUTT PÅ REGISTRERING AV ENEBOLIG////////
         //
         ///START PÅ AVBRYT OG LAGREKNAPPER///
         avbrytButton = new CustomJButton("Avbryt");
         lagreButton = new CustomJButton("Lagre");
-        CustomSubPanel knappContainer = new CustomSubPanel(new BorderLayout());
-        CustomSubPanel knappPanel = new CustomSubPanel(new FlowLayout());
+
         knappPanel.add(avbrytButton);
         knappPanel.add(lagreButton);
         knappContainer.add(knappPanel, BorderLayout.EAST);
