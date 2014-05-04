@@ -60,11 +60,6 @@ public class ControllerToppPanelMegler<E> {
         vindu.getToppanelMegler().leggTilKnappeLytter(new KnappeLytter());
         
         OppdaterStatistikk();
-        hentOgSetLogo();
-    }
-    
-    private void hentOgSetLogo() {
-    	
     }
     
     
