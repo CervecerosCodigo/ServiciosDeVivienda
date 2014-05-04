@@ -22,8 +22,11 @@ import view.registrer.CustomSubPanel;
 public class ComboDatoVelger extends CustomSubPanel {
 
     private final JComboBox dagCombo, manedCombo, arCombo;
-    private CustomSubPanel datoPickPanel;
 
+    /**
+     * En tom konstruktør som setter opp comboboksen med årstall 10 år
+     * fremover. Skal brukes når man initiliserer klassen.
+     */
     public ComboDatoVelger() {
         super(new FlowLayout());
 
@@ -64,6 +67,10 @@ public class ComboDatoVelger extends CustomSubPanel {
 
     }
 
+    /**
+     * Brukes internt med hensikt for å få aktuelt år.
+     * @return 
+     */
     private int getGjeldendeAr() {
         return Calendar.getInstance().get(Calendar.YEAR);
     }
@@ -139,24 +146,55 @@ public class ComboDatoVelger extends CustomSubPanel {
         return arCombo;
     }
 
+    /**
+     * Returnerer valgt dag.
+     *
+     * @return
+     */
     public int getDag() {
         return Integer.parseInt(getDagCombo().getSelectedItem().toString());
     }
 
+    /**
+     * Returnerer valgt måned.
+     *
+     * @return
+     */
     public int getManed() {
         return Integer.parseInt(getManedCombo().getSelectedItem().toString());
     }
 
+    /**
+     * Returnerer valgt år.
+     *
+     * @return
+     */
     public int getAr() {
         return Integer.parseInt(getArCombo().getSelectedItem().toString());
     }
 
+    /**
+     * Brukse til å sette opp eget dato i comboksene. Dette er brukbart i
+     * samband med endring av registrerte data i registeret.
+     *
+     * @param ar int
+     * @param mnd int
+     * @param dag int
+     */
     public void setDato(int ar, int mnd, int dag) {
         getArCombo().addItem(ar);
         getArCombo().setSelectedItem(ar);
 
         getManedCombo().setSelectedItem(leggTilNullForran(mnd));
         getDagCombo().setSelectedItem(leggTilNullForran(dag));
+    }
+    
+    /**
+     * Returnere et ferdig kalenderobjekt utefra valgt dato.
+     * @return 
+     */
+    public Calendar opprettKalenderobjekt() {
+        return new GregorianCalendar(getAr(), getManed(), getManed());
     }
 
     /**

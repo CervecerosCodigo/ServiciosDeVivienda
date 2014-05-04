@@ -10,6 +10,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import lib.BildeFilSti;
 import view.registrer.CustomSubPanel;
 
 public class TopPanelMegler extends AbstractPanel {
@@ -19,6 +20,8 @@ public class TopPanelMegler extends AbstractPanel {
     private MeglerRadioKnapper meglerRadioKnapper;
     private CustomJTextField sokeFelt;
     private CustomJButton sokeKnapp, nyKontraktItem, nyUtleierItem, nyBoligItem, nyAnnonseItem;
+    private ImageIcon bilde;
+    private JLabel bildeLabel;
     
     private final static int BREDDE = 128, HOYDE = 30;
 
@@ -37,12 +40,15 @@ public class TopPanelMegler extends AbstractPanel {
         nyUtleierItem = new CustomJButton("Ny utleier", BREDDE, HOYDE);
         nyBoligItem = new CustomJButton("Ny bolig", BREDDE, HOYDE);
         nyAnnonseItem = new CustomJButton("Ny annonse", BREDDE, HOYDE);
+        bilde = new ImageIcon(new BildeFilSti().getAbsoluteGalleryPath()+"/default/boligLogo.png");
+        bildeLabel = new JLabel(bilde);
         
         add(fyllPanel);
         add(meglerRadioKnapper);
         add(sokePanel);
         add(knappePanel);
         add(statistikkPanel);
+        add(bildeLabel);
         
         sokePanel.add(sokeFelt);
         sokePanel.add(sokeKnapp);
@@ -57,6 +63,8 @@ public class TopPanelMegler extends AbstractPanel {
         sokePanel.setPreferredSize(new Dimension(350,35));
         knappePanel.setPreferredSize(new Dimension(270,70));
         fyllPanel.setPreferredSize(new Dimension(30,50));
+        bildeLabel.setPreferredSize(new Dimension(bilde.getIconWidth(), bilde.getIconHeight()));
+
     }
     
     public StatistikkPanel getStatistikkPanel() {
