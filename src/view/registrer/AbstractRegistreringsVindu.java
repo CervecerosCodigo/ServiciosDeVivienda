@@ -19,7 +19,7 @@ public class AbstractRegistreringsVindu extends JFrame{
         setSize(bredde, hoyde);
         setVisible(true);
         setResizable(false);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         
         setLayout(new GridLayout(1, 1));
