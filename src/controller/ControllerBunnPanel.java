@@ -1,8 +1,6 @@
 package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi
 
-
-
 import controller.registrer.*;
 import java.awt.event.*;
 import java.util.*;
@@ -11,8 +9,9 @@ import model.*;
 import view.ArkfaneTemplate;
 
 /**
- * Denne klassen er kontrolleren til bunnpanelet i både meglerVindu og annonseVindu.
- * 
+ * Denne klassen er kontrolleren til bunnpanelet i både meglerVindu og
+ * annonseVindu.
+ *
  * @author espen
  */
 public class ControllerBunnPanel {
@@ -21,20 +20,24 @@ public class ControllerBunnPanel {
     private HashSet<Person> personliste;
     private HashSet<Bolig> boligliste;
     private HashSet<Annonse> annonseliste;
+    private HashSet<Soknad> soknadliste;
     private ArrayList<Object> tabellData;
     private TabellModell modell;
+    private boolean erMeglerVindu;
 
-    public ControllerBunnPanel(HashSet<Bolig> boligliste, HashSet<Person> personliste, HashSet<Annonse> annonseliste) {
+    public ControllerBunnPanel(HashSet<Bolig> boligliste, HashSet<Person> personliste, HashSet<Annonse> annonseliste, HashSet<Soknad> soknadliste) {
 
         this.boligliste = boligliste;
         this.personliste = personliste;
         this.annonseliste = annonseliste;
-        
+        this.soknadliste = soknadliste;
+
     }
 
     /**
      * Setter knappelytter, én for hvert av meglerVindu og annonseVindu.
-     * @param vindu 
+     *
+     * @param vindu
      */
     public void settKnappeLytter(ArkfaneTemplate vindu) {
         vindu.getBunnpanel().addKnappeLytter(lytter = new KnappeLytter(vindu));
@@ -42,15 +45,20 @@ public class ControllerBunnPanel {
 
     /**
      * Tar i mot tabellData fra Tabellen.
+     *
      * @param tabellData
-     * @param modell 
+     * @param modell
      */
-    public void settOppTabellData(ArrayList<Object> tabellData, TabellModell modell){
+    public void settOppTabellData(ArrayList<Object> tabellData, TabellModell modell) {
         this.tabellData = tabellData;
         this.modell = modell;
     }
-    
-    
+
+    public void setErMeglerVindu(boolean erMeglerVindu) {
+        this.erMeglerVindu = erMeglerVindu;
+        
+    }
+
     /**
      * private lytteklasse for knappene i bunnpanelet.
      */
@@ -63,10 +71,10 @@ public class ControllerBunnPanel {
         public KnappeLytter(ArkfaneTemplate vindu) {
             this.vindu = vindu;
             tabell = vindu.getVenstrepanel().getTable();
+            if(!erMeglerVindu)
+                vindu.getBunnpanel().getEndreKnapp().setVisible(false);
         }
 
-
-        
         public int finnValgtRadITabell() {
             try {
                 int rad = tabell.getSelectedRow();
@@ -82,18 +90,20 @@ public class ControllerBunnPanel {
         public void actionPerformed(ActionEvent e) {
             raderITabell = tabell.getModel().getRowCount();
 
-
             if (e.getSource().equals(vindu.getBunnpanel().getEndreKnapp())) {
                 try {
                     int valgtRad = finnValgtRadITabell();
+
                     if (tabell.getModel() instanceof TabellModellPerson) {
-                        new ControllerRegistrerPerson((HashSet<Person>) personliste);
+                        new ControllerRegistrerPerson((HashSet<Person>) personliste, (Person) tabellData.get(valgtRad));
                     }
                     if (tabell.getModel() instanceof TabellModellBolig) {
-                        new ControllerRegistrerBolig(boligliste, (Bolig)tabellData.get(valgtRad));
+                        new ControllerRegistrerBolig(boligliste, (Bolig) tabellData.get(valgtRad));
                     }
                     if (tabell.getModel() instanceof TabellModellAnnonse) {
-                        
+                        if (erMeglerVindu) {
+                            new ControllerRegistrerAnnonse(annonseliste, personliste, (Annonse) tabellData.get(valgtRad));
+                        } 
                     }
                 } catch (ArrayIndexOutOfBoundsException aoibe) {
                     System.out.println("Feil");

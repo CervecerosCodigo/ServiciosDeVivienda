@@ -67,7 +67,7 @@ public class ControllerTabellOgOutput {
         this.kontraktliste = kontraktliste;
         this.soknadsliste = soknadsliste;
 
-        bunnController = new ControllerBunnPanel(boligliste, personliste, annonseliste);
+        bunnController = new ControllerBunnPanel(boligliste, personliste, annonseliste, soknadsliste);
 
         tabellModellBolig = new TabellModellBolig(annonseliste);
         tabellModellPerson = new TabellModellPerson();
@@ -108,6 +108,7 @@ public class ControllerTabellOgOutput {
 
         this.vindu = vindu;
         this.erMeglerVindu = erMeglerVindu;
+        bunnController.setErMeglerVindu(erMeglerVindu);
         bunnController.settKnappeLytter(vindu);
         tabell = this.vindu.getVenstrepanel().getTable();
 
@@ -1047,7 +1048,39 @@ public class ControllerTabellOgOutput {
     }
 
     public void visSoknadObjektHTMLOutput(Object valgtObjekt) {
-
+      output = vindu.getSenterpanel().getEditorPane();
+        Soknad skalVises = (Soknad) valgtObjekt;
+        Leietaker leietaker = skalVises.getLeietakerObjekt();
+        Annonse annonse = skalVises.getAnnonseObjekt();
+        Bolig bolig = annonse.getBolig();
+        
+        StringBuilder html = new StringBuilder();
+        
+        html.append("<h1><b><u>").append("Søknad").append("</u></b></h1>");
+        html.append("<table id='soknadtabell'>");
+            html.append("<table id= 'annonseinfo'>");
+            html.append("<tr>");
+            html.append("<td class='soknadText'><b></b>");
+            html.append("</td>");
+            html.append("<td class='annonseData'>");
+            html.append("</td>");
+            html.append("<td class='annonseText'><b>Depositum</b>");
+            html.append("</td>");
+            html.append("<td class='annonseData'>");
+            html.append("kr. ");
+            html.append(",-");
+            html.append("</td>");
+            html.append("<td class='annonseText'><b>Pris pr mnd</b>");
+            html.append("</td>");
+            html.append("<td class='annonseData'>");
+            html.append("kr. ");
+            html.append(",-");
+            html.append("</td>");
+            html.append("</tr>");        
+        
+        html.append("</table>");
+        
+        output.setText(html.toString());
     }
 
     /**
