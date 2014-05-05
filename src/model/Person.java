@@ -61,6 +61,27 @@ public abstract class Person implements Serializable, Searchable {
         return telefon;
     }
 
+    public void setPersonID(int personID) {
+        this.personID = personID;
+    }
+
+    public void setFornavn(String fornavn) {
+        this.fornavn = fornavn;
+    }
+
+    public void setEtternavn(String etternavn) {
+        this.etternavn = etternavn;
+    }
+
+    public void setEpost(String epost) {
+        this.epost = epost;
+    }
+
+    public void setTelefon(String telefon) {
+        this.telefon = telefon;
+    }
+    
+
     @Override
     public int hashCode() {
         final int prime = 31;
