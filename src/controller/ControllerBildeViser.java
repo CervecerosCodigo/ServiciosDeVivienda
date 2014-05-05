@@ -42,14 +42,26 @@ public class ControllerBildeViser {
         bildeVindu.addButtonPanelListener(new BildeKnappLytter());
 
         try {
-            //Tester å vise bilder
-            lesInnBilder(bolig);
+            if (antallBilder == 0) {
+                BufferedImage standardbilde = ImageIO.read(new File(new BildeFilSti().getAbsolutePathToStandardBilde()));
+                visBilde(standardbilde);
+                skruAvKnapper();
+            } else {
+                //Tester å vise bilder
+                lesInnBilder(bolig);
+            }
         } catch (IOException ex) {
             Melding.visMelding("Feil", "IO feil ved innlesning av bilder");
         }
 
         //Starter bildefremvisning
         visNesteBilde();
+    }
+
+    private void skruAvKnapper() {
+        bildeVindu.getTilbakeButton().setEnabled(false);
+        bildeVindu.getFremButton().setEnabled(false);
+        bildeVindu.getSlettButton().setEnabled(false);
     }
 
     private String getGalleriSti(Bolig bolig) {
@@ -141,7 +153,14 @@ public class ControllerBildeViser {
         String bildemappeSti = new BildeFilSti().getBoligGalleryPath(bolig);
         String bildeSti = bildemappeSti + "/" + bildenr + ".jpg";
         File bildeTilSletting = new File(bildeSti);
+        
+//        BoligBilde boligBilder = new BoligBilde();
+//        boligBilder.setInkrementellNavnAlleFiler(bolig);
+        
         if (bildeTilSletting.delete()) {
+
+            BoligBilde boligBilder = new BoligBilde();
+            boligBilder.setInkrementellNavnAlleFiler(bolig);
             lesInnBilder(bolig);
             bildeSomVises = 0;
             visNesteBilde();
