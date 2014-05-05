@@ -2,7 +2,7 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import controller.registrer.ControllerRegistrerBolig;
-import controller.registrer.ControllerRegistrerUtleier;
+import controller.registrer.ControllerRegistrerPerson;
 import java.io.*;
 import java.util.*;
 import javax.swing.JFrame;
@@ -15,7 +15,7 @@ import test.searchklasser.TestAnnonseFilter;
 import test.searchklasser.TestFritekstSok;
 import view.*;
 import view.registrer.*;
-import view.registrer.UtleierRegVindu;
+import view.registrer.PersonRegVindu;
 
 /**
  * Dette er hovedkontrolleren mellom GUI og funksjonalitet. Mer info siden..
@@ -48,7 +48,7 @@ public class MainController implements Serializable {
     private ControllerToppPanelMegler toppPanelControllerMegler;
     private ControllerToppPanelAnnonse toppPanelControllerAnnonse;
     
-    private ControllerRegistrerUtleier controllerRegistrerUtleier;
+    private ControllerRegistrerPerson controllerRegistrerUtleier;
     //Tester å bruke den nye klassen for registrering av bolig
     private ControllerRegistrerBolig controllerRegistrerBolig;
 
@@ -85,10 +85,10 @@ public class MainController implements Serializable {
          * listen, der det er ønskelig.
          */
 
-        tabellControllerMegler.settOppTabellLyttere(meglerVindu);
+        tabellControllerMegler.settOppTabellLyttere(meglerVindu, true);
         tabellControllerMegler.settInnDataITabell(boligliste, ObjektType.BOLIGOBJ);
         
-        tabellControllerAnnonse.settOppTabellLyttere(annonseVindu);
+        tabellControllerAnnonse.settOppTabellLyttere(annonseVindu, false);
         tabellControllerAnnonse.settInnDataITabell(annonseliste, ObjektType.ANNONSEOBJ);
 
 
@@ -255,8 +255,8 @@ public class MainController implements Serializable {
         opprettLeietakerOgLeggIRegister("Geir", "Fjæra", "geirf@gmail.com", "67004599");
         opprettLeietakerOgLeggIRegister("Nils", "Plassen", "nilsp@gmail.com", "22449044");
         opprettLeietakerOgLeggIRegister("Nils", "Treet", "nilst@gmail.com", "91990034");
-        opprettLeietakerOgLeggIRegister("Hasse", "Hansen", "hh@gmail.com", "90124434");
-        opprettLeietakerOgLeggIRegister("Tore", "Strand", "tstrand@online.no", "45673432");
+//        opprettLeietakerOgLeggIRegister("Hasse", "Hansen", "hh@gmail.com", "90124434");
+//        opprettLeietakerOgLeggIRegister("Tore", "Strand", "tstrand@online.no", "45673432");
         opprettLeietakerOgLeggIRegister("Tone", "Nilsen", "tnils@online.no", "41234056");
 
         System.out.println(personRegister.visRegister());

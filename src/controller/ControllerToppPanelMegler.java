@@ -26,7 +26,7 @@ import model.Soknad;
 import search.FreeTextSearch;
 import view.ArkfaneTemplate;
 import controller.registrer.ControllerRegistrerBolig;
-import controller.registrer.ControllerRegistrerUtleier;
+import controller.registrer.ControllerRegistrerPerson;
 
 public class ControllerToppPanelMegler<E> {
 
@@ -150,7 +150,7 @@ public class ControllerToppPanelMegler<E> {
                 new ControllerRegistrerBolig(boligliste);
             }
             if(e.getSource().equals(vindu.getToppanelMegler().getNyUtleierItem())){
-                new ControllerRegistrerUtleier(personliste);
+                new ControllerRegistrerPerson(personliste);
             }
             if(e.getSource().equals(vindu.getToppanelMegler().getNyAnnonseItem())){
                 

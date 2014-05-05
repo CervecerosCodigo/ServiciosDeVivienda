@@ -14,7 +14,7 @@ import view.CustomJButton;
 import view.CustomJCheckBox;
 import view.CustomJTextField;
 
-public class UtleierRegVindu extends AbstractRegistreringsPanel {
+public class PersonRegVindu extends AbstractRegistreringsPanel {
 
 
     
@@ -23,7 +23,7 @@ public class UtleierRegVindu extends AbstractRegistreringsPanel {
     private CustomJCheckBox erRepresentantCheckBox;
     private CustomJButton avbrytButton, lagreButton;
 
-    public UtleierRegVindu(String tittel) {
+    public PersonRegVindu(String tittel) {
         super(350, 250, tittel);
 
         senterPanel = new CustomSubPanel("", 0, 0, new GridBagLayout());
@@ -50,7 +50,7 @@ public class UtleierRegVindu extends AbstractRegistreringsPanel {
         erRepresentatnForLabel.setEnabled(false);
         erRepresentatForField.setEnabled(false);
 
-        addUtleierPanelListener(new ActionListener() {
+        addPersonPanelListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -207,7 +207,7 @@ public class UtleierRegVindu extends AbstractRegistreringsPanel {
         return telefonField;
     }
 
-    public CustomJTextField getErRepresentatForField() {
+    public CustomJTextField getErRepresentantForField() {
         return erRepresentatForField;
     }
 
@@ -222,8 +222,17 @@ public class UtleierRegVindu extends AbstractRegistreringsPanel {
     public CustomJCheckBox getErRepresentantCheckBox() {
         return erRepresentantCheckBox;
     }
-    
 
+    public JLabel getErRepresentantLabel() {
+        return erRepresntantLabel;
+    }
+
+    public JLabel getErRepresentantForLabel() {
+        return erRepresentatnForLabel;
+    }
+    
+    
+    
     //Setters
     public void setFornavnField(CustomJTextField fornavnField) {
         this.fornavnField = fornavnField;
@@ -249,7 +258,7 @@ public class UtleierRegVindu extends AbstractRegistreringsPanel {
         this.erRepresentantCheckBox = erRepresentantCheckBox;
     }
 
-    public void addUtleierPanelListener(ActionListener lytter) {
+    public void addPersonPanelListener(ActionListener lytter) {
         avbrytButton.addActionListener(lytter);
         lagreButton.addActionListener(lytter);
     }

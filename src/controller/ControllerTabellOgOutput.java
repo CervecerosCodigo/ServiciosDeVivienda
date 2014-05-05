@@ -9,7 +9,8 @@ package controller;
  */
 import controller.registrer.ControllerRegistrerAnnonse;
 import controller.registrer.ControllerRegistrerBolig;
-import controller.registrer.ControllerRegistrerUtleier;
+import controller.registrer.ControllerRegistrerSoknad;
+import controller.registrer.ControllerRegistrerPerson;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +34,7 @@ public class ControllerTabellOgOutput {
     private HashSet<Annonse> annonseliste;
     private HashSet<Soknad> soknadsliste;
     private ControllerBunnPanel bunnController;
-    
+
     private DefaultTableCellRenderer rightRenderer;
 
     private ArkfaneTemplate vindu;
@@ -53,7 +54,8 @@ public class ControllerTabellOgOutput {
             menyvalgForesporsel,
             menyvalgAksepter, menyvalgAvvis;
 
-    private int valgtRadItabell;
+    private int valgtRadItabell;    //Viser til en hver tid hvilken rad som er valgt i tabellen
+    private boolean erMeglerVindu;
 
     public ControllerTabellOgOutput(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
@@ -64,7 +66,7 @@ public class ControllerTabellOgOutput {
         this.annonseliste = annonseliste;
         this.kontraktliste = kontraktliste;
         this.soknadsliste = soknadsliste;
-        
+
         bunnController = new ControllerBunnPanel(boligliste, personliste, annonseliste);
 
         tabellModellBolig = new TabellModellBolig(annonseliste);
@@ -92,11 +94,8 @@ public class ControllerTabellOgOutput {
         menyvalgAksepter = new JMenuItem("Aksepter søknad");
         menyvalgAvvis = new JMenuItem("Avvis søknad");
         menyvalgPubliserToggle = new JMenuItem("Endre publiseringsstatus");
-        
 
     }
-
-
 
     /**
      * Tar i mot det vinduet tabellen skal settes for. Metoden oppretter en
@@ -105,9 +104,10 @@ public class ControllerTabellOgOutput {
      *
      * @param vindu Tar i mot det vinduet som metoden gjelder for.
      */
-    public void settOppTabellLyttere(final ArkfaneTemplate vindu) {
+    public void settOppTabellLyttere(final ArkfaneTemplate vindu, final boolean erMeglerVindu) {
 
         this.vindu = vindu;
+        this.erMeglerVindu = erMeglerVindu;
         bunnController.settKnappeLytter(vindu);
         tabell = this.vindu.getVenstrepanel().getTable();
 
@@ -147,24 +147,34 @@ public class ControllerTabellOgOutput {
             public void mouseClicked(MouseEvent e) {
                 JTable temp = (JTable) e.getSource();
                 if (e.getClickCount() == 2) {
-                    int rad = temp.getSelectedRow();
-                    rad = tabell.convertRowIndexToModel(rad);
 
                     if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
-                        System.out.println("Bolig");
+                        new ControllerRegistrerBolig(boligliste, returnerBoligObjekt());
+
                     } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
-                        new ControllerRegistrerUtleier(personliste, (Person) tabellData.get(rad));
+                        new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
+
                     } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
-                        System.out.println("Annonse");
-                    } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
-                        System.out.println("Kontrakt");
-                    } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
-                        System.out.println("Søknad");
+                        if (erMeglerVindu) {
+                            new ControllerRegistrerAnnonse(annonseliste, personliste, returnerAnnonseObjekt());
+                        } else {
+                            new ControllerRegistrerSoknad(personliste, annonseliste, soknadsliste, returnerAnnonseObjekt());
+                        }
                     }
+//                    } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
+//
+//                    } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
+//
+//                    }
 
                 }//end if
             }//end method
 
+            /**
+             * Funksjonalitet for høyreklikking i tabellen
+             *
+             * @param e
+             */
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON3) {
@@ -189,14 +199,12 @@ public class ControllerTabellOgOutput {
                             menyvalgBolig.add(menyvalgEndreBolig);
                             menyvalgBolig.add(menyvalgSlettBolig);
                         } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
-                            tabellMeny.add(menyvalgAnnonse);
-                            menyvalgAnnonse.add(menyvalgForesporsel);
+                            tabellMeny.add(menyvalgForesporsel);
                         } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
 
                         } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
-                            tabellMeny.add(menyvalgSoknad);
-                            menyvalgSoknad.add(menyvalgAksepter);
-                            menyvalgSoknad.add(menyvalgAvvis);
+                            tabellMeny.add(menyvalgAksepter);
+                            tabellMeny.add(menyvalgAvvis);
                         }
                     } catch (ClassCastException cce) {
 
@@ -225,7 +233,7 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Bolig bolig = endreBoligObjekt();
+                Bolig bolig = returnerBoligObjekt();
                 if (bolig != null) {
                     new ControllerRegistrerBolig(boligliste, bolig);
                 }
@@ -244,15 +252,14 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ControllerRegistrerUtleier(personliste);
+                new ControllerRegistrerPerson(personliste);
             }
         });
         menyvalgEndrePerson.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //FIXME:
-                new ControllerRegistrerUtleier(personliste, (Person) tabellData.get(3));
+                new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
             }
         });
         menyvalgSlettPerson.addActionListener(new ActionListener() {
@@ -266,7 +273,10 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //////////////////////////////////////////////////
+
+                if (!erMeglerVindu) {
+                    new ControllerRegistrerSoknad(personliste, annonseliste, soknadsliste, returnerAnnonseObjekt());
+                }
             }
         });
         menyvalgAksepter.addActionListener(new ActionListener() {
@@ -287,7 +297,7 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                toggleBoligPubliserSomAnnonseEllerIkke();
+                nyEllerEndreAnnonse();
             }
         });
     }
@@ -299,10 +309,28 @@ public class ControllerTabellOgOutput {
         tabell.clearSelection();
         tabell.removeAll();
     }
+    
+    
 
-    public Bolig endreBoligObjekt() {
+    public Bolig returnerBoligObjekt() {
 
         Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
+        if (valgtObjekt != null) {
+            return valgtObjekt;
+        }
+        return null;
+    }
+
+    public Person returnerPersonObjekt() {
+        Person valgtObjekt = (Person) tabellData.get(valgtRadItabell);
+        if (valgtObjekt != null) {
+            return valgtObjekt;
+        }
+        return null;
+    }
+
+    public Annonse returnerAnnonseObjekt() {
+        Annonse valgtObjekt = (Annonse) tabellData.get(valgtRadItabell);
         if (valgtObjekt != null) {
             return valgtObjekt;
         }
@@ -384,30 +412,29 @@ public class ControllerTabellOgOutput {
      * sjekkes det om boligen finnes i annonseregistert. Omden gjør det så åpned
      * vindu for å endre annonsen, ellers lages det ny tom annonse.
      */
-    public void toggleBoligPubliserSomAnnonseEllerIkke() {
+    public void nyEllerEndreAnnonse() {
 
         int rad;
-        Annonse temp;
-        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
-        if (valgtObjekt != null) {
-            if (!valgtObjekt.isErUtleid()) {
+        Annonse tempAnnonse;
+        Bolig bolig = (Bolig) tabellData.get(valgtRadItabell);
+        if (bolig != null) {
+
+            //Er boligen ikke utleid?
+            if (!bolig.isErUtleid()) {
 
                 //Sjekker om boligen ligger i annonseregisteret
                 Iterator<Annonse> iter = annonseliste.iterator();
                 while (iter.hasNext()) {
-                    temp = iter.next();
-                    if (temp.getBoligID() == valgtObjekt.getBoligID()) {
-                        if (temp.isErSynlig()) {
-                            temp.setErSynlig(false);
-                        } else {
-                            new ControllerRegistrerAnnonse(annonseliste, personliste, temp);
-                        }
+                    tempAnnonse = iter.next();
+                    if (tempAnnonse.getBoligID() == bolig.getBoligID()) {
+                        //Boligen er annonsert og kan endres
+                        new ControllerRegistrerAnnonse(annonseliste, personliste, tempAnnonse);
                         return;
                     }//end if
                 }//end while
+                //Boligen er ikke i annonseregisteret og ny annonse opprettes.
+                new ControllerRegistrerAnnonse(annonseliste, personliste, bolig);
 
-                new ControllerRegistrerAnnonse(annonseliste, personliste, valgtObjekt);
-                
             } else {
                 //Boligen er utleid og kan ikke legges i annonseregisteret
             }
@@ -472,7 +499,7 @@ public class ControllerTabellOgOutput {
             vindu.getVenstrepanel().sorterTabellVedOppstart();
 
             bunnController.settOppTabellData(tabellData, modellIBruk);
-            
+
         } catch (ArrayIndexOutOfBoundsException aiobe) {
 
         } catch (NullPointerException npe) {

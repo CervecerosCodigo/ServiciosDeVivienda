@@ -87,7 +87,7 @@ public class ControllerBunnPanel {
                 try {
                     int valgtRad = finnValgtRadITabell();
                     if (tabell.getModel() instanceof TabellModellPerson) {
-                        new ControllerRegistrerUtleier((HashSet<Person>) personliste);
+                        new ControllerRegistrerPerson((HashSet<Person>) personliste);
                     }
                     if (tabell.getModel() instanceof TabellModellBolig) {
                         new ControllerRegistrerBolig(boligliste, (Bolig)tabellData.get(valgtRad));

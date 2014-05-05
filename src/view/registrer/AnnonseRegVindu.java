@@ -1,6 +1,7 @@
 package view.registrer;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import lib.Boligtype;
+import lib.GuiSizes;
 import lib.RegexTester;
 import model.Bolig;
 import model.Enebolig;
@@ -21,7 +23,7 @@ import view.CustomJTextField;
 public class AnnonseRegVindu extends AbstractRegistreringsPanel{
 
     private JLabel boligIDLabel, boligAdresseLabel, boligPostNrLabel, boligPostStedLabel, boligEierFornavnLabel, boligEierEtternavnLabel, boligEierEpostLabel, boligEierTlfLabel;
-    private JLabel boligIDInfo, boligAdresseInfo, boligPostNrInfo, boligPostStedInfo, boligEierFornavnInfo, boligEierEtternavnInfo, boligEierEpostInfo, boligEierTlfInfo;
+    private CustomJTextField boligIDInfo, boligAdresseInfo, boligPostNrInfo, boligPostStedInfo, boligEierFornavnInfo, boligEierEtternavnInfo, boligEierEpostInfo, boligEierTlfInfo;
     private JLabel depositumLabel, utleieprisLabel, utlopsdatoLabel, tilgjengligFraDatoLabel, eiersKravLabel, erAnnonseSynligLabel;
     private CustomJTextField depositum, utleiepris;
     private CustomJCheckBox erSynligSomAnnonse;
@@ -30,13 +32,13 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel{
     private CustomJButton avbrytButton, lagreButton;
     
     public AnnonseRegVindu(String tittel) {
-        super(500, 500, tittel);
-        venstrePanel = new CustomSubPanel("Boliginfo", 0, 250, new GridBagLayout());
-        hoyrePanel = new CustomSubPanel("Annonseregistrering", 0, 250, new GridBagLayout());
+        super(800, 350, tittel);
+        venstrePanel = new CustomSubPanel("Boliginfo", 0, 300, new GridBagLayout());
+        hoyrePanel = new CustomSubPanel("Annonseregistrering", 0, 500, new GridBagLayout());
         bunnPanel = new CustomSubPanel("", 40, 0, new GridBagLayout());
-        add(venstrePanel);
-        add(hoyrePanel);
-        add(bunnPanel);
+        add(venstrePanel, BorderLayout.WEST);
+        add(hoyrePanel, BorderLayout.EAST);
+        add(bunnPanel, BorderLayout.SOUTH);
         
         boligIDLabel = new JLabel("BoligID:");
         boligAdresseLabel = new JLabel("Adresse:");
@@ -46,14 +48,23 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel{
         boligEierEtternavnLabel = new JLabel("Eiers etternavn:");
         boligEierEpostLabel = new JLabel("Eiers epost:");
         boligEierTlfLabel = new JLabel("Eiers tlf:");
-        boligIDInfo = new JLabel();
-        boligAdresseInfo = new JLabel();
-        boligPostNrInfo = new JLabel();
-        boligPostStedInfo = new JLabel();
-        boligEierFornavnInfo = new JLabel();
-        boligEierEtternavnInfo = new JLabel();
-        boligEierEpostInfo = new JLabel();
-        boligEierTlfInfo = new JLabel();
+        boligIDInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
+        boligAdresseInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
+        boligPostNrInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
+        boligPostStedInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
+        boligEierFornavnInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
+        boligEierEtternavnInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
+        boligEierEpostInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
+        boligEierTlfInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
+        boligIDInfo.setEnabled(false);
+        boligAdresseInfo.setEnabled(false);
+        boligPostNrInfo.setEnabled(false);
+        boligPostStedInfo.setEnabled(false);
+        boligEierFornavnInfo.setEnabled(false);
+        boligEierEtternavnInfo.setEnabled(false);
+        boligEierEpostInfo.setEnabled(false);
+        boligEierTlfInfo.setEnabled(false);
+        boligIDInfo.setEnabled(false);
         depositumLabel = new JLabel("Depositum:");
         utleieprisLabel = new JLabel("Utleiepris:");
         utlopsdatoLabel = new JLabel("Annonsen utløper:");
@@ -65,7 +76,7 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel{
         depositum = new CustomJTextField("Depositum", RegexTester.PRIS, 10);
         utleiepris = new CustomJTextField("Pris pr mnd", RegexTester.PRIS, 10);
         erSynligSomAnnonse = new CustomJCheckBox();
-        eiersKrav = new JTextArea(10, 5);
+        eiersKrav = new JTextArea(5, 25);
         avbrytButton = new CustomJButton("Avbryt");
         lagreButton = new CustomJButton("Lagre");
         
@@ -84,109 +95,112 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel{
     }//End Constructor
     
     public void opprettLayout(){
-        GridBagConstraints gc = new GridBagConstraints();
+        GridBagConstraints gcVenstre = new GridBagConstraints();
         
         //Rad 1
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy = 0;
+        gcVenstre.weightx = 0.5;
+        gcVenstre.weighty = 1;
+        gcVenstre.gridx = 0;
+        gcVenstre.gridy = 0;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(boligIDLabel, gc);
+        gcVenstre.fill = GridBagConstraints.NONE;
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        gcVenstre.insets = new Insets(0, 0, 0, 5);
+        venstrePanel.add(boligIDLabel, gcVenstre);
         
-        gc.gridx = 1;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(boligIDInfo, gc);
+        gcVenstre.gridx = 1;
+        gcVenstre.weightx = 1;        
+        gcVenstre.insets = new Insets(0, 0, 0, 0);
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        venstrePanel.add(boligIDInfo, gcVenstre);
         
         //Rad 2
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy++;
+        gcVenstre.weightx = 0.5;
+        gcVenstre.weighty = 1;
+        gcVenstre.gridx = 0;
+        gcVenstre.gridy++;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(boligAdresseLabel, gc);
+        gcVenstre.fill = GridBagConstraints.NONE;
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        gcVenstre.insets = new Insets(0, 0, 0, 5);
+        venstrePanel.add(boligAdresseLabel, gcVenstre);
         
-        gc.gridx = 1;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(boligAdresseInfo, gc);
+        gcVenstre.gridx = 1;
+        gcVenstre.weightx = 1;        
+        gcVenstre.insets = new Insets(0, 0, 0, 0);
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        venstrePanel.add(boligAdresseInfo, gcVenstre);
         
         //Rad 3
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy++;
+        gcVenstre.weightx = 0.5;
+        gcVenstre.weighty = 1;
+        gcVenstre.gridx = 0;
+        gcVenstre.gridy++;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(boligPostNrLabel, gc);
+        gcVenstre.fill = GridBagConstraints.NONE;
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        gcVenstre.insets = new Insets(0, 0, 0, 5);
+        venstrePanel.add(boligPostNrLabel, gcVenstre);
         
-        gc.gridx = 1;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(boligPostNrInfo, gc);
+        gcVenstre.gridx = 1;
+        gcVenstre.weightx = 1;        
+        gcVenstre.insets = new Insets(0, 0, 0, 0);
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        venstrePanel.add(boligPostNrInfo, gcVenstre);
         
         //Rad 4
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy++;
+        gcVenstre.weightx = 0.5;
+        gcVenstre.weighty = 1;
+        gcVenstre.gridx = 0;
+        gcVenstre.gridy++;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(boligPostStedLabel, gc);
+        gcVenstre.fill = GridBagConstraints.NONE;
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        gcVenstre.insets = new Insets(0, 0, 0, 5);
+        venstrePanel.add(boligPostStedLabel, gcVenstre);
         
-        gc.gridx = 1;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(boligPostStedInfo, gc);
+        gcVenstre.gridx = 1;
+        gcVenstre.weightx = 1;        
+        gcVenstre.insets = new Insets(0, 0, 0, 0);
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        venstrePanel.add(boligPostStedInfo, gcVenstre);
         
         //Rad 5
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy++;
+        gcVenstre.weightx = 0.5;
+        gcVenstre.weighty = 1;
+        gcVenstre.gridx = 0;
+        gcVenstre.gridy++;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(boligEierEpostLabel, gc);
+        gcVenstre.fill = GridBagConstraints.NONE;
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        gcVenstre.insets = new Insets(0, 0, 0, 5);
+        venstrePanel.add(boligEierEpostLabel, gcVenstre);
         
-        gc.gridx = 1;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(boligEierEpostInfo, gc);
+        gcVenstre.gridx = 1;
+        gcVenstre.weightx = 1;        
+        gcVenstre.insets = new Insets(0, 0, 0, 0);
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        venstrePanel.add(boligEierEpostInfo, gcVenstre);
         
         //Rad 6
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy++;
+        gcVenstre.weightx = 0.5;
+        gcVenstre.weighty = 1;
+        gcVenstre.gridx = 0;
+        gcVenstre.gridy++;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(boligEierTlfLabel, gc);
+        gcVenstre.fill = GridBagConstraints.NONE;
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        gcVenstre.insets = new Insets(0, 0, 70, 0);
+        venstrePanel.add(boligEierTlfLabel, gcVenstre);
         
-        gc.gridx = 1;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(boligEierTlfInfo, gc);
+        gcVenstre.gridx = 1;
+        gcVenstre.weightx = 1;        
+        gcVenstre.weighty = 1;        
+        gcVenstre.insets = new Insets(0, 0, 70, 0);
+        gcVenstre.anchor = GridBagConstraints.LINE_START;
+        venstrePanel.add(boligEierTlfInfo, gcVenstre);
+        
+      
         
     //////////////////////////////////////////////
     //             Slutt på VenstrePanel        //
@@ -194,161 +208,163 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel{
     //////////////////////////////////////////////        
         
         //Rad 1
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy = 0;
+        GridBagConstraints gcHoyre = new GridBagConstraints();
+        gcHoyre.weightx = 1;
+        gcHoyre.weighty = 1;
+        gcHoyre.gridx = 0;
+        gcHoyre.gridy = 0;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(erAnnonseSynligLabel, gc);
+        gcHoyre.fill = GridBagConstraints.NONE;
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        gcHoyre.insets = new Insets(0, 0, 0, 5);
+        hoyrePanel.add(erAnnonseSynligLabel, gcHoyre);
         
-        gc.gridx = 1;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(erSynligSomAnnonse, gc);
+        gcHoyre.gridx = 1;
+        gcHoyre.weightx = 1;        
+        gcHoyre.insets = new Insets(0, 0, 0, 0);
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        hoyrePanel.add(erSynligSomAnnonse, gcHoyre);
 
         //Rad 2
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy = 0;
+        gcHoyre.weightx = 1;
+        gcHoyre.weighty = 1;
+        gcHoyre.gridx = 0;
+        gcHoyre.gridy++;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(utleieprisLabel, gc);
+        gcHoyre.fill = GridBagConstraints.NONE;
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        gcHoyre.insets = new Insets(0, 0, 0, 5);
+        hoyrePanel.add(utleieprisLabel, gcHoyre);
         
-        gc.gridx++;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(utleiepris, gc);
-        
-        //Rad 3
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy = 0;
-        
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(depositumLabel, gc);
-        
-        gc.gridx++;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(depositum, gc);
+        gcHoyre.gridx = 1;
+        gcHoyre.weightx = 1;        
+        gcHoyre.insets = new Insets(0, 0, 0, 0);
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        hoyrePanel.add(utleiepris, gcHoyre);
         
         //Rad 3
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy = 0;
+        gcHoyre.weightx = 1;
+        gcHoyre.weighty = 1;
+        gcHoyre.gridx = 0;
+        gcHoyre.gridy++;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(tilgjengligFraDatoLabel, gc);
+        gcHoyre.fill = GridBagConstraints.NONE;
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        gcHoyre.insets = new Insets(0, 0, 0, 5);
+        hoyrePanel.add(depositumLabel, gcHoyre);
         
-        gc.gridx++;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(tilgjengligFraDato, gc);
+        gcHoyre.gridx = 1;
+        gcHoyre.weightx = 1;        
+        gcHoyre.insets = new Insets(0, 0, 0, 0);
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        hoyrePanel.add(depositum, gcHoyre);
         
         //Rad 4
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy = 0;
+        gcHoyre.weightx = 1;
+        gcHoyre.weighty = 1;
+        gcHoyre.gridx = 0;
+        gcHoyre.gridy++;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(utlopsdatoLabel, gc);
+        gcHoyre.fill = GridBagConstraints.NONE;
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        gcHoyre.insets = new Insets(0, 0, 0, 5);
+        hoyrePanel.add(tilgjengligFraDatoLabel, gcHoyre);
         
-        gc.gridx++;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(utlopsDato, gc);
+        gcHoyre.gridx = 1;
+        gcHoyre.weightx = 1;        
+        gcHoyre.insets = new Insets(0, 0, 0, 0);
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        hoyrePanel.add(tilgjengligFraDato, gcHoyre);
         
         //Rad 5
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy = 0;
+        gcHoyre.weightx = 1;
+        gcHoyre.weighty = 1;
+        gcHoyre.gridx = 0;
+        gcHoyre.gridy++;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_START;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(eiersKravLabel, gc);
+        gcHoyre.fill = GridBagConstraints.NONE;
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        gcHoyre.insets = new Insets(0, 0, 0, 5);
+        hoyrePanel.add(utlopsdatoLabel, gcHoyre);
         
-        gc.gridx++;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        venstrePanel.add(eiersKrav, gc);
+        gcHoyre.gridx = 1;
+        gcHoyre.weightx = 1;        
+        gcHoyre.insets = new Insets(0, 0, 0, 0);
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        hoyrePanel.add(utlopsDato, gcHoyre);
+        
+        //Rad 6
+        gcHoyre.weightx = 1;
+        gcHoyre.weighty = 1;
+        gcHoyre.gridx = 0;
+        gcHoyre.gridy++;
+        
+        gcHoyre.fill = GridBagConstraints.NONE;
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        gcHoyre.insets = new Insets(0, 0, 0, 5);
+        hoyrePanel.add(eiersKravLabel, gcHoyre);
+        
+        gcHoyre.gridx = 1;
+        gcHoyre.weightx = 1;        
+        gcHoyre.insets = new Insets(0, 0, 0, 0);
+        gcHoyre.anchor = GridBagConstraints.LINE_START;
+        hoyrePanel.add(eiersKrav, gcHoyre);
 
     //////////////////////////////////////////////
     //             Slutt på HøyrePanel          //
     //             Start på BunnPanel           //
     //////////////////////////////////////////////    
         
+        GridBagConstraints gcBunn = new GridBagConstraints();
         //Rad 1
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        gc.gridy = 0;
+        gcBunn.weightx = 1;
+        gcBunn.weighty = 1;
+        gcBunn.gridx = 0;
+        gcBunn.gridy = 0;
         
-        gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.LINE_END;
-        gc.insets = new Insets(0, 0, 0, 5);
-        venstrePanel.add(avbrytButton, gc);
+        gcBunn.fill = GridBagConstraints.NONE;
+        gcBunn.anchor = GridBagConstraints.LINE_END;
+        gcBunn.insets = new Insets(0, 0, 0, 5);
+        bunnPanel.add(avbrytButton, gcBunn);
         
-        gc.gridx++;
-        gc.weightx = 1;        
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_END;
-        venstrePanel.add(lagreButton, gc);
+        gcBunn.gridx = 1;
+        gcBunn.weightx = 1;        
+        gcBunn.insets = new Insets(0, 0, 0, 0);
+        gcBunn.anchor = GridBagConstraints.LINE_START;
+        bunnPanel.add(lagreButton, gcBunn);
         
         
     }//End doLayout()
 
-    public JLabel getBoligIDInfo() {
+    public CustomJTextField getBoligIDInfo() {
         return boligIDInfo;
     }
 
-    public JLabel getBoligAdresseInfo() {
+    public CustomJTextField getBoligAdresseInfo() {
         return boligAdresseInfo;
     }
 
-    public JLabel getBoligPostNrInfo() {
+    public CustomJTextField getBoligPostNrInfo() {
         return boligPostNrInfo;
     }
 
-    public JLabel getBoligPostStedInfo() {
+    public CustomJTextField getBoligPostStedInfo() {
         return boligPostStedInfo;
     }
 
-    public JLabel getBoligEierFornavnInfo() {
+    public CustomJTextField getBoligEierFornavnInfo() {
         return boligEierFornavnInfo;
     }
 
-    public JLabel getBoligEierEtternavnInfo() {
+    public CustomJTextField getBoligEierEtternavnInfo() {
         return boligEierEtternavnInfo;
     }
 
-    public JLabel getBoligEierEpostInfo() {
+    public CustomJTextField getBoligEierEpostInfo() {
         return boligEierEpostInfo;
     }
 
-    public JLabel getBoligEierTlfInfo() {
+    public CustomJTextField getBoligEierTlfInfo() {
         return boligEierTlfInfo;
     }
 
