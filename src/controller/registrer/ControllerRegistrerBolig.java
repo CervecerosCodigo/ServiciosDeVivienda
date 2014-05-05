@@ -1,5 +1,6 @@
 package controller.registrer;
 
+import controller.ControllerBildeViser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -23,6 +24,7 @@ import lib.RegexTester;
 import model.Bolig;
 import model.Enebolig;
 import model.Leilighet;
+import view.BildeViser;
 import view.registrer.BoligRegVindu;
 
 /**
@@ -130,6 +132,10 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
             bRegVindu.getTomtArealField().setText(String.valueOf(((Enebolig) bolig).getTomtAreal()));
             bRegVindu.getHarKjellerCheckBox().setSelected(((Enebolig) bolig).isHarKjeller());
         }
+        
+        //Legger til dette for å teste bildeviseren
+//        BildeViser bildeViser = new BildeViser(bolig);
+        ControllerBildeViser controllerBildeViser = new ControllerBildeViser(bolig, true);
 
     }
 
