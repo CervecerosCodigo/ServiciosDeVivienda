@@ -133,10 +133,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
             bRegVindu.getHarKjellerCheckBox().setSelected(((Enebolig) bolig).isHarKjeller());
         }
         
-        //Legger til dette for å teste bildeviseren
-//        BildeViser bildeViser = new BildeViser(bolig);
-        ControllerBildeViser controllerBildeViser = new ControllerBildeViser(bolig, true);
-
+  
     }
 
     /**
@@ -496,6 +493,8 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
                 }
             } else if (e.getSource().equals(bRegVindu.getBildeButton())) {
                 lastOppEkstraBilde(bolig);
+            }else if(e.getSource().equals(bRegVindu.getVisFlereBilderButton())){
+                ControllerBildeViser controllerBildeViser = new ControllerBildeViser(bolig, true);
             }
         }
     }

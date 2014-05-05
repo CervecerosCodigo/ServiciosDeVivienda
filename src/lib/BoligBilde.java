@@ -85,9 +85,10 @@ public class BoligBilde {
 
     /**
      * Lagrer et nytt jpg bilde for boligobjektet.
+     *
      * @param bilde BufferedImage
      * @param path String
-     * @throws IOException 
+     * @throws IOException
      */
     private void lagreBilde(BufferedImage bilde, String path) throws IOException {
         ImageIO.write(bilde, "jpg", new File(path));
@@ -109,5 +110,29 @@ public class BoligBilde {
         String galleriSti = getGalleriSti(bolig);
         String fullSti = galleriSti + "/" + String.valueOf(getNesteFilnummer(bolig)) + ".jpg";
         lagreBilde(tmpBilde, fullSti);
+    }
+
+    public void setInkrementellNavnAlleFiler(Bolig bolig) {
+        String bildemappe = bildeSti.getBoligGalleryPath(bolig);
+        File mappe = new File(bildemappe);
+        File[] filListe = mappe.listFiles();
+
+//        String utskrift = "";
+//        for (int i = 0; i < filListe.length; i++) {
+//            utskrift += filListe[i].toString() + "\n";
+//
+//        }
+//        Melding.visMelding("setInkrementellNavnAlleFiler", utskrift);
+        for (int i = 0; i < filListe.length; i++) {
+            if (filListe[i].isFile()) {
+                String filnavn = bildemappe + "/" + String.valueOf(i + 1) + ".jpg";
+                filListe[i].renameTo(new File(filnavn));
+
+//                filListe[i].renameTo(new File(filnavn));
+            }
+//            if (!filListe[i].renameTo(new File(filnavn))) {
+//                Melding.visMelding("Endrefilnavn", "Har mislykkets å endre navn på et bilde.");
+//            }
+        }
     }
 }

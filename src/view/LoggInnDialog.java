@@ -21,8 +21,8 @@ public class LoggInnDialog extends JDialog {
 	private JButton loggInnKnapp, avbrytKnapp;
 	
 	public LoggInnDialog() {
-		brukernavnFelt = new JTextField(13);
-		passordFelt = new JPasswordField(13);
+		brukernavnFelt = new JTextField("admin", 13);
+		passordFelt = new JPasswordField("admin", 13);
 		brukernavnLabel = new JLabel("Brukernavn:");
 		passordLabel = new JLabel("Passord:");
 		loggInnKnapp = new JButton("Ok");

@@ -36,11 +36,11 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
 
     ///PANELER///
     private CustomSubPanel boligPanel, leilighetPanel, eneboligPanel, bildePanel;
-    private CustomSubPanel boligTypePanel, datoPickPanel, knappContainer, knappPanel;
+    private CustomSubPanel boligTypePanel, datoPickPanel, knappContainer, knappPanel, bildeKnapperPanel;
     ///SLUTT PÅ PANELER///
     //
     ///BOLIG///
-    private final JLabel boligTypeLabel, eierLabel, meglerLabel, adresseLabel, postNrLabel, postStedLabel, boArealLabel, byggeArLabel, erUtleidLabel, beskrivelseLabel, tilgjengeligForUtleieLabel, bildeLabel;
+    private final JLabel boligTypeLabel, eierLabel, meglerLabel, adresseLabel, postNrLabel, postStedLabel, boArealLabel, byggeArLabel, erUtleidLabel, beskrivelseLabel, tilgjengeligForUtleieLabel, bildeLabel, bildeKnappLabel;
     private JLabel bildeResultatLabel;
     private CustomJRadioButton leilighetRButton, eneboligRButton;
     private JComboBox dagCombo, manedCombo, arCombo;
@@ -48,7 +48,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
     private CustomJTextField eierField, meglerField, adresseField, postNrField, postStedField, boArealField, byggeArField;
     private JCheckBox erUtleidCheckBox;
     private JTextArea beskrivelseTextArea;
-    private CustomJButton bildeButton;
+    private CustomJButton bildeButton, visFlereBilderButton;
     //TODO: Legg til kalenderfelt for registrering av tilgjenglighet for utleie
     ///BOLIG SLUTT///
     //
@@ -67,12 +67,12 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
     private CustomJButton avbrytButton, lagreButton;
 
     public BoligRegVindu(String tittel) {
-        super(600, 600, tittel);
+        super(700, 600, tittel);
 
         
         ///PANELER///
         toppPanel = new CustomSubPanel("Velg boligtype", 50, 0);
-        venstrePanel = new CustomSubPanel("Felles", 0, 300);
+        venstrePanel = new CustomSubPanel("Felles", 0, 350);
         senterPanel = new CustomSubPanel("", 0, 0, new GridLayout(2, 1));
         bunnPanel = new CustomSubPanel("", 50, 0);
 
@@ -83,6 +83,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         datoPickPanel = new CustomSubPanel(new FlowLayout());
         knappContainer = new CustomSubPanel(new BorderLayout());
         knappPanel = new CustomSubPanel(new FlowLayout());
+        bildeKnapperPanel = new CustomSubPanel(new FlowLayout());
 
         add(toppPanel, BorderLayout.NORTH);
         add(venstrePanel, BorderLayout.WEST);
@@ -135,7 +136,9 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
 
         bildeLabel = new JLabel("Antall bilder: ");
         bildeResultatLabel = new JLabel("");
-        bildeButton = new CustomJButton("Last opp bilde");
+        bildeKnappLabel = new JLabel("Bilder: ");
+        bildeButton = new CustomJButton("Last opp...");
+        visFlereBilderButton = new CustomJButton("Vis flere");
         ///SLUTT PÅ DATAFELT FOR BOLIG///
         //
         ///START PÅ DATAFELT FOR LEILIGHET///
@@ -176,6 +179,9 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         datoPickPanel.add(arCombo);
         datoPickPanel.add(manedCombo);
         datoPickPanel.add(dagCombo);
+        
+        bildeKnapperPanel.add(bildeButton);
+        bildeKnapperPanel.add(visFlereBilderButton);
 
         //Rad 1
         gcBolig.gridx = 0;
@@ -261,9 +267,9 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         //Rad 12
         gcBolig.gridx = 0;
         gcBolig.gridy++;
-//        boligPanel.add(bildeLabel, gcBolig);
+        boligPanel.add(bildeKnappLabel, gcBolig);
         gcBolig.gridx++;
-        boligPanel.add(bildeButton, gcBolig);
+        boligPanel.add(bildeKnapperPanel, gcBolig);
 
         venstrePanel.add(boligPanel);
         ////////SLUTT PÅ GENERELL REGISTRERING AV BOLIG////////
@@ -807,6 +813,15 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         this.bildeButton = bildeButton;
     }
 
+    public CustomJButton getVisFlereBilderButton() {
+        return visFlereBilderButton;
+    }
+
+    public void setVisFlereBilderButton(CustomJButton visFlereBilderButton) {
+        this.visFlereBilderButton = visFlereBilderButton;
+    }
+    
+
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
     //||//                                                              //||//
@@ -824,6 +839,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
      */
     public void setKnappeLytter(ActionListener lytter) {
         lagreButton.addActionListener(lytter);
+        visFlereBilderButton.addActionListener(lytter);
         bildeButton.addActionListener(lytter);
     }
 
