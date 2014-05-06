@@ -11,6 +11,7 @@ import controller.registrer.ControllerRegistrerAnnonse;
 import controller.registrer.ControllerRegistrerBolig;
 import controller.registrer.ControllerRegistrerSoknad;
 import controller.registrer.ControllerRegistrerPerson;
+import controller.registrer.ControllerRegistrerUtleier;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -157,7 +158,8 @@ public class ControllerTabellOgOutput {
                         new ControllerRegistrerBolig(boligliste, returnerBoligObjekt());
 
                     } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
-                        new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
+//                        new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
+                        new ControllerRegistrerUtleier(personliste, (Utleier) returnerPersonObjekt());
 
                     } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
                         if (erMeglerVindu) {
@@ -257,14 +259,16 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ControllerRegistrerPerson(personliste);
+//                new ControllerRegistrerPerson(personliste);
+                new ControllerRegistrerUtleier(personliste);
             }
         });
         menyvalgEndrePerson.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
+//                new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
+                new ControllerRegistrerPerson(personliste, (Utleier) returnerPersonObjekt());
             }
         });
         menyvalgSlettPerson.addActionListener(new ActionListener() {
