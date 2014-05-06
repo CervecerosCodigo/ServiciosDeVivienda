@@ -37,7 +37,7 @@ public class TopPanelAnnonse extends AbstractPanel {
         bildeLabel = new JLabel(bilde);
         
         setVisible(true);
-        setLayout(new FlowLayout(FlowLayout.LEFT, 30, 0));
+        setLayout(new FlowLayout(FlowLayout.LEADING, 30, 0));
         
         add(checkBoxKnappeGruppe);
         add(knappeGruppeHoyre);
@@ -162,7 +162,7 @@ public class TopPanelAnnonse extends AbstractPanel {
 
             add(postStedBox);
             add(boligTypeBox);
-            add(fyllPanel);
+            //add(fyllPanel);
             add(prisLabel);
             add(minPrisFelt);
             add(bindestrekLabel);

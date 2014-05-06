@@ -1,7 +1,3 @@
-/**
- *  Klasse for brukerkontroll. Nye brukere (megler objekter) blir hardkodet i main
- */
-
 package model;
 
 public class Megler extends Person {
