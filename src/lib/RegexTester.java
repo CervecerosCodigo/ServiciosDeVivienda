@@ -15,7 +15,10 @@ public class RegexTester {
     public static final String GATE_NAVN_PATTERN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s]?[A-ZÆØÅ]?[a-zæøå]*$";
     public static final String GATE_NR_PATTERN = "^[1-9]{1}[0-9]{0,2}$";
     /**
-     * Denne pattern tar for seg en gateadresse som begynner med stor bokstav og kan bestå av opp til tre ord, deretter må det komme et nummer og frivillig kan det komme en stor bokstav for som markerer trappeoppgangen.<br>
+     * Denne pattern tar for seg en gateadresse som begynner med stor bokstav og
+     * kan bestå av opp til tre ord, deretter må det komme et nummer og
+     * frivillig kan det komme en stor bokstav for som markerer
+     * trappeoppgangen.<br>
      * <u>Dette er foretrukket måte for å kontrollere riktig gateadresse.</u>
      */
     public static final String GATE_ADRESSE = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s][1-9]{1}[0-9]{0,2}?[\\s]?[A-ZÆØÅ]{0,1}$";
@@ -35,6 +38,11 @@ public class RegexTester {
      * person, bolig mm.
      */
     public static final String ID = "^[1-4]{1}[0-9]{4}$";
+    /**
+     * Tester at bruker har skrevet inn kun bokstaver. Valgfritt antall
+     * mellomrom er tillatt og blandning av store og små bokstaver.
+     */
+    public static final String KUN_BOKSTAVER = "^[a-zæøåA-ZÆØÅ\\s]+$";
     private static boolean erTestOK;
 
     public RegexTester() {
@@ -210,15 +218,27 @@ public class RegexTester {
     public static boolean testID(String IDinn) {
         return patternMatchOK(IDinn, ID);
     }
-    
+
     /**
-     * Tester for en gateadresse som begynner med stor bokstav og kan bestå av opp til tre ord, deretter må det komme et nummer og frivillig kan det komme en stor bokstav for som markerer trappeoppgangen.<br>
+     * Tester for en gateadresse som begynner med stor bokstav og kan bestå av
+     * opp til tre ord, deretter må det komme et nummer og frivillig kan det
+     * komme en stor bokstav for som markerer trappeoppgangen.<br>
      * <u>Dette er foretrukket måte for å kontrollere riktig gateadresse.</u>
+     *
      * @param gateAdresse String
      * @return boolean
      */
-    public static boolean testGateadresse(String gateAdresse){
+    public static boolean testGateadresse(String gateAdresse) {
         return patternMatchOK(gateAdresse, GATE_ADRESSE);
+    }
+    
+    /**
+     * 
+     * @param kunBokstaver
+     * @return 
+     */
+    public static boolean testKunBokstaver(String kunBokstaver) {
+        return patternMatchOK(kunBokstaver, KUN_BOKSTAVER);
     }
 
     /**
