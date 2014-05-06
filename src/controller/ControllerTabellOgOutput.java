@@ -10,15 +10,12 @@ package controller;
 import controller.registrer.ControllerRegistrerAnnonse;
 import controller.registrer.ControllerRegistrerBolig;
 import controller.registrer.ControllerRegistrerSoknad;
-import controller.registrer.ControllerRegistrerPerson;
 import controller.registrer.ControllerRegistrerUtleier;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -268,7 +265,7 @@ public class ControllerTabellOgOutput {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
-                new ControllerRegistrerPerson(personliste, (Utleier) returnerPersonObjekt());
+                new ControllerRegistrerUtleier(personliste, (Utleier) returnerPersonObjekt());
             }
         });
         menyvalgSlettPerson.addActionListener(new ActionListener() {
