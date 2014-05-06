@@ -1,6 +1,8 @@
 package model;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import java.awt.Color;
+import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,6 +17,12 @@ public abstract class TabellModell<E> extends DefaultTableModel {
         mottattArray = new ArrayList<>();
     }
 
+    public void formaterRader(int rad){
+        
+
+    }
+    
+    
     public void fyllTabellMedInnhold(ArrayList<E> liste) {
         this.mottattArray = liste;
     }
@@ -61,7 +69,7 @@ public abstract class TabellModell<E> extends DefaultTableModel {
     @Override
     public Object getValueAt(int rad, int kolonne) {
 
-        return null;
+        return mottattArray.get(rad);
     }
 
     

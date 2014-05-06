@@ -33,6 +33,7 @@ public class TabellModellSoknad extends TabellModell {
     }
     
     public DefaultTableCellRenderer getTabellFormatering(){
+        
         return soknadErBehandletFormatRenderer;
     }
 
