@@ -8,23 +8,23 @@ import lib.Konstanter;
 
 public class BunnPanel extends AbstractPanel {
 
-    private CustomJButton endre, frem, tilbake;
+    private CustomJButton multiKnapp, frem, tilbake;
 
     public BunnPanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
 
         setLayout(new GridLayout(1, 1));
-        endre = new CustomJButton("Endre");
+        multiKnapp = new CustomJButton("Endre");
         frem = new CustomJButton("Frem");
         tilbake = new CustomJButton("Tilbake");
 
-        add(endre);
+        add(multiKnapp);
         add(tilbake);
         add(frem);
     }
 
-    public CustomJButton getEndreKnapp() {
-        return endre;
+    public CustomJButton getMultiKnapp() {
+        return multiKnapp;
     }
 
     public CustomJButton getTilbakeKnapp() {
@@ -38,7 +38,7 @@ public class BunnPanel extends AbstractPanel {
     public void addKnappeLytter(ActionListener lytter) {
         frem.addActionListener(lytter);
         tilbake.addActionListener(lytter);        
-        endre.addActionListener(lytter);        
+        multiKnapp.addActionListener(lytter);        
     }
 
 }

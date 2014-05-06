@@ -71,10 +71,15 @@ public class ControllerBunnPanel {
         public KnappeLytter(ArkfaneTemplate vindu) {
             this.vindu = vindu;
             tabell = vindu.getVenstrepanel().getTable();
-            if(!erMeglerVindu)
-                vindu.getBunnpanel().getEndreKnapp().setVisible(false);
+            if(!erMeglerVindu){
+                vindu.getBunnpanel().getMultiKnapp().setText("Send forespørsel");
+            }
         }
 
+        /**
+         * Finner hvilken rad som er valgt i tabellen og hvilken rad det representerer i datagrunnlaget.
+         * @return 
+         */
         public int finnValgtRadITabell() {
             try {
                 int rad = tabell.getSelectedRow();
@@ -86,11 +91,17 @@ public class ControllerBunnPanel {
             return 0;
         }
 
+        /**
+         * Definerer funksjonen til knappen nede til venstre i vinduet.
+         * Denne knappen har forskjellig funksjonalitet avhengig av hvilke objekt som
+         * finnes i tabellen, og hvilke vindu man befinner seg i.
+         * @param e 
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             raderITabell = tabell.getModel().getRowCount();
 
-            if (e.getSource().equals(vindu.getBunnpanel().getEndreKnapp())) {
+            if (e.getSource().equals(vindu.getBunnpanel().getMultiKnapp())) {
                 try {
                     int valgtRad = finnValgtRadITabell();
 
@@ -103,8 +114,11 @@ public class ControllerBunnPanel {
                     if (tabell.getModel() instanceof TabellModellAnnonse) {
                         if (erMeglerVindu) {
                             new ControllerRegistrerAnnonse(annonseliste, personliste, (Annonse) tabellData.get(valgtRad));
-                        } 
+                        }else{
+                            new ControllerRegistrerSoknad(personliste, annonseliste, soknadliste, (Annonse) tabellData.get(valgtRad));
+                        }
                     }
+                    
                 } catch (ArrayIndexOutOfBoundsException aoibe) {
                     System.out.println("Feil");
                 }

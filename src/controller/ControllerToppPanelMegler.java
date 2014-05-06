@@ -124,7 +124,7 @@ public class ControllerToppPanelMegler<E> {
                     radioTypeValgt = ObjektType.SOKNADSOBJ;
                 }
                 if (e.getSource().equals(vindu.getToppanelMegler().getKontraktRadio())) {
-                    radioTypeValgt = ObjektType.SOKNADSOBJ;
+                    radioTypeValgt = ObjektType.KONTRAKTOBJ;
                 }
             } catch (NullPointerException npe) {
 

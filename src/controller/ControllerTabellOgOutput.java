@@ -11,6 +11,7 @@ import controller.registrer.ControllerRegistrerAnnonse;
 import controller.registrer.ControllerRegistrerBolig;
 import controller.registrer.ControllerRegistrerSoknad;
 import controller.registrer.ControllerRegistrerPerson;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,7 +36,8 @@ public class ControllerTabellOgOutput {
     private HashSet<Soknad> soknadsliste;
     private ControllerBunnPanel bunnController;
 
-    private DefaultTableCellRenderer rightRenderer;
+    private DefaultTableCellRenderer hoyreStiltTekstRenderer;
+
 
     private ArkfaneTemplate vindu;
     private ArrayList<Object> tabellData;
@@ -75,8 +77,10 @@ public class ControllerTabellOgOutput {
         tabellModellKontrakt = new TabellModellKontrakt();
         tabellModellSoknad = new TabellModellSoknad();
 
-        rightRenderer = new DefaultTableCellRenderer();
-        rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+        hoyreStiltTekstRenderer = new DefaultTableCellRenderer();
+        hoyreStiltTekstRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+        
+
 
         tabellMeny = new JPopupMenu();
 
@@ -284,14 +288,14 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //////////////////////////////////////////////////
+                registrerKontrakt();
             }
         });
         menyvalgAvvis.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //////////////////////////////////////////////////
+                avvisSoknad(returnerSoknadObjekt());
             }
         });
         menyvalgPubliserToggle.addActionListener(new ActionListener() {
@@ -304,14 +308,92 @@ public class ControllerTabellOgOutput {
     }
 
     /**
+     * Denne metoden registrerer valgt søknad som kontrakt.
+     * Hvis en søknad blir registrert som kontrakt skal alle andre søknader på samme 
+     * annonse avvises.
+     */
+    private void registrerKontrakt() {
+        Soknad soknad = returnerSoknadObjekt();
+        int annonseID = soknad.getAnnonseObjekt().getAnnonseID();
+        ArrayList<Soknad> soknaderPaaSammeAnnonse = new ArrayList<>();
+
+        //Finner megler-objektet 
+        Iterator<Person> personIter = personliste.iterator();
+        Person tempPerson = null;
+        while (personIter.hasNext()) {
+            tempPerson = personIter.next();
+            if( tempPerson instanceof Megler){
+                if (tempPerson.getPersonID() == soknad.getAnnonseObjekt().getBolig().getMeglerID()) {
+                    tempPerson = (Megler) tempPerson;
+                    return;
+                }
+            }
+        }
+
+        //Finner alle søknader som gelder for samme Annonse
+        Iterator<Soknad> soknadIter = soknadsliste.iterator();
+        Soknad tempSoknad = null;
+        while (soknadIter.hasNext()) {
+            tempSoknad = soknadIter.next();
+            if (tempSoknad.getAnnonseObjekt().getAnnonseID() == annonseID) {
+                soknaderPaaSammeAnnonse.add(tempSoknad);
+            }
+        }
+
+        //Finner dagens dato
+        Calendar dagensDato = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+
+        //Oppretter et kontraktobjekt basert på søknaden.
+        Kontrakt kontrakt = new Kontrakt(soknad.getAnnonseObjekt(), tempPerson, soknad.getLeietakerObjekt(), 12, dagensDato);
+
+        //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt
+        //annonse avvises.
+        if (kontraktliste.add(kontrakt)) {
+            
+            //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
+            soknaderPaaSammeAnnonse.remove(soknad);
+
+            soknadIter = soknaderPaaSammeAnnonse.iterator();
+            tempSoknad = null;
+            while (soknadIter.hasNext()) {
+                tempSoknad = soknadIter.next();
+                tempSoknad.setErBehandlet(true);
+                tempSoknad.setErGodkjent(false);
+            }
+            Melding.visMelding(null, "Kontrakten er opprettet!");
+
+        } else {
+            Melding.visMelding(null, "Kontrakten ble IKKE opprettet!");
+        }
+
+    }//End registrerKontrakt
+
+    /**
+     * Setter søknaden som behandlet og ikke godkjent.
+     *
+     * @param soknad
+     */
+    private void avvisSoknad(Soknad soknad) {
+        soknad.setErBehandlet(true);
+        soknad.setErGodkjent(false);
+    }
+
+    /**
      * Tømmer tabellen før nytt datasett settes.
      */
     public void tomTabellOgKlargjorForNyttDatasett() {
         tabell.clearSelection();
         tabell.removeAll();
     }
-    
-    
+
+    public Soknad returnerSoknadObjekt() {
+
+        Soknad valgtObjekt = (Soknad) tabellData.get(valgtRadItabell);
+        if (valgtObjekt != null) {
+            return valgtObjekt;
+        }
+        return null;
+    }
 
     public Bolig returnerBoligObjekt() {
 
@@ -477,8 +559,8 @@ public class ControllerTabellOgOutput {
                     tabellModellAnnonse.fyllTabellMedInnhold(tabellData);
                     tabell.setModel(tabellModellAnnonse);
                     tabellModellAnnonse.fireTableStructureChanged();
-                    tabell.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
-                    tabell.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+                    tabell.getColumnModel().getColumn(2).setCellRenderer(hoyreStiltTekstRenderer);
+                    tabell.getColumnModel().getColumn(3).setCellRenderer(hoyreStiltTekstRenderer);
                     modellIBruk = tabellModellAnnonse;
                     break;
                 case KONTRAKTOBJ:
@@ -487,6 +569,7 @@ public class ControllerTabellOgOutput {
                     tabell.setModel(tabellModellKontrakt);
                     tabellModellKontrakt.fireTableStructureChanged();
                     modellIBruk = tabellModellKontrakt;
+                    
                     break;
                 case SOKNADSOBJ:
                     this.objekttype = ObjektType.SOKNADSOBJ;
@@ -572,7 +655,7 @@ public class ControllerTabellOgOutput {
     /**
      * Hjelpemetode som returnerer alle boliger registrert på en eier.
      */
-    public ArrayList<Bolig> finnBoligerRegistrertPaaEier(int personID) {
+    private ArrayList<Bolig> finnBoligerRegistrertPaaEier(int personID) {
 
         ArrayList<Bolig> boliger = new ArrayList<>();
         if (personID != -1) {
@@ -587,6 +670,24 @@ public class ControllerTabellOgOutput {
         }
         return boliger;
     }//End method
+
+    /**
+     * Hjelpemetode for å finne informasjon om en boligeier.
+     *
+     * @param personID
+     * @return
+     */
+    private Person finnPersonInformasjon(int personID) {
+        Iterator<Person> iter = personliste.iterator();
+        Person temp = null;
+        while (iter.hasNext()) {
+            temp = iter.next();
+            if (temp.getPersonID() == personID) {
+                return temp;
+            }
+        }
+        return null;
+    }
 
     /**
      * Tar imot data fra sendObjektFraTabellTilOutput-metoden. Denne metoden
@@ -1048,38 +1149,128 @@ public class ControllerTabellOgOutput {
     }
 
     public void visSoknadObjektHTMLOutput(Object valgtObjekt) {
-      output = vindu.getSenterpanel().getEditorPane();
+        output = vindu.getSenterpanel().getEditorPane();
         Soknad skalVises = (Soknad) valgtObjekt;
         Leietaker leietaker = skalVises.getLeietakerObjekt();
         Annonse annonse = skalVises.getAnnonseObjekt();
         Bolig bolig = annonse.getBolig();
-        
+        Person utleier = finnPersonInformasjon(bolig.getPersonID());
+
         StringBuilder html = new StringBuilder();
-        
-        html.append("<h1><b><u>").append("Søknad").append("</u></b></h1>");
-        html.append("<table id='soknadtabell'>");
-            html.append("<table id= 'annonseinfo'>");
-            html.append("<tr>");
-            html.append("<td class='soknadText'><b></b>");
-            html.append("</td>");
-            html.append("<td class='annonseData'>");
-            html.append("</td>");
-            html.append("<td class='annonseText'><b>Depositum</b>");
-            html.append("</td>");
-            html.append("<td class='annonseData'>");
-            html.append("kr. ");
-            html.append(",-");
-            html.append("</td>");
-            html.append("<td class='annonseText'><b>Pris pr mnd</b>");
-            html.append("</td>");
-            html.append("<td class='annonseData'>");
-            html.append("kr. ");
-            html.append(",-");
-            html.append("</td>");
-            html.append("</tr>");        
-        
+
+        html.append("<h1><b><u>").append("Søknad for annonse ").append(annonse.getAnnonseID()).append("</u></b></h1>");
+        html.append("<table id='soknadinfo'>");
+
+        html.append("<tr>");
+        html.append("<td class='soknadText'><b><u>Bolig</u></b>");
+        html.append("</td>");
+        html.append("<td class='soknadData'>");
+        html.append("</td>");
+        html.append("<td class='soknadText'><b></b>");
+        html.append("</td>");
+        html.append("<td class='soknadData'>");
+        html.append("</td>");
+        html.append("<td class='soknadText'><b></b>");
+        html.append("</td>");
+        html.append("<td class='soknadData'>");
+        html.append("</td>");
+        html.append("</tr>");
+
+        html.append("<tr>");
+        html.append("<td><b>Adresse:</b>");
+        html.append("</td>");
+        html.append("<td>").append(bolig.getAdresse());
+        html.append("</td>");
+        html.append("<td><b>Postnr:</b>");
+        html.append("</td>");
+        html.append("<td>").append(bolig.getPostnummer());
+        html.append("</td>");
+        html.append("<td><b>Poststed</b>");
+        html.append("</td>");
+        html.append("<td>").append(bolig.getPoststed());
+        html.append("</td>");
+        html.append("</tr>");
+
+        html.append("<tr>");
+        html.append("<td><b>Boligeier:</b>");
+        html.append("</td>");
+        html.append("<td>").append(utleier.getFornavn()).append(" ").append(utleier.getEtternavn());
+        html.append("</td>");
+        html.append("<td><b>Epost:</b>");
+        html.append("</td>");
+        html.append("<td>").append(utleier.getEpost());
+        html.append("</td>");
+        html.append("<td><b>Telefonnr:</b>");
+        html.append("</td>");
+        html.append("<td>").append(utleier.getTelefon());
+        html.append("</td>");
+        html.append("</tr>");
+
+        html.append("<tr>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("</tr>");
+
+        html.append("<tr>");
+        html.append("<td><b><u>Leietaker</u></b>");
+        html.append("</td>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("</tr>");
+
+        html.append("<tr>");
+        html.append("<td><b>Navn:</b>");
+        html.append("</td>");
+        html.append("<td>").append(leietaker.getFornavn()).append(" ").append(leietaker.getEtternavn());
+        html.append("</td>");
+        html.append("<td><b>Epost:</b>");
+        html.append("</td>");
+        html.append("<td>").append(leietaker.getEpost());
+        html.append("</td>");
+        html.append("<td><b>Telefonnr:</b>");
+        html.append("</td>");
+        html.append("<td>").append(leietaker.getTelefon());
+        html.append("</td>");
+        html.append("</tr>");
+//            html.append("</tr>");        
+//            html.append("<td><b>Sivilstatus:</b>");
+//            html.append("</td>");
+//            html.append("<td>").append(leietaker.getSivilstatus());
+//            html.append("</td>");
+//            html.append("<td><b>Yrke:</b>");
+//            html.append("</td>");
+//            html.append("<td>").append(leietaker.getYrke());
+//            html.append("</td>");
+//            html.append("<td><b>Arbeidsforhold:</b>");
+//            html.append("</td>");
+//            html.append("<td>").append(leietaker.getArbeidsforhold());
+//            html.append("</td>");
+//            html.append("</tr>");    
+
         html.append("</table>");
-        
+        html.append("<br>");
+        html.append("<b><u>Søknadstekst:</u></b><br>");
+        html.append("<div id='soknadstekst'></div>");
+//        html.append(leietaker.getSoknadsTekst());
+
         output.setText(html.toString());
     }
 
@@ -1112,6 +1303,16 @@ public class ControllerTabellOgOutput {
         css.addRule("#annonseinfo {font-size: 12");
         css.addRule("#annonseinfo {border-spacing: 0}");
         css.addRule("#annonseinfo {border: 1px solid #cecece}");
+
+        //CSS for Søknader
+        css.addRule(".soknadData {width: 170px}");
+        css.addRule(".soknadText {width: 80px}");
+        css.addRule("#soknadinfo {font-size: 12");
+        css.addRule("#soknadinfo {border-spacing: 0}");
+        css.addRule("#soknadinfo {border: 1px solid #cecece}");
+        css.addRule("#soknadstekst {width: 300px}");
+        css.addRule("#soknadstekst {height: 100px}");
+        css.addRule("#soknadstekst {border: 1px solid #cecece}");
 
         //CSS for boliger registrert på person
         css.addRule("#boligerPrPerson {border-spacing: 0}");

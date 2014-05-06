@@ -2,7 +2,6 @@ package model;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.util.ArrayList;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 public abstract class TabellModell<E> extends DefaultTableModel {
@@ -65,4 +64,5 @@ public abstract class TabellModell<E> extends DefaultTableModel {
         return null;
     }
 
+    
 }
