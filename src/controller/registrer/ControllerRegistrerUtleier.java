@@ -10,7 +10,7 @@ import model.Utleier;
 import view.registrer.PersonRegVindu;
 
 /**
- *
+ * Klassen brukes kun til registrering og redigering av utleiere.
  * File: ControllerRegistrerUtleier.java Package: controller.registrer Project:
  * ServiciosDeVivienda May 6, 2014
  *
