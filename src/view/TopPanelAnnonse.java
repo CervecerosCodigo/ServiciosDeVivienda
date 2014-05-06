@@ -2,22 +2,16 @@ package view;
 
 //Laget av Petter.
 //Editert av Lukas. Lagt til getters og lyttere for komponenter 26.04
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-
-import view.CustomJButton;
-import view.CustomJCheckBox;
-import view.registrer.CustomSubPanel;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import lib.BildeFilSti;
-import lib.Konstanter;
 import lib.RegexTester;
 
 public class TopPanelAnnonse extends AbstractPanel {
@@ -46,7 +40,7 @@ public class TopPanelAnnonse extends AbstractPanel {
         
         bildeLabel.setPreferredSize(new Dimension(bilde.getIconWidth(), bilde.getIconHeight()));
     }
-
+    
     ////////////GETTERS////////////
     public KnappeGruppeHoyre getKnappeGruppeHoyre() {
         return knappeGruppeHoyre;
@@ -58,14 +52,6 @@ public class TopPanelAnnonse extends AbstractPanel {
 
     public CustomJButton getSokeKnapp() {
         return sokeKnapp;
-    }
-
-    public JComboBox getPostStedBox() {
-        return knappeGruppeHoyre.getPostStedBox();
-    }
-
-    public JComboBox getBoligTypeBox() {
-        return knappeGruppeHoyre.getBoligTypeBox();
     }
 
     public CustomJTextField getMinPrisFelt() {
@@ -99,89 +85,59 @@ public class TopPanelAnnonse extends AbstractPanel {
     public CustomJCheckBox getKjellerCheckBox() {
         return checkBoxKnappeGruppe.getKjellerCheckBox();
     }
+    
+	public JComboBox getPostStedBox() {
+		return knappeGruppeHoyre.getPostStedBox();
+	}
+	
+	public JComboBox getBoligTypeBox() {
+		return knappeGruppeHoyre.getBoligTypeBox();
+	}
     ////////////SLUTTT PÅ GETTERS////////////
-
-    ////////////SETTERS////////////
-    public void setPostStedBox(JComboBox postStedBox) {
-        knappeGruppeHoyre.setPostStedBox(postStedBox);
-    }
-
-    public void setBoligTypeBox(JComboBox boligTypeBox) {
-        knappeGruppeHoyre.setBoligTypeBox(boligTypeBox);
-    }
-    ////////////SLUTT PÅ SETTERS////////////
-
+	
+	public void addItemPoststedBox(Object item) {
+		knappeGruppeHoyre.addItemPoststedBox(item);
+	}
+	
+	public void addItemBoligTypeBox(Object item) {
+		knappeGruppeHoyre.addItemBoligTypeBox(item);
+	}
+    
     public void addKnappLytter(ActionListener lytter) {
         sokeKnapp.addActionListener(lytter);
     }
 
-    /**
-     * Legger til innhold i comboboksen for poststeder. Trenger denne ettersom
-     * det gikk ikke å sette en hel comboboks element.
-     *
-     * @param item
-     */
-    public void addItemPoststedBox(Object item) {
-        knappeGruppeHoyre.addItemPoststedBox(item);
-    }
-
-    /**
-     * Legger til innhold i combobokse for poststeder.
-     *
-     * @param item
-     */
-    public void addItemBoligTypeBox(Object item) {
-        knappeGruppeHoyre.addItemBoligTypeBox(item);
-    }
-
-    /**
-     * Privat klasse for kombobokser og tekstfelter
-     */
     private class KnappeGruppeHoyre extends AbstractPanel {
 
-        private JComboBox postStedBox, boligTypeBox;
-        private JLabel prisLabel, bindestrekLabel, arealLabel, bindestrekLabel2;
+        private JLabel prisLabel, arealLabel;
         private CustomJTextField minPrisFelt, maksPrisFelt, minArealFelt, maksArealFelt;
-        private CustomSubPanel fyllPanel;
+        private JComboBox postStedBox, boligTypeBox;
 
         public KnappeGruppeHoyre() {
-            postStedBox = new JComboBox<>();
-            boligTypeBox = new JComboBox<>();
-            prisLabel = new JLabel("Pris");
-            bindestrekLabel = new JLabel("-");
-            arealLabel = new JLabel("Areal");
-            bindestrekLabel2 = new JLabel("-");
+            prisLabel = new JLabel("Pris:");
+            arealLabel = new JLabel("Areal:");
             minPrisFelt = new CustomJTextField("min", RegexTester.PRIS, 5);
             maksPrisFelt = new CustomJTextField("maks", RegexTester.PRIS, 5);
             minArealFelt = new CustomJTextField("min", RegexTester.KVM_BOLIG, 5);
             maksArealFelt = new CustomJTextField("maks", RegexTester.KVM_BOLIG, 5);
-            fyllPanel = new CustomSubPanel(null);
-
+            postStedBox = new JComboBox<>();
+            boligTypeBox = new JComboBox<>();
+            
             setVisible(true);
-            setLayout(new FlowLayout());
+            setLayout(new GridLayout(2,4));
+            prisLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+            arealLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+            postStedBox.setPreferredSize(new Dimension(100, postStedBox.getHeight()));
+            boligTypeBox.setPreferredSize(new Dimension(100, boligTypeBox.getHeight()));
 
-            add(postStedBox);
-            add(boligTypeBox);
-            add(fyllPanel);
             add(prisLabel);
             add(minPrisFelt);
-            add(bindestrekLabel);
             add(maksPrisFelt);
+            add(postStedBox);
             add(arealLabel);
             add(minArealFelt);
-            add(bindestrekLabel2);
             add(maksArealFelt);
-            
-            fyllPanel.setPreferredSize(new Dimension(30,110));
-
-        }
-
-        public JComboBox getPostStedBox() {
-            return postStedBox;
-        }
-
-        public JComboBox getBoligTypeBox() {
-            return boligTypeBox;
+            add(boligTypeBox);
         }
 
         public CustomJTextField getMinPrisFelt() {
@@ -199,20 +155,20 @@ public class TopPanelAnnonse extends AbstractPanel {
         public CustomJTextField getMaksArealFelt() {
             return maksArealFelt;
         }
-
-        public void setPostStedBox(JComboBox postStedBox) {
-            this.postStedBox = postStedBox;
-        }
-
-        public void addItemPoststedBox(Object item) {
+        
+    	public JComboBox getPostStedBox() {
+    		return postStedBox;
+    	}
+    	
+    	public JComboBox getBoligTypeBox() {
+    		return boligTypeBox;
+    	}
+    	
+    	public void addItemPoststedBox(Object item) {
             postStedBox.addItem(item);
         }
-
-        public void setBoligTypeBox(JComboBox boligTypeBox) {
-            this.boligTypeBox = boligTypeBox;
-        }
-
-        public void addItemBoligTypeBox(Object item) {
+    	
+    	public void addItemBoligTypeBox(Object item) {
             boligTypeBox.addItem(item);
         }
 
@@ -228,9 +184,6 @@ public class TopPanelAnnonse extends AbstractPanel {
         }
     }
 
-    /**
-     * Privat klasse for sjekkbokser
-     */
     private class CheckBoxKnappeGruppe extends AbstractPanel {
 
         private CustomJCheckBox balkongCheckBox, fellesvaskCheckBox, hageCheckBox, kjellerCheckBox;
@@ -242,8 +195,8 @@ public class TopPanelAnnonse extends AbstractPanel {
             kjellerCheckBox = new CustomJCheckBox("Kjeller");
 
             setVisible(true);
-            setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-            setPreferredSize(new Dimension(90, 110));
+            setLayout(new FlowLayout(FlowLayout.LEFT, 0, 4));
+            setPreferredSize(new Dimension(100, 120));
             
             add(balkongCheckBox);
             add(fellesvaskCheckBox);

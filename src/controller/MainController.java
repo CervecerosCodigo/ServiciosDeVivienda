@@ -60,8 +60,7 @@ public class MainController implements Serializable {
         annonseVindu = new ArkfaneTemplate("annonse");
         startGUI = new StartGUI(meglerVindu, annonseVindu);
 
-        innloggingController = new InnloggingController(startGUI);
-        
+        innloggingController = new InnloggingController(startGUI, personliste);
         tabellControllerMegler = new ControllerTabellOgOutput(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         tabellControllerAnnonse = new ControllerTabellOgOutput(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerMegler = new ControllerToppPanelMegler(meglerVindu, personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
