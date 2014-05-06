@@ -1,14 +1,19 @@
 package view.registrer;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
+import java.util.Calendar;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import lib.GuiSizes;
+import lib.Konstanter;
 import lib.RegexTester;
 import view.CustomJButton;
 import view.CustomJCheckBox;
@@ -16,15 +21,26 @@ import view.CustomJTextField;
 
 public class PersonRegVindu extends AbstractRegistreringsPanel {
 
-
-    
     private JLabel fornavnLabel, etternavnLabel, epostLabel, telefonLabel, erRepresntantLabel, erRepresentatnForLabel;
     private CustomJTextField fornavnField, etternavnField, epostField, telefonField, erRepresentatForField;
     private CustomJCheckBox erRepresentantCheckBox;
     private CustomJButton avbrytButton, lagreButton;
 
+    //Componenter for en Leietaker
+    private JLabel fodselsArLabel, antPersonerHusholdLabel, sivilStatusLabel, arbeidsForholdLabel, yrkeLabel, soknadsTekstLabel;
+    private JComboBox fodselsArCombo, antPersonerHusholdCombo, sivilStatusCombo, arbeidsForholdCombo;
+    private CustomJTextField yrkeField;
+    private JTextArea soknadsTextArea;
+    private JScrollPane soknadsScroll;
+
+//     this.fodselsAr = fodselsAr;
+//        this.antPersoner = antPersoner;
+//        this.sivilstatus = sivilstatus;
+//        this.yrke = yrke;
+//        this.arbeidsforhold = arbeidsforhold;
+//        this.soknadsTekst = soknadsTekst;
     public PersonRegVindu(String tittel) {
-        super(350, 250, tittel);
+        super(450, 400, tittel);
 
         senterPanel = new CustomSubPanel("", 0, 0, new GridBagLayout());
         add(senterPanel);
@@ -36,13 +52,49 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
         erRepresntantLabel = new JLabel("Er representant: ");
         erRepresentatnForLabel = new JLabel("Representerer: ");
 
-        fornavnField = new CustomJTextField("Ola", RegexTester.NAVN_PATTERN, 10);
-        etternavnField = new CustomJTextField("Normann", RegexTester.NAVN_PATTERN, 10);
-        epostField = new CustomJTextField("ola.normann@epost.com", RegexTester.EPOST_PATTERN, 10);
-        telefonField = new CustomJTextField("XX XX XX XX", RegexTester.TEL_NUMMER_NORSK, 10);
-        erRepresentatForField = new CustomJTextField("Navn på representat", RegexTester.NAVN_PATTERN, 10);
+        fornavnField = new CustomJTextField("Ola", RegexTester.NAVN_PATTERN, GuiSizes.FIELD_MEDIUM);
+        etternavnField = new CustomJTextField("Normann", RegexTester.NAVN_PATTERN, GuiSizes.FIELD_MEDIUM);
+        epostField = new CustomJTextField("ola.normann@epost.com", RegexTester.EPOST_PATTERN, GuiSizes.FIELD_MEDIUM);
+        telefonField = new CustomJTextField("XX XX XX XX", RegexTester.TEL_NUMMER_NORSK, GuiSizes.FIELD_MEDIUM);
+        erRepresentatForField = new CustomJTextField("Navn på representat", RegexTester.NAVN_PATTERN, GuiSizes.FIELD_MEDIUM);
         //Cheboxes
         erRepresentantCheckBox = new CustomJCheckBox();
+        //Componenter for en leietaker
+        fodselsArLabel = new JLabel("Fødselsår: ");
+        antPersonerHusholdLabel = new JLabel("Pers i husholdet: ");
+        sivilStatusLabel = new JLabel("Sivilstatus: ");
+        arbeidsForholdLabel = new JLabel("Arbeidsforhold: ");
+        yrkeLabel = new JLabel("Yrke: ");
+        soknadsTekstLabel = new JLabel("Søknadstekst: ");
+        fodselsArCombo = new JComboBox();
+        //Begrenser slik at kun folk som er minst 18 år får leie boligen.
+        for (int i = 1920; i <= (Calendar.getInstance().get(Calendar.YEAR) - 18); i++) {
+            fodselsArCombo.addItem(i);
+        }
+        fodselsArCombo.setSelectedIndex(fodselsArCombo.getItemCount() - 1);
+        fodselsArCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
+
+        antPersonerHusholdCombo = new JComboBox();
+        for (int i = 1; i < 10; i++) {
+            antPersonerHusholdCombo.addItem(i);
+        }
+        antPersonerHusholdCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
+        
+        
+        sivilStatusCombo = new JComboBox(Konstanter.SIVILSTATUS);
+        sivilStatusCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
+        
+        arbeidsForholdCombo = new JComboBox(Konstanter.ARBEIDSFORHOLD);
+        arbeidsForholdCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
+
+        yrkeField = new CustomJTextField("Sjåfør", RegexTester.KUN_BOKSTAVER, GuiSizes.FIELD_MEDIUM);
+        soknadsTextArea = new JTextArea(GuiSizes.TEXTAREA_ROW_MEDIUM, GuiSizes.TEXTAREA_COL_MEDIUM);
+        soknadsTextArea.setLineWrap(true);
+        soknadsTextArea.setWrapStyleWord(true);
+        soknadsTextArea.setMargin(new Insets(3, 3, 3, 3));
+        soknadsScroll = new JScrollPane(soknadsTextArea);
+        
+
         //Knapper
         avbrytButton = new CustomJButton("Avbryt");
         lagreButton = new CustomJButton("Lagre");
@@ -54,12 +106,12 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource().equals(getAvbrytButton())){
+                if (e.getSource().equals(getAvbrytButton())) {
                     dispose();
                 }
             }
         });
-        
+
         erRepresentantCheckBox.addActionListener(new ActionListener() {
 
             @Override
@@ -89,7 +141,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
         senterPanel.add(fornavnLabel, gc);
 
         gc.gridx = 1;
-        gc.weightx = 1;        
+        gc.weightx = 1;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(fornavnField, gc);
@@ -174,6 +226,103 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(erRepresentatForField, gc);
 
+        //Ny rad for leietaker
+        //Fødselår
+        gc.weightx = 1;
+        gc.weighty = 1;
+
+        gc.gridx = 0;
+        gc.gridy++;
+        gc.anchor = GridBagConstraints.LINE_START;
+        gc.insets = new Insets(0, 0, 0, 5);
+        senterPanel.add(fodselsArLabel, gc);
+
+        gc.gridx = 1;
+//        gc.gridy++;
+        gc.insets = new Insets(0, 0, 0, 0);
+        gc.anchor = GridBagConstraints.LINE_START;
+        senterPanel.add(fodselsArCombo, gc);
+
+        //Personer i husholdet
+        gc.weightx = 1;
+        gc.weighty = 1;
+
+        gc.gridx = 0;
+        gc.gridy++;
+        gc.anchor = GridBagConstraints.LINE_START;
+        gc.insets = new Insets(0, 0, 0, 5);
+        senterPanel.add(antPersonerHusholdLabel, gc);
+
+        gc.gridx = 1;
+//        gc.gridy++;
+        gc.insets = new Insets(0, 0, 0, 0);
+        gc.anchor = GridBagConstraints.LINE_START;
+        senterPanel.add(antPersonerHusholdCombo, gc);
+
+        //Sivilstatus
+        gc.weightx = 1;
+        gc.weighty = 1;
+
+        gc.gridx = 0;
+        gc.gridy++;
+        gc.anchor = GridBagConstraints.LINE_START;
+        gc.insets = new Insets(0, 0, 0, 5);
+        senterPanel.add(sivilStatusLabel, gc);
+
+        gc.gridx = 1;
+//        gc.gridy++;
+        gc.insets = new Insets(0, 0, 0, 0);
+        gc.anchor = GridBagConstraints.LINE_START;
+        senterPanel.add(sivilStatusCombo, gc);
+
+        //Arbeidsforhold
+        gc.weightx = 1;
+        gc.weighty = 1;
+
+        gc.gridx = 0;
+        gc.gridy++;
+        gc.anchor = GridBagConstraints.LINE_START;
+        gc.insets = new Insets(0, 0, 0, 5);
+        senterPanel.add(arbeidsForholdLabel, gc);
+
+        gc.gridx = 1;
+//        gc.gridy++;
+        gc.insets = new Insets(0, 0, 0, 0);
+        gc.anchor = GridBagConstraints.LINE_START;
+        senterPanel.add(arbeidsForholdCombo, gc);
+
+        //Yrke
+        gc.weightx = 1;
+        gc.weighty = 1;
+
+        gc.gridx = 0;
+        gc.gridy++;
+        gc.anchor = GridBagConstraints.LINE_START;
+        gc.insets = new Insets(0, 0, 0, 5);
+        senterPanel.add(yrkeLabel, gc);
+
+        gc.gridx = 1;
+//        gc.gridy++;
+        gc.insets = new Insets(0, 0, 0, 0);
+        gc.anchor = GridBagConstraints.LINE_START;
+        senterPanel.add(yrkeField, gc);
+        
+        //soknadsTekst
+        gc.weightx = 1;
+        gc.weighty = 1;
+
+        gc.gridx = 0;
+        gc.gridy++;
+        gc.anchor = GridBagConstraints.LINE_START;
+        gc.insets = new Insets(0, 0, 0, 5);
+        senterPanel.add(soknadsTekstLabel, gc);
+
+        gc.gridx = 1;
+//        gc.gridy++;
+        gc.insets = new Insets(0, 0, 0, 0);
+        gc.anchor = GridBagConstraints.LINE_START;
+        senterPanel.add(soknadsScroll, gc);
+
         //Rad 7
         gc.weightx = 0.1;
         gc.weighty = 1;
@@ -230,9 +379,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
     public JLabel getErRepresentantForLabel() {
         return erRepresentatnForLabel;
     }
-    
-    
-    
+
     //Setters
     public void setFornavnField(CustomJTextField fornavnField) {
         this.fornavnField = fornavnField;
@@ -258,6 +405,40 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
         this.erRepresentantCheckBox = erRepresentantCheckBox;
     }
 
+    //__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//
+    //GETTERs FOR LEIETAKER
+    //__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//__//
+    public JComboBox getFodselsArCombo() {
+        return fodselsArCombo;
+    }
+
+    public JComboBox getAntPersonerHusholdCombo() {
+        return antPersonerHusholdCombo;
+    }
+
+    public JComboBox getSivilStatusCombo() {
+        return sivilStatusCombo;
+    }
+
+    public JComboBox getArbeidsForholdCombo() {
+        return arbeidsForholdCombo;
+    }
+
+    public CustomJTextField getYrkeField() {
+        return yrkeField;
+    }
+
+    public JTextArea getSoknadsTextArea() {
+        return soknadsTextArea;
+    }
+
+    
+    
+    
+    /**
+     * Setter opp lytter
+     * @param lytter 
+     */
     public void addPersonPanelListener(ActionListener lytter) {
         avbrytButton.addActionListener(lytter);
         lagreButton.addActionListener(lytter);
