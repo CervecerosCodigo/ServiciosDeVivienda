@@ -54,7 +54,8 @@ public class ControllerRegistrerSoknad {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource().equals(vindu.getAksepter())){
-                new ControllerRegistrerPerson(personliste, annonseliste, soknadliste, annonse);
+//                new ControllerRegistrerPerson(personliste, annonseliste, soknadliste, annonse);
+                new ControllerRegistrerLeietaker(personliste, annonseliste, soknadliste, annonse);
                 vindu.dispose();
             }
             if(e.getSource().equals(vindu.getAvbryt())){

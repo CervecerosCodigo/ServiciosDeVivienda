@@ -12,9 +12,11 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import lib.Arbeidsforhold;
 import lib.GuiSizes;
 import lib.Konstanter;
 import lib.RegexTester;
+import lib.Sivilstatus;
 import view.CustomJButton;
 import view.CustomJCheckBox;
 import view.CustomJTextField;
@@ -39,7 +41,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
 //        this.yrke = yrke;
 //        this.arbeidsforhold = arbeidsforhold;
 //        this.soknadsTekst = soknadsTekst;
-    public PersonRegVindu(String tittel) {
+    public PersonRegVindu(int bredde, int hoyde, String tittel) {
         super(450, 400, tittel);
 
         senterPanel = new CustomSubPanel("", 0, 0, new GridBagLayout());
@@ -81,10 +83,10 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
         antPersonerHusholdCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
         
         
-        sivilStatusCombo = new JComboBox(Konstanter.SIVILSTATUS);
+        sivilStatusCombo = new JComboBox(Sivilstatus.values());
         sivilStatusCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
         
-        arbeidsForholdCombo = new JComboBox(Konstanter.ARBEIDSFORHOLD);
+        arbeidsForholdCombo = new JComboBox(Arbeidsforhold.values());
         arbeidsForholdCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
 
         yrkeField = new CustomJTextField("Sjåfør", RegexTester.KUN_BOKSTAVER, GuiSizes.FIELD_MEDIUM);
@@ -430,6 +432,34 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
 
     public JTextArea getSoknadsTextArea() {
         return soknadsTextArea;
+    }
+
+    public JLabel getFodselsArLabel() {
+        return fodselsArLabel;
+    }
+
+    public JLabel getAntPersonerHusholdLabel() {
+        return antPersonerHusholdLabel;
+    }
+
+    public JLabel getSivilStatusLabel() {
+        return sivilStatusLabel;
+    }
+
+    public JLabel getArbeidsForholdLabel() {
+        return arbeidsForholdLabel;
+    }
+
+    public JLabel getYrkeLabel() {
+        return yrkeLabel;
+    }
+
+    public JLabel getSoknadsTekstLabel() {
+        return soknadsTekstLabel;
+    }
+
+    public JScrollPane getSoknadsScroll() {
+        return soknadsScroll;
     }
 
     

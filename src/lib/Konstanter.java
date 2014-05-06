@@ -76,8 +76,4 @@ public class Konstanter {
 //    public static final Color BAKGRUNNSFARGEPANEL = new Color(193, 205, 193); //Honey Dew
     
     
-    //Konstanter for Person combobokser
-    public static final Object[] SIVILSTATUS = {"Ugift", "Samboer", "Gift", "Separert", "Skilt", "Enke", "Alene"};
-    public static final Object[] ARBEIDSFORHOLD = {"Ansatt", "Deltidsansatt", "Arbeidsledig", "Student", "Pensjonist", "Livsnytere"};
-    
 }

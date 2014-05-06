@@ -2,20 +2,12 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import controller.registrer.ControllerRegistrerBolig;
-import controller.registrer.ControllerRegistrerPerson;
 import java.io.*;
 import java.util.*;
-import javax.swing.JFrame;
-import javax.swing.JTable;
 import lib.*;
 import model.*;
 import register.*;
-import test.filklasser.TestBildeFilSti;
-import test.searchklasser.TestAnnonseFilter;
-import test.searchklasser.TestFritekstSok;
 import view.*;
-import view.registrer.*;
-import view.registrer.PersonRegVindu;
 
 /**
  * Dette er hovedkontrolleren mellom GUI og funksjonalitet. Mer info siden..
@@ -48,7 +40,6 @@ public class MainController implements Serializable {
     private ControllerToppPanelMegler toppPanelControllerMegler;
     private ControllerToppPanelAnnonse toppPanelControllerAnnonse;
     
-    private ControllerRegistrerPerson controllerRegistrerUtleier;
     //Tester å bruke den nye klassen for registrering av bolig
     private ControllerRegistrerBolig controllerRegistrerBolig;
 

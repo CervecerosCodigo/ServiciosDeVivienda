@@ -10,14 +10,12 @@ package controller;
 import controller.registrer.ControllerRegistrerAnnonse;
 import controller.registrer.ControllerRegistrerBolig;
 import controller.registrer.ControllerRegistrerSoknad;
-import controller.registrer.ControllerRegistrerPerson;
-import java.awt.Color;
+import controller.registrer.ControllerRegistrerUtleier;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -154,7 +152,8 @@ public class ControllerTabellOgOutput {
                         new ControllerRegistrerBolig(boligliste, returnerBoligObjekt());
 
                     } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
-                        new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
+//                        new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
+                        new ControllerRegistrerUtleier(personliste, (Utleier) returnerPersonObjekt());
 
                     } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
                         if (erMeglerVindu) {
@@ -253,14 +252,16 @@ public class ControllerTabellOgOutput {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ControllerRegistrerPerson(personliste);
+//                new ControllerRegistrerPerson(personliste);
+                new ControllerRegistrerUtleier(personliste);
             }
         });
         menyvalgEndrePerson.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
+//                new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
+                new ControllerRegistrerUtleier(personliste, (Utleier) returnerPersonObjekt());
             }
         });
         menyvalgSlettPerson.addActionListener(new ActionListener() {

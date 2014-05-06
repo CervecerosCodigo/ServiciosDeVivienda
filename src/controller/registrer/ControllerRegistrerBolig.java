@@ -494,7 +494,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
             } else if (e.getSource().equals(bRegVindu.getBildeButton())) {
                 lastOppEkstraBilde(bolig);
             }else if(e.getSource().equals(bRegVindu.getVisFlereBilderButton())){
-                ControllerBildeViser controllerBildeViser = new ControllerBildeViser(bolig, true);
+                ControllerBildeViser controllerBildeViser = new ControllerBildeViser(bolig, false);
             }
         }
     }
