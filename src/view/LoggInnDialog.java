@@ -1,13 +1,14 @@
 package view;
 
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -28,8 +29,7 @@ public class LoggInnDialog extends JDialog {
 		loggInnKnapp = new JButton("Ok");
 		avbrytKnapp = new JButton("Avbryt");
 		
-		setLayout(new FlowLayout(FlowLayout.LEFT));
-		setSize(180, 180);
+		setLayout(new FlowLayout());
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(getParent());
@@ -44,8 +44,15 @@ public class LoggInnDialog extends JDialog {
 		add(passordFelt);
 		add(loggInnKnapp);
 		add(avbrytKnapp);
+		
+		pack();
 	}
 	
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(200,180);
+	}
+
 	public void addKnappeListener(ActionListener lytter) {
 		this.loggInnKnapp.addActionListener(lytter);
 		this.avbrytKnapp.addActionListener(lytter);
