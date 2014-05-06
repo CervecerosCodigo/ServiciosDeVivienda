@@ -12,9 +12,11 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import lib.Arbeidsforhold;
 import lib.GuiSizes;
 import lib.Konstanter;
 import lib.RegexTester;
+import lib.Sivilstatus;
 import view.CustomJButton;
 import view.CustomJCheckBox;
 import view.CustomJTextField;
@@ -81,10 +83,10 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
         antPersonerHusholdCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
         
         
-        sivilStatusCombo = new JComboBox(Konstanter.SIVILSTATUS);
+        sivilStatusCombo = new JComboBox(Sivilstatus.values());
         sivilStatusCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
         
-        arbeidsForholdCombo = new JComboBox(Konstanter.ARBEIDSFORHOLD);
+        arbeidsForholdCombo = new JComboBox(Arbeidsforhold.values());
         arbeidsForholdCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
 
         yrkeField = new CustomJTextField("Sjåfør", RegexTester.KUN_BOKSTAVER, GuiSizes.FIELD_MEDIUM);
