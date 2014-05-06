@@ -39,7 +39,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
 //        this.yrke = yrke;
 //        this.arbeidsforhold = arbeidsforhold;
 //        this.soknadsTekst = soknadsTekst;
-    public PersonRegVindu(String tittel) {
+    public PersonRegVindu(int bredde, int hoyde, String tittel) {
         super(450, 400, tittel);
 
         senterPanel = new CustomSubPanel("", 0, 0, new GridBagLayout());
@@ -430,6 +430,34 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
 
     public JTextArea getSoknadsTextArea() {
         return soknadsTextArea;
+    }
+
+    public JLabel getFodselsArLabel() {
+        return fodselsArLabel;
+    }
+
+    public JLabel getAntPersonerHusholdLabel() {
+        return antPersonerHusholdLabel;
+    }
+
+    public JLabel getSivilStatusLabel() {
+        return sivilStatusLabel;
+    }
+
+    public JLabel getArbeidsForholdLabel() {
+        return arbeidsForholdLabel;
+    }
+
+    public JLabel getYrkeLabel() {
+        return yrkeLabel;
+    }
+
+    public JLabel getSoknadsTekstLabel() {
+        return soknadsTekstLabel;
+    }
+
+    public JScrollPane getSoknadsScroll() {
+        return soknadsScroll;
     }
 
     
