@@ -43,6 +43,10 @@ public class RegexTester {
      * mellomrom er tillatt og blandning av store og små bokstaver.
      */
     public static final String KUN_BOKSTAVER = "^[a-zæøåA-ZÆØÅ\\s]+$";
+    /**
+     * Valgfri rekkefølge store eller små bokstaver, tall og mellomrom.
+     */
+    public static final String KUN_BOKSTAVER_ELLER_TALL = "^[a-zæøåA-ZÆØÅ0-9\\s]+$";
     private static boolean erTestOK;
 
     public RegexTester() {
@@ -240,7 +244,16 @@ public class RegexTester {
     public static boolean testKunBokstaver(String kunBokstaver) {
         return patternMatchOK(kunBokstaver, KUN_BOKSTAVER);
     }
-
+    
+    /**
+     * Valgfri rekkefølge store eller små bokstaver, tall og mellomrom.
+     * @param kunBokstaverEllerTall
+     * @return 
+     */
+    public static boolean testKunBokstaverEllerTall(String kunBokstaverEllerTall) {
+        return patternMatchOK(kunBokstaverEllerTall, KUN_BOKSTAVER_ELLER_TALL);
+    }
+    
     /**
      * Tester en input string mot en fordefiniert regex.
      *

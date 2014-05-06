@@ -1,5 +1,6 @@
 package controller.registrer;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -30,24 +31,34 @@ public class ControllerRegistrerPerson extends AbstractControllerRegister {
     private HashSet<Soknad> soknadRegister;
     private boolean erNyregistrering;
 
-    //Datafelt for personopplysninger
-    private String fnavn, enavn, epost, telnr, erRepresentantFor;
+    //Datafelt for generelle opplysninger
+    private String fnavn, enavn, epost, telnr;
+
+    //Datafelt for Utleier
+    private String erRepresentantFor;
     private boolean erRepresentant;
     private boolean erLeietaker;
 
+    //Datafelt for Leietaker
+    private int fodelsAr, antPersHushold;
+    private String sivilStatus, arbeidsForhold, yrke, soknadsTekst;
+
     /**
-     * Konstruktøren blir brukt i samband med registrering av en ny bolig.
+     * Konstruktøren blir brukt i samband med registrering av en ny bolig
+     * og/eller en ny utleier. Eventuelle felt for en leietaker bil skjult.
      *
      * @param personRegister
      */
     public ControllerRegistrerPerson(HashSet<Person> personRegister) {
         super(personRegister);
         erNyregistrering = true;
-        this.vindu = new PersonRegVindu("Registrer utleier");
+        this.vindu = new PersonRegVindu(150, 200, "Registrer utleier");
 //        this.personRegister = personRegister;//Dette var gamle måten å gjøre det på før vi hadde en superklasse.
 
         //Legger til lytter
         vindu.addPersonPanelListener(new KnappeLytter());
+
+        skjulLeietakerFelter();
     }
 
     /**
@@ -61,10 +72,11 @@ public class ControllerRegistrerPerson extends AbstractControllerRegister {
         this.person = person;
         erNyregistrering = false;
         if (erLeietaker()) {
-            this.vindu = new PersonRegVindu("Endre opplysninger for Leietaker");
-            skjulRepresentantfelter();
+            this.vindu = new PersonRegVindu(450, 400, "Endre opplysninger for Leietaker");
+            skjulRepresentantFelter();
         } else {
-            this.vindu = new PersonRegVindu("Endre opplysninger for utleier");
+            this.vindu = new PersonRegVindu(150, 200, "Endre opplysninger for utleier");
+            skjulLeietakerFelter();
         }
         visDataFraRegister(person);
         //Legger til en lytter
@@ -84,26 +96,43 @@ public class ControllerRegistrerPerson extends AbstractControllerRegister {
         this.annonseRegister = annonseRegister;
         this.soknadRegister = soknadRegister;
         this.annonse = annonse;
-        this.vindu = new PersonRegVindu("Registrer ny person");
+        this.vindu = new PersonRegVindu(450, 400, "Registrer ny person");
         erNyregistrering = true;
         erLeietaker = true;
         vindu.addPersonPanelListener(new KnappeLytter());
-        skjulRepresentantfelter();
+        skjulRepresentantFelter();
     }
 
     /**
      * Kalles opp i de tilfellene der personobjektet ikke er Utleier.
      */
-    private void skjulRepresentantfelter() {
+    private void skjulRepresentantFelter() {
         vindu.getErRepresentantForLabel().setVisible(false);
         vindu.getErRepresentantLabel().setVisible(false);
         vindu.getErRepresentantCheckBox().setVisible(false);
         vindu.getErRepresentantForField().setVisible(false);
     }
 
+    private void skjulLeietakerFelter() {
+        vindu.getFodselsArLabel().setVisible(false);
+        vindu.getAntPersonerHusholdLabel().setVisible(false);
+        vindu.getSivilStatusLabel().setVisible(false);
+        vindu.getArbeidsForholdLabel().setVisible(false);
+        vindu.getYrkeLabel().setVisible(false);
+        vindu.getSoknadsTekstLabel().setVisible(false);
+
+        vindu.getFodselsArCombo().setVisible(false);
+        vindu.getAntPersonerHusholdCombo().setVisible(false);
+        vindu.getSivilStatusCombo().setVisible(false);
+        vindu.getArbeidsForholdCombo().setVisible(false);
+        vindu.getYrkeField().setVisible(false);
+        vindu.getSoknadsScroll().setVisible(false);
+    }
+
     /**
      * Returnerer true om personen er Leietaker.
-     * @return 
+     *
+     * @return
      */
     private boolean erLeietaker() {
         return erLeietaker || person instanceof Leietaker;
@@ -122,6 +151,7 @@ public class ControllerRegistrerPerson extends AbstractControllerRegister {
         if (person instanceof Utleier) {
             if (((Utleier) person).isErRepresentant()) {
                 vindu.getErRepresentantCheckBox().setSelected(((Utleier) person).isErRepresentant());
+                vindu.getErRepresentantForField().setEnabled(true);
                 vindu.getErRepresentantForField().setText(((Utleier) person).getErRepresentantFor());
             }
         }
@@ -145,8 +175,14 @@ public class ControllerRegistrerPerson extends AbstractControllerRegister {
             if (erRepresentant) {
                 erRepresentantFor = vindu.getErRepresentantForField().getText();
             }
+        } else if (person instanceof Leietaker) {
+            fodelsAr = (int) vindu.getFodselsArCombo().getSelectedItem();
+            antPersHushold = (int) vindu.getAntPersonerHusholdCombo().getSelectedItem();
+            sivilStatus = (String) vindu.getSivilStatusCombo().getSelectedItem();
+            arbeidsForhold = (String) vindu.getArbeidsForholdCombo().getSelectedItem();
+            yrke = vindu.getYrkeField().getText();
+            soknadsTekst = vindu.getSoknadsTextArea().getText();
         }
-
     }
 
     /**
@@ -160,13 +196,14 @@ public class ControllerRegistrerPerson extends AbstractControllerRegister {
         boolean epostOK = RegexTester.testEpost(epost);
         boolean telnrOK = RegexTester.testTelNummerNorsk(telnr);
 
-        boolean erRepresentantForOK = true;
+        boolean erRepresentantForOK = true;//Denne må være true som default for de tilfelden da utleieren ikke er representant. Dersom utleieren er representat blir letet testet med regex.
 
         if (erLeietaker()) {
-            return fnavnOK && enavnOK && epostOK && telnrOK;
+            boolean yrkeOK = RegexTester.testKunBokstaverEllerTall(yrke);
+            return fnavnOK && enavnOK && epostOK && telnrOK && yrkeOK;
         }
         if (erRepresentant) {
-            erRepresentantForOK = RegexTester.testNavn(erRepresentantFor);
+            erRepresentantForOK = RegexTester.testKunBokstaverEllerTall(erRepresentantFor);
         }
         return fnavnOK && enavnOK && epostOK && telnrOK && erRepresentantForOK;
     }
@@ -222,12 +259,14 @@ public class ControllerRegistrerPerson extends AbstractControllerRegister {
                 person = new Leietaker(fnavn, enavn, epost, telnr);
                 Soknad soknad = new Soknad(annonse, person);
                 //super.registrerObjekt((Leietaker) person);
-                soknadRegister.add(soknad);
-                melding.append("Din søknad er nå registrert");
+                if (soknadRegister.add(soknad)) {
+                    melding.append("Din søknad er nå registrert");
+                }
             } else {
                 person = new Utleier(fnavn, enavn, epost, telnr, erRepresentant, erRepresentantFor);
-                super.registrerObjekt((Utleier) person);
-                melding.append("En ny person er registrert:\n").append(fnavn).append(" ").append(enavn).append("\n").append(epost);
+                if (super.registrerObjekt((Utleier) person)) {
+                    melding.append("En ny person er registrert:\n").append(fnavn).append(" ").append(enavn).append("\n").append(epost);
+                }
             }
 
             if (erLeietaker()) {
