@@ -1,23 +1,21 @@
 package controller.registrer;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Iterator;
-import javax.swing.JTextArea;
+import controller.TabellOppdateringInterface;
+import controller.VisMeldingInterface;
+import java.awt.event.*;
+import java.util.*;
+import lib.Konstanter;
 import lib.RegexTester;
-import model.Annonse;
-import model.Bolig;
-import model.Person;
-import view.ComboDatoVelger;
-import view.CustomJCheckBox;
-import view.CustomJTextField;
+import model.*;
 import view.registrer.AnnonseRegVindu;
 
-public class ControllerRegistrerAnnonse {
+/**
+ * Controller for logikken til registreringsvindu for annonseobjektene. 
+ * Her er det Konstruktører for både nyregistreringer og å endre eksisterende objekter.
+ * @author espen
+ */
+public class ControllerRegistrerAnnonse implements VisMeldingInterface{
 
     private AnnonseRegVindu vindu;
     private HashSet<Annonse> annonseliste;
@@ -27,12 +25,19 @@ public class ControllerRegistrerAnnonse {
     private String fornavn, etternavn, epost, tlf;
 
     private int depositum, utleiepris;
-    private Calendar utlopsDato, tilgjengligFraDato;
+    private Calendar utlopsDato, tilgjengligFraDato, today;
     private String eiersKrav;
     private boolean erSynligsomAnnonse;
     
     private boolean erNyregistrering;
+    TabellOppdateringInterface tabellOppdateringLytter;
 
+    /**
+     * Konstruktør for registrering av nye annonseobjekter.
+     * @param annonseliste
+     * @param personliste
+     * @param bolig 
+     */
     public ControllerRegistrerAnnonse(HashSet<Annonse> annonseliste, HashSet<Person> personliste, Bolig bolig) {
         this.annonseliste = annonseliste;
         this.personliste = personliste;
@@ -41,8 +46,26 @@ public class ControllerRegistrerAnnonse {
         vindu.addAnnonsePanelListener(new KnappLytter());
         fyllUtBoliginfo();
         erNyregistrering = true;
+        
+        today = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));    
+
+        vindu.getUtlopsDato().setDato(
+                today.get(Calendar.YEAR),
+                today.get(Calendar.MONTH)+1,
+                today.get(Calendar.DAY_OF_WEEK));
+
+        vindu.getTilgjengligFraDato().setDato(
+                today.get(Calendar.YEAR),
+                today.get(Calendar.MONTH)+1,
+                today.get(Calendar.DAY_OF_WEEK));        
     }
 
+    /**
+     * Kontroller for endringer av eksisterende annonseobjekter.
+     * @param annonseliste
+     * @param personliste
+     * @param annonseSomEndres 
+     */
     public ControllerRegistrerAnnonse(HashSet<Annonse> annonseliste, HashSet<Person> personliste, Annonse annonseSomEndres) {
         this.annonseliste = annonseliste;
         this.personliste = personliste;
@@ -52,6 +75,7 @@ public class ControllerRegistrerAnnonse {
         vindu.addAnnonsePanelListener(new KnappLytter());
         fyllUtBoliginfo();
         erNyregistrering = false;
+        today = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));                
 
         //Setter inn data fra eksisterende annonse.
         vindu.getDepositum().setText(String.valueOf(this.annonseSomEndres.getDepositum()));
@@ -95,7 +119,7 @@ public class ControllerRegistrerAnnonse {
                 return true;
             }
         }
-        System.out.println("Må ha meldingimplementasjon her");
+        visMelding("Annonsen kunne ikke slettes!");
         return false;
     }
 
@@ -115,10 +139,10 @@ public class ControllerRegistrerAnnonse {
                 vindu.getBoligEierEpostInfo().setText(epost);
                 vindu.getBoligEierTlfInfo().setText(tlf);
             } else {
-                System.out.println("Personobjektet finnes ikke!");
+                visMelding("Personobjektet finnes ikke!");
             }
         } else {
-            System.out.println("Boligenobjektet finnes ikke!");
+            visMelding("Boligenobjektet finnes ikke!");
         }
     }
 
@@ -148,24 +172,33 @@ public class ControllerRegistrerAnnonse {
      */
     private boolean skrivOppdateringtilAnnonseSet(Annonse annonse) {
         if (annonseliste.add(annonse)) {
-            System.out.println("Annonsen er oppdatert.");
+            visMelding("Annonsen er oppdatert!");
             return true;
         }
-        System.out.println("Annonsen ble ikke oppdatert.");
+        visMelding("Annonsen ble ikke oppdatert!");
         return false;
     }
 
+    /**
+     * Kjører Regexsjekk på alle feltene.
+     * @return 
+     */
     private boolean kontrollerDataAnnonse() {
 
-        boolean[] annonseOK = new boolean[4];
-        Calendar today = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+        
 
-        if ((today.getInstance().compareTo(utlopsDato.getInstance())) >= 0) {
+        
+
+        boolean[] annonseOK = new boolean[4];
+        
+        if ((today.compareTo(utlopsDato)) <= 0) {
+            System.out.println("Utløp" + today.compareTo(utlopsDato));
             annonseOK[0] = true;
         } else {
             annonseOK[0] = false;
         }
-        if ((today.getInstance().compareTo(tilgjengligFraDato.getInstance())) >= 0) {
+        if ((today.compareTo(tilgjengligFraDato)) <= 0) {
+            System.out.println("Tilgjenglig" + today.compareTo(tilgjengligFraDato));
             annonseOK[1] = true;
         } else {
             annonseOK[1] = false;
@@ -193,7 +226,7 @@ public class ControllerRegistrerAnnonse {
             erSynligsomAnnonse = vindu.getErSynligSomAnnonse().isSelected();
             eiersKrav = vindu.getEiersKrav().getText();
         } catch (Exception ex) {
-            System.out.println("Fant ikke feltene.");
+            visMelding("Greier ikke hente data fra alle feltene!");
         }
     }
 
@@ -224,20 +257,31 @@ public class ControllerRegistrerAnnonse {
     private boolean registrerNyAnnonse(){
         getAnnonseDataFraGUI();
         if(!kontrollerDataAnnonse()){
-            System.out.println("Implementere melding");
+            visMelding("Vennligst sjekk alle feltene.");
             return false;
         }else{
             Annonse annonse = new Annonse(depositum, utleiepris, tilgjengligFraDato, utlopsDato, bolig, eiersKrav);
+            annonseSomEndres = annonse;
             if(annonseliste.add(annonse)){
+                visMelding("Annonsen er registrert!");
+                
                 return true;
             }else{
-                System.out.println("Implementere melding om feil");
+                visMelding("Greide ikke å legge annonsen inn i registeret!");
             }
             
         }
         return false;
     }
+
+    @Override
+    public void visMelding(String melding) {
+        vindu.visMelding(melding);
+    }
     
+    public void settTabellOppdateringsLytter(TabellOppdateringInterface lytter){
+        tabellOppdateringLytter = lytter;
+    }
     
     
     class KnappLytter implements ActionListener {
@@ -246,8 +290,12 @@ public class ControllerRegistrerAnnonse {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(vindu.getLagreButton())) {
                 if(erNyregistrering){
-                    annonseSomEndres.setErSynlig(true);
+                    
                     registrerNyAnnonse();
+                    if(tabellOppdateringLytter != null)
+                        tabellOppdateringLytter.oppdaterTabellEtterEndring();
+                    
+                    annonseSomEndres.setErSynlig(true);
                     vindu.dispose();
                 }else{
                     if(slettAnnonseFraSet(annonseSomEndres)){

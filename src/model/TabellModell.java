@@ -16,11 +16,6 @@ public abstract class TabellModell<E> extends DefaultTableModel {
 
         mottattArray = new ArrayList<>();
     }
-
-    public void formaterRader(int rad){
-        
-
-    }
     
     
     public void fyllTabellMedInnhold(ArrayList<E> liste) {

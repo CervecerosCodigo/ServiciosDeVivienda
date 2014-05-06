@@ -34,7 +34,7 @@ public class VenstrePanel extends AbstractPanel {
         tabell.setGridColor(Color.gray);
         tabell.setSelectionBackground(new Color(210, 210, 210));
         tabell.setSelectionForeground(Color.BLACK);
-        settCelleRenderer();
+        
         add(new JScrollPane(tabell));
 
     }//End Constructor
@@ -63,9 +63,11 @@ public class VenstrePanel extends AbstractPanel {
         sorterer.setSortKeys(sorteringsnokler);
     }
 
+    /**
+     * Formaterer søknadene i tabellen som er behandlet.
+     */
     public void settCelleRenderer() {
 
-        
         tabell.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -73,15 +75,16 @@ public class VenstrePanel extends AbstractPanel {
                 
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if(modell instanceof TabellModellSoknad){
-                    if(column == 2 && value.equals("Nei")){
-//                        c.setForeground();
+                    if(table.getValueAt(row, 2).equals("Ja")){
+                        c.setForeground(new Color(200, 200, 200));                      
                     }else{
-                        
+                        c.setForeground(Color.BLACK);                      
                     }
                 }
-
+                c.repaint();
                 return c;
             }
+            
         });
 
     }

@@ -6,19 +6,15 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 public class TabellModellSoknad extends TabellModell {
 
-    private DefaultTableCellRenderer soknadErBehandletFormatRenderer;
-
     public TabellModellSoknad() {
         super.overskrift = new String[]{"AnnonseID", "Søkers epost", "Behandlet", "Godkjent"};
 
-        soknadErBehandletFormatRenderer = new DefaultTableCellRenderer();
-        soknadErBehandletFormatRenderer.setForeground(Color.red);
     }
 
     @Override
     public Object getValueAt(int rad, int kolonne) {
         Soknad soknad = (Soknad) mottattArray.get(rad);
-
+        
         switch (kolonne) {
             case 0:
                 return soknad.getAnnonseObjekt().getAnnonseID();
@@ -32,9 +28,4 @@ public class TabellModellSoknad extends TabellModell {
         return null;
     }
     
-    public DefaultTableCellRenderer getTabellFormatering(){
-        
-        return soknadErBehandletFormatRenderer;
-    }
-
 }

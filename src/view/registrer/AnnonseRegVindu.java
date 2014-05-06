@@ -1,6 +1,7 @@
 package view.registrer;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import controller.VisMeldingInterface;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import lib.Boligtype;
 import lib.GuiSizes;
+import lib.Melding;
 import lib.RegexTester;
 import model.Bolig;
 import model.Enebolig;
@@ -20,7 +22,7 @@ import view.CustomJCheckBox;
 import view.CustomJTextField;
 
 
-public class AnnonseRegVindu extends AbstractRegistreringsPanel{
+public class AnnonseRegVindu extends AbstractRegistreringsPanel implements VisMeldingInterface{
 
     private JLabel boligIDLabel, boligAdresseLabel, boligPostNrLabel, boligPostStedLabel, boligEierFornavnLabel, boligEierEtternavnLabel, boligEierEpostLabel, boligEierTlfLabel;
     private CustomJTextField boligIDInfo, boligAdresseInfo, boligPostNrInfo, boligPostStedInfo, boligEierFornavnInfo, boligEierEtternavnInfo, boligEierEpostInfo, boligEierTlfInfo;
@@ -406,5 +408,10 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel{
         avbrytButton.addActionListener(lytter);
         lagreButton.addActionListener(lytter);
     }    
+
+    @Override
+    public void visMelding(String melding) {
+        Melding.visMelding(null, melding);
+    }
 
 }
