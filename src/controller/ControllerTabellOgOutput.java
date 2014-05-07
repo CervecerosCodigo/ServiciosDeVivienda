@@ -673,7 +673,7 @@ public class ControllerTabellOgOutput {
     private ArrayList<Bolig> finnBoligerRegistrertPaaEier(int personID) {
 
         ArrayList<Bolig> boliger = new ArrayList<>();
-        if (personID != -1) {
+        if (personID > 0) {
 
             Iterator<Bolig> iter2 = boligliste.iterator();
             while (iter2.hasNext()) {
@@ -705,6 +705,29 @@ public class ControllerTabellOgOutput {
     }
 
     /**
+     * Hjelpemetode som finner alle annonser en bestem person har vist interesse
+     * for
+     *
+     * @param personID
+     * @return
+     */
+    private ArrayList<Annonse> finnAnnonserAvInteressePerLeietaker(int personID) {
+        ArrayList<Annonse> annonseAvInteresse = null;
+
+        if (personID > 0) {
+            Iterator<Soknad> iter = soknadsliste.iterator();
+            while (iter.hasNext()) {
+                Soknad temp = iter.next();
+                if (temp.getLeietakerID() == personID) {
+                    annonseAvInteresse.add(temp.getAnnonseObjekt());
+                }
+            }
+            return annonseAvInteresse;
+        }
+        return null;
+    }
+
+    /**
      * Tar imot data fra sendObjektFraTabellTilOutput-metoden. Denne metoden
      * skriver ut Personobjekter som HTML til output (JEditorPane)
      *
@@ -719,16 +742,17 @@ public class ControllerTabellOgOutput {
         Leietaker leietaker = null;
         Utleier utleier = null;
 
-        switch (skalVises.getClass().getSimpleName()) {
-            case "Megler":
-                megler = (Megler) skalVises;
-                break;
-            case "Leietaker":
-                leietaker = (Leietaker) skalVises;
-                break;
-            case "Utleier":
-                utleier = (Utleier) skalVises;
-                break;
+        if (skalVises instanceof Megler) {
+            megler = (Megler) skalVises;
+        }
+
+        if (skalVises instanceof Leietaker) {
+            leietaker = (Leietaker) skalVises;
+
+        }
+
+        if (skalVises instanceof Utleier) {
+            utleier = (Utleier) skalVises;
         }
 
         StringBuilder html = new StringBuilder();
@@ -746,6 +770,7 @@ public class ControllerTabellOgOutput {
         html.append("</td>");
         html.append("<td>".concat(skalVises.getFornavn().concat(" ".concat(skalVises.getEtternavn()))));
         html.append("</td>");
+
         html.append("</tr>");
         html.append("<tr>");
         html.append("<td><b>Tlfnr</b>");
@@ -759,6 +784,29 @@ public class ControllerTabellOgOutput {
         html.append("<td>".concat(skalVises.getEpost()));
         html.append("</td>");
         html.append("</tr>");
+
+        if (leietaker != null) {
+            html.append("<tr>");
+            html.append("<td>").append("<b>Yrke</b>");
+            html.append("</td>");
+            html.append("<td>").append(leietaker.getYrke());
+            html.append("</td>");
+            html.append("</tr>");
+
+            html.append("<tr>");
+            html.append("<td>").append("<b>Arbeidsforhold</b>");
+            html.append("</td>");
+            html.append("<td>").append(leietaker.getArbeidsforhold());
+            html.append("</td>");
+            html.append("</tr>");
+
+            html.append("<tr>");
+            html.append("<td>").append("<b>Født</b>");
+            html.append("</td>");
+            html.append("<td>").append(leietaker.getFodselsAr());
+            html.append("</td>");
+            html.append("</tr>");
+        }
         html.append("</table>");
 
         //Hvis objektet er utleier så skal boligene til personen finnes og vises.
@@ -789,6 +837,38 @@ public class ControllerTabellOgOutput {
                 html.append("</tr>");
             }
             html.append("</table>");
+        }//End if
+
+        //Hvis objektet er Leietaker/boligsøker så skal boligene til personen finnes og vises.
+        if (leietaker != null) {
+
+            ArrayList<Annonse> annonseAvInteresse = finnAnnonserAvInteressePerLeietaker(leietaker.getPersonID());
+
+            html.append("<br><br>");
+            if (annonseAvInteresse != null) {
+                html.append("<h3><u>".concat(leietaker.getFornavn().concat(" ").concat(leietaker.getEtternavn())));
+                html.append(" har vist interesse i følgende annonser:</u></h3>");
+                html.append("<table id='annonserAvInteresse'>");
+
+                Iterator<Annonse> iter = annonseAvInteresse.iterator();
+                while (iter.hasNext()) {
+                    Annonse temp = iter.next();
+
+                    html.append("<tr id='annonserAvInteresseRad'>");
+                    html.append("<td id='annonserAvInteresseKol1'>");
+                    html.append("<b>AnnonseID:</b> ").append(temp.getAnnonseID());
+                    html.append("</td>");
+                    html.append("<td id='annonserAvInteresseKol2'>");
+                    html.append("<b>Adresse:</b> ").append(temp.getBolig().getAdresse());
+                    html.append("</td>");
+                    html.append("<td id='annonserAvInteresseKol3'>");
+                    html.append("<b>Utleierpris</b> ").append(temp.getUtleiepris());
+                    html.append("</td>");
+                    html.append("</tr>");
+                }
+                html.append("</table>");
+
+            }
         }//End if
 
         output.setText(html.toString());
@@ -1369,7 +1449,7 @@ public class ControllerTabellOgOutput {
         html.append("<td>").append(leietaker.getTelefon());
         html.append("</td>");
         html.append("</tr>");
-        html.append("</tr>");        
+        html.append("</tr>");
         html.append("<td><b>Sivilstatus:</b>");
         html.append("</td>");
         html.append("<td>").append(leietaker.getSivilistatus());
@@ -1382,7 +1462,7 @@ public class ControllerTabellOgOutput {
         html.append("</td>");
         html.append("<td>").append(leietaker.getArbeidsforhold());
         html.append("</td>");
-        html.append("</tr>");    
+        html.append("</tr>");
 
         html.append("</table>");
         html.append("<br>");
@@ -1451,6 +1531,12 @@ public class ControllerTabellOgOutput {
         css.addRule("#boligerPrPersonKol2 {width: 120px}");
         css.addRule("#boligerPrPersonKol3 {width: 200px}");
         css.addRule("#boligerPrPersonKol4 {width: 100px}");
+
+        //CSS for annonser en person har vist interesse for
+        css.addRule("#annonserAvInteresse {border-spacing: 0}");
+        css.addRule("#annonserAvInteresseKol1 {width: 100px}");
+        css.addRule("#annonserAvInteresseKol2 {width: 120px}");
+        css.addRule("#annonserAvInteresseKol3 {width: 200px}");
 
     }
 }
