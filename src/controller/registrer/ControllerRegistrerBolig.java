@@ -1,7 +1,7 @@
 package controller.registrer;
 
 import controller.ControllerBildeViser;
-import controller.TabellOppdateringInterface;
+import controller.TabellFireDataChangedInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -25,6 +25,7 @@ import lib.RegexTester;
 import model.Bolig;
 import model.Enebolig;
 import model.Leilighet;
+import model.Utleier;
 import view.BildeViser;
 import view.registrer.BoligRegVindu;
 
@@ -67,19 +68,21 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
     private FileFilter ff;
     ///STOPP PÅ BILDEBEHANDLING///
 
-    TabellOppdateringInterface tabellOppdateringLytter;
+    private TabellFireDataChangedInterface tabellOppdateringLytter;
+    
 
     /**
      * En kontruktør for registrering av en ny bolig.
      *
      * @param boligSet HashSet<Bolig>
      */
-    public ControllerRegistrerBolig(HashSet<Bolig> boligSet) {
+    public ControllerRegistrerBolig(HashSet<Bolig> boligSet, Utleier utleier) {
         super(boligSet);
         erNyregistrering = true;
         boligBilde = new BoligBilde();
         bRegVindu = new BoligRegVindu("Registrering av boliger");
         bRegVindu.setKnappeLytter(new KnappeLytter());
+        bRegVindu.getEierField().setText(String.valueOf(utleier.getPersonID()));
     }
 
     /**
@@ -94,6 +97,13 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         boligBilde = new BoligBilde();
         this.bolig = bolig;
 
+
+        initialiseringAvController();
+
+    }
+
+
+    private void initialiseringAvController(){
         bRegVindu = new BoligRegVindu("Endre bolig");
         bRegVindu.setKnappeLytter(new KnappeLytter());
 
@@ -134,10 +144,9 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
             bRegVindu.getAntallEtasjerField().setText(String.valueOf(((Enebolig) bolig).getAntallEtasjer()));
             bRegVindu.getTomtArealField().setText(String.valueOf(((Enebolig) bolig).getTomtAreal()));
             bRegVindu.getHarKjellerCheckBox().setSelected(((Enebolig) bolig).isHarKjeller());
-        }
-
+        }        
     }
-
+    
     /**
      * Brukes KUN i samband med oppdatering av eksisterende boligobjekt. Dersom
      * alle felt i GUI er ok tillater den til å gå videre.
@@ -338,7 +347,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         return true;
     }
 
-    public void settTabellOppdateringsLytter(TabellOppdateringInterface lytter) {
+    public void settTabellOppdateringsLytter(TabellFireDataChangedInterface lytter) {
         tabellOppdateringLytter = lytter;
     }
 
