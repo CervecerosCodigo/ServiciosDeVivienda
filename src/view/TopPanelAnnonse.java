@@ -35,11 +35,12 @@ public class TopPanelAnnonse extends AbstractPanel {
         bildeLabel = new JLabel(bilde);
         
         setVisible(true);
-        setLayout(new FlowLayout(FlowLayout.LEFT, 35, 0));
+        setLayout(new FlowLayout(FlowLayout.LEFT, 30, 20));
         
         add(checkBoxKnappeGruppe);
         add(knappeGruppeHoyre);
         add(sokeKnapp);
+        add(new CustomSubPanel(100,380));
         add(bildeLabel);
         
         bildeLabel.setPreferredSize(new Dimension(bilde.getIconWidth(), bilde.getIconHeight()));
@@ -128,7 +129,7 @@ public class TopPanelAnnonse extends AbstractPanel {
             boligTypeBoxPanel = new CustomSubPanel(new FlowLayout());
             
             setVisible(true);
-            setLayout(new GridLayout(2,3,-7, 0));
+            setLayout(new GridLayout(2,3,-7, 6));
             
             postStedBoxPanel.add(postStedBox);
             boligTypeBoxPanel.add(boligTypeBox);

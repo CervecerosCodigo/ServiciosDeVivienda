@@ -59,7 +59,7 @@ public class TopPanelMegler extends AbstractPanel {
         knappePanel.add(nyAnnonseItem);
         knappePanel.add(nyKontraktItem);
 
-        setLayout(new FlowLayout(FlowLayout.LEADING));
+        setLayout(new FlowLayout(FlowLayout.LEADING, 0, 20));
         setVisible(true);
         
         sokePanel.setPreferredSize(new Dimension(350,50));
