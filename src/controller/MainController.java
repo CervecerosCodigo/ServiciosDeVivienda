@@ -35,8 +35,8 @@ public class MainController implements Serializable {
     private StartGUI startGUI;
     private InnloggingController innloggingController;
 
-    private ControllerTabellOgOutput tabellControllerMegler;
-    private ControllerTabellOgOutput tabellControllerAnnonse;
+    private ControllerTabell tabellControllerMegler;
+    private ControllerTabell tabellControllerAnnonse;
     private ControllerToppPanelMegler toppPanelControllerMegler;
     private ControllerToppPanelAnnonse toppPanelControllerAnnonse;
     
@@ -52,8 +52,8 @@ public class MainController implements Serializable {
         startGUI = new StartGUI(meglerVindu, annonseVindu);
 
         innloggingController = new InnloggingController(startGUI, personliste);
-        tabellControllerMegler = new ControllerTabellOgOutput(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
-        tabellControllerAnnonse = new ControllerTabellOgOutput(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
+        tabellControllerMegler = new ControllerTabell(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
+        tabellControllerAnnonse = new ControllerTabell(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerMegler = new ControllerToppPanelMegler(meglerVindu, personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerAnnonse = new ControllerToppPanelAnnonse(annonseVindu, annonseliste);
 

@@ -1,5 +1,6 @@
 package controller.registrer;
 
+import controller.TabellOppdateringInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
     private final boolean erNyregistrering;
 
     private PersonRegVindu vindu;
+    TabellOppdateringInterface tabellOppdateringLytter;    
 
     /**
      * Registrer en NY utleier.
@@ -176,6 +178,11 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
         }
     }
 
+    public void settTabellOppdateringsLytter(TabellOppdateringInterface lytter){
+        tabellOppdateringLytter = lytter;
+    }
+    
+    
     class KnappeLytter implements ActionListener {
 
         @Override
@@ -183,8 +190,12 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
             if (e.getSource().equals(vindu.getLagreButton())) {
                 if (erNyregistrering) {
                     registrerNyUtleier();
+                    if(tabellOppdateringLytter != null)
+                        tabellOppdateringLytter.oppdaterTabellEtterEndring();                    
                 }else{
                     registrerOppdatering();
+                    if(tabellOppdateringLytter != null)
+                        tabellOppdateringLytter.oppdaterTabellEtterEndring();                     
                 }
             } else if (e.getSource().equals(vindu.getAvbrytButton())) {
                 vindu.dispose();
