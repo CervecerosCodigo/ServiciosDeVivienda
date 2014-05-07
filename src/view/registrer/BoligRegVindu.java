@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import lib.GuiSizes;
+import lib.Ikoner;
 import lib.RegexTester;
 import view.CustomJButton;
 import view.CustomJCheckBox;
@@ -137,8 +138,8 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         bildeLabel = new JLabel("Antall bilder: ");
         bildeResultatLabel = new JLabel("");
         bildeKnappLabel = new JLabel("Bilder: ");
-        bildeButton = new CustomJButton("Last opp");
-        visFlereBilderButton = new CustomJButton("Vis");
+        bildeButton = new CustomJButton(Ikoner.ATTACH_IMAGE);
+        visFlereBilderButton = new CustomJButton(Ikoner.IMAGES);
         ///SLUTT PÅ DATAFELT FOR BOLIG///
         //
         ///START PÅ DATAFELT FOR LEILIGHET///
