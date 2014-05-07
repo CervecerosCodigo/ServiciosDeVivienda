@@ -3,6 +3,7 @@ package view;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import lib.Ikoner;
 import view.CustomJButton;
 import lib.Konstanter;
 
@@ -39,8 +40,8 @@ public class BunnPanel extends AbstractPanel {
 
         setLayout(new GridLayout(1, 1));
         multiKnapp = new CustomJButton("Endre");
-        frem = new CustomJButton("Frem");
-        tilbake = new CustomJButton("Tilbake");
+        frem = new CustomJButton(Ikoner.PIL_HOYRE);
+        tilbake = new CustomJButton(Ikoner.PIL_VENSTRE);
 
         add(multiKnapp);
         add(tilbake);
