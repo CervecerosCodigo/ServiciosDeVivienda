@@ -1,6 +1,7 @@
 package controller.registrer;
 
 import controller.ControllerBildeViser;
+import controller.TabellOppdateringInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -65,6 +66,8 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
     private JFileChooser fc;
     private FileFilter ff;
     ///STOPP PÅ BILDEBEHANDLING///
+
+    TabellOppdateringInterface tabellOppdateringLytter;
 
     /**
      * En kontruktør for registrering av en ny bolig.
@@ -132,8 +135,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
             bRegVindu.getTomtArealField().setText(String.valueOf(((Enebolig) bolig).getTomtAreal()));
             bRegVindu.getHarKjellerCheckBox().setSelected(((Enebolig) bolig).isHarKjeller());
         }
-        
-  
+
     }
 
     /**
@@ -336,6 +338,10 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         return true;
     }
 
+    public void settTabellOppdateringsLytter(TabellOppdateringInterface lytter) {
+        tabellOppdateringLytter = lytter;
+    }
+
     /**
      * Foretar registrering av en ny leilighet.
      *
@@ -474,11 +480,17 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
                 if (erNyregistrering) {
                     if (bRegVindu.getLeilighetRButton().isSelected()) {
                         if (registrerNyLeilighet()) {
+                            if (tabellOppdateringLytter != null) {
+                                tabellOppdateringLytter.oppdaterTabellEtterEndring();
+                            }
                             lastOppBildeForNyBolig(bolig);
                             bRegVindu.dispose();
                         }
                     } else if (bRegVindu.getEneboligRButton().isSelected()) {
                         if (registrerNyEnebolig()) {
+                            if (tabellOppdateringLytter != null) {
+                                tabellOppdateringLytter.oppdaterTabellEtterEndring();
+                            }
                             lastOppBildeForNyBolig(bolig);
                             bRegVindu.dispose();
                         }
@@ -487,13 +499,16 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
                     //Sletter eksisterende bolig i set, oppdaterer alle datafelt og skriver det tilbake til settet.
                     if (slettBoligFraSet(bolig)) {
                         skrivOppdateringTilBoligSet(oppdaterBoligObjekt(bolig));
+                        if (tabellOppdateringLytter != null) {
+                            tabellOppdateringLytter.oppdaterTabellEtterEndring();
+                        }
                         bRegVindu.dispose();
                     }
 
                 }
             } else if (e.getSource().equals(bRegVindu.getBildeButton())) {
                 lastOppEkstraBilde(bolig);
-            }else if(e.getSource().equals(bRegVindu.getVisFlereBilderButton())){
+            } else if (e.getSource().equals(bRegVindu.getVisFlereBilderButton())) {
                 ControllerBildeViser controllerBildeViser = new ControllerBildeViser(bolig, false);
             }
         }

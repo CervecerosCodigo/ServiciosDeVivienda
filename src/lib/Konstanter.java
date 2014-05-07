@@ -1,6 +1,6 @@
 package lib;
 
-import controller.ControllerTabellOgOutput;
+import controller.ControllerTabell;
 import java.awt.Color;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;

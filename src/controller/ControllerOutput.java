@@ -1,676 +1,35 @@
 package controller;
+//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-/**
- * Denne klassen inneholder statiske metoder for alt som har med "utskrift" av
- * objektene til visningsruten, samt tabellen som viser objektene i listeformat.
- * Metoden settOppTabell oppretter en lytter på Tabellen. Metoden
- * setInnDataITabell tar i mot datasettet som skal vises, og hvilket vindu de
- * skal vises i.
- */
-import controller.registrer.ControllerRegistrerAnnonse;
-import controller.registrer.ControllerRegistrerBolig;
-import controller.registrer.ControllerRegistrerSoknad;
-import controller.registrer.ControllerRegistrerUtleier;
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import javax.swing.JEditorPane;
 import javax.swing.text.html.StyleSheet;
-import lib.*;
-import model.*;
-import view.*;
-
-public class ControllerTabellOgOutput {
-
-    private HashSet<Person> personliste;
-    private HashSet<Bolig> boligliste;
-    private HashSet<Kontrakt> kontraktliste;
-    private HashSet<Annonse> annonseliste;
-    private HashSet<Soknad> soknadsliste;
-    private ControllerBunnPanel bunnController;
-
-    private DefaultTableCellRenderer hoyreStiltTekstRenderer;
-
-    private ArkfaneTemplate vindu;
-    private ArrayList<Object> tabellData;
-    private ObjektType objekttype;
-    private Collection liste;
-    private StyleSheet css;
-    private JEditorPane output;
-
-    private JTable tabell;
-    private TabellModell tabellModellBolig, tabellModellPerson, tabellModellAnnonse,
-            tabellModellKontrakt, tabellModellSoknad, modellIBruk;
-    private JPopupMenu tabellMeny;
-    private JMenu menyvalgBolig, menyvalgPerson, menyvalgAnnonse, menyvalgSoknad;
-    private JMenuItem menyvalgNyPerson, menyvalgEndrePerson, menyvalgSlettPerson,
-            menyvalgNyBolig, menyvalgEndreBolig, menyvalgSlettBolig, menyvalgPubliserToggle,
-            menyvalgForesporsel,
-            menyvalgAksepter, menyvalgAvvis;
-
-    private int valgtRadItabell;    //Viser til en hver tid hvilken rad som er valgt i tabellen
-    private boolean erMeglerVindu;
-
-    public ControllerTabellOgOutput(HashSet<Person> personliste, HashSet<Bolig> boligliste,
-            HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
-            HashSet<Soknad> soknadsliste) {
-
-        this.personliste = personliste;
-        this.boligliste = boligliste;
-        this.annonseliste = annonseliste;
-        this.kontraktliste = kontraktliste;
-        this.soknadsliste = soknadsliste;
-
-        bunnController = new ControllerBunnPanel(boligliste, personliste, annonseliste, soknadsliste);
-
-        tabellModellBolig = new TabellModellBolig(annonseliste);
-        tabellModellPerson = new TabellModellPerson();
-        tabellModellAnnonse = new TabellModellAnnonse();
-        tabellModellKontrakt = new TabellModellKontrakt();
-        tabellModellSoknad = new TabellModellSoknad();
-
-        hoyreStiltTekstRenderer = new DefaultTableCellRenderer();
-        hoyreStiltTekstRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-
-        tabellMeny = new JPopupMenu();
-
-        menyvalgPerson = new JMenu("Person");
-        menyvalgBolig = new JMenu("Bolig");
-        menyvalgAnnonse = new JMenu("Annonse");
-        menyvalgSoknad = new JMenu("Søknad");
-        menyvalgNyPerson = new JMenuItem("Ny");
-        menyvalgEndrePerson = new JMenuItem("Endre");
-        menyvalgSlettPerson = new JMenuItem("Slett");
-        menyvalgNyBolig = new JMenuItem("Ny");
-        menyvalgEndreBolig = new JMenuItem("Endre");
-        menyvalgSlettBolig = new JMenuItem("Slett");
-        menyvalgForesporsel = new JMenuItem("Send forespørsel");
-        menyvalgAksepter = new JMenuItem("Aksepter søknad");
-        menyvalgAvvis = new JMenuItem("Avvis søknad");
-        menyvalgPubliserToggle = new JMenuItem("Endre publiseringsstatus");
-
-    }
-
-    /**
-     * Tar i mot det vinduet tabellen skal settes for. Metoden oppretter en
-     * lytter på tabellen som finner hvilken rad/objekt som er valgt.
-     * valueChanged-metoden sender også valgt objekt til output.
-     *
-     * @param vindu Tar i mot det vinduet som metoden gjelder for.
-     */
-    public void settOppTabellLyttere(final ArkfaneTemplate vindu, final boolean erMeglerVindu) {
-
-        this.vindu = vindu;
-        this.erMeglerVindu = erMeglerVindu;
-        bunnController.setErMeglerVindu(erMeglerVindu);
-        bunnController.settKnappeLytter(vindu);
-        tabell = this.vindu.getVenstrepanel().getTable();
-
-        //Kaller opp metoden som lager lyttere for popupmenyen i tabellen.
-        settOpplyttereForPopupMenyITabell();
-
-        //Kobler popupmenyen til tabellen.
-        tabell.setComponentPopupMenu(tabellMeny);
-
-        tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-                try {
-                    int rad = tabell.getSelectedRow();
-                    rad = tabell.convertRowIndexToModel(rad);
-
-                    //Lagrer raden i en klassevariabel, som brukes i andre metoder.
-                    valgtRadItabell = rad;
-
-                    sendObjektFraTabellTilOutput(rad, objekttype, tabellData);
-                } catch (ArrayIndexOutOfBoundsException aiobe) {
-
-                }
-            }
-        });
-
-        /**
-         * Lytter for dobbelklikk i tabellen.
-         */
-        tabell.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JTable temp = (JTable) e.getSource();
-                if (e.getClickCount() == 2) {
-
-                    if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
-                        new ControllerRegistrerBolig(boligliste, returnerBoligObjekt());
-
-                    } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
-//                        new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
-                        new ControllerRegistrerUtleier(personliste, (Utleier) returnerPersonObjekt());
-
-                    } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
-                        if (erMeglerVindu) {
-                            new ControllerRegistrerAnnonse(annonseliste, personliste, returnerAnnonseObjekt());
-                        } else {
-                            new ControllerRegistrerSoknad(personliste, annonseliste, soknadsliste, returnerAnnonseObjekt());
-                        }
-                    }
-//                    } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
-//
-//                    } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
-//
-//                    }
-
-                }//end if
-            }//end method
-
-            /**
-             * Funksjonalitet for høyreklikking i tabellen
-             *
-             * @param e
-             */
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-
-                    //Tømmer menyen før den tegnes på nytt.
-                    tabellMeny.removeAll();
-
-                    try {
-                        if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
-                            tabellMeny.add(menyvalgBolig);
-                            menyvalgBolig.add(menyvalgNyBolig);
-                            menyvalgBolig.add(menyvalgEndreBolig);
-                            menyvalgBolig.add(menyvalgSlettBolig);
-                            menyvalgBolig.add(menyvalgPubliserToggle);
-                        } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
-                            tabellMeny.add(menyvalgPerson);
-                            tabellMeny.add(menyvalgBolig);
-                            menyvalgPerson.add(menyvalgNyPerson);
-                            menyvalgPerson.add(menyvalgEndrePerson);
-                            menyvalgPerson.add(menyvalgSlettPerson);
-                            menyvalgBolig.add(menyvalgNyBolig);
-
-                        } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
-                            tabellMeny.add(menyvalgForesporsel);
-                        } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
-
-                        } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
-                            tabellMeny.add(menyvalgAksepter);
-                            tabellMeny.add(menyvalgAvvis);
-                        }
-                    } catch (ClassCastException cce) {
-
-                    }
-                    tabellMeny.show(e.getComponent(), e.getX(), e.getY());
-                }
-
-            }
-        });
-    }
-
-    /**
-     * Setter lyttere for popupmenyen i tabellen.
-     */
-    public void settOpplyttereForPopupMenyITabell() {
-
-        menyvalgNyBolig.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ControllerRegistrerBolig(boligliste);
-            }
-
-        });
-        menyvalgEndreBolig.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Bolig bolig = returnerBoligObjekt();
-                if (bolig != null) {
-                    new ControllerRegistrerBolig(boligliste, bolig);
-                }
-            }
-
-        });
-        menyvalgSlettBolig.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                slettBolig();
-            }
-
-        });
-        menyvalgNyPerson.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-//                new ControllerRegistrerPerson(personliste);
-                new ControllerRegistrerUtleier(personliste);
-            }
-        });
-        menyvalgEndrePerson.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-//                new ControllerRegistrerPerson(personliste, returnerPersonObjekt());
-                new ControllerRegistrerUtleier(personliste, (Utleier) returnerPersonObjekt());
-            }
-        });
-        menyvalgSlettPerson.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                slettPerson();
-            }
-        });
-        menyvalgForesporsel.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                if (!erMeglerVindu) {
-                    new ControllerRegistrerSoknad(personliste, annonseliste, soknadsliste, returnerAnnonseObjekt());
-                }
-            }
-        });
-        menyvalgAksepter.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                registrerKontrakt();
-            }
-        });
-        menyvalgAvvis.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                avvisSoknad(returnerSoknadObjekt());
-            }
-        });
-        menyvalgPubliserToggle.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                nyEllerEndreAnnonse();
-            }
-        });
-    }
-
-    private void settTabellOppdateringsLytterPaaAndreKlasser() {
-
-    }
-
-    /**
-     * Denne metoden registrerer valgt søknad som kontrakt. Hvis en søknad blir
-     * registrert som kontrakt skal alle andre søknader på samme annonse
-     * avvises.
-     */
-    private void registrerKontrakt() {
-        Soknad soknad = returnerSoknadObjekt();
-        int annonseID = soknad.getAnnonseObjekt().getAnnonseID();
-        ArrayList<Soknad> soknaderPaaSammeAnnonse = new ArrayList<>();
-
-        //Finner megler-objektet 
-        Iterator<Person> personIter = personliste.iterator();
-        Person tempPerson = null;
-        while (personIter.hasNext()) {
-            tempPerson = personIter.next();
-            if (tempPerson instanceof Megler) {
-                if (tempPerson.getPersonID() == soknad.getAnnonseObjekt().getBolig().getMeglerID()) {
-                    tempPerson = (Megler) tempPerson;
-                    return;
-                }
-            }
-        }
-
-        //Finner alle søknader som gelder for samme Annonse
-        Iterator<Soknad> soknadIter = soknadsliste.iterator();
-        Soknad tempSoknad = null;
-        while (soknadIter.hasNext()) {
-            tempSoknad = soknadIter.next();
-            if (tempSoknad.getAnnonseObjekt().getAnnonseID() == annonseID) {
-                soknaderPaaSammeAnnonse.add(tempSoknad);
-            }
-        }
-
-        //Finner dagens dato
-        Calendar dagensDato = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
-
-        //Oppretter et kontraktobjekt basert på søknaden.
-        Kontrakt kontrakt = new Kontrakt(soknad.getAnnonseObjekt(), tempPerson, soknad.getLeietakerObjekt(), 12, dagensDato);
-
-        //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt
-        //annonse avvises.
-        if (kontraktliste.add(kontrakt)) {
-
-            //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
-            soknaderPaaSammeAnnonse.remove(soknad);
-
-            soknadIter = soknaderPaaSammeAnnonse.iterator();
-            tempSoknad = null;
-            while (soknadIter.hasNext()) {
-                tempSoknad = soknadIter.next();
-                tempSoknad.setErBehandlet(true);
-                tempSoknad.setErGodkjent(false);
-            }
-            Melding.visMelding(null, "Kontrakten er opprettet!");
-
-        } else {
-            Melding.visMelding(null, "Kontrakten ble IKKE opprettet!");
-        }
-
-    }//End registrerKontrakt
-
-    /**
-     * Setter søknaden som behandlet og ikke godkjent.
-     *
-     * @param soknad
-     */
-    private void avvisSoknad(Soknad soknad) {
-        soknad.setErBehandlet(true);
-        soknad.setErGodkjent(false);
-    }
-
-    /**
-     * Tømmer tabellen før nytt datasett settes.
-     */
-    public void tomTabellOgKlargjorForNyttDatasett() {
-        tabell.clearSelection();
-        tabell.removeAll();
-    }
-
-    public Soknad returnerSoknadObjekt() {
-
-        Soknad valgtObjekt = (Soknad) tabellData.get(valgtRadItabell);
-        if (valgtObjekt != null) {
-            return valgtObjekt;
-        }
-        return null;
-    }
-
-    public Bolig returnerBoligObjekt() {
-
-        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
-        if (valgtObjekt != null) {
-            return valgtObjekt;
-        }
-        return null;
-    }
-
-    public Person returnerPersonObjekt() {
-        Person valgtObjekt = (Person) tabellData.get(valgtRadItabell);
-        if (valgtObjekt != null) {
-            return valgtObjekt;
-        }
-        return null;
-    }
-
-    public Annonse returnerAnnonseObjekt() {
-        Annonse valgtObjekt = (Annonse) tabellData.get(valgtRadItabell);
-        if (valgtObjekt != null) {
-            return valgtObjekt;
-        }
-        return null;
-    }
-
-    /**
-     * Metoden finner boligen som skal slettes. Om den ikke er utleid får
-     * brukeren spørsmål om å slette.
-     */
-    public void slettBolig() {
-
-        Boolean ok = true;
-        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
-        if (valgtObjekt != null) {
-            if (!valgtObjekt.isErUtleid()) {
-                int valg = Melding.visBekreftelseDialog("Ønsker du virkelig å slette boligen?",
-                        "Slette bolig", "Nei");
-                if (valg == 0) {
-                    try {
-                        tabellModellBolig.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
-                        tabellData.remove(valgtRadItabell);
-                        ok = boligliste.remove(valgtObjekt);
-                        if (ok) {
-                            Melding.visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " er slettet");
-                        } else {
-                            Melding.visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " ble IKKE slettet");
-                        }
-                    } catch (ArrayIndexOutOfBoundsException aiobe) {
-                    }
-                } else {
-                }
-            }//end if
-        }//end if
-    }
-
-    /**
-     * Metoden finner person som skal slettes. Om den ikke har boliger
-     * registrert får brukeren spørsmål om å slette.
-     */
-    public void slettPerson() {
-
-        Boolean ok = true;
-        Person valgtObjekt = (Person) tabellData.get(valgtRadItabell);
-        ArrayList<Integer> registrerteBoliger = new ArrayList<>();
-        Iterator<Bolig> iter = boligliste.iterator();
-        while (iter.hasNext()) {
-            Bolig temp = iter.next();
-            if (temp.getPersonID() == valgtObjekt.getPersonID()) {
-                registrerteBoliger.add(temp.getBoligID());
-            }
-        }
-        if (registrerteBoliger.size() > 0) {
-            Melding.visMelding(null, valgtObjekt.getFornavn() + " " + valgtObjekt.getEtternavn()
-                    + " er registrert med boliger.\n"
-                    + "Kan ikke utføre slettingen.");
-        } else {
-            int valg = Melding.visBekreftelseDialog("Ønsker du virkelig å slette personen fra systemet?",
-                    "Slette person", "Nei");
-            if (valg == 0) {
-                try {
-                    tabellModellPerson.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
-                    tabellData.remove(valgtRadItabell);
-                    ok = personliste.remove(valgtObjekt);
-                    if (ok) {
-                        Melding.visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " er slettet");
-                    } else {
-                        Melding.visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " ble IKKE slettet");
-                    }
-                } catch (ArrayIndexOutOfBoundsException aiobe) {
-                }
-            } else {
-            }
-        }//end if
-    }
-
-    /**
-     * Om boligen er publisert så tas den av nett. Om den ikke er publisert så
-     * sjekkes det om boligen finnes i annonseregistert. Omden gjør det så åpned
-     * vindu for å endre annonsen, ellers lages det ny tom annonse.
-     */
-    public void nyEllerEndreAnnonse() {
-
-        int rad;
-        Annonse tempAnnonse;
-        Bolig bolig = (Bolig) tabellData.get(valgtRadItabell);
-        if (bolig != null) {
-
-            //Er boligen ikke utleid?
-            if (!bolig.isErUtleid()) {
-                ControllerRegistrerAnnonse cont = null;
-                //Sjekker om boligen ligger i annonseregisteret
-                Iterator<Annonse> iter = annonseliste.iterator();
-                while (iter.hasNext()) {
-                    tempAnnonse = iter.next();
-                    if (tempAnnonse.getBoligID() == bolig.getBoligID()) {
-                        //Boligen er annonsert og kan endres
-                        cont = new ControllerRegistrerAnnonse(annonseliste, personliste, tempAnnonse);
-                        cont.settTabellOppdateringsLytter(new TabellOppdateringInterface() {
-
-                            @Override
-                            public void oppdaterTabellEtterEndring() {
-                                modellIBruk.fireTableStructureChanged();
-                            }
-                        });
-                        return;
-                    }//end if
-                }//end while
-                //Boligen er ikke i annonseregisteret og ny annonse opprettes.
-                cont = new ControllerRegistrerAnnonse(annonseliste, personliste, bolig);
-                cont.settTabellOppdateringsLytter(new TabellOppdateringInterface() {
-
-                    @Override
-                    public void oppdaterTabellEtterEndring() {
-                        modellIBruk.fireTableStructureChanged();
-                    }
-                });
-            } else {
-                //Boligen er utleid og kan ikke legges i annonseregisteret
-            }
-        }//end if
-
-    }
-
-    /**
-     * Oppretter en arraylist med lengde av mottatt datasett. Denne metoden er
-     * avhengig av søkeresultatene og må få inn parametere fra toppanel.
-     */
-    public void settInnDataITabell(Collection innkommendeDatasett, ObjektType objekttypeEnum) {
-
-        modellIBruk = null;
-        tabellData = new ArrayList<>();
-        Iterator<?> iter = innkommendeDatasett.iterator();
-        while (iter.hasNext()) {
-            tabellData.add(iter.next());
-        }
-
-        try {
-            switch (objekttypeEnum) {
-                case PERSONOBJ:
-                    this.objekttype = ObjektType.PERSONOBJ;
-                    tabellModellPerson.fyllTabellMedInnhold(tabellData);
-                    tabell.setModel(tabellModellPerson);
-                    tabellModellPerson.fireTableStructureChanged();
-                    modellIBruk = tabellModellPerson;
-                    break;
-                case BOLIGOBJ:
-                    this.objekttype = ObjektType.BOLIGOBJ;
-                    tabellModellBolig.fyllTabellMedInnhold(tabellData);
-                    tabell.setModel(tabellModellBolig);
-                    tabellModellBolig.fireTableStructureChanged();
-                    modellIBruk = tabellModellBolig;
-                    break;
-                case ANNONSEOBJ:
-                    this.objekttype = ObjektType.ANNONSEOBJ;
-                    tabellModellAnnonse.fyllTabellMedInnhold(tabellData);
-                    tabell.setModel(tabellModellAnnonse);
-                    tabellModellAnnonse.fireTableStructureChanged();
-                    tabell.getColumnModel().getColumn(2).setCellRenderer(hoyreStiltTekstRenderer);
-                    tabell.getColumnModel().getColumn(3).setCellRenderer(hoyreStiltTekstRenderer);
-                    modellIBruk = tabellModellAnnonse;
-                    break;
-                case KONTRAKTOBJ:
-                    this.objekttype = ObjektType.KONTRAKTOBJ;
-                    tabellModellKontrakt.fyllTabellMedInnhold(tabellData);
-                    tabell.setModel(tabellModellKontrakt);
-                    tabellModellKontrakt.fireTableStructureChanged();
-                    modellIBruk = tabellModellKontrakt;
-
-                    break;
-                case SOKNADSOBJ:
-                    this.objekttype = ObjektType.SOKNADSOBJ;
-                    tabellModellSoknad.fyllTabellMedInnhold(tabellData);
-                    tabell.setModel(tabellModellSoknad);
-                    tabellModellSoknad.fireTableStructureChanged();
-                    modellIBruk = tabellModellSoknad;
-                    break;
-            }
-            resizeKolonneBredde();
-            vindu.getVenstrepanel().sorterTabellVedOppstart();
-            vindu.getVenstrepanel().settCelleRenderer();
-
-            bunnController.settOppTabellData(tabellData, modellIBruk);
-
-        } catch (ArrayIndexOutOfBoundsException aiobe) {
-
-        } catch (NullPointerException npe) {
-
-        }
-
-    }
-
-    /**
-     * Setter kolonnebredden etter innholdet i tabellen. Sammen med tabellens
-     * Auto-resize så blir tabellen fyllt ut i maks bredde, men samtidig med
-     * rett kolonnebredde.
-     */
-    public void resizeKolonneBredde() {
-        TableColumnModel kolonneModell = tabell.getColumnModel();
-        Component comp = null;
-        TableCellRenderer renderer = null;
-
-        for (int kol = 0; kol < tabell.getColumnCount(); kol++) {
-            int bredde = 50; //minste bredde
-            for (int rad = 0; rad < tabell.getRowCount(); rad++) {
-                renderer = tabell.getCellRenderer(rad, kol);
-                comp = tabell.prepareRenderer(renderer, rad, kol);
-                bredde = Math.max(comp.getPreferredSize().width, bredde);
-            }
-            kolonneModell.getColumn(kol).setPreferredWidth(bredde);
-        }
-    }
-
-    /**
-     * Tar i mot data og bestemmer hvilken "HTML"-metode som skal brukes.
-     *
-     * @param valgtRad Raden i arrayen som skal vises.
-     * @param tabellData Arrayen tabellen er bygget på.
-     * @param vindu Vinduet som skal vise resultatet.
-     */
-    public void sendObjektFraTabellTilOutput(int valgtRad, ObjektType objekttype, ArrayList tabellData) {
-        Object valgtObjekt = null;
-        css = vindu.getSenterpanel().getStyleSheet();
-        setStyleSheet();
-        try {
-            switch (objekttype) {
-                case PERSONOBJ:
-                    valgtObjekt = (Person) tabellData.get(valgtRad);
-                    visPersonObjektHTMLOutput(valgtObjekt);
-                    break;
-                case BOLIGOBJ:
-                    valgtObjekt = (Bolig) tabellData.get(valgtRad);
-                    visBoligObjektHTMLOutput(valgtObjekt);
-                    break;
-                case ANNONSEOBJ:
-                    valgtObjekt = (Annonse) tabellData.get(valgtRad);
-                    visAnnonseObjektHTMLOutput(valgtObjekt);
-                    break;
-                case KONTRAKTOBJ:
-                    valgtObjekt = (Kontrakt) tabellData.get(valgtRad);
-                    visKontraktObjektHTMLOutput(valgtObjekt);
-                    break;
-                case SOKNADSOBJ:
-                    valgtObjekt = (Soknad) tabellData.get(valgtRad);
-                    visSoknadObjektHTMLOutput(valgtObjekt);
-                    break;
-            }
-        } catch (ArrayIndexOutOfBoundsException aiobe) {
-
-        }
-    }
-
+import lib.BildeFilSti;
+import lib.Konstanter;
+import model.Annonse;
+import model.Bolig;
+import model.Enebolig;
+import model.Kontrakt;
+import model.Leietaker;
+import model.Leilighet;
+import model.Megler;
+import model.Person;
+import model.Soknad;
+import model.Utleier;
+import view.ArkfaneTemplate;
+
+
+
+public class ControllerOutput {
+
+    
+    
     /**
      * Hjelpemetode som returnerer alle boliger registrert på en eier.
      */
-    private ArrayList<Bolig> finnBoligerRegistrertPaaEier(int personID) {
+    public static ArrayList<Bolig> finnBoligerRegistrertPaaEier(HashSet<Bolig> boligliste, int personID) {
 
         ArrayList<Bolig> boliger = new ArrayList<>();
         if (personID > 0) {
@@ -684,15 +43,16 @@ public class ControllerTabellOgOutput {
             }//End while
         }
         return boliger;
-    }//End method
-
+    }//End method    
+    
+    
     /**
      * Hjelpemetode for å finne informasjon om en boligeier.
      *
      * @param personID
      * @return
      */
-    private Person finnPersonInformasjon(int personID) {
+    public static Person finnPersonInformasjon(HashSet<Person> personliste, int personID) {
         Iterator<Person> iter = personliste.iterator();
         Person temp = null;
         while (iter.hasNext()) {
@@ -702,8 +62,9 @@ public class ControllerTabellOgOutput {
             }
         }
         return null;
-    }
+    }    
 
+    
     /**
      * Hjelpemetode som finner alle annonser en bestem person har vist interesse
      * for
@@ -711,7 +72,7 @@ public class ControllerTabellOgOutput {
      * @param personID
      * @return
      */
-    private ArrayList<Annonse> finnAnnonserAvInteressePerLeietaker(int personID) {
+    public static  ArrayList<Annonse> finnAnnonserAvInteressePerLeietaker(HashSet<Soknad> soknadsliste, int personID) {
         ArrayList<Annonse> annonseAvInteresse = null;
 
         if (personID > 0) {
@@ -725,15 +86,15 @@ public class ControllerTabellOgOutput {
             return annonseAvInteresse;
         }
         return null;
-    }
-
+    }    
+    
     /**
      * Tar imot data fra sendObjektFraTabellTilOutput-metoden. Denne metoden
      * skriver ut Personobjekter som HTML til output (JEditorPane)
      *
      * @param valgtObjekt Objektet som skal vises i Output
      */
-    public void visPersonObjektHTMLOutput(Object valgtObjekt) {
+    public static void visPersonObjektHTMLOutput(JEditorPane output, ArkfaneTemplate vindu, Object valgtObjekt, HashSet<Person> personliste, HashSet<Bolig> boligliste, HashSet<Soknad> soknadsliste) {
 
         output = vindu.getSenterpanel().getEditorPane();
 
@@ -812,7 +173,7 @@ public class ControllerTabellOgOutput {
         //Hvis objektet er utleier så skal boligene til personen finnes og vises.
         if (utleier != null) {
 
-            ArrayList<Bolig> boliger = finnBoligerRegistrertPaaEier(utleier.getPersonID());
+            ArrayList<Bolig> boliger = finnBoligerRegistrertPaaEier(boligliste, utleier.getPersonID());
             html.append("<br><br>");
             html.append("<h3><u>".concat(skalVises.getFornavn().concat(" ").concat(skalVises.getEtternavn())));
             html.append(" har følgende boliger:</u></h3>");
@@ -842,7 +203,7 @@ public class ControllerTabellOgOutput {
         //Hvis objektet er Leietaker/boligsøker så skal boligene til personen finnes og vises.
         if (leietaker != null) {
 
-            ArrayList<Annonse> annonseAvInteresse = finnAnnonserAvInteressePerLeietaker(leietaker.getPersonID());
+            ArrayList<Annonse> annonseAvInteresse = finnAnnonserAvInteressePerLeietaker(soknadsliste, leietaker.getPersonID());
 
             html.append("<br><br>");
             if (annonseAvInteresse != null) {
@@ -880,7 +241,7 @@ public class ControllerTabellOgOutput {
      *
      * @param valgtObjekt Objektet som skal vises.
      */
-    public void visBoligObjektHTMLOutput(Object valgtObjekt) {
+    public static void visBoligObjektHTMLOutput(Object valgtObjekt, JEditorPane output, ArkfaneTemplate vindu, HashSet<Bolig> boligliste) {
         output = vindu.getSenterpanel().getEditorPane();
         Bolig skalVises = (Bolig) valgtObjekt;
         Leilighet leilighet = null;
@@ -1053,7 +414,7 @@ public class ControllerTabellOgOutput {
      * @param valgtObjekt Objektet som skal vises i output.
      * @param vindu Vinduet som skal vise resultatet
      */
-    public void visAnnonseObjektHTMLOutput(Object valgtObjekt) {
+    public static void visAnnonseObjektHTMLOutput(Object valgtObjekt, JEditorPane output, ArkfaneTemplate vindu, HashSet<Annonse> annonseliste) {
         output = vindu.getSenterpanel().getEditorPane();
         Annonse skalVises = (Annonse) valgtObjekt;
 
@@ -1239,7 +600,7 @@ public class ControllerTabellOgOutput {
 
     }
 
-    public void visKontraktObjektHTMLOutput(Object valgtObjekt) {
+    public static void visKontraktObjektHTMLOutput(Object valgtObjekt, JEditorPane output, ArkfaneTemplate vindu) {
         output = vindu.getSenterpanel().getEditorPane();
         Kontrakt kontrakt = (Kontrakt) valgtObjekt;
         StringBuilder html = new StringBuilder();
@@ -1347,13 +708,13 @@ public class ControllerTabellOgOutput {
         output.setText(html.toString());
     }
 
-    public void visSoknadObjektHTMLOutput(Object valgtObjekt) {
+    public static void visSoknadObjektHTMLOutput(Object valgtObjekt, JEditorPane output, ArkfaneTemplate vindu, HashSet<Soknad> soknadsliste, HashSet<Person> personliste) {
         output = vindu.getSenterpanel().getEditorPane();
         Soknad skalVises = (Soknad) valgtObjekt;
         Leietaker leietaker = skalVises.getLeietakerObjekt();
         Annonse annonse = skalVises.getAnnonseObjekt();
         Bolig bolig = annonse.getBolig();
-        Person utleier = finnPersonInformasjon(bolig.getPersonID());
+        Person utleier = finnPersonInformasjon(personliste, bolig.getPersonID());
 
         StringBuilder html = new StringBuilder();
 
@@ -1477,8 +838,9 @@ public class ControllerTabellOgOutput {
 
     /**
      * Definerer CSS-oppsettet for HTML-utskriftene.
+     * @param css 
      */
-    public void setStyleSheet() {
+    public static void setStyleSheet(StyleSheet css) {
 
         css.addRule("h1 {text-align: center}");
         css.addRule("h1 {font-size: 16}");
@@ -1538,5 +900,6 @@ public class ControllerTabellOgOutput {
         css.addRule("#annonserAvInteresseKol2 {width: 120px}");
         css.addRule("#annonserAvInteresseKol3 {width: 200px}");
 
-    }
+    }    
 }
+

@@ -143,7 +143,6 @@ public class ControllerToppPanelMegler<E> {
                 new ControllerRegistrerBolig(boligliste);
             }
             if(e.getSource().equals(vindu.getToppanelMegler().getNyUtleierItem())){
-//                new ControllerRegistrerPerson(personliste);
                 new ControllerRegistrerUtleier(personliste);
             }
             if(e.getSource().equals(vindu.getToppanelMegler().getNyAnnonseItem())){
