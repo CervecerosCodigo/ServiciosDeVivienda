@@ -35,6 +35,7 @@ public class ControllerTabell {
     private ControllerBunnPanel bunnController;
 
     private DefaultTableCellRenderer hoyreStiltTekstRenderer;
+    private TabellSendDataIBrukInterface tabellOppdateringslytter;
 
     private ArkfaneTemplate vindu;
     private ArrayList<Object> tabellData;
@@ -150,7 +151,7 @@ public class ControllerTabell {
 
                     if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
                         ControllerRegistrerBolig cont = new ControllerRegistrerBolig(boligliste, returnerBoligObjekt());
-                        cont.settTabellOppdateringsLytter(new TabellOppdateringInterface() {
+                        cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
                             @Override
                             public void oppdaterTabellEtterEndring() {
@@ -159,7 +160,7 @@ public class ControllerTabell {
                         });
                     } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
                         ControllerRegistrerUtleier cont = new ControllerRegistrerUtleier(personliste, (Utleier) returnerPersonObjekt());
-                        cont.settTabellOppdateringsLytter(new TabellOppdateringInterface() {
+                        cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
                             @Override
                             public void oppdaterTabellEtterEndring() {
@@ -169,7 +170,7 @@ public class ControllerTabell {
                     } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
                         if (erMeglerVindu) {
                             ControllerRegistrerAnnonse cont = new ControllerRegistrerAnnonse(annonseliste, personliste, returnerAnnonseObjekt());
-                            cont.settTabellOppdateringsLytter(new TabellOppdateringInterface() {
+                            cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
                                 @Override
                                 public void oppdaterTabellEtterEndring() {
@@ -209,9 +210,10 @@ public class ControllerTabell {
                             menyvalgPerson.add(menyvalgNyPerson);
                             menyvalgPerson.add(menyvalgEndrePerson);
                             menyvalgPerson.add(menyvalgSlettPerson);
-                            
-                            if(returnerPersonObjekt() instanceof Utleier)
+
+                            if (returnerPersonObjekt() instanceof Utleier) {
                                 menyvalgBolig.add(menyvalgNyBolig);
+                            }
 
                         } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
                             tabellMeny.add(menyvalgForesporsel);
@@ -232,28 +234,31 @@ public class ControllerTabell {
     }
 
     /**
-     * Setter lyttere for popupmenyen i tabellen. 
-     * Flere av elementene i menyen setter igjen lyttere på vinduene de starter
-     * slik at når registreringen er fullført så blir tabellen oppdatert.
+     * Setter lyttere for popupmenyen i tabellen. Flere av elementene i menyen
+     * setter igjen lyttere på vinduene de starter slik at når registreringen er
+     * fullført så blir tabellen oppdatert.
      */
     public void settOpplyttereForPopupMenyITabell() {
 
-        
         //Man ser bare dette valger om man høyreklikker på en utleier i tabellen
         menyvalgNyBolig.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ControllerRegistrerBolig cont = new ControllerRegistrerBolig(boligliste);
-                cont.settTabellOppdateringsLytter(new TabellOppdateringInterface() {
 
-                    @Override
-                    public void oppdaterTabellEtterEndring() {
-                        tabellModellPerson.fireTableStructureChanged();
-                    }
-                });
+                Person valgtObjekt = returnerPersonObjekt();
+                if (valgtObjekt != null && valgtObjekt instanceof Utleier) {
+                    ControllerRegistrerBolig cont = new ControllerRegistrerBolig(boligliste, (Utleier) valgtObjekt);
+
+                    cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
+
+                        @Override
+                        public void oppdaterTabellEtterEndring() {
+                            tabellModellPerson.fireTableStructureChanged();
+                        }
+                    });
+                }
             }
-
         });
         menyvalgEndreBolig.addActionListener(new ActionListener() {
 
@@ -262,7 +267,7 @@ public class ControllerTabell {
                 Bolig bolig = returnerBoligObjekt();
                 if (bolig != null) {
                     ControllerRegistrerBolig cont = new ControllerRegistrerBolig(boligliste, bolig);
-                    cont.settTabellOppdateringsLytter(new TabellOppdateringInterface() {
+                    cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
                         @Override
                         public void oppdaterTabellEtterEndring() {
@@ -286,7 +291,7 @@ public class ControllerTabell {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ControllerRegistrerUtleier cont = new ControllerRegistrerUtleier(personliste);
-                cont.settTabellOppdateringsLytter(new TabellOppdateringInterface() {
+                cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
                     @Override
                     public void oppdaterTabellEtterEndring() {
@@ -300,7 +305,7 @@ public class ControllerTabell {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ControllerRegistrerUtleier cont = new ControllerRegistrerUtleier(personliste, (Utleier) returnerPersonObjekt());
-                cont.settTabellOppdateringsLytter(new TabellOppdateringInterface() {
+                cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
                     @Override
                     public void oppdaterTabellEtterEndring() {
@@ -316,7 +321,7 @@ public class ControllerTabell {
                 slettPerson();
             }
         });
-        
+
         //Om boligsøker høyreklikker..
         menyvalgForesporsel.addActionListener(new ActionListener() {
 
@@ -328,7 +333,7 @@ public class ControllerTabell {
                 }
             }
         });
-        
+
         //Aksepter søknad. Alle andre søknader på denne annonsen avvises da.
         menyvalgAksepter.addActionListener(new ActionListener() {
 
@@ -337,7 +342,7 @@ public class ControllerTabell {
                 registrerKontrakt();
             }
         });
-        
+
         //Avvis søknad
         menyvalgAvvis.addActionListener(new ActionListener() {
 
@@ -346,7 +351,7 @@ public class ControllerTabell {
                 avvisSoknad(returnerSoknadObjekt());
             }
         });
-        
+
         //Registrer ny annonse eller endrer annonse. Er det en aktiv annonse 
         //så gjøres den innaktiv.
         menyvalgPubliserToggle.addActionListener(new ActionListener() {
@@ -400,7 +405,7 @@ public class ControllerTabell {
         //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt
         //annonse avvises.
         if (kontraktliste.add(kontrakt)) {
-            
+
             //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
             soknaderPaaSammeAnnonse.remove(soknad);
 
@@ -411,7 +416,7 @@ public class ControllerTabell {
                 tempSoknad.setErBehandlet(true);
                 tempSoknad.setErGodkjent(false);
             }
-            
+
             Melding.visMelding(null, "Kontrakten er opprettet!");
             tabellModellSoknad.fireTableStructureChanged();
         } else {
@@ -450,7 +455,8 @@ public class ControllerTabell {
 
     /**
      * Returnerer boligobjekt basert på valgt rad i tabellen.
-     * @return 
+     *
+     * @return
      */
     public Bolig returnerBoligObjekt() {
 
@@ -463,7 +469,8 @@ public class ControllerTabell {
 
     /**
      * Returnerer Personobjekt basert på valgt rad i tabellen.
-     * @return 
+     *
+     * @return
      */
     public Person returnerPersonObjekt() {
         Person valgtObjekt = (Person) tabellData.get(valgtRadItabell);
@@ -475,7 +482,8 @@ public class ControllerTabell {
 
     /**
      * Returnerer Annonseobjekt basert på valgt rad i tabellen.
-     * @return 
+     *
+     * @return
      */
     public Annonse returnerAnnonseObjekt() {
         Annonse valgtObjekt = (Annonse) tabellData.get(valgtRadItabell);
@@ -544,7 +552,7 @@ public class ControllerTabell {
 
                     ok = personliste.remove(valgtObjekt);
                     if (ok) {
-                        tabellModellPerson.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);                        
+                        tabellModellPerson.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
                         Melding.visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " er slettet");
                     } else {
                         Melding.visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " ble IKKE slettet");
@@ -558,8 +566,8 @@ public class ControllerTabell {
 
     /**
      * Om boligen er publisert så tas den av nett. Om den ikke er publisert så
-     * sjekkes det om boligen finnes i annonseregistert. Om den gjør det så åpnes
-     * vindu for å endre annonsen, ellers lages det ny tom annonse.
+     * sjekkes det om boligen finnes i annonseregistert. Om den gjør det så
+     * åpnes vindu for å endre annonsen, ellers lages det ny tom annonse.
      */
     public void nyEllerEndreAnnonse() {
 
@@ -578,7 +586,7 @@ public class ControllerTabell {
                     if (tempAnnonse.getBoligID() == bolig.getBoligID()) {
                         //Boligen er annonsert og kan endres
                         cont = new ControllerRegistrerAnnonse(annonseliste, personliste, tempAnnonse);
-                        cont.settTabellOppdateringsLytter(new TabellOppdateringInterface() {
+                        cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
                             @Override
                             public void oppdaterTabellEtterEndring() {
@@ -590,7 +598,7 @@ public class ControllerTabell {
                 }//end while
                 //Boligen er ikke i annonseregisteret og ny annonse opprettes.
                 cont = new ControllerRegistrerAnnonse(annonseliste, personliste, bolig);
-                cont.settTabellOppdateringsLytter(new TabellOppdateringInterface() {
+                cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
                     @Override
                     public void oppdaterTabellEtterEndring() {
@@ -605,6 +613,16 @@ public class ControllerTabell {
     }
 
     /**
+     * Denne lytteren er ledd i komunikasjonen med toppanelets Controller.
+     * MainController initialiserer komunikasjonen.
+     *
+     * @param lytter
+     */
+    public void settTabellLytterSendDataSett(TabellSendDataIBrukInterface lytter) {
+        this.tabellOppdateringslytter = lytter;
+    }
+
+    /**
      * Oppretter en arraylist med lengde av mottatt datasett. Denne metoden er
      * avhengig av søkeresultatene og må få inn parametere fra toppanel.
      */
@@ -615,6 +633,10 @@ public class ControllerTabell {
         Iterator<?> iter = innkommendeDatasett.iterator();
         while (iter.hasNext()) {
             tabellData.add(iter.next());
+        }
+
+        if (tabellOppdateringslytter != null) {
+            tabellOppdateringslytter.sendTabellDataIBruk(tabellData);
         }
 
         try {

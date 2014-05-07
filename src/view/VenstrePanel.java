@@ -63,6 +63,7 @@ public class VenstrePanel extends AbstractPanel {
         sorterer.setSortKeys(sorteringsnokler);
     }
 
+            
     /**
      * Formaterer søknadene i tabellen som er behandlet.
      */

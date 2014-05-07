@@ -168,7 +168,7 @@ public class TopPanelMegler extends AbstractPanel {
             add(leietakereRadio);
             add(kontraktRadio);
 
-            soknaderRadio.setSelected(true);
+//            soknaderRadio.setSelected(true);
         }
 
         public CustomJRadioButton getSoknaderRadio() {

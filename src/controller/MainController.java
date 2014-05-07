@@ -69,17 +69,26 @@ public class MainController implements Serializable {
         kontraktRegister = new Kontraktregister(kontraktliste);
         soknadRegister = new Soknadregister(soknadsliste);
 
-        //////Setter Tabellen - Midlertidig kall på metodene herfra///////////////////
-        /**
-         * Man vil sende med resultatet fra søk i toppanel i stedet for hele
-         * listen, der det er ønskelig.
-         */
 
+        /**
+         * Setter lytter på Toppanelet til Megler. Om datasettet endres i tabellen
+         * så vet toppanelet om det.
+         */
+        tabellControllerMegler.settTabellLytterSendDataSett(new TabellSendDataIBrukInterface() {
+
+            @Override
+            public void sendTabellDataIBruk(ArrayList tabellData) {
+                toppPanelControllerMegler.setTabellDataIBrukFraMainController(tabellData);
+            }
+        });
+        
+        
         tabellControllerMegler.settOppTabellLyttere(meglerVindu, true);
         tabellControllerMegler.settInnDataITabell(boligliste, ObjektType.BOLIGOBJ);
         
         tabellControllerAnnonse.settOppTabellLyttere(annonseVindu, false);
         tabellControllerAnnonse.settInnDataITabell(annonseliste, ObjektType.ANNONSEOBJ);
+
 
 
 

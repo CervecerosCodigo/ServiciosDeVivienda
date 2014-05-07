@@ -8,15 +8,15 @@ public abstract class Person implements Serializable, Searchable {
 
     private static final long serialVersionUID = Konstanter.SERNUM;
 
-    private int personID;
     private static int teller = 10000;
+    private int personID;
     private String fornavn;
     private String etternavn;
     private String epost;
     private String telefon;
 
     public Person(String fornavn, String etternavn, String epost, String telefon) {
-        this.personID = ++teller;
+        personID = ++teller;
         this.fornavn = fornavn;
         this.etternavn = etternavn;
         this.epost = epost;
