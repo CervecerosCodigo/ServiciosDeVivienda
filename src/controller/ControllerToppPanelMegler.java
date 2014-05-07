@@ -152,7 +152,8 @@ public class ControllerToppPanelMegler<E> {
                 //TODO: Trenger å få tekstfeltet å gi tilbakemelding gjeldende regex
                 
                 String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
-                if (soketekst.equals("Søk") || soketekst.equals("")) {
+//                if (soketekst.equals("Søk") || soketekst.equals("")) {
+                if (false) {
                     Melding.visMelding("Søk", "Søkefeltet er tomt.\nBruk * for å vise hele registeret.");
                 } else {
 

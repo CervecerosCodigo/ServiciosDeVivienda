@@ -6,10 +6,12 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Klassen kan brukes for fritekssøk over datafelt fra registre. File:
+ * Klassen kan brukes for fritekssøk over datafelt fra registre. 
+ * File:
  * FreeTextSearch.java Package: search Project: ServiciosDeVivienda Apr 19, 2014
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
+ * @param <T>
  */
 public class FreeTextSearch<T extends Searchable> {
 
@@ -30,11 +32,11 @@ public class FreeTextSearch<T extends Searchable> {
      * @return
      */
     public ArrayList<T> searchForPattern(HashSet<? extends Searchable> liste, String pattern) {
-        //FIXME: Register over søknader er ikke av type HashSet uten LInkedHashSet dette kommer derfor ikke til å fungere for den. Input parametern her må derfor seinere endre til eventuelt Set (hvis det går, foreløpig så krasjer det) dersom dette ikke går må vi ovverloade metoden slik at den tar inn en LinkedHashSet også.
+        
         pattern = pattern.trim();
         pattern = pattern.toLowerCase();
 
-        if (pattern.equals("*")) {//Dersom vi har en wildcard så returnerer vi alt
+        if (pattern.equalsIgnoreCase("søk") || pattern.equals("") || pattern.equals("*")) {
             for (Searchable o : liste) {
                 resultList.add((T) o);
             }
@@ -47,7 +49,6 @@ public class FreeTextSearch<T extends Searchable> {
                     s = s.toLowerCase();
                     if (s.contains(pattern)) {
                         resultList.add((T) o);
-//                    System.out.println("Funnet: "+o.toString());
                     }
                 }
             }
