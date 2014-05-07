@@ -115,9 +115,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         bRegVindu.getPostStedField().setText(bolig.getPoststed());
         bRegVindu.getBoArealField().setText(String.valueOf(bolig.getBoAreal()));
         bRegVindu.getByggeArField().setText(String.valueOf(bolig.getByggeAr()));
-        bRegVindu.getArCombo().setSelectedItem(bolig.getTilgjengeligForUtleie().get(Calendar.YEAR));
-        bRegVindu.getManedCombo().setSelectedItem(bolig.getTilgjengeligForUtleie().get(Calendar.MONTH));
-        bRegVindu.getDagCombo().setSelectedItem(bolig.getTilgjengeligForUtleie().get(Calendar.DAY_OF_MONTH));
+        bRegVindu.getDatoVelger().setDato(bolig.getTilgjengeligForUtleie().get(Calendar.YEAR), bolig.getTilgjengeligForUtleie().get(Calendar.MONTH), bolig.getTilgjengeligForUtleie().get(Calendar.DAY_OF_MONTH));
         if (bolig.isErUtleid()) {
             bRegVindu.getErUtleidCheckBox().setSelected(true);
         }
@@ -261,9 +259,9 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         erUtleid = bRegVindu.getErUtleidCheckBox().isSelected();
         boAreal = Integer.parseInt(bRegVindu.getBoArealField().getText());
         byggeAr = Integer.parseInt(bRegVindu.getByggeArField().getText());
-        arTilgjengelig = Integer.parseInt(bRegVindu.getArCombo().getSelectedItem().toString());
-        manedTilgjengelig = Integer.parseInt(bRegVindu.getManedCombo().getSelectedItem().toString());
-        dagTilgjengelig = Integer.parseInt(bRegVindu.getDagCombo().getSelectedItem().toString());
+        arTilgjengelig = bRegVindu.getDatoVelger().getAr();
+        manedTilgjengelig = bRegVindu.getDatoVelger().getManed();
+        dagTilgjengelig = bRegVindu.getDatoVelger().getDag();
         tilgjengeligForUtleie = new GregorianCalendar(arTilgjengelig, manedTilgjengelig, dagTilgjengelig);
     }
 
