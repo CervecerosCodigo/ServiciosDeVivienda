@@ -14,7 +14,7 @@ import lib.Konstanter;
 public class AbstractRegistreringsPanel extends AbstractRegistreringsVindu{
 
     
-    protected CustomSubPanel toppPanel, venstrePanel, senterPanel, hoyrePanel, bunnPanel;
+    CustomSubPanel toppPanel, venstrePanel, senterPanel, hoyrePanel, bunnPanel;
     
     /**
      * 

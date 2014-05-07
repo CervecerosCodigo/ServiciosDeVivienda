@@ -1,9 +1,12 @@
 package view.registrer;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,17 +38,15 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
     private JTextArea soknadsTextArea;
     private JScrollPane soknadsScroll;
 
-//     this.fodselsAr = fodselsAr;
-//        this.antPersoner = antPersoner;
-//        this.sivilstatus = sivilstatus;
-//        this.yrke = yrke;
-//        this.arbeidsforhold = arbeidsforhold;
-//        this.soknadsTekst = soknadsTekst;
+    private CustomSubPanel knappePanel;
+    
     public PersonRegVindu(int bredde, int hoyde, String tittel) {
-        super(450, 400, tittel);
+        super(450, 500, tittel);
 
         senterPanel = new CustomSubPanel("", 0, 0, new GridBagLayout());
-        add(senterPanel);
+        bunnPanel = new CustomSubPanel(new GridLayout(1, 1));
+        add(senterPanel, BorderLayout.CENTER);
+        add(bunnPanel, BorderLayout.SOUTH);
 
         fornavnLabel = new JLabel("Fornavn: ");
         etternavnLabel = new JLabel("Etternavn: ");
@@ -100,6 +101,10 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
         //Knapper
         avbrytButton = new CustomJButton("Avbryt");
         lagreButton = new CustomJButton("Lagre");
+        knappePanel = new CustomSubPanel(new FlowLayout());
+        knappePanel.add(avbrytButton);
+        knappePanel.add(lagreButton);
+        
 
         erRepresentatnForLabel.setEnabled(false);
         erRepresentatForField.setEnabled(false);
@@ -325,20 +330,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel {
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(soknadsScroll, gc);
 
-        //Rad 7
-        gc.weightx = 0.1;
-        gc.weighty = 1;
-
-        gc.gridx = 1;
-        gc.gridy++;
-        gc.anchor = GridBagConstraints.LINE_END;
-        gc.insets = new Insets(0, 0, 0, 5);
-        senterPanel.add(avbrytButton, gc);
-
-        gc.gridx = 2;
-        gc.insets = new Insets(0, 0, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
-        senterPanel.add(lagreButton, gc);
+        bunnPanel.add(knappePanel);
     }
 
     //Getters

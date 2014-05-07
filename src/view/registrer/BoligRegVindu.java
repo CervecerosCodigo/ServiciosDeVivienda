@@ -137,7 +137,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         bildeLabel = new JLabel("Antall bilder: ");
         bildeResultatLabel = new JLabel("");
         bildeKnappLabel = new JLabel("Bilder: ");
-        bildeButton = new CustomJButton("Last");
+        bildeButton = new CustomJButton("Last opp");
         visFlereBilderButton = new CustomJButton("Vis");
         ///SLUTT PÅ DATAFELT FOR BOLIG///
         //

@@ -4,6 +4,9 @@ import controller.ControllerTabellOgOutput;
 import java.awt.Color;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import javax.swing.UIManager;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import javax.swing.plaf.nimbus.NimbusStyle;
 
 /**
  *
@@ -73,6 +76,7 @@ public class Konstanter {
     
 
     public static final Color BAKGRUNNSFARGEPANEL = new Color(200, 210, 240); //Lys blå
+//    public static final Color BAKGRUNNSFARGEPANEL = new Color(255,255,255); //Hvit
 //    public static final Color BAKGRUNNSFARGEPANEL = new Color(193, 205, 193); //Honey Dew
     
     
