@@ -18,7 +18,7 @@ import view.registrer.CustomSubPanel;
 
 public class TopPanelMegler extends AbstractPanel {
 
-    private CustomSubPanel sokePanel, knappePanel, fyllPanel;
+    private CustomSubPanel sokePanel, knappePanel;
     private StatistikkPanel statistikkPanel;
     private MeglerRadioKnapper meglerRadioKnapper;
     private CustomJTextField sokeFelt;
@@ -36,7 +36,6 @@ public class TopPanelMegler extends AbstractPanel {
         statistikkPanel = new StatistikkPanel();
         sokePanel = new CustomSubPanel(new FlowLayout());
         knappePanel = new CustomSubPanel(new FlowLayout());
-        fyllPanel = new CustomSubPanel(new FlowLayout());
         sokeFelt = new CustomJTextField("Søk", RegexTester.KUN_BOKSTAVER_ELLER_TALL, 20);
         sokeKnapp = new CustomJButton(Ikoner.SEARCH);
         nyKontraktItem = new CustomJButton("Ny kontrakt", BREDDE, HOYDE);
@@ -46,7 +45,7 @@ public class TopPanelMegler extends AbstractPanel {
         bilde = new ImageIcon(new BildeFilSti().getAbsoluteGalleryPath()+"/default/boligLogo.png");
         bildeLabel = new JLabel(bilde);
         
-        add(fyllPanel);
+        add(new CustomSubPanel(100,30));
         add(meglerRadioKnapper);
         add(sokePanel);
         add(knappePanel);
@@ -63,9 +62,8 @@ public class TopPanelMegler extends AbstractPanel {
         setLayout(new FlowLayout(FlowLayout.LEADING));
         setVisible(true);
         
-        sokePanel.setPreferredSize(new Dimension(350,35));
+        sokePanel.setPreferredSize(new Dimension(350,50));
         knappePanel.setPreferredSize(new Dimension(270,70));
-        fyllPanel.setPreferredSize(new Dimension(30,50));
         bildeLabel.setPreferredSize(new Dimension(bilde.getIconWidth(), bilde.getIconHeight()));
 
     }

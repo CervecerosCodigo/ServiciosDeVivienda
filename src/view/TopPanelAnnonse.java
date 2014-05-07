@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -14,6 +15,7 @@ import javax.swing.JPanel;
 
 import view.registrer.CustomSubPanel;
 import lib.BildeFilSti;
+import lib.Ikoner;
 import lib.RegexTester;
 
 public class TopPanelAnnonse extends AbstractPanel {
@@ -28,12 +30,12 @@ public class TopPanelAnnonse extends AbstractPanel {
         super(borderTitle, dimHeight, dimWidth);
         knappeGruppeHoyre = new KnappeGruppeHoyre();
         checkBoxKnappeGruppe = new CheckBoxKnappeGruppe();
-        sokeKnapp = new CustomJButton("Søk");
+        sokeKnapp = new CustomJButton(Ikoner.SEARCH);
         bilde = new ImageIcon(new BildeFilSti().getAbsoluteGalleryPath()+"/default/boligLogo.png");
         bildeLabel = new JLabel(bilde);
         
         setVisible(true);
-        setLayout(new FlowLayout(FlowLayout.LEFT, 30, 0));
+        setLayout(new FlowLayout(FlowLayout.LEFT, 35, 0));
         
         add(checkBoxKnappeGruppe);
         add(knappeGruppeHoyre);
@@ -111,39 +113,33 @@ public class TopPanelAnnonse extends AbstractPanel {
 
     private class KnappeGruppeHoyre extends AbstractPanel {
 
-        private JLabel prisLabel, arealLabel;
         private CustomJTextField minPrisFelt, maksPrisFelt, minArealFelt, maksArealFelt;
         private JComboBox postStedBox, boligTypeBox;
         private CustomSubPanel postStedBoxPanel, boligTypeBoxPanel;
 
         public KnappeGruppeHoyre() {
-            prisLabel = new JLabel("Pris:");
-            arealLabel = new JLabel("Areal:");
-            minPrisFelt = new CustomJTextField("min", RegexTester.PRIS, 5);
-            maksPrisFelt = new CustomJTextField("maks", RegexTester.PRIS, 5);
-            minArealFelt = new CustomJTextField("min", RegexTester.KVM_BOLIG, 5);
-            maksArealFelt = new CustomJTextField("maks", RegexTester.KVM_BOLIG, 5);
+            minPrisFelt = new CustomJTextField("Min pris", RegexTester.PRIS, 6);
+            maksPrisFelt = new CustomJTextField("Maks pris", RegexTester.PRIS, 6);
+            minArealFelt = new CustomJTextField("Min pris", RegexTester.KVM_BOLIG, 6);
+            maksArealFelt = new CustomJTextField("Maks pris", RegexTester.KVM_BOLIG, 6);
             postStedBox = new JComboBox<>();
             boligTypeBox = new JComboBox<>();
             postStedBoxPanel = new CustomSubPanel(new FlowLayout());
             boligTypeBoxPanel = new CustomSubPanel(new FlowLayout());
             
             setVisible(true);
-            setLayout(new GridLayout(2,4,-7,-5));
-            prisLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-            arealLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+            setLayout(new GridLayout(2,3,-7, 0));
             
             postStedBoxPanel.add(postStedBox);
             boligTypeBoxPanel.add(boligTypeBox);
 
-            add(prisLabel);
             add(minPrisFelt);
             add(maksPrisFelt);
             add(postStedBoxPanel);
-            add(arealLabel);
             add(minArealFelt);
             add(maksArealFelt);
             add(boligTypeBoxPanel);
+            
         }
 
         public CustomJTextField getMinPrisFelt() {
@@ -202,12 +198,13 @@ public class TopPanelAnnonse extends AbstractPanel {
 
             setVisible(true);
             setLayout(new FlowLayout(FlowLayout.LEFT, 0, 5));
-            setPreferredSize(new Dimension(100, 100));
+            setPreferredSize(new Dimension(90, 100));
             
             add(balkongCheckBox);
             add(fellesvaskCheckBox);
             add(hageCheckBox);
             add(kjellerCheckBox);
+            
         }
 
         public CustomJCheckBox getBalkongCheckBox() {
