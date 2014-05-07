@@ -10,7 +10,9 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
+import view.registrer.CustomSubPanel;
 import lib.BildeFilSti;
 import lib.RegexTester;
 
@@ -112,6 +114,7 @@ public class TopPanelAnnonse extends AbstractPanel {
         private JLabel prisLabel, arealLabel;
         private CustomJTextField minPrisFelt, maksPrisFelt, minArealFelt, maksArealFelt;
         private JComboBox postStedBox, boligTypeBox;
+        private CustomSubPanel postStedBoxPanel, boligTypeBoxPanel;
 
         public KnappeGruppeHoyre() {
             prisLabel = new JLabel("Pris:");
@@ -122,22 +125,25 @@ public class TopPanelAnnonse extends AbstractPanel {
             maksArealFelt = new CustomJTextField("maks", RegexTester.KVM_BOLIG, 5);
             postStedBox = new JComboBox<>();
             boligTypeBox = new JComboBox<>();
+            postStedBoxPanel = new CustomSubPanel(new FlowLayout());
+            boligTypeBoxPanel = new CustomSubPanel(new FlowLayout());
             
             setVisible(true);
-            setLayout(new GridLayout(2,4));
+            setLayout(new GridLayout(2,4,-7,-5));
             prisLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
             arealLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-            postStedBox.setPreferredSize(new Dimension(100, postStedBox.getHeight()));
-            boligTypeBox.setPreferredSize(new Dimension(100, boligTypeBox.getHeight()));
+            
+            postStedBoxPanel.add(postStedBox);
+            boligTypeBoxPanel.add(boligTypeBox);
 
             add(prisLabel);
             add(minPrisFelt);
             add(maksPrisFelt);
-            add(postStedBox);
+            add(postStedBoxPanel);
             add(arealLabel);
             add(minArealFelt);
             add(maksArealFelt);
-            add(boligTypeBox);
+            add(boligTypeBoxPanel);
         }
 
         public CustomJTextField getMinPrisFelt() {

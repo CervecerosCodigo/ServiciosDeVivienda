@@ -31,6 +31,12 @@ public class CustomSubPanel extends AbstractPanel {
         setVisible(true);
     }
     
+    public CustomSubPanel(LayoutManager layout, int bredde, int hoyde) {
+    	super(null, bredde, hoyde);
+    	setLayout(layout);
+    	setVisible(true);
+    }
+    
     /**
      * Border med navn, størrelse og layoutmanager.
      * @param borderNavn
