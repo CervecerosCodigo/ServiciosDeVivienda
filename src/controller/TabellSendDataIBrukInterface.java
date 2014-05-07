@@ -6,11 +6,15 @@
 
 package controller;
 
+import java.util.ArrayList;
+import model.TabellModell;
+
 /**
  *
  * @author espen
  */
-public interface TabellOppdateringInterface {
+public interface TabellSendDataIBrukInterface<E> {
     
-    public void oppdaterTabellEtterEndring();
+    public void sendTabellDataIBruk(ArrayList<E> tabellData);
+    
 }

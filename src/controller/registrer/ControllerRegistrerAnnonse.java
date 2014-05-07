@@ -1,7 +1,8 @@
 package controller.registrer;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import controller.TabellOppdateringInterface;
+
+import controller.TabellFireDataChangedInterface;
 import controller.VisMeldingInterface;
 import java.awt.event.*;
 import java.util.*;
@@ -30,7 +31,7 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
     private boolean erSynligsomAnnonse;
     
     private boolean erNyregistrering;
-    TabellOppdateringInterface tabellOppdateringLytter;
+    TabellFireDataChangedInterface tabellOppdateringLytter;
 
     /**
      * Konstruktør for registrering av nye annonseobjekter.
@@ -279,7 +280,7 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
         vindu.visMelding(melding);
     }
     
-    public void settTabellOppdateringsLytter(TabellOppdateringInterface lytter){
+    public void settTabellOppdateringsLytter(TabellFireDataChangedInterface lytter){
         tabellOppdateringLytter = lytter;
     }
     

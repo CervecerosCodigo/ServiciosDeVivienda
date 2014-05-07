@@ -1,6 +1,6 @@
 package controller.registrer;
 
-import controller.TabellOppdateringInterface;
+import controller.TabellFireDataChangedInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -26,7 +26,7 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
     private final boolean erNyregistrering;
 
     private PersonRegVindu vindu;
-    TabellOppdateringInterface tabellOppdateringLytter;    
+    TabellFireDataChangedInterface tabellOppdateringLytter;    
 
     /**
      * Registrer en NY utleier.
@@ -178,7 +178,7 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
         }
     }
 
-    public void settTabellOppdateringsLytter(TabellOppdateringInterface lytter){
+    public void settTabellOppdateringsLytter(TabellFireDataChangedInterface lytter){
         tabellOppdateringLytter = lytter;
     }
     
