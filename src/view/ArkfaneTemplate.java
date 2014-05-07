@@ -16,7 +16,7 @@ public class ArkfaneTemplate extends AbstractPanel {
         setLayout(new BorderLayout());
         setVisible(true);
         
-        bunnpanel = new BunnPanel("", VinduStorrelse.BUNNPANEL.getHEIGHT(), 
+        bunnpanel = new BunnPanel(VinduStorrelse.BUNNPANEL.getHEIGHT(), 
                 VinduStorrelse.BUNNPANEL.getWIDTH());
         venstrepanel = new VenstrePanel("Liste",VinduStorrelse.VENSTREPANEL.getHEIGHT(), 
                 VinduStorrelse.VENSTREPANEL.getWIDTH());

@@ -10,8 +10,32 @@ public class BunnPanel extends AbstractPanel {
 
     private CustomJButton multiKnapp, frem, tilbake;
 
+    /**
+     * Setter opp en panel med border og tittel.
+     * @param borderTitle
+     * @param dimHeight
+     * @param dimWidth 
+     */
     public BunnPanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
+
+        setLayout(new GridLayout(1, 1));
+        multiKnapp = new CustomJButton("Endre");
+        frem = new CustomJButton("Frem");
+        tilbake = new CustomJButton("Tilbake");
+
+        add(multiKnapp);
+        add(tilbake);
+        add(frem);
+    }
+    
+    /**'
+     * Setter opp "usynlig" panel uten border og tittel.
+     * @param dimHeight
+     * @param dimWidth 
+     */
+    public BunnPanel(int dimHeight, int dimWidth) {
+        super(dimHeight, dimWidth);
 
         setLayout(new GridLayout(1, 1));
         multiKnapp = new CustomJButton("Endre");
