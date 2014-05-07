@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -157,8 +158,8 @@ public class TopPanelMegler extends AbstractPanel {
             radioGroup.add(kontraktRadio);
 
             setVisible(true);
-            setPreferredSize(new Dimension(90, 115));
-            setLayout(new FlowLayout(FlowLayout.LEFT, 0, -4));
+            setPreferredSize(new Dimension(90, 100));
+            setLayout(new FlowLayout(FlowLayout.LEFT, 0, -2));
             
             add(soknaderRadio);
             add(annonserRadio);

@@ -195,8 +195,8 @@ public class TopPanelAnnonse extends AbstractPanel {
             kjellerCheckBox = new CustomJCheckBox("Kjeller");
 
             setVisible(true);
-            setLayout(new FlowLayout(FlowLayout.LEFT, 0, 4));
-            setPreferredSize(new Dimension(100, 120));
+            setLayout(new FlowLayout(FlowLayout.LEFT, 0, 5));
+            setPreferredSize(new Dimension(100, 100));
             
             add(balkongCheckBox);
             add(fellesvaskCheckBox);
