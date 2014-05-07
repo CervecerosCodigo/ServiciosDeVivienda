@@ -11,6 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import lib.BildeFilSti;
+import lib.Ikoner;
+import lib.RegexTester;
 import view.registrer.CustomSubPanel;
 
 public class TopPanelMegler extends AbstractPanel {
@@ -34,8 +36,8 @@ public class TopPanelMegler extends AbstractPanel {
         sokePanel = new CustomSubPanel(new FlowLayout());
         knappePanel = new CustomSubPanel(new FlowLayout());
         fyllPanel = new CustomSubPanel(new FlowLayout());
-        sokeFelt = new CustomJTextField("Søk", "", 17);
-        sokeKnapp = new CustomJButton("Søk");
+        sokeFelt = new CustomJTextField("Søk", RegexTester.KUN_BOKSTAVER_ELLER_TALL, 20);
+        sokeKnapp = new CustomJButton(Ikoner.SEARCH);
         nyKontraktItem = new CustomJButton("Ny kontrakt", BREDDE, HOYDE);
         nyUtleierItem = new CustomJButton("Ny utleier", BREDDE, HOYDE);
         nyBoligItem = new CustomJButton("Ny bolig", BREDDE, HOYDE);
