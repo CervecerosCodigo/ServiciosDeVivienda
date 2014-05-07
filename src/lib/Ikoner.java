@@ -20,7 +20,8 @@ public class Ikoner {
 //    public final static ImageIcon BOLIG = new ImageIcon(ikonerSti+"House-48.png");
     public final static ImageIcon PIL_VENSTRE = new ImageIcon(ikonerSti+"Arrowhead-Left-32.png");
     public final static ImageIcon PIL_HOYRE = new ImageIcon(ikonerSti+"Arrowhead-Right-32.png");
-
+    public final static ImageIcon SEARCH = new ImageIcon(ikonerSti+"Search-32.png");
+    
     //Applikasjonsikone
     public final static ImageIcon APP_ICON = new ImageIcon(ikonerSti+"boligLogo.png");
     
