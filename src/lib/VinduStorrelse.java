@@ -11,7 +11,7 @@ package lib;
  */
 public enum VinduStorrelse {
 
-    STOR (700, 1200),
+    STOR (730, 1200),
     MIDDEL (600, 800), 
     LITEN (300,400),
     TOPPANEL (150,0),

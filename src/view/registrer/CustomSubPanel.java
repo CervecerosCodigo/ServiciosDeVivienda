@@ -4,11 +4,15 @@ package view.registrer;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import view.AbstractPanel;
 
 public class CustomSubPanel extends AbstractPanel {
 
     private LayoutManager layout;
+    private Border innerBorder;
 
     /**
      * Border og størrelse.
@@ -20,6 +24,11 @@ public class CustomSubPanel extends AbstractPanel {
         super(borderNavn, hoyde, bredde);
         setLayout(new GridLayout(1, 1));
         setVisible(true);
+        
+        innerBorder = BorderFactory.createTitledBorder(borderNavn);
+        setBorder(innerBorder);   
+
+             
     }
 
     /**
@@ -48,6 +57,8 @@ public class CustomSubPanel extends AbstractPanel {
         super(borderNavn, hoyde, bredde);
         setLayout(layout);
         setVisible(true);
+        innerBorder = BorderFactory.createTitledBorder(borderNavn);
+        setBorder(innerBorder);           
     }
     
     /**
