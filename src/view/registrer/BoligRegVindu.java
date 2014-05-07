@@ -2,7 +2,6 @@ package view.registrer;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,17 +9,15 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import lib.GuiSizes;
 import lib.Ikoner;
 import lib.RegexTester;
+import view.ComboDatoVelger;
 import view.CustomJButton;
 import view.CustomJCheckBox;
 import view.CustomJRadioButton;
@@ -37,20 +34,19 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
 
     ///PANELER///
     private CustomSubPanel boligPanel, leilighetPanel, eneboligPanel, bildePanel;
-    private CustomSubPanel boligTypePanel, datoPickPanel, knappContainer, knappPanel, bildeKnapperPanel;
+    private CustomSubPanel boligTypePanel, knappContainer, knappPanel, bildeKnapperPanel;
     ///SLUTT PÅ PANELER///
     //
     ///BOLIG///
     private final JLabel boligTypeLabel, eierLabel, meglerLabel, adresseLabel, postNrLabel, postStedLabel, boArealLabel, byggeArLabel, erUtleidLabel, beskrivelseLabel, tilgjengeligForUtleieLabel, bildeLabel, bildeKnappLabel;
     private JLabel bildeResultatLabel;
     private CustomJRadioButton leilighetRButton, eneboligRButton;
-    private JComboBox dagCombo, manedCombo, arCombo;
+    private ComboDatoVelger datoVelger;
     private ButtonGroup radioButtons;
     private CustomJTextField eierField, meglerField, adresseField, postNrField, postStedField, boArealField, byggeArField;
     private JCheckBox erUtleidCheckBox;
     private JTextArea beskrivelseTextArea;
     private CustomJButton bildeButton, visFlereBilderButton;
-    //TODO: Legg til kalenderfelt for registrering av tilgjenglighet for utleie
     ///BOLIG SLUTT///
     //
     ///LEILIGHET///
@@ -64,13 +60,12 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
     private CustomJTextField antallEtasjerField, tomtArealField;
     private CustomJCheckBox harKjellerCheckBox;
     ///ENEBOLIG SLUTT///
-    
+
     private CustomJButton avbrytButton, lagreButton;
 
     public BoligRegVindu(String tittel) {
         super(800, 700, tittel);
 
-        
         ///PANELER///
         toppPanel = new CustomSubPanel(80, 0);
         venstrePanel = new CustomSubPanel("Felles", 0, 450);
@@ -79,9 +74,8 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
 
         boligTypePanel = new CustomSubPanel(new FlowLayout());
         boligPanel = new CustomSubPanel(new GridBagLayout());
-        leilighetPanel = new CustomSubPanel("Leilighet", 250, 200, new GridBagLayout());        
-        eneboligPanel = new CustomSubPanel("Enebolig", 250, 200, new GridBagLayout());         
-        datoPickPanel = new CustomSubPanel(new FlowLayout());
+        leilighetPanel = new CustomSubPanel("Leilighet", 250, 200, new GridBagLayout());
+        eneboligPanel = new CustomSubPanel("Enebolig", 250, 200, new GridBagLayout());
         knappContainer = new CustomSubPanel(new BorderLayout());
         knappPanel = new CustomSubPanel(new FlowLayout());
         bildeKnapperPanel = new CustomSubPanel(new GridLayout(1, 2));
@@ -98,7 +92,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         radioButtons = new ButtonGroup();
         radioButtons.add(leilighetRButton);
         radioButtons.add(eneboligRButton);
-        
+
         boligTypePanel.add(leilighetRButton);
         boligTypePanel.add(eneboligRButton);
         toppPanel.add(boligTypePanel);
@@ -124,9 +118,8 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         postStedField = new CustomJTextField("Oslo", RegexTester.POSTORT_NAVN, GuiSizes.FIELD_MEDIUM);
         boArealField = new CustomJTextField("XX(X)", RegexTester.KVM_BOLIG, GuiSizes.FIELD_MEDIUM);
         byggeArField = new CustomJTextField("XXXX", RegexTester.YEAR, GuiSizes.FIELD_MEDIUM);
-        dagCombo = new JComboBox<>();
-        manedCombo = new JComboBox<>();
-        arCombo = new JComboBox<>();
+
+        datoVelger = new ComboDatoVelger();
         erUtleidCheckBox = new CustomJCheckBox();
         beskrivelseTextArea = new JTextArea(GuiSizes.TEXTAREA_ROW_MEDIUM, GuiSizes.TEXTAREA_COL_MEDIUM);
 //        beskrivelseTextArea.setPreferredSize(new Dimension(200, 200));
@@ -177,10 +170,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
 
         GridBagConstraints gcBolig = new GridBagConstraints();
 
-        datoPickPanel.add(arCombo);
-        datoPickPanel.add(manedCombo);
-        datoPickPanel.add(dagCombo);
-        
+
         bildeKnapperPanel.add(bildeButton);
         bildeKnapperPanel.add(visFlereBilderButton);
 
@@ -240,7 +230,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         gcBolig.gridy++;
         boligPanel.add(tilgjengeligForUtleieLabel, gcBolig);
         gcBolig.gridx++;
-        boligPanel.add(datoPickPanel, gcBolig);
+        boligPanel.add(datoVelger, gcBolig);
 
         //Rad 9
         gcBolig.gridx = 0;
@@ -276,7 +266,6 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         ////////SLUTT PÅ GENERELL REGISTRERING AV BOLIG////////
 
         ////////START PÅ REGISTRERING AV LEILIGHET////////
-
         GridBagConstraints gcLeilighet = new GridBagConstraints();
 
         //Rad 1
@@ -401,29 +390,6 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
             }
         });
         ///SLUTT PÅ LUKKE VINDU///
-        fyllDatoComboBoxerMndAr();
-        setAntallDager();
-
-        ///START VALG AV DATO///
-        /**
-         * Dersom man endrer år elle måned endres antall dager i comboboksen for
-         * dager
-         */
-        arCombo.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setAntallDager();
-            }
-        });
-        manedCombo.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setAntallDager();
-            }
-        });
-        ///SLUTT PÅ VALG AV DATO///
 
         deaktiverAlleKomponenter();
         setVisible(true);
@@ -447,10 +413,6 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         for (Component comp1 : compEnebolig) {
             comp1.setEnabled(false);
         }
-        //Må sette disse manuellt ettersom de ikke vil fungere som resten
-        arCombo.setEnabled(false);
-        manedCombo.setEnabled(false);
-        dagCombo.setEnabled(false);
         beskrivelseTextArea.setEditable(false);
         lagreButton.setEnabled(false);
     }
@@ -460,10 +422,8 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         for (Component comp1 : compBolig) {
             comp1.setEnabled(true);
         }
-        //Må sette disse manuellt ettersom de ikke vil fungere som resten
-        arCombo.setEnabled(true);
-        manedCombo.setEnabled(true);
-        dagCombo.setEnabled(true);
+        eierField.setEnabled(false);
+        meglerField.setEnabled(false);
         beskrivelseTextArea.setEditable(true);
         lagreButton.setEnabled(true);
     }
@@ -480,58 +440,6 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         for (Component comp1 : compEnebolig) {
             comp1.setEnabled(true);
         }
-    }
-
-    /**
-     * Fyller combobokser for år og måneder.
-     */
-    private void fyllDatoComboBoxerMndAr() {
-        int ar = Calendar.getInstance().get(Calendar.YEAR);
-
-        for (int i = ar; i <= (ar + 10); i++) {
-            arCombo.addItem(i);
-        }
-        for (int i = 1; i <= 12; i++) {
-            String mnd = String.valueOf(i);
-            if (i < 10) {
-                mnd = "0" + mnd;
-            }
-            manedCombo.addItem(mnd);
-        }
-
-    }
-
-    /**
-     * Setter antall dager for comboboxen etter at man har valgt år og måned.
-     */
-    private void setAntallDager() {
-        dagCombo.removeAllItems();
-        int ar = Integer.parseInt(arCombo.getSelectedItem().toString());
-        int mnd = Integer.parseInt(manedCombo.getSelectedItem().toString());
-        int dager = getAntallDager(ar, mnd);
-
-        for (int i = 1; i <= dager; i++) {
-            String dag = String.valueOf(i);
-            if (i < 10) {
-                dag = "0" + dag;
-            }
-            dagCombo.addItem(dag);
-        }
-
-//        Melding.visMelding("", "År: "+ar+"\nMåned:"+mnd+"\nAntall dager:"+getAntallDager(ar, mnd));
-    }
-
-    /**
-     * Returnerer antall dager i en måned girr år og måned.
-     *
-     * @param ar
-     * @param mnd
-     * @return int antall dager mellom 1 og 31
-     */
-    private int getAntallDager(int ar, int mnd) {
-        Calendar cal = new GregorianCalendar(ar, mnd - 1, 1);
-        int antallDager = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        return antallDager;
     }
 
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
@@ -614,30 +522,6 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
 
     public void setEneboligRButton(CustomJRadioButton eneboligRButton) {
         this.eneboligRButton = eneboligRButton;
-    }
-
-    public JComboBox getDagCombo() {
-        return dagCombo;
-    }
-
-    public void setDagCombo(JComboBox dagCombo) {
-        this.dagCombo = dagCombo;
-    }
-
-    public JComboBox getManedCombo() {
-        return manedCombo;
-    }
-
-    public void setManedCombo(JComboBox manedCombo) {
-        this.manedCombo = manedCombo;
-    }
-
-    public JComboBox getArCombo() {
-        return arCombo;
-    }
-
-    public void setArCombo(JComboBox arCombo) {
-        this.arCombo = arCombo;
     }
 
     public ButtonGroup getRadioButtons() {
@@ -823,7 +707,10 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
     public void setVisFlereBilderButton(CustomJButton visFlereBilderButton) {
         this.visFlereBilderButton = visFlereBilderButton;
     }
-    
+
+    public ComboDatoVelger getDatoVelger() {
+        return datoVelger;
+    }
 
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
