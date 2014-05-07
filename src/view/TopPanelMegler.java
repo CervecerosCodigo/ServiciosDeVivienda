@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 
 import lib.BildeFilSti;
 import lib.Ikoner;
+import lib.Melding;
 import lib.RegexTester;
 import view.registrer.CustomSubPanel;
 
@@ -25,13 +27,13 @@ public class TopPanelMegler extends AbstractPanel {
     private CustomJButton sokeKnapp, nyKontraktItem, nyUtleierItem, nyBoligItem, nyAnnonseItem;
     private ImageIcon bilde;
     private JLabel bildeLabel;
-    
+
     private final static int BREDDE = 128, HOYDE = 30;
 
     TopPanelMegler(String borderTitle, int dimHeight, int dimWidth) {
 
         super(borderTitle, dimHeight, dimWidth);
-        
+
         meglerRadioKnapper = new MeglerRadioKnapper();
         statistikkPanel = new StatistikkPanel();
         sokePanel = new CustomSubPanel(new FlowLayout());
@@ -42,16 +44,16 @@ public class TopPanelMegler extends AbstractPanel {
         nyUtleierItem = new CustomJButton("Ny utleier", BREDDE, HOYDE);
         nyBoligItem = new CustomJButton("Ny bolig", BREDDE, HOYDE);
         nyAnnonseItem = new CustomJButton("Ny annonse", BREDDE, HOYDE);
-        bilde = new ImageIcon(new BildeFilSti().getAbsoluteGalleryPath()+"/default/boligLogo.png");
+        bilde = new ImageIcon(new BildeFilSti().getAbsoluteGalleryPath() + "/default/boligLogo.png");
         bildeLabel = new JLabel(bilde);
-        
-        add(new CustomSubPanel(100,30));
+
+        add(new CustomSubPanel(100, 30));
         add(meglerRadioKnapper);
         add(sokePanel);
         add(knappePanel);
         add(statistikkPanel);
         add(bildeLabel);
-        
+
         sokePanel.add(sokeFelt);
         sokePanel.add(sokeKnapp);
         knappePanel.add(nyUtleierItem);
@@ -61,15 +63,18 @@ public class TopPanelMegler extends AbstractPanel {
 
         setLayout(new FlowLayout(FlowLayout.LEADING));
         setVisible(true);
-        
-        sokePanel.setPreferredSize(new Dimension(350,50));
-        knappePanel.setPreferredSize(new Dimension(270,70));
+
+        sokePanel.setPreferredSize(new Dimension(350, 50));
+        knappePanel.setPreferredSize(new Dimension(270, 70));
         bildeLabel.setPreferredSize(new Dimension(bilde.getIconWidth(), bilde.getIconHeight()));
 
+        sokeFelt.setEnabled(false);
+        sokeKnapp.setEnabled(false);
+
     }
-    
+
     public StatistikkPanel getStatistikkPanel() {
-    	return statistikkPanel;
+        return statistikkPanel;
     }
 
     public MeglerRadioKnapper getMeglerRadioKnapper() {
@@ -119,13 +124,18 @@ public class TopPanelMegler extends AbstractPanel {
     public CustomJRadioButton getLeietakereRadio() {
         return meglerRadioKnapper.getLeietakereRadio();
     }
-    
+
     public CustomJRadioButton getKontraktRadio() {
         return meglerRadioKnapper.getKontraktRadio();
     }
 
     public void leggTilRadioLytter(ActionListener lytter) {
         meglerRadioKnapper.addRadioListener(lytter);
+    }
+
+    private void aktivereSokeKomponenter() {
+        getSokeFelt().setEnabled(true);
+        getSokeKnapp().setEnabled(true);
     }
 
     public void leggTilKnappeLytter(ActionListener lytter) {
@@ -135,7 +145,7 @@ public class TopPanelMegler extends AbstractPanel {
         nyBoligItem.addActionListener(lytter);
         nyUtleierItem.addActionListener(lytter);
     }
-    
+
     private class MeglerRadioKnapper extends AbstractPanel {
 
         private CustomJRadioButton soknaderRadio, annonserRadio, boligerRadio, utleiereRadio, leietakereRadio, kontraktRadio;
@@ -160,7 +170,7 @@ public class TopPanelMegler extends AbstractPanel {
             setVisible(true);
             setPreferredSize(new Dimension(90, 100));
             setLayout(new FlowLayout(FlowLayout.LEFT, 0, -2));
-            
+
             add(soknaderRadio);
             add(annonserRadio);
             add(boligerRadio);
@@ -169,6 +179,17 @@ public class TopPanelMegler extends AbstractPanel {
             add(kontraktRadio);
 
 //            soknaderRadio.setSelected(true);
+            
+            //En lytter som krever at brukeren har først markert hvilket register som skal brukes i søket.
+            addRadioListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getSource().equals(soknaderRadio) || e.getSource().equals(annonserRadio) || e.getSource().equals(boligerRadio) || e.getSource().equals(utleiereRadio) || e.getSource().equals(leietakereRadio) || e.getSource().equals(kontraktRadio)) {
+                        aktivereSokeKomponenter();
+                    }
+                }
+            });
         }
 
         public CustomJRadioButton getSoknaderRadio() {
@@ -190,7 +211,7 @@ public class TopPanelMegler extends AbstractPanel {
         public CustomJRadioButton getLeietakereRadio() {
             return leietakereRadio;
         }
-        
+
         public CustomJRadioButton getKontraktRadio() {
             return kontraktRadio;
         }
@@ -205,44 +226,43 @@ public class TopPanelMegler extends AbstractPanel {
 
         }
     }
-    
+
     public class StatistikkPanel extends CustomSubPanel {
-    	
-    	private JLabel ledigeBoligerAntall, ledigeBoliger, kontrakterAntall, kontrakter;
-    	private CustomSubPanel Panel1, Panel2;
-    	
-    	public StatistikkPanel() {
-    		super(new GridLayout(2,1));
-    		ledigeBoligerAntall = new JLabel("0"); // Startverdi
-    		ledigeBoliger = new JLabel("Ledige boliger:");
-    		kontrakterAntall = new JLabel("0"); // Startverdi
-    		kontrakter = new JLabel("Kontrakter hittil i år:");
-    		Panel1 = new CustomSubPanel(new FlowLayout(FlowLayout.LEFT));
-    		Panel2 = new CustomSubPanel(new FlowLayout(FlowLayout.LEFT));
-    		
-    		Panel1.add(ledigeBoliger);
-    		Panel1.add(ledigeBoligerAntall);
-    		Panel2.add(kontrakter);
-    		Panel2.add(kontrakterAntall);
-    		add(Panel1);
-    		add(Panel2);
-    		
-    		Panel1.setPreferredSize(new Dimension(230,30));
-    		Panel2.setPreferredSize(new Dimension(230,30));
-    		
-    		ledigeBoligerAntall.setForeground(Color.GRAY);
-    		ledigeBoliger.setForeground(Color.GRAY);
-    		kontrakterAntall.setForeground(Color.GRAY);
-    		kontrakter.setForeground(Color.GRAY);
-    		
-    		setPreferredSize(new Dimension(230,60));
-    		setVisible(true);
-    	}
-    	
-    	public void OppdaterStatistikk(int ledigeBoligerAntall, int kontrakterAntall) {
-    		this.ledigeBoligerAntall.setText(Integer.toString(ledigeBoligerAntall));
-    		this.kontrakterAntall.setText(Integer.toString(kontrakterAntall));
-    	}
+
+        private JLabel ledigeBoligerAntall, ledigeBoliger, kontrakterAntall, kontrakter;
+        private CustomSubPanel Panel1, Panel2;
+
+        public StatistikkPanel() {
+            super(new GridLayout(2, 1));
+            ledigeBoligerAntall = new JLabel("0"); // Startverdi
+            ledigeBoliger = new JLabel("Ledige boliger:");
+            kontrakterAntall = new JLabel("0"); // Startverdi
+            kontrakter = new JLabel("Kontrakter hittil i år:");
+            Panel1 = new CustomSubPanel(new FlowLayout(FlowLayout.LEFT));
+            Panel2 = new CustomSubPanel(new FlowLayout(FlowLayout.LEFT));
+
+            Panel1.add(ledigeBoliger);
+            Panel1.add(ledigeBoligerAntall);
+            Panel2.add(kontrakter);
+            Panel2.add(kontrakterAntall);
+            add(Panel1);
+            add(Panel2);
+
+            Panel1.setPreferredSize(new Dimension(230, 30));
+            Panel2.setPreferredSize(new Dimension(230, 30));
+
+            ledigeBoligerAntall.setForeground(Color.GRAY);
+            ledigeBoliger.setForeground(Color.GRAY);
+            kontrakterAntall.setForeground(Color.GRAY);
+            kontrakter.setForeground(Color.GRAY);
+
+            setPreferredSize(new Dimension(230, 60));
+            setVisible(true);
+        }
+
+        public void OppdaterStatistikk(int ledigeBoligerAntall, int kontrakterAntall) {
+            this.ledigeBoligerAntall.setText(Integer.toString(ledigeBoligerAntall));
+            this.kontrakterAntall.setText(Integer.toString(kontrakterAntall));
+        }
     }
 }
-
