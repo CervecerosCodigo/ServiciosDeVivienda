@@ -26,14 +26,7 @@ import view.MainPanel;
 
 public class ControllerOutput {
 
-    private static MouseAdapter mouseAdapterAnnonse;
-    private static MouseAdapter mouseAdapterMegler;
-    private static int valgtTab;
-    private static int antAnnonserVistAnnonse = 0;
-    private static int antAnnonserVistMegler = 0;
-
-
-
+    
     /**
      * Hjelpemetode som returnerer alle boliger registrert på en eier.
      */

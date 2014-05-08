@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -138,6 +139,26 @@ public class ControllerTabell implements VisMeldingInterface {
 
                 }
             }
+        });
+
+        /**
+         * Lytter på museklikk i Output-vinduet. 
+         */
+        vindu.getSenterpanel().getEditorPane().addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    if (modellIBruk instanceof TabellModellAnnonse) {
+                        Annonse valgtObjekt = returnerAnnonseObjekt();
+                        if(MainPanel.returnervalgtArkfane() == 0)
+                            new ControllerBildeViser(valgtObjekt.getBolig(), true);
+                        else
+                            new ControllerBildeViser(valgtObjekt.getBolig(), false);
+                    }
+                }
+            }
+
         });
 
         /**
@@ -766,7 +787,6 @@ public class ControllerTabell implements VisMeldingInterface {
                 case ANNONSEOBJ:
                     valgtObjekt = (Annonse) tabellData.get(valgtRad);
                     ControllerOutput.visAnnonseObjektHTMLOutput(valgtObjekt, output, vindu, annonseliste);
-                    settOutputLytter((Annonse) valgtObjekt, vindu);
                     break;
                 case KONTRAKTOBJ:
                     valgtObjekt = (Kontrakt) tabellData.get(valgtRad);
@@ -780,36 +800,6 @@ public class ControllerTabell implements VisMeldingInterface {
             }
         } catch (ArrayIndexOutOfBoundsException aiobe) {
 
-        }
-    }
-
-    public void settOutputLytter(final Annonse valgtAnnonseITabell, ArkfaneTemplate gjeldendeVindu) {
-
-        int valgtTab = MainPanel.returnervalgtArkfane();
-
-        if (valgtTab == 1) {
-            gjeldendeVindu.getSenterpanel().addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) {
-
-                        System.out.println("AnnonseID: " + valgtAnnonseITabell.getAnnonseID());
-                        new ControllerBildeViser(valgtAnnonseITabell.getBolig(), false);
-                    }
-                }
-            });
-        }
-        if (valgtTab == 0) {
-            gjeldendeVindu.getSenterpanel().addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) {
-
-                        System.out.println("AnnonseID: " + valgtAnnonseITabell.getAnnonseID());
-                        new ControllerBildeViser(valgtAnnonseITabell.getBolig(), true);
-                    }
-                }
-            });
         }
     }
 
