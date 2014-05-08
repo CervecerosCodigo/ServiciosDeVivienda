@@ -15,12 +15,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import lib.Melding;
 import lib.ObjektType;
+import lib.ObjektType2;
 import model.Annonse;
 import model.Bolig;
 import model.Kontrakt;
 import model.Person;
 import model.Soknad;
-import model.TabellModell;
 import model.Utleier;
 import search.FreeTextSearch;
 import view.ArkfaneTemplate;
@@ -30,6 +30,7 @@ public class ControllerToppPanelMegler<E> {
     ArkfaneTemplate vindu;
     private String radioNavnKlikket;
     private ObjektType radioTypeValgt;
+    private ObjektType2 radioTypeValgt2;
     private FreeTextSearch fsearch;
 
     private HashSet<Person> personliste;
@@ -64,7 +65,7 @@ public class ControllerToppPanelMegler<E> {
         valgtObjekt = -1;
         OppdaterStatistikk();
         finnValgtObjektITabell();
-        
+
     }
 
     /**
@@ -118,21 +119,27 @@ public class ControllerToppPanelMegler<E> {
             try {
                 if (e.getSource().equals(vindu.getToppanelMegler().getBoligerRadio())) {
                     radioTypeValgt = ObjektType.BOLIGOBJ;
+                    radioTypeValgt2 = ObjektType2.Bolig;
                 }
                 if (e.getSource().equals(vindu.getToppanelMegler().getLeietakereRadio())) {
                     radioTypeValgt = ObjektType.PERSONOBJ;
+                    radioTypeValgt2 = ObjektType2.Leietaker;
                 }
                 if (e.getSource().equals(vindu.getToppanelMegler().getUtleiereRadio())) {
                     radioTypeValgt = ObjektType.PERSONOBJ;
+                    radioTypeValgt2 = ObjektType2.Utleier;
                 }
                 if (e.getSource().equals(vindu.getToppanelMegler().getAnnonserRadio())) {
                     radioTypeValgt = ObjektType.ANNONSEOBJ;
+                    radioTypeValgt2 = ObjektType2.Annonse;
                 }
                 if (e.getSource().equals(vindu.getToppanelMegler().getSoknaderRadio())) {
                     radioTypeValgt = ObjektType.SOKNADSOBJ;
+                    radioTypeValgt2 = ObjektType2.Soknad;
                 }
                 if (e.getSource().equals(vindu.getToppanelMegler().getKontraktRadio())) {
                     radioTypeValgt = ObjektType.KONTRAKTOBJ;
+                    radioTypeValgt2 = ObjektType2.Kontrakt;
                 }
             } catch (NullPointerException npe) {
 
@@ -142,7 +149,8 @@ public class ControllerToppPanelMegler<E> {
     }
 
     /**
-     * Metoden finner valgt rad i tabellen og hvilket objekt som ligger på raden.
+     * Metoden finner valgt rad i tabellen og hvilket objekt som ligger på
+     * raden.
      */
     private void finnValgtObjektITabell() {
 
@@ -158,7 +166,7 @@ public class ControllerToppPanelMegler<E> {
                 try {
                     int rad = tabell.getSelectedRow();
                     rad = tabell.convertRowIndexToModel(rad);
-                    
+
                     //Lagrer raden i en klassevariabel, som brukes i andre metoder.
                     valgtRadItabell = rad;
                     if (valgtRadItabell >= 0) {
@@ -201,7 +209,7 @@ public class ControllerToppPanelMegler<E> {
             }
             if (e.getSource().equals(vindu.getToppanelMegler().getNyBoligItem())) {
                 if (valgtObjekt != null && valgtObjekt instanceof Utleier) {
-                    new ControllerRegistrerBolig(boligliste, (Utleier)valgtObjekt);
+                    new ControllerRegistrerBolig(boligliste, (Utleier) valgtObjekt);
                 }
             }
             if (e.getSource().equals(vindu.getToppanelMegler().getNyUtleierItem())) {
@@ -217,21 +225,23 @@ public class ControllerToppPanelMegler<E> {
                 } else {
 
                     //TODO: Dersom vi får tid må vi fjerne alle typer av slik hardkoding for swing komponentnavn
-                    switch (radioTypeValgt) {
-                        case BOLIGOBJ:
+                    switch (radioTypeValgt2) {
+                        case Bolig:
                             sokeResultat = fsearch.searchForPattern(boligliste, soketekst);
                             break;
-                        case PERSONOBJ:
-                            sokeResultat = fsearch.searchForPattern(personliste, soketekst);
+                        case Utleier:
+                            sokeResultat = fsearch.searchForPatternIUtleier(personliste, soketekst);
                             break;
-                        case ANNONSEOBJ:
+                        case Leietaker:
+                            sokeResultat = fsearch.searchForPatternILeietaker(personliste, soketekst);
+                            break;
+                        case Annonse:
                             sokeResultat = fsearch.searchForPattern(annonseliste, soketekst);
                             break;
-                        case KONTRAKTOBJ:
-                            //TODO: vi har ingen radiobutton for å søke etter kontrakter.
+                        case Kontrakt:
                             sokeResultat = fsearch.searchForPattern(kontraktliste, soketekst);
                             break;
-                        case SOKNADSOBJ:
+                        case Soknad:
                             sokeResultat = fsearch.searchForPattern(soknadsliste, soketekst);
                             break;
                         default:
