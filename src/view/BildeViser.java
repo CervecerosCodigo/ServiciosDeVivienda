@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import lib.Ikoner;
 import model.Bolig;
 import view.registrer.AbstractRegistreringsPanel;
 import view.registrer.CustomSubPanel;
@@ -38,8 +39,8 @@ public class BildeViser extends AbstractRegistreringsPanel {
         tellerLabel = new JLabel();
         
         //Buttons
-        tilbakeButton = new CustomJButton("Tilbake");
-        fremButton = new CustomJButton("Frem");
+        tilbakeButton = new CustomJButton(Ikoner.PIL_VENSTRE_LITEN);
+        fremButton = new CustomJButton(Ikoner.PIL_HOYRE_LITEN);
         slettButton = new CustomJButton("Slett");
         lukkButton = new CustomJButton("Lukk");
 
