@@ -18,8 +18,7 @@ import lib.Konstanter;
 public class VenstrePanel extends AbstractPanel {
 
     private JTable tabell;
-    private TableRowSorter<TabellModell> sorterer;
-    private TableCellRenderer celleRenderer;
+
 
     public VenstrePanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
@@ -32,7 +31,8 @@ public class VenstrePanel extends AbstractPanel {
         tabell.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tabell.setShowGrid(true);
         tabell.setGridColor(Color.gray);
-        tabell.setSelectionBackground(new Color(210, 210, 210));
+        tabell.setRowHeight(20);
+//        tabell.setSelectionBackground(new Color(210, 210, 210));
         tabell.setSelectionForeground(Color.BLACK);
         
         add(new JScrollPane(tabell));
@@ -48,18 +48,27 @@ public class VenstrePanel extends AbstractPanel {
         return tabell;
     }
 
-    public TableRowSorter<TabellModell> getSorterer() {
-        return sorterer;
-    }
 
-    public void setSorterer(TableRowSorter<TabellModell> sorterer) {
-        this.sorterer = sorterer;
-    }
-
+    /**
+     * Standard sortering på objektets ID, i første kolonne
+     */
     public void sorterTabellVedOppstart() {
         RowSorter sorterer = tabell.getRowSorter();
         ArrayList sorteringsnokler = new ArrayList();
         sorteringsnokler.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+        sorterer.setSortKeys(sorteringsnokler);
+    }
+    
+    /**
+     * Sortering på søknadsobjektene. Sorterer synkende på Kolonnen Behandlet
+     * og deretter stigende på SøknadsID
+     */
+    public void sorterTabellSoknadData() {
+        RowSorter sorterer = tabell.getRowSorter();
+        ArrayList sorteringsnokler = new ArrayList();
+        sorteringsnokler.add(new RowSorter.SortKey(2, SortOrder.DESCENDING));
+        sorteringsnokler.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+
         sorterer.setSortKeys(sorteringsnokler);
     }
 

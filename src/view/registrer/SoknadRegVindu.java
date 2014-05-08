@@ -20,7 +20,7 @@ public class SoknadRegVindu extends AbstractRegistreringsPanel implements VisMel
         super(bredde, hoyde, tittel);
 
         senterPanel = new CustomSubPanel("", 0, 0, new FlowLayout());
-        bunnPanel = new CustomSubPanel("", 35, 0, new FlowLayout());
+        bunnPanel = new CustomSubPanel( 40, 0, new FlowLayout());
 
         kravLabel = new JLabel("Vennligst aksepter vilkårene:");
         eiersKrav = new JTextArea(10, 30);

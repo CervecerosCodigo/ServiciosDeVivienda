@@ -78,6 +78,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         }
         fodselsArCombo.setSelectedIndex(fodselsArCombo.getItemCount() - 1);
         fodselsArCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
+        
 
         antPersonerHusholdCombo = new JComboBox();
         for (int i = 1; i < 10; i++) {
@@ -248,7 +249,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
 
         gc.gridx = 1;
 //        gc.gridy++;
-        gc.insets = new Insets(0, 0, 0, 0);
+        gc.insets = new Insets(0, 5, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(fodselsArCombo, gc);
 
@@ -264,7 +265,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
 
         gc.gridx = 1;
 //        gc.gridy++;
-        gc.insets = new Insets(0, 0, 0, 0);
+        gc.insets = new Insets(0, 5, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(antPersonerHusholdCombo, gc);
 
@@ -280,7 +281,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
 
         gc.gridx = 1;
 //        gc.gridy++;
-        gc.insets = new Insets(0, 0, 0, 0);
+        gc.insets = new Insets(0, 5, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(sivilStatusCombo, gc);
 
@@ -296,7 +297,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
 
         gc.gridx = 1;
 //        gc.gridy++;
-        gc.insets = new Insets(0, 0, 0, 0);
+        gc.insets = new Insets(0, 5, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(arbeidsForholdCombo, gc);
 

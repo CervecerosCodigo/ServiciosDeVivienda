@@ -114,7 +114,7 @@ public class ControllerRegistrerLeietaker extends AbstractControllerRegister imp
             
             Soknad soknad = new Soknad(annonse, leietaker);
             
-            if (super.registrerObjekt((Leietaker) leietaker) && soknadsRegister.add(soknad)) {
+            if (soknadsRegister.add(soknad)) {
                 visMelding("Søknad", "" + fnavn + "!\nDin søknad er sendt.");
                 vindu.dispose();
             } else {

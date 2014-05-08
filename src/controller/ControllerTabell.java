@@ -25,7 +25,7 @@ import lib.*;
 import model.*;
 import view.*;
 
-public class ControllerTabell implements VisMeldingInterface{
+public class ControllerTabell implements VisMeldingInterface {
 
     private HashSet<Person> personliste;
     private HashSet<Bolig> boligliste;
@@ -370,57 +370,76 @@ public class ControllerTabell implements VisMeldingInterface{
      */
     private void registrerKontrakt() {
         Soknad soknad = returnerSoknadObjekt();
-        int annonseID = soknad.getAnnonseObjekt().getAnnonseID();
-        ArrayList<Soknad> soknaderPaaSammeAnnonse = new ArrayList<>();
 
-        //Finner megler-objektet 
-        Iterator<Person> personIter = personliste.iterator();
-        Person tempPerson = null;
-        while (personIter.hasNext()) {
-            tempPerson = personIter.next();
-            if (tempPerson instanceof Megler) {
-                if (tempPerson.getPersonID() == soknad.getAnnonseObjekt().getBolig().getMeglerID()) {
-                    tempPerson = (Megler) tempPerson;
-                    return;
+        /**
+         * En boligsøker legges ikke inn i personregisteret før en søknad er godkjent.
+         * Hvis leietakerobjekter fra en søknad ligger i personregisteret kan denne søkeren
+         * ikke få godkjent en ny kontrakt.
+         */
+        if (!personliste.contains(soknad.getLeietakerObjekt())) {
+            
+            int annonseID = soknad.getAnnonseObjekt().getAnnonseID();
+            ArrayList<Soknad> soknaderPaaSammeAnnonse = new ArrayList<>();
+
+            //Finner megler-objektet 
+            Iterator<Person> personIter = personliste.iterator();
+            Person tempPerson = null;
+            while (personIter.hasNext()) {
+                tempPerson = personIter.next();
+                if (tempPerson instanceof Megler) {
+                    if (tempPerson.getPersonID() == soknad.getAnnonseObjekt().getBolig().getMeglerID()) {
+                        tempPerson = (Megler) tempPerson;
+                        return;
+                    }
                 }
             }
-        }
 
-        //Finner alle søknader som gelder for samme Annonse
-        Iterator<Soknad> soknadIter = soknadsliste.iterator();
-        Soknad tempSoknad = null;
-        while (soknadIter.hasNext()) {
-            tempSoknad = soknadIter.next();
-            if (tempSoknad.getAnnonseObjekt().getAnnonseID() == annonseID) {
-                soknaderPaaSammeAnnonse.add(tempSoknad);
-            }
-        }
-
-        //Finner dagens dato
-        Calendar dagensDato = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
-
-        //Oppretter et kontraktobjekt basert på søknaden.
-        Kontrakt kontrakt = new Kontrakt(soknad.getAnnonseObjekt(), tempPerson, soknad.getLeietakerObjekt(), 12, dagensDato);
-
-        //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt
-        //annonse avvises.
-        if (kontraktliste.add(kontrakt)) {
-
-            //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
-            soknaderPaaSammeAnnonse.remove(soknad);
-
-            soknadIter = soknaderPaaSammeAnnonse.iterator();
-            tempSoknad = null;
+            //Finner alle søknader som gelder for samme Annonse
+            Iterator<Soknad> soknadIter = soknadsliste.iterator();
+            Soknad tempSoknad = null;
             while (soknadIter.hasNext()) {
                 tempSoknad = soknadIter.next();
-                tempSoknad.setErBehandlet(true);
-                tempSoknad.setErGodkjent(false);
+                if (tempSoknad.getAnnonseObjekt().getAnnonseID() == annonseID) {
+                    soknaderPaaSammeAnnonse.add(tempSoknad);
+                }
             }
 
-            visMelding(null, "Kontrakten er opprettet!");
+            //Finner dagens dato
+            Calendar dagensDato = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+
+            //Oppretter et kontraktobjekt basert på søknaden.
+            Kontrakt kontrakt = new Kontrakt(soknad.getAnnonseObjekt(), tempPerson, soknad.getLeietakerObjekt(), 12, dagensDato);
+
+        //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt
+            //annonse avvises.
+            if (kontraktliste.add(kontrakt)) {
+                soknad.setErBehandlet(true);
+                soknad.setErGodkjent(true);
+                //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
+                soknaderPaaSammeAnnonse.remove(soknad);
+
+                soknadIter = soknaderPaaSammeAnnonse.iterator();
+                tempSoknad = null;
+                while (soknadIter.hasNext()) {
+                    tempSoknad = soknadIter.next();
+                    tempSoknad.setErBehandlet(true);
+                    tempSoknad.setErGodkjent(false);
+                }
+
+                visMelding(null, "Kontrakten er opprettet!");
+                tabellModellSoknad.fireTableStructureChanged();
+                vindu.getVenstrepanel().sorterTabellSoknadData();
+            } else {
+                visMelding(null, "Kontrakten ble IKKE opprettet!");
+            }
+
+        }else{
+            visMelding("Leietaker finnes i registeret!", "Denne personen finnes i registeret.\n"
+                    + "Personen kan dermed ikke registrere ny kontrakt.");
+            soknad.setErBehandlet(true);
+            soknad.setErGodkjent(false);            
             tabellModellSoknad.fireTableStructureChanged();
-        } else {
-            visMelding(null, "Kontrakten ble IKKE opprettet!");
+            vindu.getVenstrepanel().sorterTabellSoknadData();            
         }
 
     }//End registrerKontrakt
@@ -647,6 +666,7 @@ public class ControllerTabell implements VisMeldingInterface{
                     tabell.setModel(tabellModellPerson);
                     tabellModellPerson.fireTableStructureChanged();
                     modellIBruk = tabellModellPerson;
+                    vindu.getVenstrepanel().sorterTabellVedOppstart();
                     break;
                 case BOLIGOBJ:
                     this.objekttype = ObjektType.BOLIGOBJ;
@@ -654,6 +674,7 @@ public class ControllerTabell implements VisMeldingInterface{
                     tabell.setModel(tabellModellBolig);
                     tabellModellBolig.fireTableStructureChanged();
                     modellIBruk = tabellModellBolig;
+                    vindu.getVenstrepanel().sorterTabellVedOppstart();
                     break;
                 case ANNONSEOBJ:
                     this.objekttype = ObjektType.ANNONSEOBJ;
@@ -663,6 +684,7 @@ public class ControllerTabell implements VisMeldingInterface{
                     tabell.getColumnModel().getColumn(2).setCellRenderer(hoyreStiltTekstRenderer);
                     tabell.getColumnModel().getColumn(3).setCellRenderer(hoyreStiltTekstRenderer);
                     modellIBruk = tabellModellAnnonse;
+                    vindu.getVenstrepanel().sorterTabellVedOppstart();
                     break;
                 case KONTRAKTOBJ:
                     this.objekttype = ObjektType.KONTRAKTOBJ;
@@ -670,7 +692,7 @@ public class ControllerTabell implements VisMeldingInterface{
                     tabell.setModel(tabellModellKontrakt);
                     tabellModellKontrakt.fireTableStructureChanged();
                     modellIBruk = tabellModellKontrakt;
-
+                    vindu.getVenstrepanel().sorterTabellVedOppstart();
                     break;
                 case SOKNADSOBJ:
                     this.objekttype = ObjektType.SOKNADSOBJ;
@@ -678,10 +700,11 @@ public class ControllerTabell implements VisMeldingInterface{
                     tabell.setModel(tabellModellSoknad);
                     tabellModellSoknad.fireTableStructureChanged();
                     modellIBruk = tabellModellSoknad;
+                    vindu.getVenstrepanel().sorterTabellSoknadData();
                     break;
             }
             resizeKolonneBredde();
-            vindu.getVenstrepanel().sorterTabellVedOppstart();
+
             vindu.getVenstrepanel().settCelleRenderer();
 
             bunnController.settOppTabellData(tabellData, modellIBruk);

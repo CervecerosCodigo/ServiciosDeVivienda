@@ -73,7 +73,7 @@ public class ControllerOutput {
      * @return
      */
     public static  ArrayList<Annonse> finnAnnonserAvInteressePerLeietaker(HashSet<Soknad> soknadsliste, int personID) {
-        ArrayList<Annonse> annonseAvInteresse = null;
+        ArrayList<Annonse> annonseAvInteresse = new ArrayList<>();
 
         if (personID > 0) {
             Iterator<Soknad> iter = soknadsliste.iterator();
@@ -632,17 +632,17 @@ public class ControllerOutput {
         html.append("<td><b>Utleiepris</b>");
         html.append("</td>");
         html.append("<td>");
-        html.append(kontrakt.getUtleiePris());
+        html.append(Konstanter.nf.format(kontrakt.getUtleiePris())).append(" ,-");
         html.append("</td>");
         html.append("<td><b>Depositum</b>");
         html.append("</td>");
         html.append("<td>");
-        html.append(kontrakt.getDepositum());
+        html.append(Konstanter.nf.format(kontrakt.getDepositum())).append(" ,-");
         html.append("</td>");
         html.append("<td><b>Kontraktvarighet</b>");
         html.append("</td>");
         html.append("<td>");
-        html.append(kontrakt.getLeietidIMnd());
+        html.append(kontrakt.getLeietidIMnd()).append(" mnd.");
         html.append("</td>");
         html.append("</tr>");
 
@@ -704,7 +704,33 @@ public class ControllerOutput {
         html.append("<div id='vilkaartekst'>");
         html.append(kontrakt.getAnnonse().getEiersKrav());
         html.append("</div>");
+        html.append("<br><br><br><br>");
+        
+        html.append("<table>");
+        html.append("<tr>");
+        html.append("<td class='kontraktText'>");
+        html.append("</td>");
+        html.append("<td class='kontraktData'>").append("________________________________");
+        html.append("</td>");
+        html.append("<td class='kontraktText'>");
+        html.append("</td>");
+        html.append("<td class='kontraktData'>").append("________________________________");
+        html.append("</td>");
+        html.append("</tr>");
+        
+        html.append("<tr>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("<td>").append("Leietakers underskrift");
+        html.append("</td>");
+        html.append("<td>");
+        html.append("</td>");
+        html.append("<td>").append("Meglers underskrift");
+        html.append("</td>");
+        html.append("</tr>");
+        html.append("</table>");
 
+        
         output.setText(html.toString());
     }
 

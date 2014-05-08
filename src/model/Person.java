@@ -38,7 +38,7 @@ public abstract class Person implements Serializable, Searchable {
      * @param teller int
      */
     public static void setTeller(int teller) {
-        Person.teller = teller;
+        Person.teller = --teller;
     }
 
     public int getPersonID() {
