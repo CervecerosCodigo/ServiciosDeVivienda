@@ -5,6 +5,7 @@ import model.*;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.table.*;
 import lib.Konstanter;
 
@@ -25,7 +26,7 @@ public class VenstrePanel extends AbstractPanel {
         setLayout(new GridLayout(1, 1));
 
         tabell = new JTable();
-        
+        tabell.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         tabell.setAutoCreateRowSorter(true);
         tabell.setFillsViewportHeight(true);
         tabell.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
