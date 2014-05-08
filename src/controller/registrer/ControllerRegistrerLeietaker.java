@@ -118,11 +118,13 @@ public class ControllerRegistrerLeietaker extends AbstractControllerRegister imp
             Soknad soknad = new Soknad(annonse, leietaker);
             
             if (soknadsRegister.add(soknad)) {
-                visMelding("Søknad", "" + fnavn + "!\nDin søknad er sendt.");
+                Melding.visMelding("Søknad", "" + fnavn + "!\nDin søknad er sendt.");
                 vindu.dispose();
             } else {
-                visMelding("Søknad", "Feil ved sendning av søknad.");
+                Melding.visMelding("Søknad", "Feil ved sendning av søknad.");
             }
+        }else{
+            Melding.visMelding("Feil", "Feil i skjema");
         }
     }
 
