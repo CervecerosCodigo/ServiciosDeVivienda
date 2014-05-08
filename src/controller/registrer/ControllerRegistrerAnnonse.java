@@ -26,7 +26,7 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
     private String fornavn, etternavn, epost, tlf;
 
     private int depositum, utleiepris;
-    private Calendar utlopsDato, tilgjengligFraDato, today;
+    private Calendar utlopsDato, tilgjengligFraDato, iDag, annonseRegistrertDato, datoAnnonseTasAvNett;
     private String eiersKrav;
     private boolean erSynligsomAnnonse;
     
@@ -48,17 +48,18 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
         fyllUtBoliginfo();
         erNyregistrering = true;
         
-        today = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));    
-
+        finnDatoenIDag();
+        annonseRegistrertDato = iDag;
+        
         vindu.getUtlopsDato().setDato(
-                today.get(Calendar.YEAR),
-                today.get(Calendar.MONTH)+1,
-                today.get(Calendar.DAY_OF_WEEK));
+                iDag.get(Calendar.YEAR),
+                iDag.get(Calendar.MONTH)+1,
+                iDag.get(Calendar.DAY_OF_WEEK));
 
         vindu.getTilgjengligFraDato().setDato(
-                today.get(Calendar.YEAR),
-                today.get(Calendar.MONTH)+1,
-                today.get(Calendar.DAY_OF_WEEK));        
+                iDag.get(Calendar.YEAR),
+                iDag.get(Calendar.MONTH)+1,
+                iDag.get(Calendar.DAY_OF_WEEK));        
     }
 
     /**
@@ -76,8 +77,9 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
         vindu.addAnnonsePanelListener(new KnappLytter());
         fyllUtBoliginfo();
         erNyregistrering = false;
-        today = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));                
-
+        
+        finnDatoenIDag();
+        
         //Setter inn data fra eksisterende annonse.
         vindu.getDepositum().setText(String.valueOf(this.annonseSomEndres.getDepositum()));
         vindu.getUtleiepris().setText(String.valueOf(this.annonseSomEndres.getUtleiepris()));
@@ -96,6 +98,15 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
 
     }
 
+    /**
+     * Finner datoen i dag.
+     * @return 
+     */
+    private Calendar finnDatoenIDag(){
+        return iDag = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));                
+
+    }
+    
     /**
      * Sjekker om innskrevede data er OK for å oppdatere tilsendt annnonse. 
      * @param annonse
@@ -192,13 +203,13 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
 
         boolean[] annonseOK = new boolean[4];
         
-        if ((today.compareTo(utlopsDato)) <= 0) {
+        if ((iDag.compareTo(utlopsDato)) <= 0) {
             
             annonseOK[0] = true;
         } else {
             annonseOK[0] = false;
         }
-        if ((today.compareTo(tilgjengligFraDato)) <= 0) {
+        if ((iDag.compareTo(tilgjengligFraDato)) <= 0) {
             
             annonseOK[1] = true;
         } else {
@@ -265,7 +276,7 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
             annonseSomEndres = annonse;
             if(annonseliste.add(annonse)){
                 visMelding("Registrering fullført!", "Annonsen er registrert!");
-                
+                datoAnnonseTasAvNett = iDag;
                 return true;
             }else{
                 visMelding("Registrering feilet!","Greide ikke å legge annonsen inn i registeret!");

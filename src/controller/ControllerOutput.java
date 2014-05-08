@@ -1,10 +1,13 @@
 package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import javax.swing.JEditorPane;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.text.html.StyleSheet;
 import lib.BildeFilSti;
 import lib.Konstanter;
@@ -19,13 +22,18 @@ import model.Person;
 import model.Soknad;
 import model.Utleier;
 import view.ArkfaneTemplate;
-
-
+import view.MainPanel;
 
 public class ControllerOutput {
 
-    
-    
+    private static MouseAdapter mouseAdapterAnnonse;
+    private static MouseAdapter mouseAdapterMegler;
+    private static int valgtTab;
+    private static int antAnnonserVistAnnonse = 0;
+    private static int antAnnonserVistMegler = 0;
+
+
+
     /**
      * Hjelpemetode som returnerer alle boliger registrert på en eier.
      */
@@ -44,8 +52,7 @@ public class ControllerOutput {
         }
         return boliger;
     }//End method    
-    
-    
+
     /**
      * Hjelpemetode for å finne informasjon om en boligeier.
      *
@@ -62,9 +69,8 @@ public class ControllerOutput {
             }
         }
         return null;
-    }    
+    }
 
-    
     /**
      * Hjelpemetode som finner alle annonser en bestem person har vist interesse
      * for
@@ -72,7 +78,7 @@ public class ControllerOutput {
      * @param personID
      * @return
      */
-    public static  ArrayList<Annonse> finnAnnonserAvInteressePerLeietaker(HashSet<Soknad> soknadsliste, int personID) {
+    public static ArrayList<Annonse> finnAnnonserAvInteressePerLeietaker(HashSet<Soknad> soknadsliste, int personID) {
         ArrayList<Annonse> annonseAvInteresse = new ArrayList<>();
 
         if (personID > 0) {
@@ -86,8 +92,8 @@ public class ControllerOutput {
             return annonseAvInteresse;
         }
         return null;
-    }    
-    
+    }
+
     /**
      * Tar imot data fra sendObjektFraTabellTilOutput-metoden. Denne metoden
      * skriver ut Personobjekter som HTML til output (JEditorPane)
@@ -705,7 +711,7 @@ public class ControllerOutput {
         html.append(kontrakt.getAnnonse().getEiersKrav());
         html.append("</div>");
         html.append("<br><br><br><br>");
-        
+
         html.append("<table>");
         html.append("<tr>");
         html.append("<td class='kontraktText'>");
@@ -717,7 +723,7 @@ public class ControllerOutput {
         html.append("<td class='kontraktData'>").append("________________________________");
         html.append("</td>");
         html.append("</tr>");
-        
+
         html.append("<tr>");
         html.append("<td>");
         html.append("</td>");
@@ -730,7 +736,6 @@ public class ControllerOutput {
         html.append("</tr>");
         html.append("</table>");
 
-        
         output.setText(html.toString());
     }
 
@@ -864,7 +869,8 @@ public class ControllerOutput {
 
     /**
      * Definerer CSS-oppsettet for HTML-utskriftene.
-     * @param css 
+     *
+     * @param css
      */
     public static void setStyleSheet(StyleSheet css) {
 
@@ -926,6 +932,6 @@ public class ControllerOutput {
         css.addRule("#annonserAvInteresseKol2 {width: 120px}");
         css.addRule("#annonserAvInteresseKol3 {width: 200px}");
 
-    }    
-}
+    }
 
+}

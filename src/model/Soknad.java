@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Objects;
 import lib.Konstanter;
 import search.Searchable;
@@ -13,6 +14,9 @@ public class Soknad implements Serializable, Searchable {
     private static int teller = 50000;
     private boolean erBehandlet;
     private boolean erGodkjent;
+    private Calendar godkjentDato;
+
+
     private Annonse annonse;
     private Person leietaker;
 
@@ -42,6 +46,14 @@ public class Soknad implements Serializable, Searchable {
         Soknad.teller = teller;
     }
 
+    public Calendar getGodkjentDato() {
+        return godkjentDato;
+    }
+
+    public void setGodkjentDato(Calendar godkjentDato) {
+        this.godkjentDato = godkjentDato;
+    }
+    
     public int getSoknadID() {
         return soknadID;
     }

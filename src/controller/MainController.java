@@ -2,6 +2,11 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import controller.registrer.ControllerRegistrerBolig;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.*;
 import lib.*;
@@ -39,7 +44,7 @@ public class MainController implements Serializable {
     private ControllerTabell tabellControllerAnnonse;
     private ControllerToppPanelMegler toppPanelControllerMegler;
     private ControllerToppPanelAnnonse toppPanelControllerAnnonse;
-    
+
     //Tester å bruke den nye klassen for registrering av bolig
     private ControllerRegistrerBolig controllerRegistrerBolig;
 
@@ -69,10 +74,9 @@ public class MainController implements Serializable {
         kontraktRegister = new Kontraktregister(kontraktliste);
         soknadRegister = new Soknadregister(soknadsliste);
 
-
         /**
-         * Setter lytter på Toppanelet til Megler. Om datasettet endres i tabellen
-         * så vet toppanelet om det.
+         * Setter lytter på Toppanelet til Megler. Om datasettet endres i
+         * tabellen så vet toppanelet om det.
          */
         tabellControllerMegler.settTabellLytterSendDataSett(new TabellSendDataIBrukInterface() {
 
@@ -81,17 +85,12 @@ public class MainController implements Serializable {
                 toppPanelControllerMegler.setTabellDataIBrukFraMainController(tabellData);
             }
         });
-        
-        
+
         tabellControllerMegler.settOppTabellLyttere(meglerVindu, true);
         tabellControllerMegler.settInnDataITabell(boligliste, ObjektType.BOLIGOBJ);
-        
+
         tabellControllerAnnonse.settOppTabellLyttere(annonseVindu, false);
         tabellControllerAnnonse.settInnDataITabell(annonseliste, ObjektType.ANNONSEOBJ);
-
-
-
-
 
         /**
          * Fyller inn data med søkeresultat som kommer fra
@@ -104,7 +103,7 @@ public class MainController implements Serializable {
                 switch (objekttype) {
                     case BOLIGOBJ:
                         tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
-                        tabellControllerMegler.settInnDataITabell(liste,  objekttype);
+                        tabellControllerMegler.settInnDataITabell(liste, objekttype);
                         liste.clear();
                         break;
                     case PERSONOBJ:
@@ -150,9 +149,13 @@ public class MainController implements Serializable {
                 liste.clear();
             }
         });
-        
-        
+       
     }//END CONSTRUCTOR
+    
+    
+    private void finnHvilkenAnnonseSomErValgt(){
+        
+    }
 
     public Calendar opprettKalenderobjekt(int aar, int mnd, int dag) {
         Calendar kalender = new GregorianCalendar(aar, mnd, dag);
@@ -194,14 +197,13 @@ public class MainController implements Serializable {
         System.out.println("Leietaker ble ikke lagt inn i registeret.");
     }
 
-
     public void opprettEneboligOgLeggIRegister(Boligtype boligtype, int antallEtasjer, boolean harKjeller, int tomtAreal, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
         Bolig enebolig = new Enebolig(boligtype, antallEtasjer, harKjeller, tomtAreal, personID, adresse, postnummer, poststed, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
-        
+
         //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
         BildeFilSti gallerimappe = new BildeFilSti();
         gallerimappe.lagBildemappeForBolig(enebolig);
-        
+
         if (boligRegister.leggTilObjekt(enebolig)) {
             System.out.println("Enebolig er lagt inn i registeret.");
             return;
@@ -212,7 +214,7 @@ public class MainController implements Serializable {
     public void opprettLeilighetOgLeggIRegister(int etasjeNr, int balkongAreal, int bodAreal, boolean harHeis, boolean harGarsje, boolean harFellesvaskeri, int personID, String adresse, String postnummer, String poststed, int boAreal, int byggeAr, String beskrivelse, boolean erUtleid, Calendar tilgjengeligForUtleie) {
 
         Bolig leilighet = new Leilighet(etasjeNr, balkongAreal, bodAreal, harHeis, harGarsje, harFellesvaskeri, personID, adresse, postnummer, poststed, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
-        
+
         //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
         BildeFilSti gallerimappe = new BildeFilSti();
         gallerimappe.lagBildemappeForBolig(leilighet);
@@ -304,5 +306,6 @@ public class MainController implements Serializable {
         System.out.println("================================================");
         ////////////////////////////////////////////////////////////////////////        
     }
+
 
 }

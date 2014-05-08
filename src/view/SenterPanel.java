@@ -3,11 +3,13 @@ package view;
 
 
 import java.awt.GridLayout;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
 import javax.swing.*;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
-import lib.Konstanter;
 
 
 
@@ -30,6 +32,7 @@ public class SenterPanel extends AbstractPanel{
         output.setDocument(dok);
         output.setEditable( false );
         output.setEditorKit( kit );
+        output.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         scroll = new JScrollPane( output );
         
         add(scroll);
@@ -52,4 +55,9 @@ public class SenterPanel extends AbstractPanel{
         return css;
     }
     
+    @Override
+    public void addMouseListener(MouseListener lytter){
+        output.addMouseListener(lytter);
+        
+    }
 }
