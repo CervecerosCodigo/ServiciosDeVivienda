@@ -57,8 +57,8 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         erRepresntantLabel = new JLabel("Er representant: ");
         erRepresentatnForLabel = new JLabel("Representerer: ");
 
-        fornavnField = new CustomJTextField("Ola", RegexTester.NAVN_PATTERN, GuiSizes.FIELD_MEDIUM);
-        etternavnField = new CustomJTextField("Normann", RegexTester.NAVN_PATTERN, GuiSizes.FIELD_MEDIUM);
+        fornavnField = new CustomJTextField("Ola", RegexTester.KUN_BOKSTAVER_FSTORBOKSTAV, GuiSizes.FIELD_MEDIUM);
+        etternavnField = new CustomJTextField("Normann", RegexTester.KUN_BOKSTAVER_FSTORBOKSTAV, GuiSizes.FIELD_MEDIUM);
         epostField = new CustomJTextField("ola.normann@epost.com", RegexTester.EPOST_PATTERN, GuiSizes.FIELD_MEDIUM);
         telefonField = new CustomJTextField("XX XX XX XX", RegexTester.TEL_NUMMER_NORSK, GuiSizes.FIELD_MEDIUM);
         erRepresentatForField = new CustomJTextField("Navn på representat", RegexTester.NAVN_PATTERN, GuiSizes.FIELD_MEDIUM);
@@ -93,7 +93,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         arbeidsForholdCombo = new JComboBox(Arbeidsforhold.values());
         arbeidsForholdCombo.setPreferredSize(GuiSizes.COMBOBOX_MEDIUM);
 
-        yrkeField = new CustomJTextField("Sjåfør", RegexTester.KUN_BOKSTAVER, GuiSizes.FIELD_MEDIUM);
+        yrkeField = new CustomJTextField("Sjåfør", RegexTester.KUN_BOKSTAVER_FSTORBOKSTAV, GuiSizes.FIELD_MEDIUM);
         soknadsTextArea = new JTextArea(GuiSizes.TEXTAREA_ROW_MEDIUM, GuiSizes.TEXTAREA_COL_MEDIUM);
         soknadsTextArea.setLineWrap(true);
         soknadsTextArea.setWrapStyleWord(true);

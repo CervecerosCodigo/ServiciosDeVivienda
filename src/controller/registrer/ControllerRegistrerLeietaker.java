@@ -96,11 +96,11 @@ public class ControllerRegistrerLeietaker extends AbstractControllerRegister imp
     private boolean kontrollerData() {
         getDataFraGUI();
 
-        boolean fnavnOK = RegexTester.testNavn(fnavn);
-        boolean enavnOK = RegexTester.testNavn(enavn);
+        boolean fnavnOK = RegexTester.testKunBokstaverBindestrekFStorbokstav(fnavn);
+        boolean enavnOK = RegexTester.testKunBokstaverBindestrekFStorbokstav(enavn);
         boolean epostOK = RegexTester.testEpost(epost);
         boolean telnrOK = RegexTester.testTelNummerNorsk(telnr);
-        boolean yrkeOK = RegexTester.testKunBokstaver(yrke);
+        boolean yrkeOK = RegexTester.testKunBokstaverBindestrekFStorbokstav(yrke);
 
         return fnavnOK && enavnOK && epostOK && telnrOK && yrkeOK;
     }
@@ -118,11 +118,13 @@ public class ControllerRegistrerLeietaker extends AbstractControllerRegister imp
             Soknad soknad = new Soknad(annonse, leietaker);
             
             if (soknadsRegister.add(soknad)) {
-                visMelding("Søknad", "" + fnavn + "!\nDin søknad er sendt.");
+                Melding.visMelding("Søknad", "" + fnavn + "!\nDin søknad er sendt.");
                 vindu.dispose();
             } else {
-                visMelding("Søknad", "Feil ved sendning av søknad.");
+                Melding.visMelding("Søknad", "Feil ved sendning av søknad.");
             }
+        }else{
+            Melding.visMelding("Feil", "Feil i skjema");
         }
     }
 
