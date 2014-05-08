@@ -133,6 +133,7 @@ public class ControllerTabell implements VisMeldingInterface {
                     valgtRadItabell = rad;
 
                     sendObjektFraTabellTilOutput(rad, objekttype, tabellData);
+
                 } catch (ArrayIndexOutOfBoundsException aiobe) {
 
                 }
@@ -372,12 +373,12 @@ public class ControllerTabell implements VisMeldingInterface {
         Soknad soknad = returnerSoknadObjekt();
 
         /**
-         * En boligsøker legges ikke inn i personregisteret før en søknad er godkjent.
-         * Hvis leietakerobjekter fra en søknad ligger i personregisteret kan denne søkeren
-         * ikke få godkjent en ny kontrakt.
+         * En boligsøker legges ikke inn i personregisteret før en søknad er
+         * godkjent. Hvis leietakerobjekter fra en søknad ligger i
+         * personregisteret kan denne søkeren ikke få godkjent en ny kontrakt.
          */
         if (!personliste.contains(soknad.getLeietakerObjekt())) {
-            
+
             int annonseID = soknad.getAnnonseObjekt().getAnnonseID();
             ArrayList<Soknad> soknaderPaaSammeAnnonse = new ArrayList<>();
 
@@ -410,36 +411,39 @@ public class ControllerTabell implements VisMeldingInterface {
             //Oppretter et kontraktobjekt basert på søknaden.
             Kontrakt kontrakt = new Kontrakt(soknad.getAnnonseObjekt(), tempPerson, soknad.getLeietakerObjekt(), 12, dagensDato);
 
-        //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt
+            //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt
             //annonse avvises.
             if (kontraktliste.add(kontrakt)) {
-                soknad.setErBehandlet(true);
-                soknad.setErGodkjent(true);
-                //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
-                soknaderPaaSammeAnnonse.remove(soknad);
+                if (personliste.add(soknad.getLeietakerObjekt())) {
 
-                soknadIter = soknaderPaaSammeAnnonse.iterator();
-                tempSoknad = null;
-                while (soknadIter.hasNext()) {
-                    tempSoknad = soknadIter.next();
-                    tempSoknad.setErBehandlet(true);
-                    tempSoknad.setErGodkjent(false);
+                    soknad.setErBehandlet(true);
+                    soknad.setErGodkjent(true);
+                    //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
+                    soknaderPaaSammeAnnonse.remove(soknad);
+
+                    soknadIter = soknaderPaaSammeAnnonse.iterator();
+                    tempSoknad = null;
+                    while (soknadIter.hasNext()) {
+                        tempSoknad = soknadIter.next();
+                        tempSoknad.setErBehandlet(true);
+                        tempSoknad.setErGodkjent(false);
+                    }
+
+                    visMelding(null, "Kontrakten er opprettet!");
+                    tabellModellSoknad.fireTableStructureChanged();
+                    vindu.getVenstrepanel().sorterTabellSoknadData();
                 }
-
-                visMelding(null, "Kontrakten er opprettet!");
-                tabellModellSoknad.fireTableStructureChanged();
-                vindu.getVenstrepanel().sorterTabellSoknadData();
             } else {
                 visMelding(null, "Kontrakten ble IKKE opprettet!");
             }
 
-        }else{
+        } else {
             visMelding("Leietaker finnes i registeret!", "Denne personen finnes i registeret.\n"
                     + "Personen kan dermed ikke registrere ny kontrakt.");
             soknad.setErBehandlet(true);
-            soknad.setErGodkjent(false);            
+            soknad.setErGodkjent(false);
             tabellModellSoknad.fireTableStructureChanged();
-            vindu.getVenstrepanel().sorterTabellSoknadData();            
+            vindu.getVenstrepanel().sorterTabellSoknadData();
         }
 
     }//End registrerKontrakt
@@ -762,6 +766,7 @@ public class ControllerTabell implements VisMeldingInterface {
                 case ANNONSEOBJ:
                     valgtObjekt = (Annonse) tabellData.get(valgtRad);
                     ControllerOutput.visAnnonseObjektHTMLOutput(valgtObjekt, output, vindu, annonseliste);
+                    settOutputLytter((Annonse) valgtObjekt, vindu);
                     break;
                 case KONTRAKTOBJ:
                     valgtObjekt = (Kontrakt) tabellData.get(valgtRad);
@@ -770,10 +775,41 @@ public class ControllerTabell implements VisMeldingInterface {
                 case SOKNADSOBJ:
                     valgtObjekt = (Soknad) tabellData.get(valgtRad);
                     ControllerOutput.visSoknadObjektHTMLOutput(valgtObjekt, output, vindu, soknadsliste, personliste);
+
                     break;
             }
         } catch (ArrayIndexOutOfBoundsException aiobe) {
 
+        }
+    }
+
+    public void settOutputLytter(final Annonse valgtAnnonseITabell, ArkfaneTemplate gjeldendeVindu) {
+
+        int valgtTab = MainPanel.returnervalgtArkfane();
+
+        if (valgtTab == 1) {
+            gjeldendeVindu.getSenterpanel().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+
+                        System.out.println("AnnonseID: " + valgtAnnonseITabell.getAnnonseID());
+                        new ControllerBildeViser(valgtAnnonseITabell.getBolig(), false);
+                    }
+                }
+            });
+        }
+        if (valgtTab == 0) {
+            gjeldendeVindu.getSenterpanel().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+
+                        System.out.println("AnnonseID: " + valgtAnnonseITabell.getAnnonseID());
+                        new ControllerBildeViser(valgtAnnonseITabell.getBolig(), true);
+                    }
+                }
+            });
         }
     }
 

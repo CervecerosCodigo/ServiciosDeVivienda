@@ -17,6 +17,8 @@ public class Annonse implements Serializable, Searchable{
     private boolean erSynlig;
     private Calendar utlopsDato;
     private Calendar tilgjengeligFraDato;
+    private Calendar datoAnnonseRegistrert;
+    private Calendar datoAnnonseTasAvNett;
     private String eiersKrav;
     private Bolig bolig;
     
@@ -74,6 +76,23 @@ public class Annonse implements Serializable, Searchable{
     public Calendar getTilgjengeligFraDato() {
         return  tilgjengeligFraDato;
     }
+
+    public Calendar getDatoAnnonseRegistrert() {
+        return datoAnnonseRegistrert;
+    }
+
+    public void setDatoAnnonseRegistrert(Calendar datoAnnonseRegistrert) {
+        this.datoAnnonseRegistrert = datoAnnonseRegistrert;
+    }
+
+    public Calendar getDatoAnnonseTasAvNett() {
+        return datoAnnonseTasAvNett;
+    }
+
+    public void setDatoAnnonseTasAvNett(Calendar datoAnnonseTasAvNett) {
+        this.datoAnnonseTasAvNett = datoAnnonseTasAvNett;
+    }
+    
     
     public String getEiersKrav() {
         return eiersKrav;

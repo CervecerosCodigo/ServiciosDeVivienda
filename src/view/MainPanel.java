@@ -18,7 +18,8 @@ public class MainPanel extends AbstractPanel{
 
     private JPanel megler;
     private JPanel annonse;
-    private JTabbedPane arkfaner;
+    private static JTabbedPane arkfaner;
+    
     
     public MainPanel(ArkfaneTemplate megler, ArkfaneTemplate annonse){
         setLayout( new GridLayout( 1, 1)) ;
@@ -39,12 +40,17 @@ public class MainPanel extends AbstractPanel{
         add(arkfaner);
     }
     
+    
     public JTabbedPane getTabbedPane() {
     	return arkfaner;
     }
     
     public void addTabListener(ChangeListener lytter) {
     	this.arkfaner.addChangeListener(lytter);
+    }
+    
+    public static int returnervalgtArkfane(){
+        return arkfaner.getSelectedIndex();
     }
     
 }
