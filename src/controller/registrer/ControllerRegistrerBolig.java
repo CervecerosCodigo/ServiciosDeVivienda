@@ -102,6 +102,10 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         initialiseringAvController();
 
         bRegVindu.setIconImage(Ikoner.EDIT.getImage());
+        
+        //Sperrer mulighet til å gjøre om en leilighet til enebolig og vice versa
+        bRegVindu.getLeilighetRButton().setEnabled(false);
+        bRegVindu.getEneboligRButton().setEnabled(false);
 
     }
 
