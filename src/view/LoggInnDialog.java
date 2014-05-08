@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import lib.Ikoner;
 
 import lib.Konstanter;
 
@@ -44,6 +45,8 @@ public class LoggInnDialog extends JDialog {
 		add(passordFelt);
 		add(loggInnKnapp);
 		add(avbrytKnapp);
+                
+                setIconImage(Ikoner.PASSORD.getImage());
 		
 		pack();
 	}

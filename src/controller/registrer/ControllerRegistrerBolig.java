@@ -20,6 +20,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import lib.BildeFilSti;
 import lib.BoligBilde;
 import lib.Boligtype;
+import lib.Ikoner;
 import lib.Konstanter;
 import lib.Melding;
 import lib.RegexTester;
@@ -39,7 +40,7 @@ import view.registrer.BoligRegVindu;
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
-public class ControllerRegistrerBolig extends AbstractControllerRegister implements VisMeldingInterface{
+public class ControllerRegistrerBolig extends AbstractControllerRegister implements VisMeldingInterface {
 
     private BoligRegVindu bRegVindu;
 
@@ -70,7 +71,6 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
     ///STOPP PÅ BILDEBEHANDLING///
 
     private TabellFireDataChangedInterface tabellOppdateringLytter;
-    
 
     /**
      * En kontruktør for registrering av en ny bolig.
@@ -84,6 +84,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         bRegVindu = new BoligRegVindu("Registrering av boliger");
         bRegVindu.setKnappeLytter(new KnappeLytter());
         bRegVindu.getEierField().setText(String.valueOf(utleier.getPersonID()));
+        bRegVindu.setIconImage(Ikoner.NY_BOLIG.getImage());
     }
 
     /**
@@ -97,14 +98,13 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         erNyregistrering = false;
         boligBilde = new BoligBilde();
         this.bolig = bolig;
-
+        bRegVindu.setIconImage(Ikoner.EDIT.getImage());
 
         initialiseringAvController();
 
     }
 
-
-    private void initialiseringAvController(){
+    private void initialiseringAvController() {
         bRegVindu = new BoligRegVindu("Endre bolig");
         bRegVindu.setKnappeLytter(new KnappeLytter());
 
@@ -143,9 +143,9 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
             bRegVindu.getAntallEtasjerField().setText(String.valueOf(((Enebolig) bolig).getAntallEtasjer()));
             bRegVindu.getTomtArealField().setText(String.valueOf(((Enebolig) bolig).getTomtAreal()));
             bRegVindu.getHarKjellerCheckBox().setSelected(((Enebolig) bolig).isHarKjeller());
-        }        
+        }
     }
-    
+
     /**
      * Brukes KUN i samband med oppdatering av eksisterende boligobjekt. Dersom
      * alle felt i GUI er ok tillater den til å gå videre.

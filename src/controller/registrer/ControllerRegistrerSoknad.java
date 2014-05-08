@@ -5,6 +5,7 @@ import controller.VisMeldingInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
+import lib.Ikoner;
 import model.Annonse;
 import model.Person;
 import model.Soknad;
@@ -40,6 +41,8 @@ public class ControllerRegistrerSoknad implements VisMeldingInterface{
         vindu.addSoknadListener( new KnappeLytter());
         
         visEiersKrav();
+        
+        vindu.setIconImage(Ikoner.NY_BOLIG.getImage());
         
     }
     
