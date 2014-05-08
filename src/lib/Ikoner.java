@@ -34,6 +34,7 @@ public class Ikoner {
     public final static ImageIcon NY_FORESPORSEL = new ImageIcon(ikonerSti + "foresporsel.png");
     public final static ImageIcon PASSORD = new ImageIcon(ikonerSti + "passord.png");
     public final static ImageIcon EDIT = new ImageIcon(ikonerSti + "edit.png");
+    public final static ImageIcon BILDEVINDU = new ImageIcon(ikonerSti + "bildevindu.png");
     
 
 }

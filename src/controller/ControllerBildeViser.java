@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import lib.BildeFilSti;
 import lib.BoligBilde;
+import lib.Ikoner;
 import lib.Melding;
 import model.Bolig;
 import view.BildeViser;
@@ -53,6 +54,9 @@ public class ControllerBildeViser {
         } catch (IOException ex) {
             Melding.visMelding("Feil", "IO feil ved innlesning av bilder");
         }
+
+        //Setter opp vinduikone
+        bildeVindu.setIconImage(Ikoner.BILDEVINDU.getImage());
 
         //Starter bildefremvisning
         visNesteBilde();
@@ -153,10 +157,9 @@ public class ControllerBildeViser {
         String bildemappeSti = new BildeFilSti().getBoligGalleryPath(bolig);
         String bildeSti = bildemappeSti + "/" + bildenr + ".jpg";
         File bildeTilSletting = new File(bildeSti);
-        
+
 //        BoligBilde boligBilder = new BoligBilde();
 //        boligBilder.setInkrementellNavnAlleFiler(bolig);
-        
         if (bildeTilSletting.delete()) {
 
             BoligBilde boligBilder = new BoligBilde();
