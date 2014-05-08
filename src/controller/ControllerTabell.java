@@ -38,7 +38,7 @@ public class ControllerTabell implements VisMeldingInterface {
     private DefaultTableCellRenderer hoyreStiltTekstRenderer;
     private TabellSendDataIBrukInterface tabellOppdateringslytter;
 
-    private ArkfaneTemplate vindu;
+    private AbstraktArkfane vindu;
     private ArrayList<Object> tabellData;
     private ObjektType objekttype;
     private Collection liste;
@@ -51,12 +51,11 @@ public class ControllerTabell implements VisMeldingInterface {
     private JPopupMenu tabellMeny;
     private JMenu menyvalgBolig, menyvalgPerson, menyvalgAnnonse, menyvalgSoknad;
     private JMenuItem menyvalgNyPerson, menyvalgEndrePerson, menyvalgSlettPerson,
-            menyvalgNyBolig, menyvalgEndreBolig, menyvalgSlettBolig, menyvalgPubliserToggle,
+            menyvalgNyBolig, menyvalgEndreBolig, menyvalgSlettBolig, menyvalgPubliserToggle, menyvalgSlettAnnonse,
             menyvalgForesporsel,
             menyvalgAksepter, menyvalgAvvis;
 
     private int valgtRadItabell;    //Viser til en hver tid hvilken rad som er valgt i tabellen
-    private boolean erMeglerVindu;
 
     public ControllerTabell(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
@@ -95,6 +94,7 @@ public class ControllerTabell implements VisMeldingInterface {
         menyvalgAksepter = new JMenuItem("Aksepter søknad");
         menyvalgAvvis = new JMenuItem("Avvis søknad");
         menyvalgPubliserToggle = new JMenuItem("Endre publiseringsstatus");
+        menyvalgSlettAnnonse = new JMenuItem("Slett annonse");
 
     }
 
@@ -105,11 +105,10 @@ public class ControllerTabell implements VisMeldingInterface {
      *
      * @param vindu Tar i mot det vinduet som metoden gjelder for.
      */
-    public void settOppTabellLyttere(final ArkfaneTemplate vindu, final boolean erMeglerVindu) {
+    public void settOppTabellLyttere(final AbstraktArkfane vindu) {
 
         this.vindu = vindu;
-        this.erMeglerVindu = erMeglerVindu;
-        bunnController.setErMeglerVindu(erMeglerVindu);
+
         bunnController.settKnappeLytter(vindu);
         tabell = this.vindu.getVenstrepanel().getTable();
 
@@ -151,7 +150,7 @@ public class ControllerTabell implements VisMeldingInterface {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     if (modellIBruk instanceof TabellModellAnnonse) {
                         Annonse valgtObjekt = returnerAnnonseObjekt();
-                        if(MainPanel.returnervalgtArkfane() == 0)
+                        if(vindu instanceof ArkfaneMegler)
                             new ControllerBildeViser(valgtObjekt.getBolig(), true);
                         else
                             new ControllerBildeViser(valgtObjekt.getBolig(), false);
@@ -190,7 +189,7 @@ public class ControllerTabell implements VisMeldingInterface {
                             }
                         });
                     } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
-                        if (erMeglerVindu) {
+                        if (vindu instanceof ArkfaneMegler) {
                             ControllerRegistrerAnnonse cont = new ControllerRegistrerAnnonse(annonseliste, personliste, returnerAnnonseObjekt());
                             cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
@@ -239,6 +238,8 @@ public class ControllerTabell implements VisMeldingInterface {
 
                         } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
                             tabellMeny.add(menyvalgForesporsel);
+                            if(vindu instanceof ArkfaneMegler)
+                                tabellMeny.add(menyvalgSlettAnnonse);
                         } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
 
                         } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
@@ -350,7 +351,7 @@ public class ControllerTabell implements VisMeldingInterface {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (!erMeglerVindu) {
+                if (vindu instanceof ArkfaneAnnonse) {
                     new ControllerRegistrerSoknad(personliste, annonseliste, soknadsliste, returnerAnnonseObjekt());
                 }
             }
@@ -381,6 +382,15 @@ public class ControllerTabell implements VisMeldingInterface {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nyEllerEndreAnnonse();
+            }
+        });
+        
+        //Sletter annonsen
+        menyvalgSlettAnnonse.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                slettAnnonseFraRegisteret();
             }
         });
     }
@@ -546,7 +556,8 @@ public class ControllerTabell implements VisMeldingInterface {
         Boolean ok = true;
         Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
         if (valgtObjekt != null) {
-            if (!valgtObjekt.isErUtleid()) {
+            
+            if (!valgtObjekt.isErUtleid() || !valgtObjekt.isErUtleid()) {
                 int valg = Melding.visBekreftelseDialog("Ønsker du virkelig å slette boligen?",
                         "Slette bolig", "Nei");
                 if (valg == 0) {
@@ -563,7 +574,10 @@ public class ControllerTabell implements VisMeldingInterface {
                     }
                 } else {
                 }
-            }//end if
+            }else{
+                visMelding("Feil under sletting", "Kunne ikke slettet boligen.\n"
+                        + "Den er enten utleid eller annonsert.");
+            }
         }//end if
     }
 
@@ -653,7 +667,18 @@ public class ControllerTabell implements VisMeldingInterface {
                 //Boligen er utleid og kan ikke legges i annonseregisteret
             }
         }//end if
-
+    }
+    
+    public void slettAnnonseFraRegisteret(){
+        Annonse annonse = returnerAnnonseObjekt();
+        if(annonse != null){
+            if(annonseliste.remove(annonse)){
+                visMelding("Sletting fullført!", "Annonsen er slettet!");
+                modellIBruk.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
+            }else{
+                visMelding("Feil!", "Annonsen ble IKKE slettet!");
+            }
+        }
     }
 
     /**

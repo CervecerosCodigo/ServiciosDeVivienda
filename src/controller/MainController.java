@@ -35,8 +35,8 @@ public class MainController implements Serializable {
     private HashSet<Annonse> annonseliste;
     private HashSet<Soknad> soknadsliste;
 
-    private ArkfaneTemplate meglerVindu;
-    private ArkfaneTemplate annonseVindu;
+    private ArkfaneMegler meglerVindu;
+    private ArkfaneAnnonse annonseVindu;
     private StartGUI startGUI;
     private InnloggingController innloggingController;
 
@@ -52,8 +52,8 @@ public class MainController implements Serializable {
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
             HashSet<Soknad> soknadsliste) {
 
-        meglerVindu = new ArkfaneTemplate("megler");
-        annonseVindu = new ArkfaneTemplate("annonse");
+        meglerVindu = new ArkfaneMegler("megler");
+        annonseVindu = new ArkfaneAnnonse("annonse");
         startGUI = new StartGUI(meglerVindu, annonseVindu);
 
         innloggingController = new InnloggingController(startGUI, personliste);
@@ -86,10 +86,10 @@ public class MainController implements Serializable {
             }
         });
 
-        tabellControllerMegler.settOppTabellLyttere(meglerVindu, true);
+        tabellControllerMegler.settOppTabellLyttere(meglerVindu);
         tabellControllerMegler.settInnDataITabell(boligliste, ObjektType.BOLIGOBJ);
 
-        tabellControllerAnnonse.settOppTabellLyttere(annonseVindu, false);
+        tabellControllerAnnonse.settOppTabellLyttere(annonseVindu);
         tabellControllerAnnonse.settInnDataITabell(annonseliste, ObjektType.ANNONSEOBJ);
 
         /**

@@ -21,7 +21,7 @@ import model.Megler;
 import model.Person;
 import model.Soknad;
 import model.Utleier;
-import view.ArkfaneTemplate;
+import view.AbstraktArkfane;
 import view.MainPanel;
 
 public class ControllerOutput {
@@ -93,7 +93,7 @@ public class ControllerOutput {
      *
      * @param valgtObjekt Objektet som skal vises i Output
      */
-    public static void visPersonObjektHTMLOutput(JEditorPane output, ArkfaneTemplate vindu, Object valgtObjekt, HashSet<Person> personliste, HashSet<Bolig> boligliste, HashSet<Soknad> soknadsliste) {
+    public static void visPersonObjektHTMLOutput(JEditorPane output, AbstraktArkfane vindu, Object valgtObjekt, HashSet<Person> personliste, HashSet<Bolig> boligliste, HashSet<Soknad> soknadsliste) {
 
         output = vindu.getSenterpanel().getEditorPane();
 
@@ -240,7 +240,7 @@ public class ControllerOutput {
      *
      * @param valgtObjekt Objektet som skal vises.
      */
-    public static void visBoligObjektHTMLOutput(Object valgtObjekt, JEditorPane output, ArkfaneTemplate vindu, HashSet<Bolig> boligliste) {
+    public static void visBoligObjektHTMLOutput(Object valgtObjekt, JEditorPane output, AbstraktArkfane vindu, HashSet<Bolig> boligliste) {
         output = vindu.getSenterpanel().getEditorPane();
         Bolig skalVises = (Bolig) valgtObjekt;
         Leilighet leilighet = null;
@@ -413,7 +413,7 @@ public class ControllerOutput {
      * @param valgtObjekt Objektet som skal vises i output.
      * @param vindu Vinduet som skal vise resultatet
      */
-    public static void visAnnonseObjektHTMLOutput(Object valgtObjekt, JEditorPane output, ArkfaneTemplate vindu, HashSet<Annonse> annonseliste) {
+    public static void visAnnonseObjektHTMLOutput(Object valgtObjekt, JEditorPane output, AbstraktArkfane vindu, HashSet<Annonse> annonseliste) {
         output = vindu.getSenterpanel().getEditorPane();
         Annonse skalVises = (Annonse) valgtObjekt;
 
@@ -599,7 +599,7 @@ public class ControllerOutput {
 
     }
 
-    public static void visKontraktObjektHTMLOutput(Object valgtObjekt, JEditorPane output, ArkfaneTemplate vindu) {
+    public static void visKontraktObjektHTMLOutput(Object valgtObjekt, JEditorPane output, AbstraktArkfane vindu) {
         output = vindu.getSenterpanel().getEditorPane();
         Kontrakt kontrakt = (Kontrakt) valgtObjekt;
         StringBuilder html = new StringBuilder();
@@ -732,7 +732,7 @@ public class ControllerOutput {
         output.setText(html.toString());
     }
 
-    public static void visSoknadObjektHTMLOutput(Object valgtObjekt, JEditorPane output, ArkfaneTemplate vindu, HashSet<Soknad> soknadsliste, HashSet<Person> personliste) {
+    public static void visSoknadObjektHTMLOutput(Object valgtObjekt, JEditorPane output, AbstraktArkfane vindu, HashSet<Soknad> soknadsliste, HashSet<Person> personliste) {
         output = vindu.getSenterpanel().getEditorPane();
         Soknad skalVises = (Soknad) valgtObjekt;
         Leietaker leietaker = skalVises.getLeietakerObjekt();

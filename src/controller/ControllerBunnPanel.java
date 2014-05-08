@@ -6,7 +6,10 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 import model.*;
-import view.ArkfaneTemplate;
+import view.AbstraktArkfane;
+import view.ArkfaneAnnonse;
+import view.ArkfaneMegler;
+import view.MainPanel;
 
 /**
  * Denne klassen er kontrolleren til bunnpanelet i både meglerVindu og
@@ -23,7 +26,6 @@ public class ControllerBunnPanel {
     private HashSet<Soknad> soknadliste;
     private ArrayList<Object> tabellData;
     private TabellModell modell;
-    private boolean erMeglerVindu;
 
     public ControllerBunnPanel(HashSet<Bolig> boligliste, HashSet<Person> personliste, HashSet<Annonse> annonseliste, HashSet<Soknad> soknadliste) {
 
@@ -39,7 +41,7 @@ public class ControllerBunnPanel {
      *
      * @param vindu
      */
-    public void settKnappeLytter(ArkfaneTemplate vindu) {
+    public void settKnappeLytter(AbstraktArkfane vindu) {
         vindu.getBunnpanel().addKnappeLytter(lytter = new KnappeLytter(vindu));
     }
 
@@ -54,24 +56,20 @@ public class ControllerBunnPanel {
         this.modell = modell;
     }
 
-    public void setErMeglerVindu(boolean erMeglerVindu) {
-        this.erMeglerVindu = erMeglerVindu;
-        
-    }
 
     /**
      * private lytteklasse for knappene i bunnpanelet.
      */
     class KnappeLytter implements ActionListener {
 
-        ArkfaneTemplate vindu;
+        AbstraktArkfane vindu;
         int raderITabell;
         JTable tabell;
 
-        public KnappeLytter(ArkfaneTemplate vindu) {
+        public KnappeLytter(AbstraktArkfane vindu) {
             this.vindu = vindu;
             tabell = vindu.getVenstrepanel().getTable();
-            if(!erMeglerVindu){
+            if(vindu instanceof ArkfaneAnnonse){
                 vindu.getBunnpanel().getMultiKnapp().setText("Send forespørsel");
             }
         }
@@ -113,7 +111,7 @@ public class ControllerBunnPanel {
                         new ControllerRegistrerBolig(boligliste, (Bolig) tabellData.get(valgtRad));
                     }
                     if (tabell.getModel() instanceof TabellModellAnnonse) {
-                        if (erMeglerVindu) {
+                        if (vindu instanceof ArkfaneMegler) {
                             new ControllerRegistrerAnnonse(annonseliste, personliste, (Annonse) tabellData.get(valgtRad));
                         }else{
                             new ControllerRegistrerSoknad(personliste, annonseliste, soknadliste, (Annonse) tabellData.get(valgtRad));

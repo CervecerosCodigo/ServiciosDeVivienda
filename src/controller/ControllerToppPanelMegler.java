@@ -23,11 +23,11 @@ import model.Person;
 import model.Soknad;
 import model.Utleier;
 import search.FreeTextSearch;
-import view.ArkfaneTemplate;
+import view.AbstraktArkfane;
 
 public class ControllerToppPanelMegler<E> {
 
-    ArkfaneTemplate vindu;
+    AbstraktArkfane vindu;
     private String radioNavnKlikket;
     private ObjektType radioTypeValgt;
     private ObjektType2 radioTypeValgt2;
@@ -46,7 +46,7 @@ public class ControllerToppPanelMegler<E> {
 
     private ListListener listListener;
 
-    public ControllerToppPanelMegler(ArkfaneTemplate vindu, HashSet<Person> personliste, HashSet<Bolig> boligliste,
+    public ControllerToppPanelMegler(AbstraktArkfane vindu, HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
             HashSet<Soknad> soknadsliste) {
         this.vindu = vindu;

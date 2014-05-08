@@ -11,7 +11,7 @@ import lib.ObjektType;
 import lib.RegexTester;
 import model.Annonse;
 import search.AnnonseFilter;
-import view.ArkfaneTemplate;
+import view.AbstraktArkfane;
 
 /**
  * Kontroller klasse for topp panel annonse søk. File:
@@ -22,12 +22,12 @@ import view.ArkfaneTemplate;
  */
 public class ControllerToppPanelAnnonse {
 
-    ArkfaneTemplate vindu;
+    AbstraktArkfane vindu;
     private HashSet<Annonse> annonseliste;
     private AnnonseFilter afilter;
     private ListListener listListener;
 
-    public ControllerToppPanelAnnonse(ArkfaneTemplate vindu, HashSet<Annonse> annonseliste) {
+    public ControllerToppPanelAnnonse(AbstraktArkfane vindu, HashSet<Annonse> annonseliste) {
         this.vindu = vindu;
         this.annonseliste = annonseliste;
         afilter = new AnnonseFilter(annonseliste);

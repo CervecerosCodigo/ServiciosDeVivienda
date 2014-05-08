@@ -7,14 +7,15 @@ import javax.swing.*;
 import lib.Melding;
 import lib.VinduStorrelse;
 
-public class ArkfaneTemplate extends AbstractPanel implements VisMeldingInterface{
+public abstract class AbstraktArkfane extends AbstractPanel implements VisMeldingInterface{
 
     private JPanel toppanel;
     private BunnPanel bunnpanel;
     private VenstrePanel venstrepanel;
     private SenterPanel senterpanel;
+    
 
-    public ArkfaneTemplate(String valgtToppanel) {
+    public AbstraktArkfane(String valgtToppanel) {
         setLayout(new BorderLayout());
         setVisible(true);
         

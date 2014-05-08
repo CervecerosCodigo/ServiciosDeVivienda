@@ -107,15 +107,13 @@ public class ControllerBildeViser {
      * ikke indeks til oversikten over bilder.
      */
     private void visSpesifikkBilde(int bildenummer) {
-        try {
-            if (bildenummer > 0) {
-                visBilde(bilder[bildenummer - 1]);
-            } else {
-                Melding.visMelding("visSpesifikkBilde", "For lavt bildenummer");
-            }
-        } catch (NullPointerException ex) {
 
+        if (bildenummer > 0) {
+            visBilde(bilder[bildenummer - 1]);
+        } else {
+            Melding.visMelding("visSpesifikkBilde", "For lavt bildenummer");
         }
+
     }
 
     private void kanppeStyring() {

@@ -1,13 +1,8 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import javax.swing.BorderFactory;
 
-import javax.swing.JButton;
+import java.awt.Component;
+import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
@@ -20,8 +15,7 @@ public class MainPanel extends AbstractPanel{
     private JPanel annonse;
     private static JTabbedPane arkfaner;
     
-    
-    public MainPanel(ArkfaneTemplate megler, ArkfaneTemplate annonse){
+    public MainPanel(AbstraktArkfane megler, AbstraktArkfane annonse){
         setLayout( new GridLayout( 1, 1)) ;
         this.megler = (JPanel) megler;
         this.annonse = (JPanel) annonse;
@@ -36,6 +30,7 @@ public class MainPanel extends AbstractPanel{
         arkfaner.setSelectedIndex(1);
         arkfaner.setToolTipTextAt(0, "Administrering av boliger, søknader mm.");
         arkfaner.setToolTipTextAt(1, "Finn tilgjengelige boliger, send inn søknader mm.");
+        
         
         add(arkfaner);
     }
