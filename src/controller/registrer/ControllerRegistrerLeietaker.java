@@ -96,11 +96,11 @@ public class ControllerRegistrerLeietaker extends AbstractControllerRegister imp
     private boolean kontrollerData() {
         getDataFraGUI();
 
-        boolean fnavnOK = RegexTester.testNavn(fnavn);
-        boolean enavnOK = RegexTester.testNavn(enavn);
+        boolean fnavnOK = RegexTester.testKunBokstaverBindestrekFStorbokstav(fnavn);
+        boolean enavnOK = RegexTester.testKunBokstaverBindestrekFStorbokstav(enavn);
         boolean epostOK = RegexTester.testEpost(epost);
         boolean telnrOK = RegexTester.testTelNummerNorsk(telnr);
-        boolean yrkeOK = RegexTester.testKunBokstaver(yrke);
+        boolean yrkeOK = RegexTester.testKunBokstaverBindestrekFStorbokstav(yrke);
 
         return fnavnOK && enavnOK && epostOK && telnrOK && yrkeOK;
     }

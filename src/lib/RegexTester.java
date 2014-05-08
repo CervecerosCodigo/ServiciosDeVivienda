@@ -47,6 +47,17 @@ public class RegexTester {
      * Valgfri rekkefølge store eller små bokstaver, tall og mellomrom.
      */
     public static final String KUN_BOKSTAVER_ELLER_TALL = "^[a-zæøåA-ZÆØÅ0-9\\s]+$";
+    /**
+     * Samme som KUN_BOKSTAVER_ELLER_TALL men tar også med seg bindestrek slik
+     * at vi kan skrive så coole ord som IT-konsulent eller Rock-stjerne.
+     */
+    public static final String KUN_BOKSTAVER_TALL_BINDESTREK = "^[a-zæøåA-ZÆØÅ0-9\\-\\s]+$";
+    /**
+     * Denne er til for at man skal ha mulighet til å skrive navn med bindestrek
+     * så lenge første bokstanven er stor. Da kan man skrive feks Bert-Ola,
+     * Daniel-Joakim, Jonas-Mohammed osv
+     */
+    public static final String KUN_BOKSTAVER_FSTORBOKSTAV = "^[A-ZÆØÅ]{1}[a-zæøåA-ZÆØÅ\\-\\s]+$";
     private static boolean erTestOK;
 
     public RegexTester() {
@@ -235,25 +246,49 @@ public class RegexTester {
     public static boolean testGateadresse(String gateAdresse) {
         return patternMatchOK(gateAdresse, GATE_ADRESSE);
     }
-    
+
     /**
-     * 
+     *
      * @param kunBokstaver
-     * @return 
+     * @return
      */
     public static boolean testKunBokstaver(String kunBokstaver) {
         return patternMatchOK(kunBokstaver, KUN_BOKSTAVER);
     }
-    
+
     /**
      * Valgfri rekkefølge store eller små bokstaver, tall og mellomrom.
+     *
      * @param kunBokstaverEllerTall
-     * @return 
+     * @return
      */
     public static boolean testKunBokstaverEllerTall(String kunBokstaverEllerTall) {
         return patternMatchOK(kunBokstaverEllerTall, KUN_BOKSTAVER_ELLER_TALL);
     }
+
+    /**
+     * Samme som KUN_BOKSTAVER_ELLER_TALL men tar også med seg bindestrek slik
+     * at vi kan skrive så coole ord som IT-konsulent eller Rock-stjerne.
+     *
+     * @param kunBokstaverTallBindestrek
+     * @return
+     */
+    public static boolean testKunBokstaverTallBindestrek(String kunBokstaverTallBindestrek) {
+        return patternMatchOK(kunBokstaverTallBindestrek, KUN_BOKSTAVER_TALL_BINDESTREK);
+    }
     
+    /**
+     * Denne er til for at man skal ha mulighet til å skrive navn med bindestrek
+     * så lenge første bokstanven er stor. Da kan man skrive feks Bert-Ola,
+     * Daniel-Joakim, Jonas-Mohammed osv
+     * 
+     * @param kunBokstaverTallBindestrekFStorbokstav
+     * @return 
+     */
+    public static boolean testKunBokstaverBindestrekFStorbokstav(String kunBokstaverTallBindestrekFStorbokstav) {
+        return patternMatchOK(kunBokstaverTallBindestrekFStorbokstav, KUN_BOKSTAVER_FSTORBOKSTAV);
+    }
+
     /**
      * Tester en input string mot en fordefiniert regex.
      *
