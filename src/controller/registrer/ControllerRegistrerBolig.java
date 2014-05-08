@@ -98,9 +98,10 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         erNyregistrering = false;
         boligBilde = new BoligBilde();
         this.bolig = bolig;
-        bRegVindu.setIconImage(Ikoner.EDIT.getImage());
 
         initialiseringAvController();
+
+        bRegVindu.setIconImage(Ikoner.EDIT.getImage());
 
     }
 
