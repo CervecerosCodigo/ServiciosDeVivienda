@@ -365,8 +365,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
                 deaktiverAlleKomponenter();
                 aktiverBoligKomponenter();
                 aktiverLeilighetKomponenter();
-                bildeButton.setEnabled(false);
-                visFlereBilderButton.setEnabled(false);
+                deaktiverBildeKnapper();
             }
         });
 
@@ -377,8 +376,6 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
                 deaktiverAlleKomponenter();
                 aktiverBoligKomponenter();
                 aktiverEneboligKomponenter();
-                bildeButton.setEnabled(false);
-                visFlereBilderButton.setEnabled(false);
             }
         });
         ///SLUTT PÅ AKTIVERING OG DEAKTIVERING AV KOMPONENTER///
@@ -442,6 +439,16 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
         for (Component comp1 : compEnebolig) {
             comp1.setEnabled(true);
         }
+    }
+    
+    public void deaktiverBildeKnapper(){
+        bildeButton.setEnabled(false);
+        visFlereBilderButton.setEnabled(false);
+    }
+    
+    public void aktiverBildeKnapper(){
+        bildeButton.setEnabled(true);
+        visFlereBilderButton.setEnabled(true);
     }
 
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//

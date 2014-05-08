@@ -85,6 +85,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         bRegVindu.setKnappeLytter(new KnappeLytter());
         bRegVindu.getEierField().setText(String.valueOf(utleier.getPersonID()));
         bRegVindu.setIconImage(Ikoner.NY_BOLIG.getImage());
+        bRegVindu.deaktiverBildeKnapper();
     }
 
     /**
