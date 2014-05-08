@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import lib.Arbeidsforhold;
+import lib.Ikoner;
 import lib.Melding;
 import lib.RegexTester;
 import lib.Sivilstatus;
@@ -56,6 +57,8 @@ public class ControllerRegistrerLeietaker extends AbstractControllerRegister imp
         vindu = new PersonRegVindu(450, 400, "Send forespørsel");
         erNyregistrering = true;
         skjulRepresentantFelter();
+        
+        vindu.setIconImage(Ikoner.NY_FORESPORSEL.getImage());
 
         vindu.addPersonPanelListener(new KnappeLytter());
     }

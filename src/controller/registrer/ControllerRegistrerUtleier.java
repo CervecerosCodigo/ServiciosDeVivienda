@@ -5,6 +5,7 @@ import controller.VisMeldingInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
+import lib.Ikoner;
 import lib.Melding;
 import lib.RegexTester;
 import model.Person;
@@ -37,6 +38,9 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
     public ControllerRegistrerUtleier(HashSet<Person> personRegister) {
         super(personRegister);
         vindu = new PersonRegVindu(200, 200, "Ny utleier");
+        
+        vindu.setIconImage(Ikoner.NY_UTLEIER.getImage());
+        
         erNyregistrering = true;
         skjulLeietakerFelter();
 
@@ -52,6 +56,9 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
     public ControllerRegistrerUtleier(HashSet<Person> personRegister, Utleier utleier) {
         super(personRegister, utleier);
         vindu = new PersonRegVindu(200, 200, "Rediger utleier");
+        
+        vindu.setIconImage(Ikoner.EDIT.getImage());
+        
         erNyregistrering = false;
         skjulLeietakerFelter();
 

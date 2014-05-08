@@ -6,6 +6,7 @@ import controller.TabellFireDataChangedInterface;
 import controller.VisMeldingInterface;
 import java.awt.event.*;
 import java.util.*;
+import lib.Ikoner;
 import lib.Konstanter;
 import lib.RegexTester;
 import model.*;
@@ -45,6 +46,9 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
         this.bolig = bolig;
         vindu = new AnnonseRegVindu("Registrering av annonser");
         vindu.addAnnonsePanelListener(new KnappLytter());
+        
+        vindu.setIconImage(Ikoner.NY_BOLIG.getImage());
+        
         fyllUtBoliginfo();
         erNyregistrering = true;
         
@@ -73,6 +77,9 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
         this.bolig = annonseSomEndres.getBolig();
         this.annonseSomEndres = annonseSomEndres;
         vindu = new AnnonseRegVindu("Registrering av annonser");
+        
+        vindu.setIconImage(Ikoner.EDIT.getImage());
+        
         vindu.addAnnonsePanelListener(new KnappLytter());
         fyllUtBoliginfo();
         erNyregistrering = false;
