@@ -1,6 +1,7 @@
 package controller.registrer;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import controller.VisMeldingInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ import view.registrer.SoknadRegVindu;
  * Leietakerobjektet blir ikke lagt i personregisteret før megler godkjenner søknaden.
  * @author espen
  */
-public class ControllerRegistrerSoknad {
+public class ControllerRegistrerSoknad implements VisMeldingInterface{
 
     private HashSet<Person> personliste;
     private HashSet<Annonse> annonseliste;
@@ -47,6 +48,11 @@ public class ControllerRegistrerSoknad {
         String replace = krav.replace("<br>", "\n");
             vindu.setEiersKrav(replace);
         
+    }
+
+    @Override
+    public void visMelding(String overskrift, String melding) {
+        vindu.visMelding(overskrift, melding);
     }
     
     class KnappeLytter implements ActionListener{

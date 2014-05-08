@@ -120,7 +120,7 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
                 return true;
             }
         }
-        visMelding("Annonsen kunne ikke slettes!");
+        visMelding("", "Annonsen kunne ikke slettes!");
         return false;
     }
 
@@ -140,10 +140,10 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
                 vindu.getBoligEierEpostInfo().setText(epost);
                 vindu.getBoligEierTlfInfo().setText(tlf);
             } else {
-                visMelding("Personobjektet finnes ikke!");
+                visMelding("", "Person finnes ikke!");
             }
         } else {
-            visMelding("Boligenobjektet finnes ikke!");
+            visMelding("", "Boligenobjektet finnes ikke!");
         }
     }
 
@@ -173,10 +173,10 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
      */
     private boolean skrivOppdateringtilAnnonseSet(Annonse annonse) {
         if (annonseliste.add(annonse)) {
-            visMelding("Annonsen er oppdatert!");
+            visMelding("Registrering fullført", "Annonsen er oppdatert!");
             return true;
         }
-        visMelding("Annonsen ble ikke oppdatert!");
+        visMelding("Registrering feilet", "Annonsen ble ikke oppdatert!");
         return false;
     }
 
@@ -193,13 +193,13 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
         boolean[] annonseOK = new boolean[4];
         
         if ((today.compareTo(utlopsDato)) <= 0) {
-            System.out.println("Utløp" + today.compareTo(utlopsDato));
+            
             annonseOK[0] = true;
         } else {
             annonseOK[0] = false;
         }
         if ((today.compareTo(tilgjengligFraDato)) <= 0) {
-            System.out.println("Tilgjenglig" + today.compareTo(tilgjengligFraDato));
+            
             annonseOK[1] = true;
         } else {
             annonseOK[1] = false;
@@ -227,7 +227,7 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
             erSynligsomAnnonse = vindu.getErSynligSomAnnonse().isSelected();
             eiersKrav = vindu.getEiersKrav().getText();
         } catch (Exception ex) {
-            visMelding("Greier ikke hente data fra alle feltene!");
+            visMelding("", "Greier ikke hente data fra alle feltene!");
         }
     }
 
@@ -258,30 +258,32 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
     private boolean registrerNyAnnonse(){
         getAnnonseDataFraGUI();
         if(!kontrollerDataAnnonse()){
-            visMelding("Vennligst sjekk alle feltene.");
+            visMelding("", "Vennligst sjekk alle feltene.");
             return false;
         }else{
             Annonse annonse = new Annonse(depositum, utleiepris, tilgjengligFraDato, utlopsDato, bolig, eiersKrav);
             annonseSomEndres = annonse;
             if(annonseliste.add(annonse)){
-                visMelding("Annonsen er registrert!");
+                visMelding("Registrering fullført!", "Annonsen er registrert!");
                 
                 return true;
             }else{
-                visMelding("Greide ikke å legge annonsen inn i registeret!");
+                visMelding("Registrering feilet!","Greide ikke å legge annonsen inn i registeret!");
             }
             
         }
         return false;
     }
 
-    @Override
-    public void visMelding(String melding) {
-        vindu.visMelding(melding);
-    }
+
     
     public void settTabellOppdateringsLytter(TabellFireDataChangedInterface lytter){
         tabellOppdateringLytter = lytter;
+    }
+
+    @Override
+    public void visMelding(String overskrift, String melding) {
+        vindu.visMelding(overskrift, melding);
     }
     
     

@@ -1,6 +1,7 @@
 package controller.registrer;
 
 import controller.TabellFireDataChangedInterface;
+import controller.VisMeldingInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -17,7 +18,7 @@ import view.registrer.PersonRegVindu;
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
-public class ControllerRegistrerUtleier extends AbstractControllerRegister {
+public class ControllerRegistrerUtleier extends AbstractControllerRegister implements VisMeldingInterface{
 
     private String fnavn, enavn, epost, telnr;
     private boolean erRepresentant;
@@ -125,10 +126,10 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
         if (kontrollerData()) {
             Person utleier = new Utleier(fnavn, enavn, epost, telnr, erRepresentant, representantNavn);
             if (super.registrerObjekt((Utleier) utleier)) {
-                Melding.visMelding("Ny utleier", "Utleier:\n" + fnavn + " " + enavn + "\nEr registrert");
+                visMelding("Ny utleier", "Utleier:\n" + fnavn + " " + enavn + "\nEr registrert");
                 vindu.dispose();
             } else {
-                Melding.visMelding("Ny utleier", "Feil ved registrering");
+                visMelding("Ny utleier", "Feil ved registrering");
             }
         }
     }
@@ -167,19 +168,24 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister {
                 }
 
                 if (super.registrerObjekt((Utleier) utleier)) {
-                    Melding.visMelding("Oppdater utleier", "Oppdatering vellykket.");
+                    visMelding("Oppdater utleier", "Oppdatering vellykket.");
                     vindu.dispose();
                 } else {
-                    Melding.visMelding("Oppdater utleier", "Oppdatering misslykkedes ved registrering.");
+                    visMelding("Oppdater utleier", "Oppdatering misslykkedes ved registrering.");
                 }
             } else {
-                Melding.visMelding("Oppdater utleier", "Oppdatering misslykkedes ved sletting.");
+                visMelding("Oppdater utleier", "Oppdatering misslykkedes ved sletting.");
             }
         }
     }
 
     public void settTabellOppdateringsLytter(TabellFireDataChangedInterface lytter){
         tabellOppdateringLytter = lytter;
+    }
+
+    @Override
+    public void visMelding(String overskrift, String melding) {
+        Melding.visMelding(overskrift, melding);
     }
     
     

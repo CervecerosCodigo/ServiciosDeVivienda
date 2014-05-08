@@ -1,5 +1,6 @@
 package view.registrer;
 
+import controller.VisMeldingInterface;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -16,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import lib.GuiSizes;
 import lib.Ikoner;
+import lib.Melding;
 import lib.RegexTester;
 import view.ComboDatoVelger;
 import view.CustomJButton;
@@ -30,7 +32,7 @@ import view.CustomJTextField;
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
-public class BoligRegVindu extends AbstractRegistreringsPanel {
+public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeldingInterface{
 
     ///PANELER///
     private CustomSubPanel boligPanel, leilighetPanel, eneboligPanel, bildePanel;
@@ -733,4 +735,10 @@ public class BoligRegVindu extends AbstractRegistreringsPanel {
         bildeButton.addActionListener(lytter);
     }
 
+    @Override
+    public void visMelding(String overskrift, String melding) {
+        Melding.visMelding(overskrift, melding);
+    }
+
+    
 }

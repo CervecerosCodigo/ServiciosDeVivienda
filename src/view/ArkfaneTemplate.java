@@ -1,11 +1,13 @@
 package view;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import controller.VisMeldingInterface;
 import java.awt.BorderLayout;
 import javax.swing.*;
+import lib.Melding;
 import lib.VinduStorrelse;
 
-public class ArkfaneTemplate extends AbstractPanel {
+public class ArkfaneTemplate extends AbstractPanel implements VisMeldingInterface{
 
     private JPanel toppanel;
     private BunnPanel bunnpanel;
@@ -55,6 +57,11 @@ public class ArkfaneTemplate extends AbstractPanel {
 
     public SenterPanel getSenterpanel() {
         return senterpanel;
+    }
+
+    @Override
+    public void visMelding(String overskrift, String melding) {
+        Melding.visMelding(overskrift, melding);
     }
 
     

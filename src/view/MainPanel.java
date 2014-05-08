@@ -1,8 +1,13 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import javax.swing.BorderFactory;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
@@ -22,8 +27,10 @@ public class MainPanel extends AbstractPanel{
         arkfaner = new JTabbedPane(JTabbedPane.TOP);
         
         //Legger til tab og kobler med panelet.
+        
         arkfaner.addTab("Megler", this.megler);
         arkfaner.addTab("Annonser", this.annonse);
+        
         arkfaner.setSelectedIndex(1);
         arkfaner.setToolTipTextAt(0, "Administrering av boliger, søknader mm.");
         arkfaner.setToolTipTextAt(1, "Finn tilgjengelige boliger, send inn søknader mm.");

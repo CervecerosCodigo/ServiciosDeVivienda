@@ -12,6 +12,8 @@ package controller;
  */
 public interface VisMeldingInterface {
     
-    public void visMelding(String melding);
+    //public void visMelding(String melding);
+    
+    public void visMelding(String overskrift, String melding);
     
 }

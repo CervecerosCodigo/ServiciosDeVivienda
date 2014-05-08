@@ -1,5 +1,6 @@
 package controller.registrer;
 
+import controller.VisMeldingInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -21,7 +22,7 @@ import view.registrer.PersonRegVindu;
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
-public class ControllerRegistrerLeietaker extends AbstractControllerRegister {
+public class ControllerRegistrerLeietaker extends AbstractControllerRegister implements VisMeldingInterface{
 
     //Genenerelle datafelt
     private String fnavn, enavn, epost, telnr;
@@ -114,12 +115,17 @@ public class ControllerRegistrerLeietaker extends AbstractControllerRegister {
             Soknad soknad = new Soknad(annonse, leietaker);
             
             if (super.registrerObjekt((Leietaker) leietaker) && soknadsRegister.add(soknad)) {
-                Melding.visMelding("Søknad", "" + fnavn + "!\nDin søknad er sendt.");
+                visMelding("Søknad", "" + fnavn + "!\nDin søknad er sendt.");
                 vindu.dispose();
             } else {
-                Melding.visMelding("Søknad", "Feil ved sendning av søknad.");
+                visMelding("Søknad", "Feil ved sendning av søknad.");
             }
         }
+    }
+
+    @Override
+    public void visMelding(String overskrift, String melding) {
+        vindu.visMelding(overskrift, melding);
     }
 
     class KnappeLytter implements ActionListener {

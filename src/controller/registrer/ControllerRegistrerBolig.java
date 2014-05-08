@@ -2,6 +2,7 @@ package controller.registrer;
 
 import controller.ControllerBildeViser;
 import controller.TabellFireDataChangedInterface;
+import controller.VisMeldingInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -38,7 +39,7 @@ import view.registrer.BoligRegVindu;
  *
  * @author Lukas David Larsed, s198569@stud.hioa.no
  */
-public class ControllerRegistrerBolig extends AbstractControllerRegister {
+public class ControllerRegistrerBolig extends AbstractControllerRegister implements VisMeldingInterface{
 
     private BoligRegVindu bRegVindu;
 
@@ -181,7 +182,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
                 return true;
             }
         }
-        Melding.visMelding("slettBoligFraSet", "Bolig ble IKKE slettet fra set");
+        visMelding("slettBoligFraSet", "Bolig ble IKKE slettet fra set");
         return false;
     }
 
@@ -238,10 +239,10 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
      */
     private boolean skrivOppdateringTilBoligSet(Bolig bolig) {
         if (super.set.add(bolig)) {
-            Melding.visMelding("skrivOppdateringTilBoligSet", "Boligen ble oppdatert i registret");
+            visMelding("skrivOppdateringTilBoligSet", "Boligen ble oppdatert i registret");
             return true;
         }
-        Melding.visMelding("skrivOppdateringTilBoligSet", "Boligen ble IKKE oppdatert i registret");
+        visMelding("skrivOppdateringTilBoligSet", "Boligen ble IKKE oppdatert i registret");
 
         return false;
     }
@@ -362,17 +363,17 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
 
         //Kontroller generelle datafelt for bolig
         if (!kontrollerDataBolig()) {
-            Melding.visMelding("Boligregstrering", "Feil i skjema for bolig.");
+            visMelding("Boligregstrering", "Feil i skjema for bolig.");
             return false;
             //Kontrollerer leilighetsfelt
         } else if (!kontrollerDataLeilighet()) {
-            Melding.visMelding("Boligregstrering", "Feil i skjema for leilighet.");
+            visMelding("Boligregstrering", "Feil i skjema for leilighet.");
             return false;
         } else {
             Leilighet leilighet = new Leilighet(etasjeNr, balkongAreal, bodAreal, harHeis, harGarasje, harFellesVaskeri, eierID, adresse, postNr, postSted, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
 
             if (set.add(leilighet)) {
-//                Melding.visMelding("Boligregstrering", "Ny leilighet er registrert");
+//                visMelding("Boligregstrering", "Ny leilighet er registrert");
 
                 //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
                 BildeFilSti gallerimappe = new BildeFilSti();
@@ -383,7 +384,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
 
                 return true;
             } else {
-                Melding.visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
+                visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
             }
         }
         return false;
@@ -402,17 +403,17 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
 
         //Kontroller generelle datafelt for bolig
         if (!kontrollerDataBolig()) {
-            Melding.visMelding("Boligregstrering", "Feil i skjema for bolig.");
+            visMelding("Boligregstrering", "Feil i skjema for bolig.");
             return false;
             //Kontrollerer leilighetsfelt
         } else if (!kontrollerDataEnebolig()) {
-            Melding.visMelding("Boligregstrering", "Feil i skjema for enebolig.");
+            visMelding("Boligregstrering", "Feil i skjema for enebolig.");
             return false;
         } else {
             Enebolig enebolig = new Enebolig(Boligtype.ENEBOLIG, antallEtasjer, harKjeller, tomtAreal, eierID, adresse, postNr, postSted, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
 
             if (set.add(enebolig)) {
-//                Melding.visMelding("Boligregstrering", "Ny enebolig er registrert");
+//                visMelding("Boligregstrering", "Ny enebolig er registrert");
 
                 //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
                 BildeFilSti gallerimappe = new BildeFilSti();
@@ -423,7 +424,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
 
                 return true;
             } else {
-                Melding.visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
+                visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
             }
         }
         return false;
@@ -456,7 +457,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
                 }
 
             } catch (IOException ex) {
-                Melding.visMelding("Lagre ny bilde", "IO Exception\nve lagring av nytt bilde");
+                visMelding("Lagre ny bilde", "IO Exception\nve lagring av nytt bilde");
             }
         }
     }
@@ -473,6 +474,11 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister {
         if (valg2 == JOptionPane.YES_OPTION) {
             lastOppEkstraBilde(bolig);
         }
+    }
+
+    @Override
+    public void visMelding(String overskrift, String melding) {
+        bRegVindu.visMelding(overskrift, melding);
     }
 
     /**

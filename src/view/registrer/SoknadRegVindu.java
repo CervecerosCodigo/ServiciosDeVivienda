@@ -1,14 +1,16 @@
 package view.registrer;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import controller.VisMeldingInterface;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import lib.Melding;
 import view.CustomJButton;
 
-public class SoknadRegVindu extends AbstractRegistreringsPanel {
+public class SoknadRegVindu extends AbstractRegistreringsPanel implements VisMeldingInterface{
 
     private JLabel kravLabel;
     private JTextArea eiersKrav;
@@ -55,6 +57,11 @@ public class SoknadRegVindu extends AbstractRegistreringsPanel {
     public void addSoknadListener(ActionListener lytter) {
         avbryt.addActionListener(lytter);
         aksepter.addActionListener(lytter);
+    }
+
+    @Override
+    public void visMelding(String overskrift, String melding) {
+        Melding.visMelding(overskrift, melding);
     }
 
 }

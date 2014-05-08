@@ -25,7 +25,7 @@ import lib.*;
 import model.*;
 import view.*;
 
-public class ControllerTabell {
+public class ControllerTabell implements VisMeldingInterface{
 
     private HashSet<Person> personliste;
     private HashSet<Bolig> boligliste;
@@ -155,7 +155,7 @@ public class ControllerTabell {
 
                             @Override
                             public void oppdaterTabellEtterEndring() {
-                                tabellModellPerson.fireTableStructureChanged();
+                                tabellModellBolig.fireTableStructureChanged();
                             }
                         });
                     } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
@@ -191,7 +191,7 @@ public class ControllerTabell {
              * @param e
              */
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON3) {
 
                     //Tømmer menyen før den tegnes på nytt.
@@ -417,10 +417,10 @@ public class ControllerTabell {
                 tempSoknad.setErGodkjent(false);
             }
 
-            Melding.visMelding(null, "Kontrakten er opprettet!");
+            visMelding(null, "Kontrakten er opprettet!");
             tabellModellSoknad.fireTableStructureChanged();
         } else {
-            Melding.visMelding(null, "Kontrakten ble IKKE opprettet!");
+            visMelding(null, "Kontrakten ble IKKE opprettet!");
         }
 
     }//End registrerKontrakt
@@ -511,9 +511,9 @@ public class ControllerTabell {
                         ok = boligliste.remove(valgtObjekt);
                         if (ok) {
                             tabellModellBolig.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
-                            Melding.visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " er slettet");
+                            visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " er slettet");
                         } else {
-                            Melding.visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " ble IKKE slettet");
+                            visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " ble IKKE slettet");
                         }
                     } catch (ArrayIndexOutOfBoundsException aiobe) {
                     }
@@ -540,7 +540,7 @@ public class ControllerTabell {
             }
         }
         if (registrerteBoliger.size() > 0) {
-            Melding.visMelding(null, valgtObjekt.getFornavn() + " " + valgtObjekt.getEtternavn()
+            visMelding(null, valgtObjekt.getFornavn() + " " + valgtObjekt.getEtternavn()
                     + " er registrert med boliger.\n"
                     + "Kan ikke utføre slettingen.");
         } else {
@@ -553,9 +553,9 @@ public class ControllerTabell {
                     ok = personliste.remove(valgtObjekt);
                     if (ok) {
                         tabellModellPerson.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
-                        Melding.visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " er slettet");
+                        visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " er slettet");
                     } else {
-                        Melding.visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " ble IKKE slettet");
+                        visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " ble IKKE slettet");
                     }
                 } catch (ArrayIndexOutOfBoundsException aiobe) {
                 }
@@ -752,6 +752,11 @@ public class ControllerTabell {
         } catch (ArrayIndexOutOfBoundsException aiobe) {
 
         }
+    }
+
+    @Override
+    public void visMelding(String overskrift, String melding) {
+        vindu.visMelding(overskrift, melding);
     }
 
 }

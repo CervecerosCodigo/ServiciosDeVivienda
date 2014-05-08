@@ -409,9 +409,10 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel implements VisMe
         lagreButton.addActionListener(lytter);
     }    
 
+
     @Override
-    public void visMelding(String melding) {
-        Melding.visMelding(null, melding);
+    public void visMelding(String overskrift, String melding) {
+        Melding.visMelding(overskrift, melding);
     }
 
 }
