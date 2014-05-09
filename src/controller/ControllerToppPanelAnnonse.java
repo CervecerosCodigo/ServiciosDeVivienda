@@ -160,18 +160,20 @@ public class ControllerToppPanelAnnonse {
     public void setListListener(ListListener listListener) {
         this.listListener = listListener;
     }
+    
+    public void sendSokeResultat() {
+        HashSet<Annonse> filterResultat = filtrerAnnonser();
+        
+        if (listListener != null)
+            listListener.listReady(filterResultat, ObjektType.ANNONSEOBJ);
+    }
 
     class KnappeLytter implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(vindu.getToppanelAnnonse().getSokeKnapp())) {
-                HashSet<Annonse> filterResultat = filtrerAnnonser();
-
-                //Medfører at knapper er klikket i gui og data kan nå sendes opp til main controller
-                if (listListener != null) {
-                    listListener.listReady(filterResultat, ObjektType.ANNONSEOBJ);
-                }
+            	sendSokeResultat();
             }
         }
     }
