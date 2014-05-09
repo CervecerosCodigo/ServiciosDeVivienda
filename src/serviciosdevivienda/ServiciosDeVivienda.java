@@ -30,6 +30,8 @@ public class ServiciosDeVivienda {
                     UIManager.getLookAndFeelDefaults().put("TabbedPane:TabbedPaneTab[Focused+Selected].backgroundPainter", null);
                     UIManager.getLookAndFeelDefaults().put("TabbedPane:TabbedPaneTabArea[Enabled].backgroundPainter", null);
                     UIManager.getLookAndFeelDefaults().put("TabbedPane:TabbedPaneTabArea[Enabled+MouseOver].backgroundPainter", null);
+                    //Denne fungerer
+//                    UIManager.getLookAndFeelDefaults().put("Button.bakground", new Color(255,215,0));
                     break;
                 }
             }
