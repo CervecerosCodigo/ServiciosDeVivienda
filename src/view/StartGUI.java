@@ -15,7 +15,7 @@ public class StartGUI extends JFrame {
 
     private MainPanel innhold;
 
-    public StartGUI( ArkfaneTemplate megler, ArkfaneTemplate annonse) {
+    public StartGUI( AbstraktArkfane megler, AbstraktArkfane annonse) {
         super("Boligformidling");
         setSize(WIDTH, HEIGHT);
         setIconImage(Ikoner.APP_ICON.getImage());
