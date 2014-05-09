@@ -1,14 +1,9 @@
 package serviciosdevivienda;
 
 import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
-
+import java.util.logging.*;
+import javax.swing.*;
+import javax.swing.UIManager.*;
 import lib.Konstanter;
 import controller.SkrivTilLesFraFil;
 

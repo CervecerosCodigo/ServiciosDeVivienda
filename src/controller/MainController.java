@@ -2,11 +2,6 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import controller.registrer.ControllerRegistrerBolig;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.*;
 import lib.*;
@@ -91,6 +86,7 @@ public class MainController implements Serializable {
 
         tabellControllerAnnonse.settOppTabellLyttere(annonseVindu);
         tabellControllerAnnonse.settInnDataITabell(annonseliste, ObjektType.ANNONSEOBJ);
+
 
         /**
          * Fyller inn data med søkeresultat som kommer fra
@@ -185,6 +181,7 @@ public class MainController implements Serializable {
             return;
         }
         System.out.println("Utleier ble ikke lagt inn i registeret.");
+        
     }
 
     public void opprettLeietakerOgLeggIRegister(String fornavn, String etternavn, String epost, String tlfnr) {

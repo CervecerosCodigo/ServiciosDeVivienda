@@ -141,7 +141,7 @@ public class ControllerTabell implements VisMeldingInterface {
         });
 
         /**
-         * Lytter på museklikk i Output-vinduet. 
+         * Lytter på museklikk i Output-vinduet.
          */
         vindu.getSenterpanel().getEditorPane().addMouseListener(new MouseAdapter() {
 
@@ -150,10 +150,11 @@ public class ControllerTabell implements VisMeldingInterface {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     if (modellIBruk instanceof TabellModellAnnonse) {
                         Annonse valgtObjekt = returnerAnnonseObjekt();
-                        if(vindu instanceof ArkfaneMegler)
+                        if (vindu instanceof ArkfaneMegler) {
                             new ControllerBildeViser(valgtObjekt.getBolig(), true);
-                        else
+                        } else {
                             new ControllerBildeViser(valgtObjekt.getBolig(), false);
+                        }
                     }
                 }
             }
@@ -238,8 +239,9 @@ public class ControllerTabell implements VisMeldingInterface {
 
                         } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
                             tabellMeny.add(menyvalgForesporsel);
-                            if(vindu instanceof ArkfaneMegler)
+                            if (vindu instanceof ArkfaneMegler) {
                                 tabellMeny.add(menyvalgSlettAnnonse);
+                            }
                         } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
 
                         } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
@@ -384,7 +386,7 @@ public class ControllerTabell implements VisMeldingInterface {
                 nyEllerEndreAnnonse();
             }
         });
-        
+
         //Sletter annonsen
         menyvalgSlettAnnonse.addActionListener(new ActionListener() {
 
@@ -556,7 +558,7 @@ public class ControllerTabell implements VisMeldingInterface {
         Boolean ok = true;
         Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
         if (valgtObjekt != null) {
-            
+
             if (!valgtObjekt.isErUtleid() || !valgtObjekt.isErUtleid()) {
                 int valg = Melding.visBekreftelseDialog("Ønsker du virkelig å slette boligen?",
                         "Slette bolig", "Nei");
@@ -574,7 +576,7 @@ public class ControllerTabell implements VisMeldingInterface {
                     }
                 } else {
                 }
-            }else{
+            } else {
                 visMelding("Feil under sletting", "Kunne ikke slettet boligen.\n"
                         + "Den er enten utleid eller annonsert.");
             }
@@ -668,14 +670,14 @@ public class ControllerTabell implements VisMeldingInterface {
             }
         }//end if
     }
-    
-    public void slettAnnonseFraRegisteret(){
+
+    public void slettAnnonseFraRegisteret() {
         Annonse annonse = returnerAnnonseObjekt();
-        if(annonse != null){
-            if(annonseliste.remove(annonse)){
+        if (annonse != null) {
+            if (annonseliste.remove(annonse)) {
                 visMelding("Sletting fullført!", "Annonsen er slettet!");
                 modellIBruk.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
-            }else{
+            } else {
                 visMelding("Feil!", "Annonsen ble IKKE slettet!");
             }
         }
@@ -698,74 +700,78 @@ public class ControllerTabell implements VisMeldingInterface {
     public void settInnDataITabell(Collection innkommendeDatasett, ObjektType objekttypeEnum) {
 
         modellIBruk = null;
-        tabellData = new ArrayList<>();
-        Iterator<?> iter = innkommendeDatasett.iterator();
-        while (iter.hasNext()) {
-            tabellData.add(iter.next());
-        }
-
-        if (tabellOppdateringslytter != null) {
-            tabellOppdateringslytter.sendTabellDataIBruk(tabellData);
-        }
-
-        try {
-            switch (objekttypeEnum) {
-                case PERSONOBJ:
-                    this.objekttype = ObjektType.PERSONOBJ;
-                    tabellModellPerson.fyllTabellMedInnhold(tabellData);
-                    tabell.setModel(tabellModellPerson);
-                    tabellModellPerson.fireTableStructureChanged();
-                    modellIBruk = tabellModellPerson;
-                    vindu.getVenstrepanel().sorterTabellVedOppstart();
-                    break;
-                case BOLIGOBJ:
-                    this.objekttype = ObjektType.BOLIGOBJ;
-                    tabellModellBolig.fyllTabellMedInnhold(tabellData);
-                    tabell.setModel(tabellModellBolig);
-                    tabellModellBolig.fireTableStructureChanged();
-                    modellIBruk = tabellModellBolig;
-                    vindu.getVenstrepanel().sorterTabellVedOppstart();
-                    break;
-                case ANNONSEOBJ:
-                    this.objekttype = ObjektType.ANNONSEOBJ;
-                    tabellModellAnnonse.fyllTabellMedInnhold(tabellData);
-                    tabell.setModel(tabellModellAnnonse);
-                    tabellModellAnnonse.fireTableStructureChanged();
-                    tabell.getColumnModel().getColumn(2).setCellRenderer(hoyreStiltTekstRenderer);
-                    tabell.getColumnModel().getColumn(3).setCellRenderer(hoyreStiltTekstRenderer);
-                    modellIBruk = tabellModellAnnonse;
-                    vindu.getVenstrepanel().sorterTabellVedOppstart();
-                    break;
-                case KONTRAKTOBJ:
-                    this.objekttype = ObjektType.KONTRAKTOBJ;
-                    tabellModellKontrakt.fyllTabellMedInnhold(tabellData);
-                    tabell.setModel(tabellModellKontrakt);
-                    tabellModellKontrakt.fireTableStructureChanged();
-                    modellIBruk = tabellModellKontrakt;
-                    vindu.getVenstrepanel().sorterTabellVedOppstart();
-                    break;
-                case SOKNADSOBJ:
-                    this.objekttype = ObjektType.SOKNADSOBJ;
-                    tabellModellSoknad.fyllTabellMedInnhold(tabellData);
-                    tabell.setModel(tabellModellSoknad);
-                    tabellModellSoknad.fireTableStructureChanged();
-                    modellIBruk = tabellModellSoknad;
-                    vindu.getVenstrepanel().sorterTabellSoknadData();
-                    break;
+        if (innkommendeDatasett.size() > 0) {
+            tabellData = new ArrayList<>();
+            Iterator<?> iter = innkommendeDatasett.iterator();
+            while (iter.hasNext()) {
+                tabellData.add(iter.next());
             }
-            resizeKolonneBredde();
 
-            vindu.getVenstrepanel().settCelleRenderer();
+            try {
+                switch (objekttypeEnum) {
+                    case PERSONOBJ:
+                        this.objekttype = ObjektType.PERSONOBJ;
+                        tabellModellPerson.fyllTabellMedInnhold(tabellData);
+                        tabell.setModel(tabellModellPerson);
+                        tabellModellPerson.fireTableStructureChanged();
+                        modellIBruk = tabellModellPerson;
+                        vindu.getVenstrepanel().sorterTabellVedOppstart();
+                        break;
+                    case BOLIGOBJ:
+                        this.objekttype = ObjektType.BOLIGOBJ;
+                        tabellModellBolig.fyllTabellMedInnhold(tabellData);
+                        tabell.setModel(tabellModellBolig);
+                        tabellModellBolig.fireTableStructureChanged();
+                        modellIBruk = tabellModellBolig;
+                        vindu.getVenstrepanel().sorterTabellVedOppstart();
+                        break;
+                    case ANNONSEOBJ:
+                        this.objekttype = ObjektType.ANNONSEOBJ;
+                        tabellModellAnnonse.fyllTabellMedInnhold(tabellData);
+                        tabell.setModel(tabellModellAnnonse);
+                        tabellModellAnnonse.fireTableStructureChanged();
+                        tabell.getColumnModel().getColumn(2).setCellRenderer(hoyreStiltTekstRenderer);
+                        tabell.getColumnModel().getColumn(3).setCellRenderer(hoyreStiltTekstRenderer);
+                        modellIBruk = tabellModellAnnonse;
+                        vindu.getVenstrepanel().sorterTabellVedOppstart();
+                        break;
+                    case KONTRAKTOBJ:
+                        this.objekttype = ObjektType.KONTRAKTOBJ;
+                        tabellModellKontrakt.fyllTabellMedInnhold(tabellData);
+                        tabell.setModel(tabellModellKontrakt);
+                        tabellModellKontrakt.fireTableStructureChanged();
+                        modellIBruk = tabellModellKontrakt;
+                        vindu.getVenstrepanel().sorterTabellVedOppstart();
+                        break;
+                    case SOKNADSOBJ:
+                        this.objekttype = ObjektType.SOKNADSOBJ;
+                        tabellModellSoknad.fyllTabellMedInnhold(tabellData);
+                        tabell.setModel(tabellModellSoknad);
+                        tabellModellSoknad.fireTableStructureChanged();
+                        modellIBruk = tabellModellSoknad;
+                        vindu.getVenstrepanel().sorterTabellSoknadData();
+                        break;
+                }
+                resizeKolonneBredde();
 
-            bunnController.settOppTabellData(tabellData, modellIBruk);
+                vindu.getVenstrepanel().settCelleRenderer();
 
-        } catch (ArrayIndexOutOfBoundsException aiobe) {
+                bunnController.settOppTabellData(tabellData, modellIBruk);
 
-        } catch (NullPointerException npe) {
-
-        }
-
-    }
+            } catch (ArrayIndexOutOfBoundsException aiobe) {
+                System.out.println("Tabell gir ArrayOutOfBounds ved innlegging av nytt datasett");
+            } catch (NullPointerException npe) {
+                System.out.println("Tabell gir NullPointer ved innlegging av nytt datasett");
+            }//End Try/Catch
+            
+            /**
+             * Sender ToppPanel liste over datasettet om settes i tabellen.
+             */
+            if (tabellOppdateringslytter != null) {
+                tabellOppdateringslytter.sendTabellDataIBruk(tabellData);
+            }
+        }//End If datasett > 0
+    }//End Metodet settInnDataITabell
 
     /**
      * Setter kolonnebredden etter innholdet i tabellen. Sammen med tabellens
