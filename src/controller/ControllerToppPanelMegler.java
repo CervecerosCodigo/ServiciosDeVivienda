@@ -25,7 +25,7 @@ import model.Utleier;
 import search.FreeTextSearch;
 import view.AbstraktArkfane;
 
-public class ControllerToppPanelMegler<E> {
+public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
 
     AbstraktArkfane vindu;
     private String radioNavnKlikket;
@@ -55,8 +55,6 @@ public class ControllerToppPanelMegler<E> {
         this.annonseliste = annonseliste;
         this.kontraktliste = kontraktliste;
         this.soknadsliste = soknadsliste;
-
-        fsearch = new FreeTextSearch();
 
         //Setter lyttere i Toppanelet.
         vindu.getToppanelMegler().leggTilRadioLytter(new RadioLytter());
@@ -106,6 +104,11 @@ public class ControllerToppPanelMegler<E> {
      */
     public void setListListener(ListListener listListener) {
         this.listListener = listListener;
+    }
+
+    @Override
+    public void visMelding(String overskrift, String melding) {
+        vindu.visMelding(overskrift, melding);
     }
 
     /**
@@ -221,10 +224,11 @@ public class ControllerToppPanelMegler<E> {
                 String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
 //                if (soketekst.equals("Søk") || soketekst.equals("")) {
                 if (false) {
-                    Melding.visMelding("Søk", "Søkefeltet er tomt.\nBruk * for å vise hele registeret.");
+                    visMelding("Søk", "Søkefeltet er tomt.\nBruk * for å vise hele registeret.");
                 } else {
 
-                    //TODO: Dersom vi får tid må vi fjerne alle typer av slik hardkoding for swing komponentnavn
+                    fsearch = new FreeTextSearch();
+
                     switch (radioTypeValgt2) {
                         case Bolig:
                             sokeResultat = fsearch.searchForPattern(boligliste, soketekst);
@@ -245,13 +249,17 @@ public class ControllerToppPanelMegler<E> {
                             sokeResultat = fsearch.searchForPattern(soknadsliste, soketekst);
                             break;
                         default:
-                            Melding.visMelding("Søk", "Mangler valg");
+                            visMelding("Søk", "Mangler valg");
                     }
 
-                    //Sender søkeresultat til MainController via interface
-                    if (listListener != null) {
-                        listListener.listReady(sokeResultat, radioTypeValgt);
+                    if (sokeResultat.isEmpty()) {
+                        visMelding("Søkeresultat", "Søket gav ingen resultat.");
+                        //Sender søkeresultat til MainController via interface
+                        if (listListener != null) {
+                            listListener.listReady(sokeResultat, radioTypeValgt);
+                        }
                     }
+
                 }
             }
 

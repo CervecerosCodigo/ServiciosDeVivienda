@@ -2,6 +2,7 @@ package search;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import lib.Melding;
 import model.Leietaker;
 import model.Utleier;
 
@@ -55,7 +56,7 @@ public class FreeTextSearch<T extends Searchable> {
             }
             return resultList;
         } else {
-            System.out.println("Søker i en tom liste");
+            System.out.println("En tom liste ble sendt inn til søkemetoden");
             return null;
         }
     }
@@ -100,7 +101,7 @@ public class FreeTextSearch<T extends Searchable> {
             }
             return resultList;
         } else {
-            System.out.println("Søker i en tom liste");
+            System.out.println("En tom liste ble sendt inn til søkemetoden");
             return null;
         }
     }
@@ -145,7 +146,7 @@ public class FreeTextSearch<T extends Searchable> {
             }
             return resultList;
         } else {
-            System.out.println("Søker i en tom liste");
+            System.out.println("En tom liste ble sendt inn til søkemetoden");
             return null;
         }
     }
