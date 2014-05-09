@@ -278,7 +278,12 @@ public class TopPanelAnnonse extends AbstractPanel {
             setPreferredSize(new Dimension(378, 50));
             setVisible(true);
         }
-
+        
+        /**
+         * Mottar antall ledige boliger, og totalt antall boliger fra controller
+         * @param ledigeBoligerAntall
+         * @param boligerAntall
+         */
         public void OppdaterStatistikk(int ledigeBoligerAntall, int boligerAntall) {
             this.ledigeBoligerAntall.setText(Integer.toString(ledigeBoligerAntall));
             this.boligerAntall.setText(Integer.toString(boligerAntall));

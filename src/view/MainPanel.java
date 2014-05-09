@@ -24,8 +24,8 @@ public class MainPanel extends AbstractPanel{
         
         //Legger til tab og kobler med panelet.
         
-        arkfaner.addTab("Megler", Ikoner.MEGLER, this.megler);
-        arkfaner.addTab("Annonser", Ikoner.ANNONSER, this.annonse);
+        arkfaner.addTab("Megler  ", Ikoner.MEGLER, this.megler);
+        arkfaner.addTab("Annonser  ", Ikoner.ANNONSER, this.annonse);
         
         arkfaner.setSelectedIndex(1);
         arkfaner.setToolTipTextAt(0, "Administrering av boliger, søknader mm.");
