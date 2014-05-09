@@ -2,6 +2,7 @@ package search;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import lib.Melding;
 import model.Leietaker;
 import model.Utleier;
 
@@ -35,24 +36,29 @@ public class FreeTextSearch<T extends Searchable> {
         pattern = pattern.trim();
         pattern = pattern.toLowerCase();
 
-        if (pattern.equalsIgnoreCase("søk") || pattern.equals("") || pattern.equals("*")) {
-            for (Searchable o : liste) {
-                resultList.add((T) o);
-            }
-        } else {
+        if (liste != null) {
+            if (pattern.equalsIgnoreCase("søk") || pattern.equals("") || pattern.equals("*")) {
+                for (Searchable o : liste) {
+                    resultList.add((T) o);
+                }
+            } else {
 
-            for (Searchable o : liste) {
-                checkMeForResults = o.toSearch();
+                for (Searchable o : liste) {
+                    checkMeForResults = o.toSearch();
 
-                for (String s : checkMeForResults) {
-                    s = s.toLowerCase();
-                    if (s.contains(pattern)) {
-                        resultList.add((T) o);
+                    for (String s : checkMeForResults) {
+                        s = s.toLowerCase();
+                        if (s.contains(pattern)) {
+                            resultList.add((T) o);
+                        }
                     }
                 }
             }
+            return resultList;
+        } else {
+            System.out.println("En tom liste ble sendt inn til søkemetoden");
+            return null;
         }
-        return resultList;
     }
 
     /**
@@ -71,28 +77,33 @@ public class FreeTextSearch<T extends Searchable> {
         pattern = pattern.trim();
         pattern = pattern.toLowerCase();
 
-        if (pattern.equalsIgnoreCase("søk") || pattern.equals("") || pattern.equals("*")) {
-            for (Searchable o : liste) {
-                if (o instanceof Utleier) {
-                    resultList.add((T) o);
+        if (liste != null) {
+            if (pattern.equalsIgnoreCase("søk") || pattern.equals("") || pattern.equals("*")) {
+                for (Searchable o : liste) {
+                    if (o instanceof Utleier) {
+                        resultList.add((T) o);
+                    }
                 }
-            }
-        } else {
+            } else {
 
-            for (Searchable o : liste) {
-                if (o instanceof Utleier) {
-                    checkMeForResults = o.toSearch();
+                for (Searchable o : liste) {
+                    if (o instanceof Utleier) {
+                        checkMeForResults = o.toSearch();
 
-                    for (String s : checkMeForResults) {
-                        s = s.toLowerCase();
-                        if (s.contains(pattern)) {
-                            resultList.add((T) o);
+                        for (String s : checkMeForResults) {
+                            s = s.toLowerCase();
+                            if (s.contains(pattern)) {
+                                resultList.add((T) o);
+                            }
                         }
                     }
                 }
             }
+            return resultList;
+        } else {
+            System.out.println("En tom liste ble sendt inn til søkemetoden");
+            return null;
         }
-        return resultList;
     }
 
     /**
@@ -101,38 +112,43 @@ public class FreeTextSearch<T extends Searchable> {
      * brukt mye tid og prøvd alt så jeg hardkoder to metoder for utleier og
      * leietaker her isteden. Hvis du har en løsning på dette så hør gjerne av
      * deg ;)
-     * 
+     *
      * @param liste
      * @param pattern
-     * @return 
+     * @return
      */
     public ArrayList<T> searchForPatternILeietaker(HashSet<? extends Searchable> liste, String pattern) {
 
         pattern = pattern.trim();
         pattern = pattern.toLowerCase();
 
-        if (pattern.equalsIgnoreCase("søk") || pattern.equals("") || pattern.equals("*")) {
-            for (Searchable o : liste) {
-                if (o instanceof Leietaker) {
-                    resultList.add((T) o);
+        if (liste != null) {
+            if (pattern.equalsIgnoreCase("søk") || pattern.equals("") || pattern.equals("*")) {
+                for (Searchable o : liste) {
+                    if (o instanceof Leietaker) {
+                        resultList.add((T) o);
+                    }
                 }
-            }
-        } else {
+            } else {
 
-            for (Searchable o : liste) {
-                if (o instanceof Leietaker) {
-                    checkMeForResults = o.toSearch();
+                for (Searchable o : liste) {
+                    if (o instanceof Leietaker) {
+                        checkMeForResults = o.toSearch();
 
-                    for (String s : checkMeForResults) {
-                        s = s.toLowerCase();
-                        if (s.contains(pattern)) {
-                            resultList.add((T) o);
+                        for (String s : checkMeForResults) {
+                            s = s.toLowerCase();
+                            if (s.contains(pattern)) {
+                                resultList.add((T) o);
+                            }
                         }
                     }
                 }
             }
+            return resultList;
+        } else {
+            System.out.println("En tom liste ble sendt inn til søkemetoden");
+            return null;
         }
-        return resultList;
     }
 
 }

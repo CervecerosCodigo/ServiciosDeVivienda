@@ -29,7 +29,7 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
 
     private PersonRegVindu vindu;
     TabellFireDataChangedInterface tabellOppdateringLytter;
-
+    
     /**
      * Registrer en NY utleier.
      *
@@ -132,6 +132,7 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
     private void registrerNyUtleier() {
         if (kontrollerData()) {
             Person utleier = new Utleier(fnavn, enavn, epost, telnr, erRepresentant, representantNavn);
+            
             if (super.registrerObjekt((Utleier) utleier)) {
                 Melding.visMelding("Ny utleier", "Utleier:\n" + fnavn + " " + enavn + "\nEr registrert");
                 vindu.dispose();
