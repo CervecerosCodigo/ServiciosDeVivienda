@@ -168,6 +168,7 @@ public class ControllerToppPanelAnnonse {
             //Medfører at knapper er klikket i gui og data kan nå sendes opp til main controller
             if (listListener != null) {
                 listListener.listReady(filterResultat, ObjektType.ANNONSEOBJ);
+                vindu.getToppanelAnnonse().getSokeKnapp().doClick();
             }
 		}
     }

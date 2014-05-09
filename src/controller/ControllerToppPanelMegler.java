@@ -244,6 +244,8 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
     					listListener.listReady(sokeResultat, radioTypeValgt);
     				}                        
     			}
+    			
+    			vindu.getToppanelMegler().getSokeKnapp().doClick();
     		}
     	}	
     }
