@@ -2,15 +2,18 @@ package view;
 
 //Laget av Petter.
 //Editert av Lukas. Lagt til getters og lyttere for komponenter 26.04
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import view.TopPanelMegler.StatistikkPanel;
 import view.registrer.CustomSubPanel;
 import lib.BildeFilSti;
 import lib.Ikoner;
@@ -23,6 +26,7 @@ public class TopPanelAnnonse extends AbstractPanel {
     private CustomJButton sokeKnapp;
     private ImageIcon bilde;
     private JLabel bildeLabel;
+    private StatistikkPanel statistikkPanel;
 
     public TopPanelAnnonse(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
@@ -31,6 +35,7 @@ public class TopPanelAnnonse extends AbstractPanel {
         sokeKnapp = new CustomJButton(Ikoner.SEARCH);
         bilde = new ImageIcon(new BildeFilSti().getAbsoluteGalleryPath()+"/default/boligLogo.png");
         bildeLabel = new JLabel(bilde);
+        statistikkPanel = new StatistikkPanel();
         
         setVisible(true);
         setLayout(new FlowLayout(FlowLayout.LEFT, 30, 20));
@@ -38,13 +43,17 @@ public class TopPanelAnnonse extends AbstractPanel {
         add(checkBoxKnappeGruppe);
         add(knappeGruppeHoyre);
         add(sokeKnapp);
-        add(new CustomSubPanel(100,380));
+        add(statistikkPanel);
         add(bildeLabel);
         
         bildeLabel.setPreferredSize(new Dimension(bilde.getIconWidth(), bilde.getIconHeight()));
     }
     
     ////////////GETTERS////////////
+    public StatistikkPanel getStatistikkPanel() {
+        return statistikkPanel;
+    }
+    
     public KnappeGruppeHoyre getKnappeGruppeHoyre() {
         return knappeGruppeHoyre;
     }
@@ -234,6 +243,45 @@ public class TopPanelAnnonse extends AbstractPanel {
             fellesvaskCheckBox.addActionListener(lytter);
             hageCheckBox.addActionListener(lytter);
             kjellerCheckBox.addActionListener(lytter);
+        }
+    }
+    
+    public class StatistikkPanel extends CustomSubPanel {
+
+        private JLabel ledigeBoligerAntall, ledigeBoliger, boligerAntall, boliger;
+        private CustomSubPanel Panel1, Panel2;
+
+        public StatistikkPanel() {
+            super(new GridLayout(2, 1));
+            ledigeBoligerAntall = new JLabel("0"); // Startverdi
+            ledigeBoliger = new JLabel("Ledige boliger:");
+            boligerAntall = new JLabel("0"); // Startverdi
+            boliger = new JLabel("Totalt antall boliger:");
+            Panel1 = new CustomSubPanel(new FlowLayout(FlowLayout.LEFT));
+            Panel2 = new CustomSubPanel(new FlowLayout(FlowLayout.LEFT));
+
+            Panel1.add(ledigeBoliger);
+            Panel1.add(ledigeBoligerAntall);
+            Panel2.add(boliger);
+            Panel2.add(boligerAntall);
+            add(Panel1);
+            add(Panel2);
+
+            Panel1.setPreferredSize(new Dimension(230, 25));
+            Panel2.setPreferredSize(new Dimension(230, 25));
+
+            ledigeBoligerAntall.setForeground(Color.GRAY);
+            ledigeBoliger.setForeground(Color.GRAY);
+            boligerAntall.setForeground(Color.GRAY);
+            boliger.setForeground(Color.GRAY);
+
+            setPreferredSize(new Dimension(378, 50));
+            setVisible(true);
+        }
+
+        public void OppdaterStatistikk(int ledigeBoligerAntall, int boligerAntall) {
+            this.ledigeBoligerAntall.setText(Integer.toString(ledigeBoligerAntall));
+            this.boligerAntall.setText(Integer.toString(boligerAntall));
         }
     }
 }

@@ -3,6 +3,7 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.SortedSet;
 
@@ -15,6 +16,8 @@ import lib.Melding;
 import lib.ObjektType;
 import lib.RegexTester;
 import model.Annonse;
+import model.Bolig;
+import model.Kontrakt;
 import search.AnnonseFilter;
 import view.AbstraktArkfane;
 
@@ -47,6 +50,23 @@ public class ControllerToppPanelAnnonse {
         vindu.getToppanelAnnonse().addKnappLytter(new KnappeLytter());
         vindu.getToppanelAnnonse().getSokeKnapp().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "enterPressed");
         vindu.getToppanelAnnonse().getSokeKnapp().getActionMap().put("enterPressed", new EnterAction());
+        
+        OppdaterStatistikk();
+    }
+    
+    private void OppdaterStatistikk() {
+
+        int antallLedigeBoliger = 0;
+        int antallBoliger = 0;
+
+        for (Annonse annonseIterator : annonseliste) {
+            if (annonseIterator.getBolig().isErUtleid() == false) {
+                antallLedigeBoliger++;
+            }
+        }
+
+        antallBoliger = annonseliste.size();
+        vindu.getToppanelAnnonse().getStatistikkPanel().OppdaterStatistikk(antallLedigeBoliger, antallBoliger);
     }
     
 
