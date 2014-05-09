@@ -5,6 +5,11 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.HashSet;
 import java.util.SortedSet;
+
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
+
 import lib.Boligtype;
 import lib.Melding;
 import lib.ObjektType;
@@ -40,7 +45,10 @@ public class ControllerToppPanelAnnonse {
         }
 
         vindu.getToppanelAnnonse().addKnappLytter(new KnappeLytter());
+        vindu.getToppanelAnnonse().getSokeKnapp().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "enterPressed");
+        vindu.getToppanelAnnonse().getSokeKnapp().getActionMap().put("enterPressed", new EnterAction());
     }
+    
 
     /**
      * Laster inn alle poststeder i comboboksen ved initialisering.
@@ -149,5 +157,18 @@ public class ControllerToppPanelAnnonse {
                 }
             }
         }
+    }
+    
+    class EnterAction extends AbstractAction {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			HashSet<Annonse> filterResultat = filtrerAnnonser();
+
+            //Medfører at knapper er klikket i gui og data kan nå sendes opp til main controller
+            if (listListener != null) {
+                listListener.listReady(filterResultat, ObjektType.ANNONSEOBJ);
+            }
+		}
     }
 }

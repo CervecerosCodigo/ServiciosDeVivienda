@@ -46,7 +46,7 @@ public class LoggInnDialog extends JDialog {
 		add(loggInnKnapp);
 		add(avbrytKnapp);
                 
-                setIconImage(Ikoner.PASSORD.getImage());
+        setIconImage(Ikoner.PASSORD.getImage());
 		
 		pack();
 	}

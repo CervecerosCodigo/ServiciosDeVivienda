@@ -2,17 +2,19 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 //Modifisert av Lukas 24.04.14, implemtering av søk, se git for detaljer.
 
-import controller.registrer.ControllerRegistrerAnnonse;
-import controller.registrer.ControllerRegistrerBolig;
-import controller.registrer.ControllerRegistrerUtleier;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import lib.Melding;
 import lib.ObjektType;
 import lib.ObjektType2;
@@ -24,6 +26,9 @@ import model.Soknad;
 import model.Utleier;
 import search.FreeTextSearch;
 import view.AbstraktArkfane;
+import controller.registrer.ControllerRegistrerAnnonse;
+import controller.registrer.ControllerRegistrerBolig;
+import controller.registrer.ControllerRegistrerUtleier;
 
 public class ControllerToppPanelMegler<E> {
 
@@ -61,6 +66,8 @@ public class ControllerToppPanelMegler<E> {
         //Setter lyttere i Toppanelet.
         vindu.getToppanelMegler().leggTilRadioLytter(new RadioLytter());
         vindu.getToppanelMegler().leggTilKnappeLytter(new KnappeLytter());
+        vindu.getToppanelMegler().getSokeKnapp().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "enterPressed");
+        vindu.getToppanelMegler().getSokeKnapp().getActionMap().put("enterPressed", new EnterAction());
 
         valgtObjekt = -1;
         OppdaterStatistikk();
@@ -189,6 +196,47 @@ public class ControllerToppPanelMegler<E> {
      */
     public void setTabellDataIBrukFraMainController(ArrayList<E> tabellData) {
         this.tabellData = tabellData;
+    }
+    
+    class EnterAction extends AbstractAction {
+
+    	private ArrayList<E> sokeResultat;
+
+    	@Override
+    	public void actionPerformed(ActionEvent e) {
+    		String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
+    		if (false) Melding.visMelding("Søk", "Søkefeltet er tomt.\nBruk * for å vise hele registeret.");
+    		else {
+
+    			switch (radioTypeValgt2) {
+    			case Bolig:
+    				sokeResultat = fsearch.searchForPattern(boligliste, soketekst);
+    				break;
+    			case Utleier:
+    				sokeResultat = fsearch.searchForPatternIUtleier(personliste, soketekst);
+    				break;
+    			case Leietaker:
+    				sokeResultat = fsearch.searchForPatternILeietaker(personliste, soketekst);
+    				break;
+    			case Annonse:
+    				sokeResultat = fsearch.searchForPattern(annonseliste, soketekst);
+    				break;
+    			case Kontrakt:
+    				sokeResultat = fsearch.searchForPattern(kontraktliste, soketekst);
+    				break;
+    			case Soknad:
+    				sokeResultat = fsearch.searchForPattern(soknadsliste, soketekst);
+    				break;
+    			default:
+    				Melding.visMelding("Søk", "Mangler valg");
+    			}
+    			
+    			//Sender søkeresultat til MainController via interface
+                if (listListener != null) {
+                    listListener.listReady(sokeResultat, radioTypeValgt);
+                }
+    		}
+    	}
     }
 
     /**
