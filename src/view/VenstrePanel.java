@@ -26,7 +26,6 @@ public class VenstrePanel extends AbstractPanel {
         setLayout(new GridLayout(1, 1));
 
         tabell = new JTable();
-        tabell.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         tabell.setAutoCreateRowSorter(true);
         tabell.setFillsViewportHeight(true);
         tabell.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
