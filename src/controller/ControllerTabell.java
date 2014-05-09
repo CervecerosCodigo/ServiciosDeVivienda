@@ -14,6 +14,7 @@ import controller.registrer.ControllerRegistrerUtleier;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -56,6 +57,8 @@ public class ControllerTabell implements VisMeldingInterface {
             menyvalgAksepter, menyvalgAvvis;
 
     private int valgtRadItabell;    //Viser til en hver tid hvilken rad som er valgt i tabellen
+    private InputMap inputMap;
+    private ActionMap actionMap;
 
     public ControllerTabell(HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
@@ -98,6 +101,23 @@ public class ControllerTabell implements VisMeldingInterface {
 
     }
 
+    public void generellSletteMetodeSomKallerOppRettSletteMetode() {
+
+        try {
+            if (modellIBruk instanceof TabellModellPerson) {
+                slettPerson();
+            }
+            if (modellIBruk instanceof TabellModellBolig) {
+                slettBolig();
+            }
+            if (modellIBruk instanceof TabellModellAnnonse) {
+                slettAnnonseFraRegisteret();
+            }
+        } catch (ClassCastException cce) {
+            System.out.println("ClassCastException ved sletting med deleteknapp");
+        }
+    }
+
     /**
      * Tar i mot det vinduet tabellen skal settes for. Metoden oppretter en
      * lytter på tabellen som finner hvilken rad/objekt som er valgt.
@@ -118,24 +138,48 @@ public class ControllerTabell implements VisMeldingInterface {
         //Kobler popupmenyen til tabellen.
         tabell.setComponentPopupMenu(tabellMeny);
 
+        /////////////////////////////////////////////////////////////////
+        //Sletteknappfunksjonalitet når man trykker Delete på tastaturet
+        inputMap = tabell.getInputMap(JTable.WHEN_FOCUSED);
+        actionMap = tabell.getActionMap();
+
+        Action sletteknappFunksjon = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generellSletteMetodeSomKallerOppRettSletteMetode();
+            }
+        };
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "Slett");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "Slett");
+        actionMap.put("Slett", sletteknappFunksjon);
+        //Slutt på sletteknappfunksjonalitet
+        /////////////////////////////////////////////////////////////////
+
         tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
+
                 if (e.getValueIsAdjusting()) {
                     return;
                 }
                 try {
                     int rad = tabell.getSelectedRow();
-                    rad = tabell.convertRowIndexToModel(rad);
+                    System.out.println("Rad: " + rad);
+                    if (rad > -1) {
+                        rad = tabell.convertRowIndexToModel(rad);
 
-                    //Lagrer raden i en klassevariabel, som brukes i andre metoder.
-                    valgtRadItabell = rad;
-
-                    sendObjektFraTabellTilOutput(rad, objekttype, tabellData);
+                        //Lagrer raden i en variabel, som brukes i andre metoder.
+                        valgtRadItabell = rad;
+                        System.out.println("ModellRad: " + valgtRadItabell);
+                        sendObjektFraTabellTilOutput(objekttype);
+                    }
 
                 } catch (ArrayIndexOutOfBoundsException aiobe) {
-
+                    System.out.println("Tabell ConvertRowIndexToModel ArrayIndexOufOfBounds");
+                } catch (IndexOutOfBoundsException iobe) {
+                    System.out.println("Tabell ConvertEowIndexToModel IndexOufOfBounds");
                 }
             }
         });
@@ -502,7 +546,8 @@ public class ControllerTabell implements VisMeldingInterface {
 
     public Soknad returnerSoknadObjekt() {
 
-        Soknad valgtObjekt = (Soknad) tabellData.get(valgtRadItabell);
+//        Soknad valgtObjekt = (Soknad) tabellData.get(valgtRadItabell);
+        Soknad valgtObjekt = (Soknad) tabellModellSoknad.finnObjektIModell(valgtRadItabell);
         if (valgtObjekt != null) {
             return valgtObjekt;
         }
@@ -516,7 +561,8 @@ public class ControllerTabell implements VisMeldingInterface {
      */
     public Bolig returnerBoligObjekt() {
 
-        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
+//        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
+        Bolig valgtObjekt = (Bolig) tabellModellBolig.finnObjektIModell(valgtRadItabell);
         if (valgtObjekt != null) {
             return valgtObjekt;
         }
@@ -529,7 +575,8 @@ public class ControllerTabell implements VisMeldingInterface {
      * @return
      */
     public Person returnerPersonObjekt() {
-        Person valgtObjekt = (Person) tabellData.get(valgtRadItabell);
+//        Person valgtObjekt = (Person) tabellData.get(valgtRadItabell);
+        Person valgtObjekt = (Person) tabellModellPerson.finnObjektIModell(valgtRadItabell);
         if (valgtObjekt != null) {
             return valgtObjekt;
         }
@@ -542,7 +589,8 @@ public class ControllerTabell implements VisMeldingInterface {
      * @return
      */
     public Annonse returnerAnnonseObjekt() {
-        Annonse valgtObjekt = (Annonse) tabellData.get(valgtRadItabell);
+//        Annonse valgtObjekt = (Annonse) tabellData.get(valgtRadItabell);
+        Annonse valgtObjekt = (Annonse) tabellModellAnnonse.finnObjektIModell(valgtRadItabell);
         if (valgtObjekt != null) {
             return valgtObjekt;
         }
@@ -556,16 +604,19 @@ public class ControllerTabell implements VisMeldingInterface {
     public void slettBolig() {
 
         Boolean ok = true;
-        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
+//        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
+        Bolig valgtObjekt = returnerBoligObjekt();
         if (valgtObjekt != null) {
 
-            if (!valgtObjekt.isErUtleid() || !valgtObjekt.isErUtleid()) {
+            if (!valgtObjekt.isErUtleid()) {
                 int valg = Melding.visBekreftelseDialog("Ønsker du virkelig å slette boligen?",
                         "Slette bolig", "Nei");
                 if (valg == 0) {
                     try {
-                        tabellData.remove(valgtRadItabell);
+//                        tabellData.remove(valgtRadItabell);
+
                         ok = boligliste.remove(valgtObjekt);
+                        tabellModellBolig.removeRow(valgtRadItabell);
                         if (ok) {
                             tabellModellBolig.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
                             visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " er slettet");
@@ -590,34 +641,24 @@ public class ControllerTabell implements VisMeldingInterface {
     public void slettPerson() {
 
         Boolean ok = true;
-        Person valgtObjekt = (Person) tabellData.get(valgtRadItabell);
-        ArrayList<Integer> registrerteBoliger = new ArrayList<>();
-        Iterator<Bolig> iter = boligliste.iterator();
-        while (iter.hasNext()) {
-            Bolig temp = iter.next();
-            if (temp.getPersonID() == valgtObjekt.getPersonID()) {
-                registrerteBoliger.add(temp.getBoligID());
-            }
-        }
-        if (registrerteBoliger.size() > 0) {
-            visMelding(null, valgtObjekt.getFornavn() + " " + valgtObjekt.getEtternavn()
-                    + " er registrert med boliger.\n"
-                    + "Kan ikke utføre slettingen.");
-        } else {
+        Person valgtObjekt = returnerPersonObjekt();
+        if (!harUtleierBoligerRegistrert(valgtObjekt)) {
+
+            //Personen har ikke boliger registrert og kan dermed slettes
             int valg = Melding.visBekreftelseDialog("Ønsker du virkelig å slette personen fra systemet?",
                     "Slette person", "Nei");
             if (valg == 0) {
                 try {
-                    tabellData.remove(valgtRadItabell);
-
                     ok = personliste.remove(valgtObjekt);
                     if (ok) {
+                        tabellModellPerson.removeRow(valgtRadItabell);
                         tabellModellPerson.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
                         visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " er slettet");
                     } else {
                         visMelding(null, "Person med ID " + valgtObjekt.getPersonID() + " ble IKKE slettet");
                     }
                 } catch (ArrayIndexOutOfBoundsException aiobe) {
+                    System.out.println("ArrayIndexOutOfBounds på remove av Person");
                 }
             } else {
             }
@@ -625,58 +666,93 @@ public class ControllerTabell implements VisMeldingInterface {
     }
 
     /**
+     * Hjelpemetode for slettePerson-metoden.
+     * @param person
+     * @return 
+     */
+    private boolean harUtleierBoligerRegistrert(Person person) {
+        
+        ArrayList<Bolig> registrerteBoliger = new ArrayList<>();
+        Iterator<Bolig> iter = boligliste.iterator();
+        while (iter.hasNext()) {
+            Bolig temp = iter.next();
+            if (temp.getPersonID() == person.getPersonID()) {
+                registrerteBoliger.add(temp);
+            }
+        }
+
+        if (registrerteBoliger.size() > 0) {
+            visMelding(null, person.getFornavn() + " " + person.getEtternavn()
+                    + " er registrert med boliger.\n"
+                    + "Kan ikke utføre slettingen.");
+            return true;
+        }
+        return false;
+        
+    }//End Method
+
+    
+    /**
      * Om boligen er publisert så tas den av nett. Om den ikke er publisert så
      * sjekkes det om boligen finnes i annonseregistert. Om den gjør det så
      * åpnes vindu for å endre annonsen, ellers lages det ny tom annonse.
      */
     public void nyEllerEndreAnnonse() {
 
-        int rad;
         Annonse tempAnnonse;
-        Bolig bolig = (Bolig) tabellData.get(valgtRadItabell);
+        Bolig bolig = returnerBoligObjekt();
         if (bolig != null) {
 
             //Er boligen ikke utleid?
             if (!bolig.isErUtleid()) {
                 ControllerRegistrerAnnonse cont = null;
+
                 //Sjekker om boligen ligger i annonseregisteret
                 Iterator<Annonse> iter = annonseliste.iterator();
                 while (iter.hasNext()) {
                     tempAnnonse = iter.next();
                     if (tempAnnonse.getBoligID() == bolig.getBoligID()) {
+
                         //Boligen er annonsert og kan endres
                         cont = new ControllerRegistrerAnnonse(annonseliste, personliste, tempAnnonse);
                         cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
                             @Override
                             public void oppdaterTabellEtterEndring() {
-                                modellIBruk.fireTableStructureChanged();
+                                modellIBruk.fireTableDataChanged();
                             }
                         });
                         return;
-                    }//end if
-                }//end while
+                    }//End if
+
+                }//End while
+
                 //Boligen er ikke i annonseregisteret og ny annonse opprettes.
                 cont = new ControllerRegistrerAnnonse(annonseliste, personliste, bolig);
                 cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
                     @Override
                     public void oppdaterTabellEtterEndring() {
-                        modellIBruk.fireTableStructureChanged();
+                        modellIBruk.fireTableDataChanged();
                     }
                 });
             } else {
-                //Boligen er utleid og kan ikke legges i annonseregisteret
+                visMelding("Kan ikke utføre operasjonen", "Boligen er utleid og kan ikke oppdateres");
             }
-        }//end if
-    }
+        }//End if
+    }//End method
 
+    /**
+     * Sletter valgt annonse fra registeret og tabellen.
+     */
     public void slettAnnonseFraRegisteret() {
         Annonse annonse = returnerAnnonseObjekt();
         if (annonse != null) {
-            if (annonseliste.remove(annonse)) {
+            Boolean ok = annonseliste.remove(annonse);
+            if (ok) {
+                tabellModellAnnonse.removeRow(valgtRadItabell);
+                tabellModellAnnonse.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
                 visMelding("Sletting fullført!", "Annonsen er slettet!");
-                modellIBruk.fireTableRowsDeleted(valgtRadItabell, valgtRadItabell);
             } else {
                 visMelding("Feil!", "Annonsen ble IKKE slettet!");
             }
@@ -699,7 +775,6 @@ public class ControllerTabell implements VisMeldingInterface {
      */
     public void settInnDataITabell(Collection innkommendeDatasett, ObjektType objekttypeEnum) {
 
-        modellIBruk = null;
         if (innkommendeDatasett.size() > 0) {
             tabellData = new ArrayList<>();
             Iterator<?> iter = innkommendeDatasett.iterator();
@@ -752,18 +827,16 @@ public class ControllerTabell implements VisMeldingInterface {
                         vindu.getVenstrepanel().sorterTabellSoknadData();
                         break;
                 }
-                resizeKolonneBredde();
-
+                vindu.getVenstrepanel().resizeKolonneBredde();
                 vindu.getVenstrepanel().settCelleRenderer();
-
-                bunnController.settOppTabellData(tabellData, modellIBruk);
+                bunnController.settOppTabellData(modellIBruk);
 
             } catch (ArrayIndexOutOfBoundsException aiobe) {
-                System.out.println("Tabell gir ArrayOutOfBounds ved innlegging av nytt datasett");
+                System.out.println("settInnDataITabell gir ArrayOutOfBounds ved innlegging av nytt datasett");
             } catch (NullPointerException npe) {
-                System.out.println("Tabell gir NullPointer ved innlegging av nytt datasett");
+                System.out.println("settInnDataITabell gir NullPointer ved innlegging av nytt datasett");
             }//End Try/Catch
-            
+
             /**
              * Sender ToppPanel liste over datasettet om settes i tabellen.
              */
@@ -774,65 +847,44 @@ public class ControllerTabell implements VisMeldingInterface {
     }//End Metodet settInnDataITabell
 
     /**
-     * Setter kolonnebredden etter innholdet i tabellen. Sammen med tabellens
-     * Auto-resize så blir tabellen fyllt ut i maks bredde, men samtidig med
-     * rett kolonnebredde.
-     */
-    public void resizeKolonneBredde() {
-        TableColumnModel kolonneModell = tabell.getColumnModel();
-        Component comp = null;
-        TableCellRenderer renderer = null;
-
-        for (int kol = 0; kol < tabell.getColumnCount(); kol++) {
-            int bredde = 50; //minste bredde
-            for (int rad = 0; rad < tabell.getRowCount(); rad++) {
-                renderer = tabell.getCellRenderer(rad, kol);
-                comp = tabell.prepareRenderer(renderer, rad, kol);
-                bredde = Math.max(comp.getPreferredSize().width, bredde);
-            }
-            kolonneModell.getColumn(kol).setPreferredWidth(bredde);
-        }
-    }
-
-    /**
-     * Tar i mot data og bestemmer hvilken "HTML"-metode som skal brukes.
+     * Tar i mot en Enum og bestemmer hvilken "HTML"-metode som skal brukes.
      *
      * @param valgtRad Raden i arrayen som skal vises.
      * @param tabellData Arrayen tabellen er bygget på.
      * @param vindu Vinduet som skal vise resultatet.
      */
-    public void sendObjektFraTabellTilOutput(int valgtRad, ObjektType objekttype, ArrayList tabellData) {
+    public void sendObjektFraTabellTilOutput(ObjektType objekttype) {
         Object valgtObjekt = null;
         css = vindu.getSenterpanel().getStyleSheet();
         ControllerOutput.setStyleSheet(css);
         try {
             switch (objekttype) {
                 case PERSONOBJ:
-                    valgtObjekt = (Person) tabellData.get(valgtRad);
+                    valgtObjekt = tabellModellPerson.finnObjektIModell(valgtRadItabell);
                     ControllerOutput.visPersonObjektHTMLOutput(output, vindu, valgtObjekt, personliste, boligliste, soknadsliste);
                     break;
                 case BOLIGOBJ:
-                    valgtObjekt = (Bolig) tabellData.get(valgtRad);
+                    valgtObjekt = tabellModellBolig.finnObjektIModell(valgtRadItabell);
                     ControllerOutput.visBoligObjektHTMLOutput(valgtObjekt, output, vindu, boligliste);
                     break;
                 case ANNONSEOBJ:
-                    valgtObjekt = (Annonse) tabellData.get(valgtRad);
+                    valgtObjekt = tabellModellAnnonse.finnObjektIModell(valgtRadItabell);
                     ControllerOutput.visAnnonseObjektHTMLOutput(valgtObjekt, output, vindu, annonseliste);
                     break;
                 case KONTRAKTOBJ:
-                    valgtObjekt = (Kontrakt) tabellData.get(valgtRad);
+                    valgtObjekt = tabellModellKontrakt.finnObjektIModell(valgtRadItabell);
                     ControllerOutput.visKontraktObjektHTMLOutput(valgtObjekt, output, vindu);
                     break;
                 case SOKNADSOBJ:
-                    valgtObjekt = (Soknad) tabellData.get(valgtRad);
+                    valgtObjekt = tabellModellSoknad.finnObjektIModell(valgtRadItabell);
                     ControllerOutput.visSoknadObjektHTMLOutput(valgtObjekt, output, vindu, soknadsliste, personliste);
 
                     break;
             }
         } catch (ArrayIndexOutOfBoundsException aiobe) {
-
+            System.out.println("ArrayOutOfBoundsException i SendObjektFraTabellTilOutput i ControllerTabell");
         }
-    }
+    }//End sendObjektFraTabellTilOutput
 
     @Override
     public void visMelding(String overskrift, String melding) {

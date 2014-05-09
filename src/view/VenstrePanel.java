@@ -99,4 +99,26 @@ public class VenstrePanel extends AbstractPanel {
 
     }
 
+    
+        /**
+     * Setter kolonnebredden etter innholdet i tabellen. Sammen med tabellens
+     * Auto-resize så blir tabellen fyllt ut i maks bredde, men samtidig med
+     * rett kolonnebredde.
+     */
+    public void resizeKolonneBredde() {
+        TableColumnModel kolonneModell = tabell.getColumnModel();
+        Component comp = null;
+        TableCellRenderer renderer = null;
+
+        for (int kol = 0; kol < tabell.getColumnCount(); kol++) {
+            int bredde = 50; //minste bredde
+            for (int rad = 0; rad < tabell.getRowCount(); rad++) {
+                renderer = tabell.getCellRenderer(rad, kol);
+                comp = tabell.prepareRenderer(renderer, rad, kol);
+                bredde = Math.max(comp.getPreferredSize().width, bredde);
+            }
+            kolonneModell.getColumn(kol).setPreferredWidth(bredde);
+        }
+    }
+    
 }

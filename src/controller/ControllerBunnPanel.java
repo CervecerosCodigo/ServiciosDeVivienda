@@ -25,7 +25,7 @@ public class ControllerBunnPanel {
     private HashSet<Annonse> annonseliste;
     private HashSet<Soknad> soknadliste;
     private ArrayList<Object> tabellData;
-    private TabellModell modell;
+    private TabellModell modellIBruk;
 
     public ControllerBunnPanel(HashSet<Bolig> boligliste, HashSet<Person> personliste, HashSet<Annonse> annonseliste, HashSet<Soknad> soknadliste) {
 
@@ -51,11 +51,13 @@ public class ControllerBunnPanel {
      * @param tabellData
      * @param modell
      */
-    public void settOppTabellData(ArrayList<Object> tabellData, TabellModell modell) {
-        this.tabellData = tabellData;
-        this.modell = modell;
+    public void settOppTabellData(TabellModell modell) {
+        this.modellIBruk = modell;
     }
-
+//    public void settOppTabellData(ArrayList<Object> tabellData, TabellModell modell) {
+//        this.tabellData = tabellData;
+//        this.modell = modell;
+//    }
 
     /**
      * private lytteklasse for knappene i bunnpanelet.
@@ -69,57 +71,47 @@ public class ControllerBunnPanel {
         public KnappeLytter(AbstraktArkfane vindu) {
             this.vindu = vindu;
             tabell = vindu.getVenstrepanel().getTable();
-            if(vindu instanceof ArkfaneAnnonse){
+            if (vindu instanceof ArkfaneAnnonse) {
                 vindu.getBunnpanel().getMultiKnapp().setText("Send forespørsel");
             }
         }
 
         /**
-         * Finner hvilken rad som er valgt i tabellen og hvilken rad det representerer i datagrunnlaget.
-         * @return 
-         */
-        public int finnValgtRadITabell() {
-            try {
-                int rad = tabell.getSelectedRow();
-                rad = tabell.convertRowIndexToModel(rad);
-                return rad;
-            } catch (ArrayIndexOutOfBoundsException aiobe) {
-
-            }
-            return 0;
-        }
-
-        /**
-         * Definerer funksjonen til knappen nede til venstre i vinduet.
-         * Denne knappen har forskjellig funksjonalitet avhengig av hvilke objekt som
+         * Definerer funksjonen til knappen nede til venstre i vinduet. Denne
+         * knappen har forskjellig funksjonalitet avhengig av hvilke objekt som
          * finnes i tabellen, og hvilke vindu man befinner seg i.
-         * @param e 
+         *
+         * @param e
          */
         @Override
         public void actionPerformed(ActionEvent e) {
-            raderITabell = tabell.getModel().getRowCount();
 
             if (e.getSource().equals(vindu.getBunnpanel().getMultiKnapp())) {
                 try {
-                    int valgtRad = finnValgtRadITabell();
+                    int valgtRad = tabell.getSelectedRow();
+                    if (valgtRad != -1) {
+                        valgtRad = tabell.convertRowIndexToModel(valgtRad);
+                    }
 
                     if (tabell.getModel() instanceof TabellModellPerson) {
-//                        new ControllerRegistrerPerson((HashSet<Person>) personliste, (Person) tabellData.get(valgtRad));
-                        new ControllerRegistrerUtleier((HashSet<Person>) personliste, (Utleier) tabellData.get(valgtRad));
+                        modellIBruk = (TabellModellPerson) modellIBruk;
+                        new ControllerRegistrerUtleier((HashSet<Person>) personliste, (Utleier) modellIBruk.finnObjektIModell(valgtRad));
                     }
                     if (tabell.getModel() instanceof TabellModellBolig) {
-                        new ControllerRegistrerBolig(boligliste, (Bolig) tabellData.get(valgtRad));
+                        modellIBruk = (TabellModellBolig) modellIBruk;
+                        new ControllerRegistrerBolig(boligliste, (Bolig) modellIBruk.finnObjektIModell(valgtRad));
                     }
                     if (tabell.getModel() instanceof TabellModellAnnonse) {
+                        modellIBruk = (TabellModellAnnonse) modellIBruk;
                         if (vindu instanceof ArkfaneMegler) {
-                            new ControllerRegistrerAnnonse(annonseliste, personliste, (Annonse) tabellData.get(valgtRad));
-                        }else{
-                            new ControllerRegistrerSoknad(personliste, annonseliste, soknadliste, (Annonse) tabellData.get(valgtRad));
+                            new ControllerRegistrerAnnonse(annonseliste, personliste, (Annonse) modellIBruk.finnObjektIModell(valgtRad));
+                        } else {
+                            new ControllerRegistrerSoknad(personliste, annonseliste, soknadliste, (Annonse) modellIBruk.finnObjektIModell(valgtRad));
                         }
                     }
-                    
+
                 } catch (ArrayIndexOutOfBoundsException aoibe) {
-                    System.out.println("Feil");
+                    System.out.println("ArrayIndexOutOfBoundException BunnController Endreknapp");
                 }
 
             } else if (e.getSource().equals(vindu.getBunnpanel().getTilbakeKnapp())) {

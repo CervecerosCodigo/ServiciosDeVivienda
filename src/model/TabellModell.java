@@ -6,18 +6,22 @@ import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Den abstrakte klassen som tabellens datamodeller arver.
+ *
+ * @author espen
+ * @param <E>
+ */
 public abstract class TabellModell<E> extends DefaultTableModel {
 
     ArrayList<E> mottattArray;
     String[] overskrift;
-    DefaultTableModel modell;
 
     public TabellModell() {
 
         mottattArray = new ArrayList<>();
     }
-    
-    
+
     public void fyllTabellMedInnhold(ArrayList<E> liste) {
         this.mottattArray = liste;
     }
@@ -31,6 +35,15 @@ public abstract class TabellModell<E> extends DefaultTableModel {
 
         }
         return str;
+    }
+
+    @Override
+    public void removeRow(int row) {
+        mottattArray.remove(row);
+    }
+
+    public Object finnObjektIModell(int rad) {
+        return mottattArray.get(rad);
     }
 
     @Override
@@ -58,7 +71,7 @@ public abstract class TabellModell<E> extends DefaultTableModel {
         if (mottattArray.size() > 0) {
             return getValueAt(0, c).getClass();
         }
-        return null;
+        return Object.class;
     }
 
     @Override
@@ -67,5 +80,4 @@ public abstract class TabellModell<E> extends DefaultTableModel {
         return mottattArray.get(rad);
     }
 
-    
 }
