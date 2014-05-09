@@ -208,8 +208,10 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
     	@Override
     	public void actionPerformed(ActionEvent e) {
     		String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
-    		if (false) Melding.visMelding("Søk", "Søkefeltet er tomt.\nBruk * for å vise hele registeret.");
+    		if (false) visMelding("Søk", "Søkefeltet er tomt.\nBruk * for å vise hele registeret.");
     		else {
+
+    			fsearch = new FreeTextSearch();
 
     			switch (radioTypeValgt2) {
     			case Bolig:
@@ -231,15 +233,19 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
     				sokeResultat = fsearch.searchForPattern(soknadsliste, soketekst);
     				break;
     			default:
-    				Melding.visMelding("Søk", "Mangler valg");
+    				visMelding("Søk", "Mangler valg");
     			}
-    			
-    			//Sender søkeresultat til MainController via interface
-                if (listListener != null) {
-                    listListener.listReady(sokeResultat, radioTypeValgt);
-                }
+
+    			if (sokeResultat.isEmpty())
+    				visMelding("Søkeresultat", "Søket gav ingen resultat.");
+
+    			else{
+    				if (listListener != null) {
+    					listListener.listReady(sokeResultat, radioTypeValgt);
+    				}                        
+    			}
     		}
-    	}
+    	}	
     }
 
     /**
