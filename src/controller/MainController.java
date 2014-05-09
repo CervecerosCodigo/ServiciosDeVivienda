@@ -39,6 +39,7 @@ public class MainController implements Serializable {
     private ControllerTabell tabellControllerAnnonse;
     private ControllerToppPanelMegler toppPanelControllerMegler;
     private ControllerToppPanelAnnonse toppPanelControllerAnnonse;
+    private ControllerKeyBindings keyBindingsController;
 
     //Tester å bruke den nye klassen for registrering av bolig
     private ControllerRegistrerBolig controllerRegistrerBolig;
@@ -56,6 +57,7 @@ public class MainController implements Serializable {
         tabellControllerAnnonse = new ControllerTabell(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerMegler = new ControllerToppPanelMegler(meglerVindu, personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
         toppPanelControllerAnnonse = new ControllerToppPanelAnnonse(annonseVindu, annonseliste);
+        keyBindingsController = new ControllerKeyBindings(meglerVindu, annonseVindu, startGUI);
 
         this.personliste = personliste;
         this.boligliste = boligliste;

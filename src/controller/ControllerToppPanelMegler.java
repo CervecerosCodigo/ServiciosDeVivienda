@@ -64,8 +64,6 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
         //Setter lyttere i Toppanelet.
         vindu.getToppanelMegler().leggTilRadioLytter(new RadioLytter());
         vindu.getToppanelMegler().leggTilKnappeLytter(new KnappeLytter());
-        vindu.getToppanelMegler().getSokeKnapp().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "enterPressed");
-        vindu.getToppanelMegler().getSokeKnapp().getActionMap().put("enterPressed", new EnterAction());
 
         valgtObjekt = -1;
         OppdaterStatistikk();
@@ -201,55 +199,6 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
         this.tabellData = tabellData;
     }
     
-    class EnterAction extends AbstractAction {
-
-    	private ArrayList<E> sokeResultat;
-
-    	@Override
-    	public void actionPerformed(ActionEvent e) {
-    		String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
-    		if (false) visMelding("Søk", "Søkefeltet er tomt.\nBruk * for å vise hele registeret.");
-    		else {
-
-    			fsearch = new FreeTextSearch();
-
-    			switch (radioTypeValgt2) {
-    			case Bolig:
-    				sokeResultat = fsearch.searchForPattern(boligliste, soketekst);
-    				break;
-    			case Utleier:
-    				sokeResultat = fsearch.searchForPatternIUtleier(personliste, soketekst);
-    				break;
-    			case Leietaker:
-    				sokeResultat = fsearch.searchForPatternILeietaker(personliste, soketekst);
-    				break;
-    			case Annonse:
-    				sokeResultat = fsearch.searchForPattern(annonseliste, soketekst);
-    				break;
-    			case Kontrakt:
-    				sokeResultat = fsearch.searchForPattern(kontraktliste, soketekst);
-    				break;
-    			case Soknad:
-    				sokeResultat = fsearch.searchForPattern(soknadsliste, soketekst);
-    				break;
-    			default:
-    				visMelding("Søk", "Mangler valg");
-    			}
-
-    			if (sokeResultat.isEmpty())
-    				visMelding("Søkeresultat", "Søket gav ingen resultat.");
-
-    			else{
-    				if (listListener != null) {
-    					listListener.listReady(sokeResultat, radioTypeValgt);
-    				}                        
-    			}
-    			
-    			vindu.getToppanelMegler().getSokeKnapp().doClick();
-    		}
-    	}	
-    }
-
     /**
      * Lytteklasse for knappene i TopPanelMegler.java
      */

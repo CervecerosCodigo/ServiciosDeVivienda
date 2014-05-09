@@ -48,9 +48,6 @@ public class ControllerToppPanelAnnonse {
         }
 
         vindu.getToppanelAnnonse().addKnappLytter(new KnappeLytter());
-        vindu.getToppanelAnnonse().getSokeKnapp().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "enterPressed");
-        vindu.getToppanelAnnonse().getSokeKnapp().getActionMap().put("enterPressed", new EnterAction());
-        
         OppdaterStatistikk();
     }
     
@@ -177,19 +174,5 @@ public class ControllerToppPanelAnnonse {
                 }
             }
         }
-    }
-    
-    class EnterAction extends AbstractAction {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			HashSet<Annonse> filterResultat = filtrerAnnonser();
-
-            //Medfører at knapper er klikket i gui og data kan nå sendes opp til main controller
-            if (listListener != null) {
-                listListener.listReady(filterResultat, ObjektType.ANNONSEOBJ);
-                vindu.getToppanelAnnonse().getSokeKnapp().doClick();
-            }
-		}
     }
 }
