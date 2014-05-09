@@ -176,7 +176,7 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
                         valgtObjekt = tabellData.get(valgtRadItabell);
                     }
                 } catch (ArrayIndexOutOfBoundsException aiobe) {
-                    System.out.println("Try feiler");
+                    
                 }
             }
         });
@@ -255,10 +255,13 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
                     if (sokeResultat.isEmpty()) {
                         visMelding("Søkeresultat", "Søket gav ingen resultat.");
                         //Sender søkeresultat til MainController via interface
+
+                    }else{
                         if (listListener != null) {
                             listListener.listReady(sokeResultat, radioTypeValgt);
-                        }
+                        }                        
                     }
+                    
 
                 }
             }
