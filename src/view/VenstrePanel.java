@@ -5,9 +5,7 @@ import model.*;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.table.*;
-import lib.Konstanter;
 
 /**
  * Denne klassen er et JPanel (arvet) som inneholder tabellen. Den definerer
@@ -19,7 +17,7 @@ import lib.Konstanter;
 public class VenstrePanel extends AbstractPanel {
 
     private JTable tabell;
-
+    private DefaultTableCellRenderer hoyreStiltTekstRenderer;
 
     public VenstrePanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);
@@ -32,10 +30,12 @@ public class VenstrePanel extends AbstractPanel {
         tabell.setShowGrid(true);
         tabell.setGridColor(Color.gray);
         tabell.setRowHeight(20);
-//        tabell.setSelectionBackground(new Color(210, 210, 210));
         tabell.setSelectionForeground(Color.BLACK);
-        
+
         add(new JScrollPane(tabell));
+
+        hoyreStiltTekstRenderer = new DefaultTableCellRenderer();
+        hoyreStiltTekstRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 
     }//End Constructor
 
@@ -48,7 +48,6 @@ public class VenstrePanel extends AbstractPanel {
         return tabell;
     }
 
-
     /**
      * Standard sortering på objektets ID, i første kolonne
      */
@@ -58,10 +57,10 @@ public class VenstrePanel extends AbstractPanel {
         sorteringsnokler.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
         sorterer.setSortKeys(sorteringsnokler);
     }
-    
+
     /**
-     * Sortering på søknadsobjektene. Sorterer synkende på Kolonnen Behandlet
-     * og deretter stigende på SøknadsID
+     * Sortering på søknadsobjektene. Sorterer synkende på Kolonnen Behandlet og
+     * deretter stigende på SøknadsID
      */
     public void sorterTabellSoknadData() {
         RowSorter sorterer = tabell.getRowSorter();
@@ -72,7 +71,6 @@ public class VenstrePanel extends AbstractPanel {
         sorterer.setSortKeys(sorteringsnokler);
     }
 
-            
     /**
      * Formaterer søknadene i tabellen som er behandlet.
      */
@@ -80,27 +78,34 @@ public class VenstrePanel extends AbstractPanel {
 
         tabell.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                TabellModell modell = (TabellModell)tabell.getModel();
-                
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if(modell instanceof TabellModellSoknad){
-                    if(table.getValueAt(row, 2).equals("Ja")){
-                        c.setForeground(new Color(200, 200, 200));                      
-                    }else{
-                        c.setForeground(Color.BLACK);                      
+            public Component getTableCellRendererComponent(JTable tabell, Object verdi, boolean erValgt, boolean harFokus, int rad, int kolonne) {
+                TabellModell modell = (TabellModell) tabell.getModel();
+
+                Component c = super.getTableCellRendererComponent(tabell, verdi, erValgt, harFokus, rad, kolonne);
+                if (modell instanceof TabellModellSoknad) {
+                    if (tabell.getValueAt(rad, 2).equals("Ja")) {
+                        c.setForeground(new Color(200, 200, 200));
+                    } else {
+                        c.setForeground(Color.BLACK);
                     }
                 }
                 c.repaint();
                 return c;
             }
-            
+
         });
 
     }
 
-    
-        /**
+    /**
+     * Setter høyrestillt formatering på kolonnen som angis.
+     * @return
+     */
+    public DefaultTableCellRenderer settHoyrestilltFormateringPaaTabell() {
+        return hoyreStiltTekstRenderer;
+    }
+
+    /**
      * Setter kolonnebredden etter innholdet i tabellen. Sammen med tabellens
      * Auto-resize så blir tabellen fyllt ut i maks bredde, men samtidig med
      * rett kolonnebredde.
@@ -120,5 +125,5 @@ public class VenstrePanel extends AbstractPanel {
             kolonneModell.getColumn(kol).setPreferredWidth(bredde);
         }
     }
-    
+
 }

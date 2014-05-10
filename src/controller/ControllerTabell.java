@@ -36,7 +36,7 @@ public class ControllerTabell implements VisMeldingInterface {
     private HashSet<Soknad> soknadsliste;
     private ControllerBunnPanel bunnController;
 
-    private DefaultTableCellRenderer hoyreStiltTekstRenderer;
+
     private TabellSendDataIBrukInterface tabellOppdateringslytter;
 
     private AbstraktArkfane vindu;
@@ -78,11 +78,10 @@ public class ControllerTabell implements VisMeldingInterface {
         tabellModellKontrakt = new TabellModellKontrakt();
         tabellModellSoknad = new TabellModellSoknad();
 
-        hoyreStiltTekstRenderer = new DefaultTableCellRenderer();
-        hoyreStiltTekstRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+        
+
 
         tabellMeny = new JPopupMenu();
-
         menyvalgPerson = new JMenu("Person");
         menyvalgBolig = new JMenu("Bolig");
         menyvalgAnnonse = new JMenu("Annonse");
@@ -99,8 +98,12 @@ public class ControllerTabell implements VisMeldingInterface {
         menyvalgPubliserToggle = new JMenuItem("Endre publiseringsstatus");
         menyvalgSlettAnnonse = new JMenuItem("Slett annonse");
 
-    }
+    }//End Contructor
 
+    /**
+     * Denne metoden kalles opp når man trykker på sletteknappen på tastaturet.
+     * Metoden finner ut hvilket datasett som er i bruk og sletter rett objekt.
+     */
     public void generellSletteMetodeSomKallerOppRettSletteMetode() {
 
         try {
@@ -119,10 +122,8 @@ public class ControllerTabell implements VisMeldingInterface {
     }
 
     /**
-     * Tar i mot det vinduet tabellen skal settes for. Metoden oppretter en
-     * lytter på tabellen som finner hvilken rad/objekt som er valgt.
-     * valueChanged-metoden sender også valgt objekt til output.
-     *
+     * Tar i mot det vinduet tabellen skal settes for. 
+     * Det settes opp flere lyttere relatert til tabllens funksjonalitet.
      * @param vindu Tar i mot det vinduet som metoden gjelder for.
      */
     public void settOppTabellLyttere(final AbstraktArkfane vindu) {
@@ -155,7 +156,12 @@ public class ControllerTabell implements VisMeldingInterface {
         actionMap.put("Slett", sletteknappFunksjon);
         //Slutt på sletteknappfunksjonalitet
         /////////////////////////////////////////////////////////////////
-
+        
+        
+        /**
+         * Lytter på endring i valgt rad i tabellen og returnerer indexen til ArrayListen
+         * som danner grunnlaget for tabellens innhold (i valgt TabellModell).
+         */
         tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             @Override
@@ -206,13 +212,13 @@ public class ControllerTabell implements VisMeldingInterface {
         });
 
         /**
-         * Lytter for dobbelklikk i tabellen.
+         * Lytter for dobbelklikk i tabellen. Objekter skal bare kunne endres.
          */
         tabell.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                JTable temp = (JTable) e.getSource();
+
                 if (e.getClickCount() == 2) {
 
                     if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
@@ -221,18 +227,21 @@ public class ControllerTabell implements VisMeldingInterface {
 
                             @Override
                             public void oppdaterTabellEtterEndring() {
-                                tabellModellBolig.fireTableStructureChanged();
+                                tabellModellBolig.fireTableDataChanged();
                             }
                         });
                     } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
-                        ControllerRegistrerUtleier cont = new ControllerRegistrerUtleier(personliste, (Utleier) returnerPersonObjekt());
-                        cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
+                        if (returnerPersonObjekt() instanceof Utleier) {
+                            ControllerRegistrerUtleier cont = new ControllerRegistrerUtleier(personliste, (Utleier) returnerPersonObjekt());
+                            cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
 
-                            @Override
-                            public void oppdaterTabellEtterEndring() {
-                                tabellModellPerson.fireTableStructureChanged();
-                            }
-                        });
+                                @Override
+                                public void oppdaterTabellEtterEndring() {
+                                    tabellModellPerson.fireTableDataChanged();
+                                }
+                            });
+                        }
+
                     } else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
                         if (vindu instanceof ArkfaneMegler) {
                             ControllerRegistrerAnnonse cont = new ControllerRegistrerAnnonse(annonseliste, personliste, returnerAnnonseObjekt());
@@ -240,9 +249,10 @@ public class ControllerTabell implements VisMeldingInterface {
 
                                 @Override
                                 public void oppdaterTabellEtterEndring() {
-                                    tabellModellPerson.fireTableStructureChanged();
+                                    tabellModellPerson.fireTableDataChanged();
                                 }
                             });
+                            //Det dobbelklikkes i fra annonsevinduet
                         } else {
                             new ControllerRegistrerSoknad(personliste, annonseliste, soknadsliste, returnerAnnonseObjekt());
                         }
@@ -266,17 +276,16 @@ public class ControllerTabell implements VisMeldingInterface {
                     try {
                         if (tabellModellBolig.equals((TabellModell) tabell.getModel())) {
                             tabellMeny.add(menyvalgBolig);
-                            //menyvalgBolig.add(menyvalgNyBolig);
                             menyvalgBolig.add(menyvalgEndreBolig);
                             menyvalgBolig.add(menyvalgSlettBolig);
                             menyvalgBolig.add(menyvalgPubliserToggle);
+
                         } else if (tabellModellPerson.equals((TabellModell) tabell.getModel())) {
                             tabellMeny.add(menyvalgPerson);
                             tabellMeny.add(menyvalgBolig);
                             menyvalgPerson.add(menyvalgNyPerson);
                             menyvalgPerson.add(menyvalgEndrePerson);
                             menyvalgPerson.add(menyvalgSlettPerson);
-
                             if (returnerPersonObjekt() instanceof Utleier) {
                                 menyvalgBolig.add(menyvalgNyBolig);
                             }
@@ -286,21 +295,19 @@ public class ControllerTabell implements VisMeldingInterface {
                             if (vindu instanceof ArkfaneMegler) {
                                 tabellMeny.add(menyvalgSlettAnnonse);
                             }
-                        } else if (tabellModellKontrakt.equals((TabellModell) tabell.getModel())) {
-
                         } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
                             tabellMeny.add(menyvalgAksepter);
                             tabellMeny.add(menyvalgAvvis);
                         }
                     } catch (ClassCastException cce) {
-
+                        System.out.println("Popupmeny kunne ikke finne rett TabellModell");
                     }
                     tabellMeny.show(e.getComponent(), e.getX(), e.getY());
                 }
 
-            }
-        });
-    }
+            }//End MouseReleased
+        });//end addMouseListener
+    }//End settOppTabellLyttere
 
     /**
      * Setter lyttere for popupmenyen i tabellen. Flere av elementene i menyen
@@ -309,68 +316,65 @@ public class ControllerTabell implements VisMeldingInterface {
      */
     public void settOpplyttereForPopupMenyITabell() {
 
-        //Man ser bare dette valger om man høyreklikker på en utleier i tabellen
+        //Man ser bare dette valget om man høyreklikker på en utleier i tabellen
         menyvalgNyBolig.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 Person valgtObjekt = returnerPersonObjekt();
-                if (valgtObjekt != null && valgtObjekt instanceof Utleier) {
+                if (valgtObjekt instanceof Utleier) {
                     ControllerRegistrerBolig cont = new ControllerRegistrerBolig(boligliste, (Utleier) valgtObjekt);
-
                     cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
-
                         @Override
                         public void oppdaterTabellEtterEndring() {
-                            tabellModellPerson.fireTableStructureChanged();
+                            tabellModellPerson.fireTableDataChanged();
                         }
                     });
                 }
             }
         });
-        menyvalgEndreBolig.addActionListener(new ActionListener() {
 
+        //Endre bolig
+        menyvalgEndreBolig.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Bolig bolig = returnerBoligObjekt();
                 if (bolig != null) {
                     ControllerRegistrerBolig cont = new ControllerRegistrerBolig(boligliste, bolig);
                     cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
-
                         @Override
                         public void oppdaterTabellEtterEndring() {
-                            tabellModellPerson.fireTableStructureChanged();
+                            tabellModellPerson.fireTableDataChanged();
                         }
                     });
                 }
             }
 
         });
-        menyvalgSlettBolig.addActionListener(new ActionListener() {
 
+        //Slett bolig
+        menyvalgSlettBolig.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 slettBolig();
             }
-
         });
-        menyvalgNyPerson.addActionListener(new ActionListener() {
 
+        //Ny person
+        menyvalgNyPerson.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ControllerRegistrerUtleier cont = new ControllerRegistrerUtleier(personliste);
                 cont.settTabellOppdateringsLytter(new TabellFireDataChangedInterface() {
-
                     @Override
                     public void oppdaterTabellEtterEndring() {
-                        tabellModellPerson.fireTableStructureChanged();
+                        tabellModellPerson.fireTableDataChanged();
                     }
                 });
             }
         });
-        menyvalgEndrePerson.addActionListener(new ActionListener() {
 
+        //Endre person
+        menyvalgEndrePerson.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ControllerRegistrerUtleier cont = new ControllerRegistrerUtleier(personliste, (Utleier) returnerPersonObjekt());
@@ -378,13 +382,14 @@ public class ControllerTabell implements VisMeldingInterface {
 
                     @Override
                     public void oppdaterTabellEtterEndring() {
-                        tabellModellPerson.fireTableStructureChanged();
+                        tabellModellPerson.fireTableDataChanged();
                     }
                 });
             }
         });
-        menyvalgSlettPerson.addActionListener(new ActionListener() {
 
+        //Slett person
+        menyvalgSlettPerson.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 slettPerson();
@@ -393,10 +398,8 @@ public class ControllerTabell implements VisMeldingInterface {
 
         //Om boligsøker høyreklikker..
         menyvalgForesporsel.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 if (vindu instanceof ArkfaneAnnonse) {
                     new ControllerRegistrerSoknad(personliste, annonseliste, soknadsliste, returnerAnnonseObjekt());
                 }
@@ -405,7 +408,6 @@ public class ControllerTabell implements VisMeldingInterface {
 
         //Aksepter søknad. Alle andre søknader på denne annonsen avvises da.
         menyvalgAksepter.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 registrerKontrakt();
@@ -414,7 +416,6 @@ public class ControllerTabell implements VisMeldingInterface {
 
         //Avvis søknad
         menyvalgAvvis.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 avvisSoknad(returnerSoknadObjekt());
@@ -424,7 +425,6 @@ public class ControllerTabell implements VisMeldingInterface {
         //Registrer ny annonse eller endrer annonse. Er det en aktiv annonse 
         //så gjøres den innaktiv.
         menyvalgPubliserToggle.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 nyEllerEndreAnnonse();
@@ -433,12 +433,53 @@ public class ControllerTabell implements VisMeldingInterface {
 
         //Sletter annonsen
         menyvalgSlettAnnonse.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 slettAnnonseFraRegisteret();
             }
         });
+
+    }//End settOppLyttereForPopupMenyTabell
+
+    /**
+     * hjelpemetode for å finne megleren som skal registreres i søknaden
+     *
+     * @param soknad
+     * @return
+     */
+    private Megler returnererMeglerObjektFraSoknad(Soknad soknad) {
+        //Finner megler-objektet 
+        Iterator<Person> personIter = personliste.iterator();
+        Person tempPerson = null;
+        while (personIter.hasNext()) {
+            tempPerson = personIter.next();
+            if (tempPerson instanceof Megler) {
+                if (tempPerson.getPersonID() == soknad.getAnnonseObjekt().getBolig().getMeglerID()) {
+                    return (Megler) tempPerson;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Hjelpemetode for å finne alle soknader som gjelder samme annonse
+     *
+     * @param annonseID
+     * @return
+     */
+    private ArrayList<Soknad> returnerAlleSoknaderPaaSammeAnnonse(int annonseID) {
+
+        ArrayList<Soknad> soknaderPaaSammeAnnonse = new ArrayList<>();
+        Iterator<Soknad> soknadIter = soknadsliste.iterator();
+        Soknad tempSoknad = null;
+        while (soknadIter.hasNext()) {
+            tempSoknad = soknadIter.next();
+            if (tempSoknad.getAnnonseObjekt().getAnnonseID() == annonseID) {
+                soknaderPaaSammeAnnonse.add(tempSoknad);
+            }
+        }
+        return soknaderPaaSammeAnnonse;
     }
 
     /**
@@ -457,39 +498,21 @@ public class ControllerTabell implements VisMeldingInterface {
         if (!personliste.contains(soknad.getLeietakerObjekt())) {
 
             int annonseID = soknad.getAnnonseObjekt().getAnnonseID();
-            ArrayList<Soknad> soknaderPaaSammeAnnonse = new ArrayList<>();
-
-            //Finner megler-objektet 
-            Iterator<Person> personIter = personliste.iterator();
-            Person tempPerson = null;
-            while (personIter.hasNext()) {
-                tempPerson = personIter.next();
-                if (tempPerson instanceof Megler) {
-                    if (tempPerson.getPersonID() == soknad.getAnnonseObjekt().getBolig().getMeglerID()) {
-                        tempPerson = (Megler) tempPerson;
-                        return;
-                    }
-                }
-            }
+            Megler megler = returnererMeglerObjektFraSoknad(soknad);
 
             //Finner alle søknader som gelder for samme Annonse
-            Iterator<Soknad> soknadIter = soknadsliste.iterator();
-            Soknad tempSoknad = null;
-            while (soknadIter.hasNext()) {
-                tempSoknad = soknadIter.next();
-                if (tempSoknad.getAnnonseObjekt().getAnnonseID() == annonseID) {
-                    soknaderPaaSammeAnnonse.add(tempSoknad);
-                }
-            }
+            ArrayList<Soknad> soknaderPaaSammeAnnonse = returnerAlleSoknaderPaaSammeAnnonse(annonseID);
 
             //Finner dagens dato
-            Calendar dagensDato = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+            Calendar dagensDato = new GregorianCalendar(
+                    Calendar.getInstance().get(Calendar.YEAR),
+                    Calendar.getInstance().get(Calendar.MONTH),
+                    Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
             //Oppretter et kontraktobjekt basert på søknaden.
-            Kontrakt kontrakt = new Kontrakt(soknad.getAnnonseObjekt(), tempPerson, soknad.getLeietakerObjekt(), 12, dagensDato);
+            Kontrakt kontrakt = new Kontrakt(soknad.getAnnonseObjekt(), megler, soknad.getLeietakerObjekt(), 12, dagensDato);
 
-            //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt
-            //annonse avvises.
+            //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt annonse avvises.
             if (kontraktliste.add(kontrakt)) {
                 if (personliste.add(soknad.getLeietakerObjekt())) {
 
@@ -498,16 +521,16 @@ public class ControllerTabell implements VisMeldingInterface {
                     //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
                     soknaderPaaSammeAnnonse.remove(soknad);
 
-                    soknadIter = soknaderPaaSammeAnnonse.iterator();
-                    tempSoknad = null;
+                    Iterator<Soknad> soknadIter = soknaderPaaSammeAnnonse.iterator();
+                    Soknad tempSoknad = null;
                     while (soknadIter.hasNext()) {
                         tempSoknad = soknadIter.next();
                         tempSoknad.setErBehandlet(true);
                         tempSoknad.setErGodkjent(false);
                     }
 
-                    visMelding(null, "Kontrakten er opprettet!");
-                    tabellModellSoknad.fireTableStructureChanged();
+                    visMelding("Fullført!", "Kontrakten er opprettet!");
+                    tabellModellSoknad.fireTableDataChanged();
                     vindu.getVenstrepanel().sorterTabellSoknadData();
                 }
             } else {
@@ -519,7 +542,7 @@ public class ControllerTabell implements VisMeldingInterface {
                     + "Personen kan dermed ikke registrere ny kontrakt.");
             soknad.setErBehandlet(true);
             soknad.setErGodkjent(false);
-            tabellModellSoknad.fireTableStructureChanged();
+            tabellModellSoknad.fireTableDataChanged();
             vindu.getVenstrepanel().sorterTabellSoknadData();
         }
 
@@ -544,9 +567,12 @@ public class ControllerTabell implements VisMeldingInterface {
         tabell.removeAll();
     }
 
+    /**
+     * Returnerer søknadsobjektet som er valgt i tabellen
+     *
+     * @return Soknad
+     */
     public Soknad returnerSoknadObjekt() {
-
-//        Soknad valgtObjekt = (Soknad) tabellData.get(valgtRadItabell);
         Soknad valgtObjekt = (Soknad) tabellModellSoknad.finnObjektIModell(valgtRadItabell);
         if (valgtObjekt != null) {
             return valgtObjekt;
@@ -560,8 +586,6 @@ public class ControllerTabell implements VisMeldingInterface {
      * @return
      */
     public Bolig returnerBoligObjekt() {
-
-//        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
         Bolig valgtObjekt = (Bolig) tabellModellBolig.finnObjektIModell(valgtRadItabell);
         if (valgtObjekt != null) {
             return valgtObjekt;
@@ -575,7 +599,6 @@ public class ControllerTabell implements VisMeldingInterface {
      * @return
      */
     public Person returnerPersonObjekt() {
-//        Person valgtObjekt = (Person) tabellData.get(valgtRadItabell);
         Person valgtObjekt = (Person) tabellModellPerson.finnObjektIModell(valgtRadItabell);
         if (valgtObjekt != null) {
             return valgtObjekt;
@@ -589,7 +612,6 @@ public class ControllerTabell implements VisMeldingInterface {
      * @return
      */
     public Annonse returnerAnnonseObjekt() {
-//        Annonse valgtObjekt = (Annonse) tabellData.get(valgtRadItabell);
         Annonse valgtObjekt = (Annonse) tabellModellAnnonse.finnObjektIModell(valgtRadItabell);
         if (valgtObjekt != null) {
             return valgtObjekt;
@@ -604,7 +626,6 @@ public class ControllerTabell implements VisMeldingInterface {
     public void slettBolig() {
 
         Boolean ok = true;
-//        Bolig valgtObjekt = (Bolig) tabellData.get(valgtRadItabell);
         Bolig valgtObjekt = returnerBoligObjekt();
         if (valgtObjekt != null) {
 
@@ -613,7 +634,6 @@ public class ControllerTabell implements VisMeldingInterface {
                         "Slette bolig", "Nei");
                 if (valg == 0) {
                     try {
-//                        tabellData.remove(valgtRadItabell);
 
                         ok = boligliste.remove(valgtObjekt);
                         tabellModellBolig.removeRow(valgtRadItabell);
@@ -624,15 +644,17 @@ public class ControllerTabell implements VisMeldingInterface {
                             visMelding(null, "Bolig med ID " + valgtObjekt.getBoligID() + " ble IKKE slettet");
                         }
                     } catch (ArrayIndexOutOfBoundsException aiobe) {
+                        System.out.println("ArrayIndexOutofBounds ved sletting av bolig");
                     }
                 } else {
+                    //Bruker valgte å avbryte
                 }
             } else {
                 visMelding("Feil under sletting", "Kunne ikke slettet boligen.\n"
                         + "Den er enten utleid eller annonsert.");
             }
         }//end if
-    }
+    }//End slettBolig
 
     /**
      * Metoden finner person som skal slettes. Om den ikke har boliger
@@ -667,11 +689,12 @@ public class ControllerTabell implements VisMeldingInterface {
 
     /**
      * Hjelpemetode for slettePerson-metoden.
+     *
      * @param person
-     * @return 
+     * @return
      */
     private boolean harUtleierBoligerRegistrert(Person person) {
-        
+
         ArrayList<Bolig> registrerteBoliger = new ArrayList<>();
         Iterator<Bolig> iter = boligliste.iterator();
         while (iter.hasNext()) {
@@ -688,10 +711,9 @@ public class ControllerTabell implements VisMeldingInterface {
             return true;
         }
         return false;
-        
+
     }//End Method
 
-    
     /**
      * Om boligen er publisert så tas den av nett. Om den ikke er publisert så
      * sjekkes det om boligen finnes i annonseregistert. Om den gjør det så
@@ -805,8 +827,8 @@ public class ControllerTabell implements VisMeldingInterface {
                         tabellModellAnnonse.fyllTabellMedInnhold(tabellData);
                         tabell.setModel(tabellModellAnnonse);
                         tabellModellAnnonse.fireTableStructureChanged();
-                        tabell.getColumnModel().getColumn(2).setCellRenderer(hoyreStiltTekstRenderer);
-                        tabell.getColumnModel().getColumn(3).setCellRenderer(hoyreStiltTekstRenderer);
+                        tabell.getColumnModel().getColumn(2).setCellRenderer(vindu.getVenstrepanel().settHoyrestilltFormateringPaaTabell());
+                        tabell.getColumnModel().getColumn(3).setCellRenderer(vindu.getVenstrepanel().settHoyrestilltFormateringPaaTabell());
                         modellIBruk = tabellModellAnnonse;
                         vindu.getVenstrepanel().sorterTabellVedOppstart();
                         break;
