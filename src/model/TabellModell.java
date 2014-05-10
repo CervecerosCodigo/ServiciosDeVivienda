@@ -1,8 +1,6 @@
 package model;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import java.awt.Color;
-import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,10 +16,14 @@ public abstract class TabellModell<E> extends DefaultTableModel {
     String[] overskrift;
 
     public TabellModell() {
-
         mottattArray = new ArrayList<>();
     }
 
+    /**
+     * Tar i mot en ArrayList som danner grunnlaget for tabellens innhold.
+     *
+     * @param liste
+     */
     public void fyllTabellMedInnhold(ArrayList<E> liste) {
         this.mottattArray = liste;
     }
@@ -32,7 +34,7 @@ public abstract class TabellModell<E> extends DefaultTableModel {
         try {
             str = mottattArray.size();
         } catch (NullPointerException npe) {
-
+            System.out.println("TabellModell rapporterer NullPointer på getRowCount-metoden");
         }
         return str;
     }
@@ -42,6 +44,11 @@ public abstract class TabellModell<E> extends DefaultTableModel {
         mottattArray.remove(row);
     }
 
+    /**
+     * Finner objektet på angitt index.
+     * @param rad
+     * @return 
+     */
     public Object finnObjektIModell(int rad) {
         return mottattArray.get(rad);
     }
@@ -76,7 +83,6 @@ public abstract class TabellModell<E> extends DefaultTableModel {
 
     @Override
     public Object getValueAt(int rad, int kolonne) {
-
         return mottattArray.get(rad);
     }
 
