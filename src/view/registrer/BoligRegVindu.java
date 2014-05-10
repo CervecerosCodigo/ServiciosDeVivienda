@@ -1,6 +1,7 @@
 package view.registrer;
 
 import controller.VisMeldingInterface;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -10,11 +11,14 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
 import lib.GuiSizes;
 import lib.Ikoner;
 import lib.Melding;
@@ -69,19 +73,19 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
         super(800, 700, tittel);
 
         ///PANELER///
-        toppPanel = new CustomSubPanel(80, 0);
+        toppPanel = new CustomSubPanel(30, 0);
         venstrePanel = new CustomSubPanel("Felles", 0, 450);
         senterPanel = new CustomSubPanel(0, 0, new GridLayout(2, 1));
         bunnPanel = new CustomSubPanel(50, 0);
 
-        boligTypePanel = new CustomSubPanel(new FlowLayout());
+        boligTypePanel = new CustomSubPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         boligPanel = new CustomSubPanel(new GridBagLayout());
         leilighetPanel = new CustomSubPanel("Leilighet", 250, 200, new GridBagLayout());
         eneboligPanel = new CustomSubPanel("Enebolig", 250, 200, new GridBagLayout());
         knappContainer = new CustomSubPanel(new BorderLayout());
         knappPanel = new CustomSubPanel(new FlowLayout());
         bildeKnapperPanel = new CustomSubPanel(new GridLayout(1, 2));
-
+        
         add(toppPanel, BorderLayout.NORTH);
         add(venstrePanel, BorderLayout.WEST);
         add(senterPanel, BorderLayout.CENTER);
@@ -98,6 +102,8 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
         boligTypePanel.add(leilighetRButton);
         boligTypePanel.add(eneboligRButton);
         toppPanel.add(boligTypePanel);
+        leilighetRButton.setBorder(BorderFactory.createEtchedBorder()); // Midlertidig bugfiks for lengde på radioknapp tekst
+        
         ///START PÅ RADIOKANPPER FOR BOLIGVALG///
         //
         ///START PÅ DATAFELT FOR BOLIG///
