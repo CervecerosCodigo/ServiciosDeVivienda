@@ -1,9 +1,12 @@
 package controller;
 
+import java.awt.AWTKeyStroke;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
@@ -68,7 +71,10 @@ public class ControllerKeyBindings {
 		meglerVindu.getToppanelMegler().getNyKontraktItem().getActionMap().put("CTRL-K pressed", new CTRL_KPressed());
 		
 		//// CTRL-Tab for å skifte mellom tabs /////
-		startGUI.getMainPanel().getTabbedPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.CTRL_MASK), "CTRL-Tab pressed");
+		Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(startGUI.getMainPanel().getTabbedPane().getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+	    forwardKeys.remove(KeyStroke.getKeyStroke("ctrl TAB"));
+	    startGUI.getMainPanel().getTabbedPane().setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
+		startGUI.getMainPanel().getTabbedPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.CTRL_DOWN_MASK), "CTRL-Tab pressed");
 		startGUI.getMainPanel().getTabbedPane().getActionMap().put("CTRL-Tab pressed", new CTRL_TabPressed());
 	}
 	
@@ -163,6 +169,8 @@ public class ControllerKeyBindings {
 			
 			else if(startGUI.getMainPanel().getTabbedPane().getSelectedIndex() == 1)
 				startGUI.getMainPanel().getTabbedPane().setSelectedIndex(0);
+			
+			System.out.println("Test");
 		}
     }
     
