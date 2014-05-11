@@ -5,7 +5,6 @@ import java.util.logging.*;
 import javax.swing.*;
 import javax.swing.UIManager.*;
 import lib.Konstanter;
-import controller.SkrivTilLesFraFil;
 
 /**
  *

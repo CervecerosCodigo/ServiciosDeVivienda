@@ -94,7 +94,7 @@ public class MainController implements Serializable {
          * Fyller inn data med søkeresultat som kommer fra
          * ControllerToppPanelMegler
          */
-        toppPanelControllerMegler.setListListener(new ListListener() {
+        toppPanelControllerMegler.setListListener(new ListListenerInterface() {
 
             @Override
             public void listReady(ArrayList liste, ObjektType objekttype) {
@@ -133,7 +133,7 @@ public class MainController implements Serializable {
             }
         });
 
-        toppPanelControllerAnnonse.setListListener(new ListListener() {
+        toppPanelControllerAnnonse.setListListener(new ListListenerInterface() {
 
             @Override
             public void listReady(ArrayList liste, ObjektType obj) {

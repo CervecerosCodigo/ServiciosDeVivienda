@@ -13,7 +13,7 @@ import lib.ObjektType;
  * @author Lukas David Larsed, s198569@stud.hioa.no
  * @param <E>
  */
-public interface ListListener<E> {
+public interface ListListenerInterface<E> {
 
     /**
      * Brukes mellom TopPanelMegler og ControllerToppPanelMegler.

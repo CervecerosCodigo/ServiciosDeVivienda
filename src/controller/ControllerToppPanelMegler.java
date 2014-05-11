@@ -46,7 +46,7 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
     private int valgtRadItabell;
     private JTable tabell;
 
-    private ListListener listListener;
+    private ListListenerInterface listListener;
 
     public ControllerToppPanelMegler(AbstraktArkfane vindu, HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
@@ -104,7 +104,7 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
      *
      * @param listListener
      */
-    public void setListListener(ListListener listListener) {
+    public void setListListener(ListListenerInterface listListener) {
         this.listListener = listListener;
     }
 

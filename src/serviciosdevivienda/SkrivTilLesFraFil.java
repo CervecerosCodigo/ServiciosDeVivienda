@@ -1,6 +1,7 @@
-package controller;
+package serviciosdevivienda;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
+import controller.MainController;
 import java.io.*;
 import java.util.*;
 import lib.Konstanter;

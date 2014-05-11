@@ -33,7 +33,7 @@ public class ControllerToppPanelAnnonse {
     AbstraktArkfane vindu;
     private HashSet<Annonse> annonseliste;
     private AnnonseFilter afilter;
-    private ListListener listListener;
+    private ListListenerInterface listListener;
 
     public ControllerToppPanelAnnonse(AbstraktArkfane vindu, HashSet<Annonse> annonseliste) {
         this.vindu = vindu;
@@ -157,7 +157,7 @@ public class ControllerToppPanelAnnonse {
      *
      * @param listListener
      */
-    public void setListListener(ListListener listListener) {
+    public void setListListener(ListListenerInterface listListener) {
         this.listListener = listListener;
     }
     

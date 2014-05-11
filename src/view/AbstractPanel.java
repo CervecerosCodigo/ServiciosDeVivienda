@@ -1,12 +1,8 @@
 package view;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
+import javax.swing.*;
 import javax.swing.border.Border;
 import lib.Konstanter;
 
@@ -35,10 +31,7 @@ public abstract class AbstractPanel extends JPanel{
         
         setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
 
-//        Border innerBorder = BorderFactory.createTitledBorder(this.borderTitle);
-
         Border outerBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-//        setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
         setBorder(outerBorder);
     }
     
