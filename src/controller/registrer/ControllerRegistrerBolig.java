@@ -299,7 +299,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
 
         boligOK[0] = RegexTester.testID(String.valueOf(eierID));
         boligOK[1] = RegexTester.testID(String.valueOf(meglerID));
-        boligOK[2] = RegexTester.testGateadresse(adresse);
+        boligOK[2] = RegexTester.testGateadresseEnkel(adresse);
         boligOK[3] = RegexTester.testPostNummer(postNr);
         boligOK[4] = RegexTester.testPostOrtNavn(postSted);
         boligOK[5] = RegexTester.testKVMbolig(String.valueOf(boAreal));

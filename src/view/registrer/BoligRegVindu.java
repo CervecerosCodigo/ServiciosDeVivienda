@@ -121,7 +121,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
 
         eierField = new CustomJTextField("#####", RegexTester.PRIS, GuiSizes.FIELD_MEDIUM);
         meglerField = new CustomJTextField("10001", RegexTester.PRIS, GuiSizes.FIELD_MEDIUM);
-        adresseField = new CustomJTextField("Gate vei 10 B", RegexTester.GATE_ADRESSE, GuiSizes.FIELD_MEDIUM);//TODO: Her må det endres til gateadresse + husnummer regex
+        adresseField = new CustomJTextField("Gate vei 10 B", RegexTester.GATE_ADRESSE_ENKEL, GuiSizes.FIELD_MEDIUM);//TODO: Her må det endres til gateadresse + husnummer regex
         postNrField = new CustomJTextField("XXXX", RegexTester.POST_NUMMER_PATTERN, GuiSizes.FIELD_MEDIUM);
         postStedField = new CustomJTextField("Oslo", RegexTester.POSTORT_NAVN, GuiSizes.FIELD_MEDIUM);
         boArealField = new CustomJTextField("XX(X)", RegexTester.KVM_BOLIG, GuiSizes.FIELD_MEDIUM);

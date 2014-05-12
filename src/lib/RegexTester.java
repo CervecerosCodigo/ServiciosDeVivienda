@@ -22,6 +22,10 @@ public class RegexTester {
      * <u>Dette er foretrukket måte for å kontrollere riktig gateadresse.</u>
      */
     public static final String GATE_ADRESSE = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s][1-9]{1}[0-9]{0,2}?[\\s]?[A-ZÆØÅ]{0,1}$";
+    /**
+     * Tester for en gateadresse som kan betså av store og små bokstaver, siffrer, blanksteg og punkt samt bindestrekk.
+     */
+    public static final String GATE_ADRESSE_ENKEL = "^[A-ZÆØÅa-zæøå0-9\\s\\.\\-]+$";
     public static final String POST_NUMMER_PATTERN = "^[0-9]{4}$";
     public static final String POSTORT_NAVN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}$";
     public static final String TEL_NUMMER_NORSK = "^[1-9]{1}[0-9]{7}$";
@@ -246,9 +250,18 @@ public class RegexTester {
     public static boolean testGateadresse(String gateAdresse) {
         return patternMatchOK(gateAdresse, GATE_ADRESSE);
     }
+    
+    /**
+     * Tester for en gateadresse som kan betså av store og små bokstaver, siffrer, blanksteg og punkt samt bindestrekk. 
+     * @param gateAdresse
+     * @return 
+     */
+    public static boolean testGateadresseEnkel(String gateAdresse){
+        return patternMatchOK(gateAdresse, GATE_ADRESSE_ENKEL);
+    }
 
     /**
-     *
+     * Tester dersom strengen består av kun bosktaver. 
      * @param kunBokstaver
      * @return
      */
