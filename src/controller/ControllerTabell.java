@@ -36,9 +36,6 @@ public class ControllerTabell implements VisMeldingInterface {
     private HashSet<Soknad> soknadsliste;
     private ControllerBunnPanel bunnController;
 
-
-    private TabellSendDataIBrukInterface tabellOppdateringslytter;
-
     private AbstraktArkfane vindu;
     private ArrayList<Object> tabellData;
     private ObjektType objekttype;
@@ -781,17 +778,7 @@ public class ControllerTabell implements VisMeldingInterface {
         }
     }
 
-    /**
-     * Denne lytteren er ledd i komunikasjonen med toppanelets Controller.
-     * MainController initialiserer komunikasjonen.
-     *
-     * @param lytter
-     */
-    public void settTabellLytterSendDataSett(TabellSendDataIBrukInterface lytter) {
-        this.tabellOppdateringslytter = lytter;
-    }
-
-    /**
+   /**
      * Oppretter en arraylist med lengde av mottatt datasett. Denne metoden er
      * avhengig av søkeresultatene og må få inn parametere fra toppanel.
      */
@@ -859,12 +846,6 @@ public class ControllerTabell implements VisMeldingInterface {
                 System.out.println("settInnDataITabell gir NullPointer ved innlegging av nytt datasett");
             }//End Try/Catch
 
-            /**
-             * Sender ToppPanel liste over datasettet om settes i tabellen.
-             */
-            if (tabellOppdateringslytter != null) {
-                tabellOppdateringslytter.sendTabellDataIBruk(tabellData);
-            }
         }//End If datasett > 0
     }//End Metodet settInnDataITabell
 

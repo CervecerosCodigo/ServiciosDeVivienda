@@ -41,7 +41,6 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
     private HashSet<Kontrakt> kontraktliste;
     private HashSet<Soknad> soknadsliste;
 
-    private ArrayList<E> tabellData;
     private Object valgtObjekt;
     private int valgtRadItabell;
     private JTable tabell;
@@ -188,16 +187,11 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
     }
 
     /**
-     * Tar i mot tabellData fra MainController, og derfra fra TabellController.
-     * Målet er å vite hvilket objekt som er valgt i tabellen når en skal velge
-     * ny..
-     *
-     * @param tabellData
+     * Tar i mot en tom ArrayList som igjen fylles med søkeresultatet utført 
+     * av søkemetoden fsearch.
+     * ArrayListen blir så via listListener sendt til tabellen.
+     * @param sokeResultat 
      */
-    public void setTabellDataIBrukFraMainController(ArrayList<E> tabellData) {
-        this.tabellData = tabellData;
-    }
-
     public void sendSokeResultat(ArrayList<E> sokeResultat) {
         String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
 

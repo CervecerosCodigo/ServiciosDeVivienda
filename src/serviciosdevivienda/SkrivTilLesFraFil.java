@@ -7,6 +7,10 @@ import java.util.*;
 import lib.Konstanter;
 import model.*;
 
+/**
+ * Denne klassen kalles fra Mainmetoden og er den siste klassen som kjøres ved
+ * avsluttning av programmet. Her leses det fra og skrives det til fil
+ */
 public class SkrivTilLesFraFil {
 
     private HashSet<Person> personliste;
@@ -20,18 +24,17 @@ public class SkrivTilLesFraFil {
     public SkrivTilLesFraFil() {
 
         File fil = new File(Konstanter.FILNANV);
-        if (!fil.exists()) {//Et lite hack som brukes foreløpig
+        if (!fil.exists()) {
 
             this.personliste = new HashSet<>();
             this.boligliste = new HashSet<>();
             this.annonseliste = new HashSet<>();
             this.kontraktliste = new HashSet<>();
             this.soknadsliste = new LinkedHashSet<>();
-            
-            mainController = new MainController(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
-            
-            mainController.testData();
 
+            mainController = new MainController(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
+
+            //mainController.testData();
             System.out.println("Filen " + Konstanter.FILNANV + " eksisterer IKKE, fyller med dummydata.");
         } else {
             lesInnData();
@@ -39,6 +42,9 @@ public class SkrivTilLesFraFil {
         }
     }
 
+    /**
+     * Denne metoden skriver de serialiserte dataene til filen data.iso
+     */
     public void lagreData() {
         try {
             FileOutputStream fos = new FileOutputStream(new File(Konstanter.FILNANV));
@@ -58,13 +64,13 @@ public class SkrivTilLesFraFil {
 
             out.close();
 
-        } catch (IOException e) {//FIXME: trenger en felles plass for å fange opp de
+        } catch (IOException e) {
             System.out.println(e.fillInStackTrace());
         }
     }
 
     /**
-     * FIXME: Flyttes til egen klasse
+     * Metoden leser inn data fra datafilen data.iso.
      */
     public void lesInnData() {
         try {
@@ -86,7 +92,7 @@ public class SkrivTilLesFraFil {
             in.close();
             mainController = new MainController(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
 
-        } catch (IOException e) {//FIXME: trenger en felles plass for å fange opp de
+        } catch (IOException e) {
             System.out.println(e.fillInStackTrace());
 
         } catch (ClassNotFoundException e) {

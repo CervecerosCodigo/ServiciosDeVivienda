@@ -2,9 +2,13 @@ package view;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.JTextField;
 
+/**
+ * Denne klassen er en spesiallaget JTextField.
+ * Den tar inn flere paramterere, blant annet et RegEx-pattern som klassen tester på.
+ * @author espen
+ */
 public class CustomJTextField extends AbstractPanel {
 
     private JTextField textField;
@@ -28,28 +32,34 @@ public class CustomJTextField extends AbstractPanel {
 
                 @Override
                 public void focusGained(FocusEvent e) {
+                    
+                    //Er feltet tomt?
                     if (textField.getText().equals(fieldName)) {
                         textField.setText("");
                         textField.setBackground(Color.WHITE);
                         textField.setForeground(Color.GRAY);
                     } else {
+                        
+                        //Feltet er ikke tomt. Feiler RegEx?
                         if (!testInput()) {
                             textField.setForeground(Color.white);
+                            textField.setBackground(Color.red);
                         }
-                        textField.setBackground(Color.red);
                     }
-
                 }
-
+                
                 @Override
                 public void focusLost(FocusEvent e) {
-                    //textField.setBackground(Color.WHITE);
+                    
+                    //Hvis feltet er blankt settes standardtekst tilbake
                     if (textField.getText().equals("")) {
                         textField.setText(fieldName);
                         textField.setForeground(Color.GRAY);
                         textField.setBackground(Color.WHITE);
                         return;
                     } else {
+                        
+                        //Feltet er ikke blankt. Feiler Regex?
                         if (!testInput()) {
                             textField.setForeground(Color.white);
                             textField.setBackground(Color.RED);
@@ -59,12 +69,12 @@ public class CustomJTextField extends AbstractPanel {
 
                         }
                     }
-                }
-            });
+                }//End focusLost
+            });//End focusListener
 
-        }
+        }//End if
 
-    }
+    }//End constructor
 
     private boolean testInput() {
         return textField.getText().matches(pattern);
