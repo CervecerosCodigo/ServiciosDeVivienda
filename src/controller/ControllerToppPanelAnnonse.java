@@ -138,16 +138,8 @@ public class ControllerToppPanelAnnonse {
             arealMaks = Integer.parseInt(arealMaksS);
         }
 
-        // public HashSet<Annonse> filtrerEtterParametre(String poststed, Boligtype boligtype, int prisMin, int prisMaks, int arealMin, int arealMaks, boolean harBalkong, boolean harFellesvask, boolean harHage, boolean harKjeller)
-//        Melding.visMelding("filtrerAnnonser()", postSted+"\n"+boligType+"\n");
         HashSet<Annonse> annonser = afilter.filtrerEtterParametre(postSted, boligType, prisMin, prisMaks, arealMin, arealMaks, harBalkong, harFellesvask, harHage, harKjeller);
 
-        //Her kommer en enkell utskrift for å verifisere resultaten
-//        String utskrift = "";
-//        for(Annonse a : annonser){
-//            utskrift += a.toString()+"\n";
-//        }
-//        Melding.visMelding("Filtrerte annonser i CotrollerTopPanelAnnonse", utskrift);
         return annonser;
     }
 

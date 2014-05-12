@@ -61,7 +61,7 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
         vindu.getToppanelMegler().leggTilRadioLytter(new RadioLytter());
         vindu.getToppanelMegler().leggTilKnappeLytter(new KnappeLytter());
 
-        valgtObjekt = -1;
+//        valgtObjekt = -1;
         OppdaterStatistikk();
         finnValgtObjektITabell();
 
@@ -174,6 +174,7 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
                         valgtRadItabell = rad;
                         TabellModell modellIBruk = (TabellModell)tabell.getModel();
                         valgtObjekt = modellIBruk.finnObjektIModell(valgtRadItabell);
+                        
                     }
 
                 } catch (ArrayIndexOutOfBoundsException aiobe) {
@@ -183,7 +184,6 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
                 }
             }
         });
-
     }
 
     /**
@@ -261,5 +261,5 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
                 sendSokeResultat(sokeResultat);
             }
         }
-    }
+    }//End KnappeLytter
 }
