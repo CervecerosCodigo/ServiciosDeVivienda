@@ -1,5 +1,4 @@
 package register;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.io.Serializable;
 import java.util.*;
@@ -7,7 +6,6 @@ import java.util.*;
 /**
  * Abstract klasse for alle registerne.
  * Subklassene arver alle metoder og datasettet collection.
- * @author espen
  * @param <T> 
  */
 public abstract class Register<T> implements Serializable{
