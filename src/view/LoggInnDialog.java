@@ -33,7 +33,6 @@ public class LoggInnDialog extends JDialog {
 		setLayout(new FlowLayout());
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setLocationRelativeTo(getParent());
 		setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
@@ -49,6 +48,8 @@ public class LoggInnDialog extends JDialog {
         setIconImage(Ikoner.PASSORD.getImage());
 		
 		pack();
+                
+                this.setLocationRelativeTo(null);
 	}
 	
 	@Override
