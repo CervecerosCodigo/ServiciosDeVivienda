@@ -34,9 +34,9 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel implements VisMe
     private CustomJButton avbrytButton, lagreButton;
     
     public AnnonseRegVindu(String tittel) {
-        super(800, 350, tittel);
-        venstrePanel = new CustomSubPanel("Boliginfo", 0, 300, new GridBagLayout());
-        hoyrePanel = new CustomSubPanel("Annonseregistrering", 0, 500, new GridBagLayout());
+        super(800, 400, tittel);
+        venstrePanel = new CustomSubPanel("Boliginfo", 0, 350, new GridBagLayout());
+        hoyrePanel = new CustomSubPanel("Annonseregistrering", 0, 450, new GridBagLayout());
         bunnPanel = new CustomSubPanel("", 40, 0, new GridBagLayout());
         add(venstrePanel, BorderLayout.WEST);
         add(hoyrePanel, BorderLayout.EAST);
@@ -50,14 +50,14 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel implements VisMe
         boligEierEtternavnLabel = new JLabel("Eiers etternavn:");
         boligEierEpostLabel = new JLabel("Eiers epost:");
         boligEierTlfLabel = new JLabel("Eiers tlf:");
-        boligIDInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
-        boligAdresseInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
-        boligPostNrInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
-        boligPostStedInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
-        boligEierFornavnInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
-        boligEierEtternavnInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
-        boligEierEpostInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
-        boligEierTlfInfo = new CustomJTextField("", null, GuiSizes.FIELD_MEDIUM);
+        boligIDInfo = new CustomJTextField("", RegexTester.ID, GuiSizes.FIELD_MEDIUM);
+        boligAdresseInfo = new CustomJTextField("", RegexTester.GATE_ADRESSE, GuiSizes.FIELD_MEDIUM);
+        boligPostNrInfo = new CustomJTextField("", RegexTester.POST_NUMMER_PATTERN, GuiSizes.FIELD_MEDIUM);
+        boligPostStedInfo = new CustomJTextField("", RegexTester.POSTORT_NAVN, GuiSizes.FIELD_MEDIUM);
+        boligEierFornavnInfo = new CustomJTextField("", RegexTester.EPOST_PATTERN, GuiSizes.FIELD_MEDIUM);
+        boligEierEtternavnInfo = new CustomJTextField("", RegexTester.NAVN_PATTERN, GuiSizes.FIELD_MEDIUM);
+        boligEierEpostInfo = new CustomJTextField("", RegexTester.NAVN_PATTERN, GuiSizes.FIELD_MEDIUM);
+        boligEierTlfInfo = new CustomJTextField("", RegexTester.TEL_NUMMER_NORSK, GuiSizes.FIELD_MEDIUM);
         boligIDInfo.setEnabled(false);
         boligAdresseInfo.setEnabled(false);
         boligPostNrInfo.setEnabled(false);

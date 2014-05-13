@@ -2,16 +2,17 @@ package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 //Modifisert av Lukas 24.04.14, implemtering av søk, se git for detaljer.
 
+import controller.registrer.ControllerRegistrerAnnonse;
+import controller.registrer.ControllerRegistrerBolig;
+import controller.registrer.ControllerRegistrerUtleier;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
-
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import lib.ObjektType;
 import lib.ObjektType2;
 import model.Annonse;
@@ -19,13 +20,11 @@ import model.Bolig;
 import model.Kontrakt;
 import model.Person;
 import model.Soknad;
+import model.TabellModell;
 import model.Utleier;
 import search.FreeTextSearch;
 import view.AbstraktArkfane;
-import controller.registrer.ControllerRegistrerAnnonse;
-import controller.registrer.ControllerRegistrerBolig;
-import controller.registrer.ControllerRegistrerUtleier;
-import model.TabellModell;
+import view.CustomJButton;
 
 public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
 
@@ -44,8 +43,15 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
     private Object valgtObjekt;
     private int valgtRadItabell;
     private JTable tabell;
+    
+    private CustomJButton nyBolig;
+    private CustomJButton nyUtleier;
+    private CustomJButton nyAnnonse;
+    private CustomJButton nyKontrakt;
+    
 
     private ListListenerInterface listListener;
+    private NyKontraktInterface kontraktLytter;
 
     public ControllerToppPanelMegler(AbstraktArkfane vindu, HashSet<Person> personliste, HashSet<Bolig> boligliste,
             HashSet<Annonse> annonseliste, HashSet<Kontrakt> kontraktliste,
@@ -56,6 +62,10 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
         this.annonseliste = annonseliste;
         this.kontraktliste = kontraktliste;
         this.soknadsliste = soknadsliste;
+        nyBolig = vindu.getToppanelMegler().getNyBoligItem();
+        nyUtleier = vindu.getToppanelMegler().getNyUtleierItem();
+        nyAnnonse = vindu.getToppanelMegler().getNyAnnonseItem();
+        nyKontrakt = vindu.getToppanelMegler().getNyKontraktItem();        
 
         //Setter lyttere i Toppanelet.
         vindu.getToppanelMegler().leggTilRadioLytter(new RadioLytter());
@@ -105,6 +115,16 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
      */
     public void setListListener(ListListenerInterface listListener) {
         this.listListener = listListener;
+    }
+
+    /**
+     * Tar i mot en "nyKontraktLytter" som skal kjøre en metode fra
+     * ControllerTabell i det man trykker på knappen Ny kontrakt.
+     *
+     * @param kontraktLytter
+     */
+    public void setNyKontraktLytter(NyKontraktInterface kontraktLytter) {
+        this.kontraktLytter = kontraktLytter;
     }
 
     @Override
@@ -159,7 +179,7 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
     private void finnValgtObjektITabell() {
 
         tabell = vindu.getVenstrepanel().getTable();
-        
+
         tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             @Override
@@ -172,9 +192,9 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
                     if (rad != -1) {
                         rad = tabell.convertRowIndexToModel(rad);
                         valgtRadItabell = rad;
-                        TabellModell modellIBruk = (TabellModell)tabell.getModel();
+                        TabellModell modellIBruk = (TabellModell) tabell.getModel();
                         valgtObjekt = modellIBruk.finnObjektIModell(valgtRadItabell);
-                        
+                        aktivereDeaktivereKnapperEtterObjektType();
                     }
 
                 } catch (ArrayIndexOutOfBoundsException aiobe) {
@@ -187,10 +207,11 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
     }
 
     /**
-     * Tar i mot en tom ArrayList som igjen fylles med søkeresultatet utført 
-     * av søkemetoden fsearch.
-     * ArrayListen blir så via listListener sendt til tabellen.
-     * @param sokeResultat 
+     * Tar i mot en tom ArrayList som igjen fylles med søkeresultatet utført av
+     * søkemetoden fsearch. ArrayListen blir så via listListener sendt til
+     * tabellen.
+     *
+     * @param sokeResultat
      */
     public void sendSokeResultat(ArrayList<E> sokeResultat) {
         String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
@@ -234,6 +255,38 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
     }
 
     /**
+     * Hjelpemetode som dfinerer hvilke knapper som skal være aktivert til et hvert
+     * tidspunkt. En Skal ikke kunne lage ny Annonse uten å ha valgt en bolig først.
+     */
+    public void aktivereDeaktivereKnapperEtterObjektType(){
+        
+        if(valgtObjekt instanceof Bolig){
+            nyBolig.setEnabled(false);
+            nyUtleier.setEnabled(true);
+            nyAnnonse.setEnabled(true);
+            nyKontrakt.setEnabled(false);
+        }
+        if(valgtObjekt instanceof Utleier){
+            nyBolig.setEnabled(true);
+            nyUtleier.setEnabled(true);
+            nyAnnonse.setEnabled(false);
+            nyKontrakt.setEnabled(false);            
+        }
+        if(valgtObjekt instanceof Annonse){
+            nyBolig.setEnabled(false);
+            nyUtleier.setEnabled(true);
+            nyAnnonse.setEnabled(false);
+            nyKontrakt.setEnabled(false);            
+        }
+        if(valgtObjekt instanceof Soknad){
+            nyBolig.setEnabled(false);
+            nyUtleier.setEnabled(true);
+            nyAnnonse.setEnabled(false);
+            nyKontrakt.setEnabled(true);            
+        }
+    }
+            
+    /**
      * Lytteklasse for knappene i TopPanelMegler.java
      */
     class KnappeLytter implements ActionListener {
@@ -244,7 +297,6 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(vindu.getToppanelMegler().getNyAnnonseItem())) {
-
                 if (valgtObjekt instanceof Bolig) {
                     new ControllerRegistrerAnnonse(annonseliste, personliste, (Bolig) valgtObjekt);
                 }
@@ -256,6 +308,11 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
             }
             if (e.getSource().equals(vindu.getToppanelMegler().getNyUtleierItem())) {
                 new ControllerRegistrerUtleier(personliste);
+            }
+            if (e.getSource().equals(vindu.getToppanelMegler().getNyKontraktItem())) {
+                if (valgtObjekt instanceof Soknad) {
+                    kontraktLytter.runNyKontraktMetodeIControllerTabell();
+                }
             }
             if (e.getSource().equals(vindu.getToppanelMegler().getSokeKnapp())) {
                 sendSokeResultat(sokeResultat);

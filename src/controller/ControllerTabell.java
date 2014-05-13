@@ -469,7 +469,7 @@ public class ControllerTabell implements VisMeldingInterface {
      * registrert som kontrakt skal alle andre søknader på samme annonse
      * avvises.
      */
-    private void registrerKontrakt() {
+    public void registrerKontrakt() {
         Soknad soknad = returnerSoknadObjekt();
 
         /**
@@ -482,43 +482,50 @@ public class ControllerTabell implements VisMeldingInterface {
             int annonseID = soknad.getAnnonseObjekt().getAnnonseID();
             Megler megler = returnererMeglerObjektFraSoknad(soknad);
 
-            //Finner alle søknader som gelder for samme Annonse
-            ArrayList<Soknad> soknaderPaaSammeAnnonse = returnerAlleSoknaderPaaSammeAnnonse(annonseID);
+            int valg = Melding.visBekreftelseDialog("Ønsker du godkjenne denne søknaden?",
+                    "Godkjenn søknad", "Nei");
+            if (valg == 0) {
+                
+                //Finner alle søknader som gelder for samme Annonse
+                ArrayList<Soknad> soknaderPaaSammeAnnonse = returnerAlleSoknaderPaaSammeAnnonse(annonseID);
 
-            //Finner dagens dato
-            Calendar dagensDato = new GregorianCalendar(
-                    Calendar.getInstance().get(Calendar.YEAR),
-                    Calendar.getInstance().get(Calendar.MONTH),
-                    Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+                //Finner dagens dato
+                Calendar dagensDato = new GregorianCalendar(
+                        Calendar.getInstance().get(Calendar.YEAR),
+                        Calendar.getInstance().get(Calendar.MONTH),
+                        Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
-            //Oppretter et kontraktobjekt basert på søknaden.
-            Kontrakt kontrakt = new Kontrakt(soknad.getAnnonseObjekt(), megler, soknad.getLeietakerObjekt(), 12, dagensDato);
+                //Oppretter et kontraktobjekt basert på søknaden.
+                Kontrakt kontrakt = new Kontrakt(soknad.getAnnonseObjekt(), megler, soknad.getLeietakerObjekt(), 12, dagensDato);
 
-            //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt annonse avvises.
-            if (kontraktliste.add(kontrakt)) {
-                if (personliste.add(soknad.getLeietakerObjekt())) {
+                //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt annonse avvises.
+                if (kontraktliste.add(kontrakt)) {
+                    if (personliste.add(soknad.getLeietakerObjekt())) {
 
-                    soknad.setErBehandlet(true);
-                    soknad.setErGodkjent(true);
-                    //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
-                    soknaderPaaSammeAnnonse.remove(soknad);
+                        soknad.setErBehandlet(true);
+                        soknad.setErGodkjent(true);
+                        soknad.getAnnonseObjekt().getBolig().setErUtleid(true);
+                        //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
+                        soknaderPaaSammeAnnonse.remove(soknad);
 
-                    Iterator<Soknad> soknadIter = soknaderPaaSammeAnnonse.iterator();
-                    Soknad tempSoknad = null;
-                    while (soknadIter.hasNext()) {
-                        tempSoknad = soknadIter.next();
-                        tempSoknad.setErBehandlet(true);
-                        tempSoknad.setErGodkjent(false);
+                        Iterator<Soknad> soknadIter = soknaderPaaSammeAnnonse.iterator();
+                        Soknad tempSoknad = null;
+                        while (soknadIter.hasNext()) {
+                            tempSoknad = soknadIter.next();
+                            tempSoknad.setErBehandlet(true);
+                            tempSoknad.setErGodkjent(false);
+                        }
+                        //Setter annonsen "ikke aktiv"
+                        soknad.getAnnonseObjekt().setErSynlig(false);
+                        visMelding("Fullført!", "Kontrakten er opprettet!");
+                        tabellModellSoknad.fireTableDataChanged();
+                        vindu.getVenstrepanel().sorterTabellSoknadData();
                     }
 
-                    visMelding("Fullført!", "Kontrakten er opprettet!");
-                    tabellModellSoknad.fireTableDataChanged();
-                    vindu.getVenstrepanel().sorterTabellSoknadData();
+                } else {
+                    visMelding(null, "Kontrakten ble IKKE opprettet!");
                 }
-            } else {
-                visMelding(null, "Kontrakten ble IKKE opprettet!");
             }
-
         } else {
             visMelding("Leietaker finnes i registeret!", "Denne personen finnes i registeret.\n"
                     + "Personen kan dermed ikke registrere ny kontrakt.");

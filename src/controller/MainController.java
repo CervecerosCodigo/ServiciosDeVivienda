@@ -140,6 +140,19 @@ public class MainController implements Serializable {
                 liste.clear();
             }
         });
+        
+        
+        /**
+         * Denne lytteren kobler "Ny kontrakt"-knappen i meglerpanelet til 
+         * ControllerTabell.java sin registrerKontrakt-metode.
+         */
+        toppPanelControllerMegler.setNyKontraktLytter(new NyKontraktInterface() {
+
+            @Override
+            public void runNyKontraktMetodeIControllerTabell() {
+                tabellControllerMegler.registrerKontrakt();
+            }
+        });
        
     }//END CONSTRUCTOR
     
