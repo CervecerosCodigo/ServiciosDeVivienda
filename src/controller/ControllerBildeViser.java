@@ -43,10 +43,10 @@ public class ControllerBildeViser {
                 BufferedImage standardbilde = ImageIO.read(new File(new BildeFilSti().getAbsolutePathToStandardBilde()));
                 visBilde(standardbilde);
                 skruAvKnapper();
-            } 
-            
-            else lesInnBilder(bolig);
-                
+            } else {
+                lesInnBilder(bolig);
+            }
+
         } catch (IOException ex) {
             Melding.visMelding("Feil", "IO feil ved innlesning av bilder");
         }
@@ -102,10 +102,11 @@ public class ControllerBildeViser {
      * ikke indeks til oversikten over bilder.
      */
     private void visSpesifikkBilde(int bildenummer) {
-        if (bildenummer > 0)
+        if (bildenummer > 0) {
             visBilde(bilder[bildenummer - 1]);
-        
-        else Melding.visMelding("visSpesifikkBilde", "For lavt bildenummer");
+        } else {
+            Melding.visMelding("visSpesifikkBilde", "For lavt bildenummer");
+        }
     }
 
     private void kanppeStyring() {
@@ -116,17 +117,20 @@ public class ControllerBildeViser {
      * Viser neste bilde i den innleste bildearrayen hvis det finnnes.
      */
     private void visNesteBilde() {
-        bildeSomVises = bildeSomVises + 1;
-        if (bildeSomVises > antallBilder) {
-            bildeSomVises = 1;
-            visSpesifikkBilde(bildeSomVises);
-            oppdaterBildeTeller();
-        } 
-        
-        else {
-            visSpesifikkBilde(bildeSomVises);
-            oppdaterBildeTeller();
+        try {
+            bildeSomVises = bildeSomVises + 1;
+            if (bildeSomVises > antallBilder) {
+                bildeSomVises = 1;
+                visSpesifikkBilde(bildeSomVises);
+                oppdaterBildeTeller();
+            } else {
+                visSpesifikkBilde(bildeSomVises);
+                oppdaterBildeTeller();
+            }
+        } catch (NullPointerException npe) {
+            System.out.println("Bildefremviser gir nullpointer");
         }
+
     }
 
     /**
@@ -137,9 +141,7 @@ public class ControllerBildeViser {
         if (bildeSomVises >= 1) {
             visSpesifikkBilde(bildeSomVises);
             oppdaterBildeTeller();
-        } 
-        
-        else {
+        } else {
             bildeSomVises = antallBilder;
             visSpesifikkBilde(bildeSomVises);
             oppdaterBildeTeller();
@@ -160,9 +162,9 @@ public class ControllerBildeViser {
             visNesteBilde();
 
             Melding.visMelding("Bilde " + bildenr, "Bilde er slettet");
-        } 
-        
-        else Melding.visMelding("Bilde " + bildenr, "Bilde ble ikke slettet");
+        } else {
+            Melding.visMelding("Bilde " + bildenr, "Bilde ble ikke slettet");
+        }
         return false;
     }
 
@@ -175,22 +177,18 @@ public class ControllerBildeViser {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-        	
-            if (e.getSource().equals(bildeVindu.getTilbakeButton()))
+
+            if (e.getSource().equals(bildeVindu.getTilbakeButton())) {
                 visForrigeBilde();
-            
-            else if (e.getSource().equals(bildeVindu.getFremButton()))
+            } else if (e.getSource().equals(bildeVindu.getFremButton())) {
                 visNesteBilde();
-            
-            else if (e.getSource().equals(bildeVindu.getSlettButton())) {
+            } else if (e.getSource().equals(bildeVindu.getSlettButton())) {
                 try {
                     slettBilde(bolig, bildeSomVises);
                 } catch (IOException ex) {
                     Melding.visMelding("Sletting av bild", "IO feil etter sletting av bilde");
                 }
-            } 
-            
-            else if (e.getSource().equals(bildeVindu.getLukkButton())) {
+            } else if (e.getSource().equals(bildeVindu.getLukkButton())) {
                 bildeVindu.dispose();
             }
         }

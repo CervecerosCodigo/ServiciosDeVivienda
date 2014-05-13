@@ -61,7 +61,7 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         etternavnField = new CustomJTextField("Normann", RegexTester.KUN_BOKSTAVER_FSTORBOKSTAV, GuiSizes.FIELD_MEDIUM);
         epostField = new CustomJTextField("ola.normann@epost.com", RegexTester.EPOST_PATTERN, GuiSizes.FIELD_MEDIUM);
         telefonField = new CustomJTextField("XX XX XX XX", RegexTester.TEL_NUMMER_NORSK, GuiSizes.FIELD_MEDIUM);
-        erRepresentatForField = new CustomJTextField("Navn på representat", RegexTester.NAVN_PATTERN, GuiSizes.FIELD_MEDIUM);
+        erRepresentatForField = new CustomJTextField("Navn på representat", RegexTester.GATE_ADRESSE_ENKEL, GuiSizes.FIELD_MEDIUM);
         //Cheboxes
         erRepresentantCheckBox = new CustomJCheckBox();
         //Componenter for en leietaker

@@ -132,7 +132,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
             //Setter opp datafelt for leilighet
             bRegVindu.getEtasjeNrField().setText(String.valueOf(((Leilighet) bolig).getEtasjeNr()));
             bRegVindu.getBalkongArealField().setText(String.valueOf(((Leilighet) bolig).getBalkongAreal()));
-            bRegVindu.getBoArealField().setText(String.valueOf(String.valueOf(((Leilighet) bolig).getBodAreal())));
+            bRegVindu.getBoArealField().setText(String.valueOf(((Leilighet) bolig).getBodAreal()));
             bRegVindu.getHarHeisCheckBox().setSelected(((Leilighet) bolig).isHarHeis());
             bRegVindu.getHarGarasjeCheckBox().setSelected(((Leilighet) bolig).isHarGarsje());
             bRegVindu.getHarFellesVaskeriCheckbox().setSelected(((Leilighet) bolig).isHarFellesvaskeri());

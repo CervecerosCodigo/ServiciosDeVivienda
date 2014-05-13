@@ -25,7 +25,7 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
 
     private PersonRegVindu vindu;
     TabellFireDataChangedInterface tabellOppdateringLytter;
-    
+
     /**
      * Registrer en NY utleier.
      *
@@ -95,9 +95,10 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
         epost = vindu.getEpostField().getText();
         telnr = vindu.getTelefonField().getText();
         erRepresentant = vindu.getErRepresentantCheckBox().isSelected();
-        
-        if (erRepresentant)
+
+        if (erRepresentant) {
             representantNavn = vindu.getErRepresentantForField().getText();
+        }
     }
 
     /**
@@ -113,9 +114,10 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
         boolean epostOK = RegexTester.testEpost(epost);
         boolean telnrOK = RegexTester.testTelNummerNorsk(telnr);
         boolean representantNavnOK = true;
-        
-        if (erRepresentant)
-            representantNavnOK = RegexTester.testKunBokstaverEllerTall(representantNavn);
+
+        if (erRepresentant) {
+            representantNavnOK = RegexTester.testGateadresseEnkel(representantNavn);
+        }
 
         return fnavnOK && enavnOK && epostOK && telnrOK && representantNavnOK;
     }
@@ -128,16 +130,16 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
     private void registrerNyUtleier() {
         if (kontrollerData()) {
             Person utleier = new Utleier(fnavn, enavn, epost, telnr, erRepresentant, representantNavn);
-            
+
             if (super.registrerObjekt((Utleier) utleier)) {
-                Melding.visMelding("Ny utleier", "Utleier:\n" + fnavn + " " + enavn + "\nEr registrert");
+                visMelding("Ny utleier", "Utleier:\n" + fnavn + " " + enavn + "\nEr registrert");
                 vindu.dispose();
-            } 
-            
-            else Melding.visMelding("Ny utleier", "Feil ved registrering");
-        } 
-        
-        else Melding.visMelding("Feil", "Feil i skjema");
+            } else {
+                visMelding("Ny utleier", "Feil ved registrering");
+            }
+        } else {
+            visMelding("Feil", "Feil i skjema");
+        }
     }
 
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
@@ -150,7 +152,7 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
         vindu.getEtternavnField().setText(utleier.getEtternavn());
         vindu.getEpostField().setText(utleier.getEpost());
         vindu.getTelefonField().setText(utleier.getTelefon());
-        
+
         if (utleier.isErRepresentant()) {
             vindu.getErRepresentantCheckBox().setSelected(true);
             vindu.getErRepresentantForField().setEnabled(true);
@@ -175,17 +177,17 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
                 }
 
                 if (super.registrerObjekt((Utleier) utleier)) {
-                    Melding.visMelding("Oppdater utleier", "Oppdatering vellykket.");
+                    visMelding("Oppdater utleier", "Oppdatering vellykket.");
                     vindu.dispose();
-                } 
-                
-                else Melding.visMelding("Oppdater utleier", "Oppdatering misslykkedes ved registrering.");
-            } 
-            
-            else Melding.visMelding("Oppdater utleier", "Oppdatering misslykkedes ved sletting.");
-        } 
-        
-        else Melding.visMelding("Feil", "Feil i skjema");
+                } else {
+                    visMelding("Oppdater utleier", "Oppdatering misslykkedes ved registrering.");
+                }
+            } else {
+                visMelding("Oppdater utleier", "Oppdatering misslykkedes ved sletting.");
+            }
+        } else {
+            visMelding("Feil", "Feil i skjema");
+        }
     }
 
     public void settTabellOppdateringsLytter(TabellFireDataChangedInterface lytter) {
@@ -194,7 +196,7 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
 
     @Override
     public void visMelding(String overskrift, String melding) {
-        Melding.visMelding(overskrift, melding);
+        vindu.visMelding(overskrift, melding);
     }
 
     class KnappeLytter implements ActionListener {
@@ -207,17 +209,15 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
                     if (tabellOppdateringLytter != null) {
                         tabellOppdateringLytter.oppdaterTabellEtterEndring();
                     }
-                } 
-                
-                else {
+                } else {
                     registrerOppdatering();
-                    if (tabellOppdateringLytter != null)
+                    if (tabellOppdateringLytter != null) {
                         tabellOppdateringLytter.oppdaterTabellEtterEndring();
+                    }
                 }
-            } 
-            
-            else if (e.getSource().equals(vindu.getAvbrytButton()))
+            } else if (e.getSource().equals(vindu.getAvbrytButton())) {
                 vindu.dispose();
+            }
         }
     }
 }
