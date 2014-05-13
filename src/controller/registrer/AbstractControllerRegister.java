@@ -23,7 +23,7 @@ public abstract class AbstractControllerRegister<E> {
     Object obj;
 
     /**
-     * Konstruktør for registrering av en ny bolig.
+     * Konstruktør for registrering av en nytt objekt f.eks bolig.
      *
      * @param set
      */
@@ -32,7 +32,7 @@ public abstract class AbstractControllerRegister<E> {
     }
 
     /**
-     * Konstruktør for andring av en ny bolig.
+     * Konstruktør for andring av et eksissterende objekt, f.eks bolig.
      *
      * @param obj
      * @param set
