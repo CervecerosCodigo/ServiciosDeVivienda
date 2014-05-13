@@ -3,11 +3,6 @@ package lib;
 
 /**
  * En enum type innholder konstanter med de vindustørrelser som brukes i programmet.
- * File: VinduStorrelse.java
- * Package: lib
- * Project: ServiciosDeVivienda
- * Apr 8, 2014
- * @author Lukas David Larsed, s198569@stud.hioa.no
  */
 public enum VinduStorrelse {
 

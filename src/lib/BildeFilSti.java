@@ -15,20 +15,15 @@ import model.Bolig;
 
 /**
  * Klassen har metoder for å finne et eller flere bilder til en bolig gjennom å
- * bruke absolute path som skal være uavhengig operativsystem. File:
- * BildeFilSti.java Package: lib Project: ServiciosDeVivienda Apr 22, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * bruke absolutt path som skal være uavhengig operativsystem.
  */
 public class BildeFilSti {
 
-//    InputStream instream;
-//    OutputStream outstream;
     public BildeFilSti() {
     }
 
     /**
-     * Returnerer an absolute filsti til alle bildegallerier for boliger.
+     * Returnerer en absolutt filsti til alle bildegallerier for boliger.
      *
      * @return String med filsti
      */
@@ -39,7 +34,7 @@ public class BildeFilSti {
     }
 
     /**
-     * Returnerer filsti til standardbilde ved oprettelse av ny bolig. Denne
+     * Returnerer filsti til standardbilde ved opprettelse av ny bolig. Denne
      * brukes dersom brukeren ikke laster opp egne bilder.
      *
      * @return String med filsti
@@ -49,7 +44,7 @@ public class BildeFilSti {
     }
 
     /**
-     * Returnerer den absolute filstien til posisjonen med bildegallerier (skal
+     * Returnerer den absolutte filstien til posisjonen med bildegallerier (skal
      * fungere uavhengig operativsystem) gitt en referanse til et boligobjekt.
      *
      * @param bolig
@@ -93,9 +88,9 @@ public class BildeFilSti {
      * @return String
      */
     public String getBoligFremsideBildeHTML(Bolig bolig) {
-        if (erGalleriMappeTom(bolig)) {
+        if (erGalleriMappeTom(bolig))
             return "file:" + getAbsolutePathToStandardBilde();
-        }
+            
         return "file:" + getBoligFremsideBilde(bolig);
     }
 
@@ -122,11 +117,7 @@ public class BildeFilSti {
     public void lagBildemappeForBolig(Bolig bolig) {
         File filsti = new File(getBoligGalleryPath(bolig));
         try {
-            if (filsti.mkdirs()) {
-                //Trenger ikke å kopiere standardbilde lengre da det bildet blir lest inn fra felles mappe dersom boligens eget galleri er tomt
-//                kopierStandardBilde(bolig);
-//                kopierStandardBilde2(bolig);
-            }
+            filsti.mkdirs();
 
         } catch (SecurityException se) {
             Melding.visMelding("Sikkerhetsvarning", "Mislykket med å oprette gallerimappe\n" + se.getMessage());
@@ -152,7 +143,7 @@ public class BildeFilSti {
 
     /**
      * Alternativ metode for å kopiere standard bildefil. Kan brukes dersom den
-     * første metoden vil får problem.
+     * første metoden vil får problemer.
      *
      * @param bolig
      */

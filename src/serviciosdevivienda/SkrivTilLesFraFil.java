@@ -1,5 +1,4 @@
 package serviciosdevivienda;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import controller.MainController;
 import java.io.*;
@@ -33,10 +32,10 @@ public class SkrivTilLesFraFil {
             this.soknadsliste = new LinkedHashSet<>();
 
             mainController = new MainController(personliste, boligliste, annonseliste, kontraktliste, soknadsliste);
-
-            //mainController.testData();
             System.out.println("Filen " + Konstanter.FILNANV + " eksisterer IKKE, fyller med dummydata.");
-        } else {
+        } 
+        
+        else {
             lesInnData();
             System.out.println("Leser inn data fra fil.");
         }

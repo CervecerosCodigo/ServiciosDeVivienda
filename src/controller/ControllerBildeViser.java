@@ -18,11 +18,7 @@ import view.BildeViser;
 
 /**
  * Controllerklasse til bildeviseren. Bildeviseren finnes i view pakken og
- * brukes til å vise alle bilder som hører til en bolig. File:
- * ControllerBildeViser.java Package: controller Project: ServiciosDeVivienda
- * May 5, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * brukes til å vise alle bilder som hører til en bolig.
  */
 public class ControllerBildeViser {
 
@@ -47,10 +43,10 @@ public class ControllerBildeViser {
                 BufferedImage standardbilde = ImageIO.read(new File(new BildeFilSti().getAbsolutePathToStandardBilde()));
                 visBilde(standardbilde);
                 skruAvKnapper();
-            } else {
-                //Tester å vise bilder
-                lesInnBilder(bolig);
-            }
+            } 
+            
+            else lesInnBilder(bolig);
+                
         } catch (IOException ex) {
             Melding.visMelding("Feil", "IO feil ved innlesning av bilder");
         }
@@ -73,7 +69,7 @@ public class ControllerBildeViser {
     }
 
     /**
-     * Leser inn alle bilder som han finner i galleriet inn i arrayen med
+     * Leser inn alle bilder som finnes i galleriet, inn i arrayen med
      * BufferedImage.
      *
      * @param bolig
@@ -91,29 +87,25 @@ public class ControllerBildeViser {
     }
 
     /**
-     * Setter bilde i panelen for visning
+     * Setter bilde i panelet for visning
      *
      * @param bilde
      */
     private void visBilde(BufferedImage bilde) {
-//        bildeVindu.getBildeLabel().repaint();
         bildeVindu.getBildeLabel().setIcon(new ImageIcon(bilde));
     }
 
     /**
-     * Henter opp et bilde fra arrayen og viser det i panelen.
+     * Henter opp et bilde fra arrayen og viser det i panelet.
      *
      * @param bildenummer Et bildenummer for bilde som er lagret i galleriet
      * ikke indeks til oversikten over bilder.
      */
     private void visSpesifikkBilde(int bildenummer) {
-
-        if (bildenummer > 0) {
+        if (bildenummer > 0)
             visBilde(bilder[bildenummer - 1]);
-        } else {
-            Melding.visMelding("visSpesifikkBilde", "For lavt bildenummer");
-        }
-
+        
+        else Melding.visMelding("visSpesifikkBilde", "For lavt bildenummer");
     }
 
     private void kanppeStyring() {
@@ -124,31 +116,30 @@ public class ControllerBildeViser {
      * Viser neste bilde i den innleste bildearrayen hvis det finnnes.
      */
     private void visNesteBilde() {
-//        oppdaterBildeTeller();
-
         bildeSomVises = bildeSomVises + 1;
         if (bildeSomVises > antallBilder) {
             bildeSomVises = 1;
             visSpesifikkBilde(bildeSomVises);
             oppdaterBildeTeller();
-        } else {
+        } 
+        
+        else {
             visSpesifikkBilde(bildeSomVises);
             oppdaterBildeTeller();
         }
-
     }
 
     /**
      * Viser forrige bilde i arrayen så lenge det finnes.
      */
     private void visForrigeBilde() {
-
-//        oppdaterBildeTeller();
         bildeSomVises = bildeSomVises - 1;
         if (bildeSomVises >= 1) {
             visSpesifikkBilde(bildeSomVises);
             oppdaterBildeTeller();
-        } else {
+        } 
+        
+        else {
             bildeSomVises = antallBilder;
             visSpesifikkBilde(bildeSomVises);
             oppdaterBildeTeller();
@@ -160,8 +151,6 @@ public class ControllerBildeViser {
         String bildeSti = bildemappeSti + "/" + bildenr + ".jpg";
         File bildeTilSletting = new File(bildeSti);
 
-//        BoligBilde boligBilder = new BoligBilde();
-//        boligBilder.setInkrementellNavnAlleFiler(bolig);
         if (bildeTilSletting.delete()) {
 
             BoligBilde boligBilder = new BoligBilde();
@@ -171,10 +160,9 @@ public class ControllerBildeViser {
             visNesteBilde();
 
             Melding.visMelding("Bilde " + bildenr, "Bilde er slettet");
-        } else {
-            Melding.visMelding("Bilde " + bildenr, "Bilde ble ikke slettet");
-        }
-
+        } 
+        
+        else Melding.visMelding("Bilde " + bildenr, "Bilde ble ikke slettet");
         return false;
     }
 
@@ -187,20 +175,24 @@ public class ControllerBildeViser {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(bildeVindu.getTilbakeButton())) {
+        	
+            if (e.getSource().equals(bildeVindu.getTilbakeButton()))
                 visForrigeBilde();
-            } else if (e.getSource().equals(bildeVindu.getFremButton())) {
+            
+            else if (e.getSource().equals(bildeVindu.getFremButton()))
                 visNesteBilde();
-            } else if (e.getSource().equals(bildeVindu.getSlettButton())) {
+            
+            else if (e.getSource().equals(bildeVindu.getSlettButton())) {
                 try {
                     slettBilde(bolig, bildeSomVises);
                 } catch (IOException ex) {
                     Melding.visMelding("Sletting av bild", "IO feil etter sletting av bilde");
                 }
-            } else if (e.getSource().equals(bildeVindu.getLukkButton())) {
+            } 
+            
+            else if (e.getSource().equals(bildeVindu.getLukkButton())) {
                 bildeVindu.dispose();
             }
         }
-
     }
 }

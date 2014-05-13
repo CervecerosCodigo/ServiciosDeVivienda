@@ -100,19 +100,20 @@ public class Soknad implements Serializable, Searchable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+            
+        if (getClass() != obj.getClass())
             return false;
-        }
+            
         final Soknad other = (Soknad) obj;
-        if (!Objects.equals(this.annonse, other.annonse)) {
+        
+        if (!Objects.equals(this.annonse, other.annonse))
             return false;
-        }
-        if (!Objects.equals(this.leietaker, other.leietaker)) {
+        
+        if (!Objects.equals(this.leietaker, other.leietaker))
             return false;
-        }
+        
         return true;
     }
 

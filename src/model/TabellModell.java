@@ -1,13 +1,10 @@
 package model;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
  * Den abstrakte klassen som tabellens datamodeller arver.
- *
- * @author espen
  * @param <E>
  */
 public abstract class TabellModell<E> extends DefaultTableModel {
@@ -21,7 +18,6 @@ public abstract class TabellModell<E> extends DefaultTableModel {
 
     /**
      * Tar i mot en ArrayList som danner grunnlaget for tabellens innhold.
-     *
      * @param liste
      */
     public void fyllTabellMedInnhold(ArrayList<E> liste) {
@@ -60,7 +56,6 @@ public abstract class TabellModell<E> extends DefaultTableModel {
 
     /**
      * Returnerer antall kolonner i tabellen.
-     *
      * @return
      */
     @Override
@@ -75,9 +70,9 @@ public abstract class TabellModell<E> extends DefaultTableModel {
 
     @Override
     public Class getColumnClass(int c) {
-        if (mottattArray.size() > 0) {
+        if (mottattArray.size() > 0)
             return getValueAt(0, c).getClass();
-        }
+        
         return Object.class;
     }
 

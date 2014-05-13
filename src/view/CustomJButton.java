@@ -1,5 +1,4 @@
 package view;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -14,12 +13,10 @@ public class CustomJButton extends JButton {
 
     /**
      * En knapp med tekst.
-     *
      * @param navn
      */
     public CustomJButton(String navn) {
         this.navn = navn;
-        //setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         setText(this.navn);
     }
 
@@ -32,7 +29,6 @@ public class CustomJButton extends JButton {
      */
     public CustomJButton(String navn, int bredde, int hoyde) {
         this.navn = navn;
-        //setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         setText(this.navn);
         setPreferredSize(new Dimension(bredde, hoyde));
     }
@@ -46,19 +42,16 @@ public class CustomJButton extends JButton {
     public CustomJButton(String navn, Icon ikone) {
         this.navn = navn;
         this.ikone = ikone;
-        //setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         setText(this.navn);
         setIcon(this.ikone);
     }
 
     /**
      * En knapp med ikone.
-     *
-     * @param ikone
+     * @param ikon
      */
     public CustomJButton(Icon ikone) {
         this.ikone = ikone;
-        //setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         setIcon(this.ikone);
     }
 
@@ -70,9 +63,7 @@ public class CustomJButton extends JButton {
      */
     public CustomJButton(Icon ikone, int bredde, int hoyde) {
         this.ikone = ikone;
-        //setBackground(Konstanter.BAKGRUNNSFARGEPANEL);
         setIcon(this.ikone);
         setPreferredSize(new Dimension(bredde, hoyde));
     }
-
 }

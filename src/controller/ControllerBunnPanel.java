@@ -1,5 +1,4 @@
 package controller;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi
 
 import controller.registrer.*;
 import java.awt.event.*;
@@ -14,8 +13,6 @@ import view.MainPanel;
 /**
  * Denne klassen er kontrolleren til bunnpanelet i både meglerVindu og
  * annonseVindu.
- *
- * @author espen
  */
 public class ControllerBunnPanel {
 
@@ -27,12 +24,10 @@ public class ControllerBunnPanel {
     private TabellModell modellIBruk;
 
     public ControllerBunnPanel(HashSet<Bolig> boligliste, HashSet<Person> personliste, HashSet<Annonse> annonseliste, HashSet<Soknad> soknadliste) {
-
         this.boligliste = boligliste;
         this.personliste = personliste;
         this.annonseliste = annonseliste;
         this.soknadliste = soknadliste;
-
     }
 
     /**
@@ -57,7 +52,7 @@ public class ControllerBunnPanel {
     /**
      * private lytteklasse for knappene i bunnpanelet.
      */
-    class KnappeLytter implements ActionListener {
+    private class KnappeLytter implements ActionListener {
 
         AbstraktArkfane vindu;
         int raderITabell;
@@ -66,9 +61,9 @@ public class ControllerBunnPanel {
         public KnappeLytter(AbstraktArkfane vindu) {
             this.vindu = vindu;
             tabell = vindu.getVenstrepanel().getTable();
-            if (vindu instanceof ArkfaneAnnonse) {
+            
+            if (vindu instanceof ArkfaneAnnonse)
                 vindu.getBunnpanel().getMultiKnapp().setText("Send forespørsel");
-            }
         }
 
         /**
@@ -84,35 +79,40 @@ public class ControllerBunnPanel {
             if (e.getSource().equals(vindu.getBunnpanel().getMultiKnapp())) {
                 try {
                     int valgtRad = tabell.getSelectedRow();
-                    if (valgtRad != -1) {
+                    
+                    if (valgtRad != -1)
                         valgtRad = tabell.convertRowIndexToModel(valgtRad);
-                    }
 
                     if (tabell.getModel() instanceof TabellModellPerson) {
                         modellIBruk = (TabellModellPerson) modellIBruk;
                         new ControllerRegistrerUtleier((HashSet<Person>) personliste, (Utleier) modellIBruk.finnObjektIModell(valgtRad));
                     }
+                    
                     if (tabell.getModel() instanceof TabellModellBolig) {
                         modellIBruk = (TabellModellBolig) modellIBruk;
                         new ControllerRegistrerBolig(boligliste, (Bolig) modellIBruk.finnObjektIModell(valgtRad));
                     }
+                    
                     if (tabell.getModel() instanceof TabellModellAnnonse) {
                         modellIBruk = (TabellModellAnnonse) modellIBruk;
-                        if (vindu instanceof ArkfaneMegler) {
+                        
+                        if (vindu instanceof ArkfaneMegler)
                             new ControllerRegistrerAnnonse(annonseliste, personliste, (Annonse) modellIBruk.finnObjektIModell(valgtRad));
-                        } else {
-                            new ControllerRegistrerSoknad(personliste, annonseliste, soknadliste, (Annonse) modellIBruk.finnObjektIModell(valgtRad));
-                        }
+                        
+                        else 
+                        	new ControllerRegistrerSoknad(personliste, annonseliste, soknadliste, (Annonse) modellIBruk.finnObjektIModell(valgtRad));
                     }
-
-                } catch (ArrayIndexOutOfBoundsException aoibe) {
+                } 
+                
+                catch (ArrayIndexOutOfBoundsException aoibe) {
                     System.out.println("ArrayIndexOutOfBoundException BunnController Endreknapp");
                 }
-
-            } else if (e.getSource().equals(vindu.getBunnpanel().getTilbakeKnapp())) {
+            } 
+            
+            else if (e.getSource().equals(vindu.getBunnpanel().getTilbakeKnapp()))
                 vindu.getVenstrepanel().getTable().changeSelection(tabell.getSelectedRow() - 1, 0, false, false);
 
-            } else if (e.getSource().equals(vindu.getBunnpanel().getFremKnapp())) {
+            else if (e.getSource().equals(vindu.getBunnpanel().getFremKnapp())) {
                 int valgtRad = vindu.getVenstrepanel().getTable().getSelectedRow();
 
                 if (valgtRad + 1 < vindu.getVenstrepanel().getTable().getRowCount()) {
@@ -120,6 +120,5 @@ public class ControllerBunnPanel {
                 }
             }
         }
-
     }
 }

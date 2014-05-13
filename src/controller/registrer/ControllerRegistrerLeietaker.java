@@ -18,10 +18,7 @@ import view.registrer.PersonRegVindu;
 /**
  * Klassen brukes til registrering og redigering av leietakere. Forskjellen fra
  * registrering av utleiere er at denne klassen registrer og sender inn en
- * forespørsel i tilleg. File: ControllerRegistrerLeietaker.java Package:
- * controller.registrer Project: ServiciosDeVivienda May 6, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * forespørsel i tilegg.
  */
 public class ControllerRegistrerLeietaker extends AbstractControllerRegister implements VisMeldingInterface{
 
@@ -32,9 +29,7 @@ public class ControllerRegistrerLeietaker extends AbstractControllerRegister imp
     private Sivilstatus sivilStatus;
     private Arbeidsforhold arbeidsForhold;
     private String yrke, soknadsTekst;
-
     private final boolean erNyregistrering;
-
     private PersonRegVindu vindu;
 
     //Register og felt for innsedning av annonse
@@ -59,7 +54,6 @@ public class ControllerRegistrerLeietaker extends AbstractControllerRegister imp
         skjulRepresentantFelter();
         
         vindu.setIconImage(Ikoner.NY_FORESPORSEL.getImage());
-
         vindu.addPersonPanelListener(new KnappeLytter());
     }
 
@@ -120,12 +114,12 @@ public class ControllerRegistrerLeietaker extends AbstractControllerRegister imp
             if (soknadsRegister.add(soknad)) {
                 Melding.visMelding("Søknad", "" + fnavn + "!\nDin søknad er sendt.");
                 vindu.dispose();
-            } else {
-                Melding.visMelding("Søknad", "Feil ved sendning av søknad.");
-            }
-        }else{
-            Melding.visMelding("Feil", "Feil i skjema");
+            } 
+            
+            else Melding.visMelding("Søknad", "Feil ved sendning av søknad.");
         }
+        
+        else Melding.visMelding("Feil", "Feil i skjema");
     }
 
     @Override
@@ -138,13 +132,12 @@ public class ControllerRegistrerLeietaker extends AbstractControllerRegister imp
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(vindu.getLagreButton())) {
-                if(erNyregistrering){
+                if(erNyregistrering)
                     registrerNyLeietaker();
-                }
-            } else if (e.getSource().equals(vindu.getAvbrytButton())) {
+            } 
+            
+            else if (e.getSource().equals(vindu.getAvbrytButton()))
                 vindu.dispose();
-            }
         }
-
     }
 }

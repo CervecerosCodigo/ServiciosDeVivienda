@@ -3,10 +3,7 @@ package lib;
 import javax.swing.ImageIcon;
 
 /**
- * Static klasse med ImageIcons for gui. File: Ikoner.java Package: lib Project:
- * ServiciosDeVivienda May 7, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * Static klasse med ImageIcons for gui.
  */
 public class Ikoner {
 

@@ -13,10 +13,7 @@ import view.registrer.AbstractRegistreringsPanel;
 import view.registrer.CustomSubPanel;
 
 /**
- * Klassen er GUI for fremvisning av bilder for en bolig. File: BildeViser.java
- * Project: ServiciosDeVivienda May 4, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * Klassen er GUI for fremvisning av bilder for en bolig.
  */
 public class BildeViser extends AbstractRegistreringsPanel {
 
@@ -59,10 +56,8 @@ public class BildeViser extends AbstractRegistreringsPanel {
         add(panelTeller, BorderLayout.CENTER);
         add(panelButtons, BorderLayout.SOUTH);
         
-        if(!erMegler){
+        if(!erMegler)
             slettButton.setEnabled(false);
-        }
-        
     }
 
     public JLabel getBildeLabel() {

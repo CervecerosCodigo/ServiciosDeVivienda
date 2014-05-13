@@ -33,12 +33,7 @@ import view.registrer.BoligRegVindu;
 
 /**
  * Kontroller for boligregistreringsvindu. Bruekes både for registrering av en
- * ny bolig og endring av alerede lagrede oplysninger.
- *
- * <br><br>
- * File: ControllerRegistrerBolig.java Project: ServiciosDeVivienda Apr 29, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * ny bolig og endring av alerede lagrede opplysninger.
  */
 public class ControllerRegistrerBolig extends AbstractControllerRegister implements VisMeldingInterface {
 
@@ -115,7 +110,6 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         bRegVindu.setKnappeLytter(new KnappeLytter());
 
         //Fyller inn felt i bolig panelen med data
-        //FIXME: Dette borde egentlig flyttes til en egen metode
         bRegVindu.getEierField().setText(String.valueOf(bolig.getPersonID()));
         bRegVindu.getAdresseField().setText(bolig.getAdresse());
         bRegVindu.getPostNrField().setText(bolig.getPostnummer());
@@ -123,9 +117,10 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         bRegVindu.getBoArealField().setText(String.valueOf(bolig.getBoAreal()));
         bRegVindu.getByggeArField().setText(String.valueOf(bolig.getByggeAr()));
         bRegVindu.getDatoVelger().setDato(bolig.getTilgjengeligForUtleie().get(Calendar.YEAR), bolig.getTilgjengeligForUtleie().get(Calendar.MONTH), bolig.getTilgjengeligForUtleie().get(Calendar.DAY_OF_MONTH));
-        if (bolig.isErUtleid()) {
+        
+        if (bolig.isErUtleid())
             bRegVindu.getErUtleidCheckBox().setSelected(true);
-        }
+        
         bRegVindu.getBeskrivelseTextArea().setText(bolig.getBeskrivelse());
         //Setter opp teller for bilder
         bRegVindu.getBildeResultatLabel().setText(String.valueOf(boligBilde.antallBilder(bolig)));
@@ -141,7 +136,9 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
             bRegVindu.getHarHeisCheckBox().setSelected(((Leilighet) bolig).isHarHeis());
             bRegVindu.getHarGarasjeCheckBox().setSelected(((Leilighet) bolig).isHarGarsje());
             bRegVindu.getHarFellesVaskeriCheckbox().setSelected(((Leilighet) bolig).isHarFellesvaskeri());
-        } else if (bolig instanceof Enebolig) {
+        } 
+        
+        else if (bolig instanceof Enebolig) {
             bRegVindu.getEneboligRButton().setSelected(true);
             bRegVindu.aktiverBoligKomponenter();
             bRegVindu.aktiverEneboligKomponenter();
@@ -162,21 +159,22 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         getBoligData();
         if (bolig instanceof Leilighet) {
             getLeilighetData();
-            if (kontrollerDataBolig() && kontrollerDataLeilighet()) {
+            if (kontrollerDataBolig() && kontrollerDataLeilighet())
                 return true;
-            }
-        } else if (bolig instanceof Enebolig) {
+            
+        } 
+        
+        else if (bolig instanceof Enebolig) {
             getEneboligData();
-            if (kontrollerDataBolig() && kontrollerDataEnebolig()) {
+            if (kontrollerDataBolig() && kontrollerDataEnebolig())
                 return true;
-            }
         }
         return false;
     }
 
     /**
      * Brukes i samband med oppdatering av registrert boligobjekt. Sletter
-     * objektet fra settet for å nngå dobbellagring.
+     * objektet fra settet for å unngå dobbellagring.
      *
      * @param bolig
      * @return
@@ -184,10 +182,10 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
     private boolean slettBoligFraSet(Bolig bolig) {
 
         if (kontrollerDataForSletting(bolig)) {
-            if (super.set.remove(bolig)) {
+            if (super.set.remove(bolig))
                 return true;
-            }
         }
+        
         visMelding("slettBoligFraSet", "Bolig ble IKKE slettet fra set");
         return false;
     }
@@ -225,7 +223,9 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
             ((Leilighet) bolig).setHarGarsje(harGarasje);
             ((Leilighet) bolig).setHarFellesvaskeri(harFellesVaskeri);
 
-        } else if (bolig instanceof Enebolig) {
+        } 
+        
+        else if (bolig instanceof Enebolig) {
 
             getEneboligData();
 
@@ -238,7 +238,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
     }
 
     /**
-     * Legger tillbake boligobjektet til set etter at det er oppdatert.
+     * Legger tilbake boligobjektet til settet etter at det er oppdatert.
      *
      * @param bolig
      * @return
@@ -248,8 +248,8 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
             visMelding("skrivOppdateringTilBoligSet", "Boligen ble oppdatert i registret");
             return true;
         }
+        
         visMelding("skrivOppdateringTilBoligSet", "Boligen ble IKKE oppdatert i registret");
-
         return false;
     }
 
@@ -294,7 +294,6 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
      * @return boolean
      */
     private boolean kontrollerDataBolig() {
-        //TODO: En søkeklasse som man kan bruke for å finne ut at brukeren har lagt inn korrekt id på eier og megler
         boolean[] boligOK = new boolean[7];
 
         boligOK[0] = RegexTester.testID(String.valueOf(eierID));
@@ -304,10 +303,9 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         boligOK[4] = RegexTester.testPostOrtNavn(postSted);
         boligOK[5] = RegexTester.testKVMbolig(String.valueOf(boAreal));
         boligOK[6] = RegexTester.testYearNummer(String.valueOf(byggeAr));
+        
         for (int i = 0; i < boligOK.length; i++) {
-            if (!boligOK[i]) {
-                return false;
-            }
+            if (!boligOK[i]) return false;
         }
         return true;
     }
@@ -326,9 +324,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         leilighetOK[2] = RegexTester.testKVMbolig(String.valueOf(bodAreal));
 
         for (int i = 0; i < leilighetOK.length; i++) {
-            if (!leilighetOK[i]) {
-                return false;
-            }
+            if (!leilighetOK[i]) return false;
         }
         return true;
     }
@@ -345,9 +341,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         eneboligOK[0] = RegexTester.testEtasje(String.valueOf(antallEtasjer));
         eneboligOK[1] = RegexTester.testKVMtomt(String.valueOf(tomtAreal));
         for (int i = 0; i < eneboligOK.length; i++) {
-            if (!eneboligOK[i]) {
-                return false;
-            }
+            if (!eneboligOK[i]) return false;
         }
         return true;
     }
@@ -371,15 +365,18 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         if (!kontrollerDataBolig()) {
             visMelding("Boligregstrering", "Feil i skjema for bolig.");
             return false;
-            //Kontrollerer leilighetsfelt
-        } else if (!kontrollerDataLeilighet()) {
+        } 
+        
+        //Kontrollerer leilighetsfelt
+        else if (!kontrollerDataLeilighet()) {
             visMelding("Boligregstrering", "Feil i skjema for leilighet.");
             return false;
-        } else {
+        } 
+        
+        else {
             Leilighet leilighet = new Leilighet(etasjeNr, balkongAreal, bodAreal, harHeis, harGarasje, harFellesVaskeri, eierID, adresse, postNr, postSted, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
 
             if (set.add(leilighet)) {
-//                visMelding("Boligregstrering", "Ny leilighet er registrert");
 
                 //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
                 BildeFilSti gallerimappe = new BildeFilSti();
@@ -389,9 +386,9 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
                 bolig = leilighet;
 
                 return true;
-            } else {
-                visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
-            }
+            } 
+            
+            else visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
         }
         return false;
     }
@@ -412,15 +409,17 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
             visMelding("Boligregstrering", "Feil i skjema for bolig.");
             return false;
             //Kontrollerer leilighetsfelt
-        } else if (!kontrollerDataEnebolig()) {
+        } 
+        
+        else if (!kontrollerDataEnebolig()) {
             visMelding("Boligregstrering", "Feil i skjema for enebolig.");
             return false;
-        } else {
+        } 
+        
+        else {
             Enebolig enebolig = new Enebolig(Boligtype.ENEBOLIG, antallEtasjer, harKjeller, tomtAreal, eierID, adresse, postNr, postSted, boAreal, byggeAr, beskrivelse, erUtleid, tilgjengeligForUtleie);
 
             if (set.add(enebolig)) {
-//                visMelding("Boligregstrering", "Ny enebolig er registrert");
-
                 //Opretter en ny mappe for boligens bilder dersom den ikke finnes med fra før
                 BildeFilSti gallerimappe = new BildeFilSti();
                 gallerimappe.lagBildemappeForBolig(enebolig);
@@ -429,15 +428,15 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
                 bolig = enebolig;
 
                 return true;
-            } else {
-                visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
-            }
+            } 
+            
+            else visMelding("Boligregstrering", "Leiligheten ble IKKE registrert");
         }
         return false;
     }
 
     /**
-     * Laster opp første eller ekstra bilder for en alerede eksisterende
+     * Laster opp første eller ekstra bilder for en allerede eksisterende
      * boligobjekt. Endrer størrelse på bilde og setter inkrementell filnavn
      * deretter lagrer bilde i galleriet for bildet.
      *
@@ -456,11 +455,10 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
 
                 //Spørsmål om flere bilder
                 int valg2 = JOptionPane.showOptionDialog(null, "Bilde er nå lastet opp.\nØnsker du å laste opp flere bilder?", "Laste opp flere bilder?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, Konstanter.VALG_JA_NEI, Konstanter.VALG_JA_NEI[0]);
-                if (valg2 == JOptionPane.YES_OPTION) {
+                if (valg2 == JOptionPane.YES_OPTION)
                     lastOppEkstraBilde(bolig);
-                } else {
-                    bRegVindu.dispose();
-                }
+                
+                else bRegVindu.dispose();
 
             } catch (IOException ex) {
                 visMelding("Lagre ny bilde", "IO Exception\nve lagring av nytt bilde");
@@ -477,9 +475,9 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
      */
     private void lastOppBildeForNyBolig(Bolig bolig) {
         int valg2 = JOptionPane.showOptionDialog(null, "Boligen er nå registrert.\nØnsker du å laste opp et eller flere bilder?\n(Du kan også gjøre det seinere)", "Bilder for ny bolig?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, Konstanter.VALG_JA_NEI, Konstanter.VALG_JA_NEI[0]);
-        if (valg2 == JOptionPane.YES_OPTION) {
+        
+        if (valg2 == JOptionPane.YES_OPTION)
             lastOppEkstraBilde(bolig);
-        }
     }
 
     @Override
@@ -499,35 +497,41 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
                 if (erNyregistrering) {
                     if (bRegVindu.getLeilighetRButton().isSelected()) {
                         if (registrerNyLeilighet()) {
-                            if (tabellOppdateringLytter != null) {
+                            if (tabellOppdateringLytter != null)
                                 tabellOppdateringLytter.oppdaterTabellEtterEndring();
-                            }
+                                
                             lastOppBildeForNyBolig(bolig);
                             bRegVindu.dispose();
                         }
-                    } else if (bRegVindu.getEneboligRButton().isSelected()) {
+                    } 
+                    
+                    else if (bRegVindu.getEneboligRButton().isSelected()) {
                         if (registrerNyEnebolig()) {
-                            if (tabellOppdateringLytter != null) {
+                            if (tabellOppdateringLytter != null)
                                 tabellOppdateringLytter.oppdaterTabellEtterEndring();
-                            }
+                                
                             lastOppBildeForNyBolig(bolig);
                             bRegVindu.dispose();
                         }
                     }
-                } else {
+                } 
+                
+                else {
                     //Sletter eksisterende bolig i set, oppdaterer alle datafelt og skriver det tilbake til settet.
                     if (slettBoligFraSet(bolig)) {
                         skrivOppdateringTilBoligSet(oppdaterBoligObjekt(bolig));
-                        if (tabellOppdateringLytter != null) {
+                        if (tabellOppdateringLytter != null)
                             tabellOppdateringLytter.oppdaterTabellEtterEndring();
-                        }
+                            
                         bRegVindu.dispose();
                     }
-
                 }
-            } else if (e.getSource().equals(bRegVindu.getBildeButton())) {
+            } 
+            
+            else if (e.getSource().equals(bRegVindu.getBildeButton()))
                 lastOppEkstraBilde(bolig);
-            } else if (e.getSource().equals(bRegVindu.getVisFlereBilderButton())) {
+            
+            else if (e.getSource().equals(bRegVindu.getVisFlereBilderButton())) {
                 ControllerBildeViser controllerBildeViser = new ControllerBildeViser(bolig, false);
             }
         }

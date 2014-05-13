@@ -8,10 +8,7 @@ import javax.imageio.ImageIO;
 import model.Bolig;
 
 /**
- * Klassen brukes til bildebehandlig for boliger. File: BoligBilde.java Package:
- * lib Project: ServiciosDeVivienda May 3, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * Klassen brukes til bildebehandlig for boliger.
  */
 public class BoligBilde {
 
@@ -73,7 +70,7 @@ public class BoligBilde {
     }
 
     /**
-     * KOntrollerer hvor mange bilde som alerede er lagret for boligen og
+     * Kontrollerer hvor mange bilde som allerede er lagret for boligen og
      * returnerer nummer hvilket neste bilde som skal lagres skal tildeles.
      *
      * @param bolig
@@ -117,22 +114,11 @@ public class BoligBilde {
         File mappe = new File(bildemappe);
         File[] filListe = mappe.listFiles();
 
-//        String utskrift = "";
-//        for (int i = 0; i < filListe.length; i++) {
-//            utskrift += filListe[i].toString() + "\n";
-//
-//        }
-//        Melding.visMelding("setInkrementellNavnAlleFiler", utskrift);
         for (int i = 0; i < filListe.length; i++) {
             if (filListe[i].isFile()) {
                 String filnavn = bildemappe + "/" + String.valueOf(i + 1) + ".jpg";
                 filListe[i].renameTo(new File(filnavn));
-
-//                filListe[i].renameTo(new File(filnavn));
             }
-//            if (!filListe[i].renameTo(new File(filnavn))) {
-//                Melding.visMelding("Endrefilnavn", "Har mislykkets å endre navn på et bilde.");
-//            }
         }
     }
 }

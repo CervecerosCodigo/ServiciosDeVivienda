@@ -1,5 +1,4 @@
 package model;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -28,9 +27,9 @@ public class TabellModellBolig extends TabellModell {
             case 2:
                 return erBoligenAnnonsert(bolig) ? "Ja" : "Nei";
             case 3:
-                if (bolig.isErUtleid()) {
+                if (bolig.isErUtleid())
                     return "Ja";
-                }
+                
                 return "Nei";
         }
         return null;
@@ -48,9 +47,9 @@ public class TabellModellBolig extends TabellModell {
         
         while(iter.hasNext()){
             temp = iter.next();
-            if(temp.getBoligID() == bolig.getBoligID()){
+            
+            if(temp.getBoligID() == bolig.getBoligID())
                 return temp.isErSynlig();
-            }
         }
         return false;
     }

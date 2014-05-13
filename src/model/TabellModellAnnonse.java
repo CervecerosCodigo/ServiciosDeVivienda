@@ -1,5 +1,4 @@
 package model;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;

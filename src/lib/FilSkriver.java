@@ -7,9 +7,6 @@ import java.io.Serializable;
 
 /**
  * Serialiserer alle registre på toppnivå.
- * File: FilSkriver.java Package: lib Project: ServiciosDeVivienda Apr 9, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
  */
 public class FilSkriver implements Serializable {
 

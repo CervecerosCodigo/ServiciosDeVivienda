@@ -13,11 +13,6 @@ import view.registrer.CustomSubPanel;
  * tar hensyn til hvilket år og måned som er valgt og populerer velgeren for
  * dagsnummer med korrekt antall dager. Som standard blir datovelgeren fyllt opp
  * med datoer 10 år fremover.
- *
- * File: ComboDatoVelger.java Package: view Project: ServiciosDeVivienda May 4,
- * 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
  */
 public class ComboDatoVelger extends CustomSubPanel {
 
@@ -44,7 +39,7 @@ public class ComboDatoVelger extends CustomSubPanel {
 
         ///START VALG AV DATO///
         /**
-         * Dersom man endrer år elle måned endres antall dager i comboboksen for
+         * Dersom man endrer år eller måned endres antall dager i comboboksen for
          * dager
          */
         arCombo.addActionListener(new ActionListener() {
@@ -52,7 +47,6 @@ public class ComboDatoVelger extends CustomSubPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setAntallDager();
-//                visValgtDato();
             }
         });
         manedCombo.addActionListener(new ActionListener() {
@@ -60,11 +54,9 @@ public class ComboDatoVelger extends CustomSubPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setAntallDager();
-//                visValgtDato();
             }
         });
         ///SLUTT PÅ VALG AV DATO///
-
     }
 
     /**
@@ -86,14 +78,14 @@ public class ComboDatoVelger extends CustomSubPanel {
         for (int i = ar; i <= (ar + 10); i++) {
             arCombo.addItem(i);
         }
+        
         for (int i = 1; i <= 12; i++) {
             String mnd = String.valueOf(i);
-            if (i < 10) {
+            if (i < 10) 
                 mnd = "0" + mnd;
-            }
+            
             manedCombo.addItem(mnd);
         }
-
     }
 
     /**
@@ -107,13 +99,11 @@ public class ComboDatoVelger extends CustomSubPanel {
 
         for (int i = 1; i <= dager; i++) {
             String dag = String.valueOf(i);
-            if (i < 10) {
+            if (i < 10) 
                 dag = "0" + dag;
-            }
+            
             dagCombo.addItem(dag);
         }
-
-//        Melding.visMelding("", "År: "+ar+"\nMåned:"+mnd+"\nAntall dager:"+getAntallDager(ar, mnd));
     }
 
     /**
@@ -205,9 +195,9 @@ public class ComboDatoVelger extends CustomSubPanel {
      * @return String
      */
     private String leggTilNullForran(int tall) {
-        if (tall >= 10) {
+        if (tall >= 10)
             return String.valueOf(tall);
-        }
+        
         return "0" + String.valueOf(tall);
     }
 

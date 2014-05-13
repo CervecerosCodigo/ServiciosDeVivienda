@@ -16,6 +16,10 @@ import view.ArkfaneAnnonse;
 import view.ArkfaneMegler;
 import view.StartGUI;
 
+/**
+ * Denne klassen er controller for keybindings / hurtigtaster for alle vinduer
+ */
+
 public class ControllerKeyBindings {
 	
     private ArkfaneMegler meglerVindu;

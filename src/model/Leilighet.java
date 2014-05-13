@@ -97,9 +97,4 @@ public class Leilighet extends Bolig {
     public void setHarFellesvaskeri(boolean harFellesvaskeri) {
         this.harFellesvaskeri = harFellesvaskeri;
     }
-
-//    @Override
-//    public String toString() {
-//        return super.toString() + "boligtype=" + boligtype + ", etasjeNr=" + etasjeNr + ", balkongAreal=" + balkongAreal + ", bodAreal=" + bodAreal + ", harHeis=" + harHeis + ", harGarsje=" + harGarsje + ", harFellesvaskeri=" + harFellesvaskeri + '}';
-//    }
 }

@@ -5,25 +5,17 @@ import javax.swing.JFrame;
 
 /**
  * Abstrakt klasse for registrering og endring av oppførte data i registrene.
- * File: AbstractControllerRegister.java Project: ServiciosDeVivienda Apr 29,
- * 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
  * @param <E>
  */
 public abstract class AbstractControllerRegister<E> {
 
-    /**
-     * Set ver det register i hvilket det skal tilføres eller endres data.
-     */
     final HashSet<E> set;
-    /**
-     * Referanse til eksisterende objekt som skal endres i settet.
-     */
+    
+    // Referanse til eksisterende objekt som skal endres i settet.
     Object obj;
 
     /**
-     * Konstruktør for registrering av en ny bolig.
+     * Konstruktør for registrering av et nytt objekt f.eks bolig.
      *
      * @param set
      */
@@ -32,7 +24,7 @@ public abstract class AbstractControllerRegister<E> {
     }
 
     /**
-     * Konstruktør for andring av en ny bolig.
+     * Konstruktør for endring av et eksissterende objekt, f.eks bolig.
      *
      * @param obj
      * @param set

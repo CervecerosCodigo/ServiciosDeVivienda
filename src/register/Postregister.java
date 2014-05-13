@@ -5,10 +5,7 @@ import lib.*;
 
 /**
  * Klassen holder oversikt over antall boliger tilgjengelige for utleie for et
- * spesifikt possted. Kun poststeder med eksisterende boliger finnes med. File:
- * Postregister.java Package: register Project: ServiciosDeVivienda Apr 1, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * spesifikt possted. Kun poststeder med eksisterende boliger finnes med.
  */
 public class Postregister {
 
@@ -18,7 +15,6 @@ public class Postregister {
      * Initialiserer ny tom postregister med boliger.
      */
     public Postregister() {
-//        poststeder_med_bolig = new HashMap<>();
         poststeder_med_bolig = new TreeMap<>();
     }
 
@@ -76,9 +72,9 @@ public class Postregister {
         if (poststeder_med_bolig.containsKey(poststed)) {
             int antall_eksisterende = poststeder_med_bolig.get(poststed);
             poststeder_med_bolig.put(poststed, antall + antall_eksisterende);
-        } else {
-            poststeder_med_bolig.put(poststed, antall);
-        }
+        } 
+        
+        else poststeder_med_bolig.put(poststed, antall);
     }
 
     /**
@@ -90,9 +86,9 @@ public class Postregister {
     public int getAntallFraPoststed(String poststed) {
         if (poststeder_med_bolig.containsKey(poststed)) {
             return poststeder_med_bolig.get(poststed);
-        } else {
-            return 0;
-        }
+        } 
+        
+        else return 0;
     }
 
     /**
@@ -114,12 +110,15 @@ public class Postregister {
      * @throws NullPointerException
      */
     public int slettBoligerFraPoststed(String poststed, int antall) {
-        if (!poststeder_med_bolig.containsKey(poststed)) {
+        if (!poststeder_med_bolig.containsKey(poststed))
             return -1;
-        } else if (getAntallFraPoststed(poststed) > antall) {
+        
+        else if (getAntallFraPoststed(poststed) > antall) {
             poststeder_med_bolig.put(poststed, antall);
             return getAntallFraPoststed(poststed);
-        } else if (getAntallFraPoststed(poststed) == antall) {
+        } 
+        
+        else if (getAntallFraPoststed(poststed) == antall) {
             poststeder_med_bolig.remove(poststed);
             return 0;
         }
@@ -128,7 +127,6 @@ public class Postregister {
 
     /**
      * Returnerer totalt antal postster med bolig til utleie.
-     *
      * @return int
      */
     public int antallPoststeder() {
@@ -152,7 +150,6 @@ public class Postregister {
     
     /**
      * Returnerer en streng med oversikt over alle poststeder sortert på antall boliger per poststed synkende.
-     *
      * @return String
      */
     public String getStatistikkEtterAntallBoliger() {

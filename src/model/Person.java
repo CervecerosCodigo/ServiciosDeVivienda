@@ -96,44 +96,48 @@ public abstract class Person implements Serializable, Searchable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+            
+        if (getClass() != obj.getClass())
             return false;
-        }
+            
         Person other = (Person) obj;
         if (epost == null) {
-            if (other.epost != null) {
+            if (other.epost != null)
                 return false;
-            }
-        } else if (!epost.equals(other.epost)) {
+        } 
+        
+        else if (!epost.equals(other.epost))
             return false;
-        }
+        
         if (etternavn == null) {
-            if (other.etternavn != null) {
+            if (other.etternavn != null)
                 return false;
-            }
-        } else if (!etternavn.equals(other.etternavn)) {
+        } 
+        
+        else if (!etternavn.equals(other.etternavn))
             return false;
-        }
+            
         if (fornavn == null) {
-            if (other.fornavn != null) {
+            if (other.fornavn != null)
                 return false;
-            }
-        } else if (!fornavn.equals(other.fornavn)) {
+        } 
+        
+        else if (!fornavn.equals(other.fornavn))
             return false;
-        }
+        
         if (telefon == null) {
-            if (other.telefon != null) {
+            if (other.telefon != null)
                 return false;
-            }
-        } else if (!telefon.equals(other.telefon)) {
+        } 
+        
+        else if (!telefon.equals(other.telefon))
             return false;
-        }
+        
         return true;
 
     } // end of equals method

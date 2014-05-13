@@ -8,12 +8,6 @@ import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.plaf.nimbus.NimbusStyle;
 
-/**
- *
- * File: Konstanter.java Package: lib Project: ServiciosDeVivienda Apr 2, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
- */
 public class Konstanter {
 
     /**
@@ -76,8 +70,4 @@ public class Konstanter {
     
 
     public static final Color BAKGRUNNSFARGEPANEL = new Color(200, 210, 240); //Lys blå
-//    public static final Color BAKGRUNNSFARGEPANEL = new Color(255,255,255); //Hvit
-//    public static final Color BAKGRUNNSFARGEPANEL = new Color(193, 205, 193); //Honey Dew
-    
-    
 }

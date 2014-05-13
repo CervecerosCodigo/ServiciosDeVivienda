@@ -7,12 +7,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * File: KollatorMapEntry.java Package: lib Project: ServiciosDeVivienda Apr 2, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
- */
 public class KollatorMapEntry implements Comparator<Map.Entry<String, Integer>>{
 
     private RuleBasedCollator kollatorNO;
@@ -31,9 +25,9 @@ public class KollatorMapEntry implements Comparator<Map.Entry<String, Integer>>{
         String str1 = o1.getKey();
         String str2 = o2.getKey();
         int d = kollatorNO.compare(str1, str2);
-        if(d!=0){
-            return d;
-        }
+        
+        if(d!=0) return d;
+        
         return -1;
     }
 }

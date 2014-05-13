@@ -6,11 +6,6 @@ import view.CustomJTextField;
 
 /**
  * En klasse med konstanter som bestemmer størrelse på GUI komponenter.
- * File: GuiSizes.java
- Package: lib
- Project: ServiciosDeVivienda
- May 2, 2014
- * @author Lukas David Larsed, s198569@stud.hioa.no
  */
 public class GuiSizes {
 

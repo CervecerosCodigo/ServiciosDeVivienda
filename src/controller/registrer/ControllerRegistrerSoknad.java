@@ -19,7 +19,6 @@ import view.registrer.SoknadRegVindu;
  * Personobjektet og annonseobjektet blir så sendt med til ControllerRegPerson der
  * person og søknad blir registrert.
  * Leietakerobjektet blir ikke lagt i personregisteret før megler godkjenner søknaden.
- * @author espen
  */
 public class ControllerRegistrerSoknad implements VisMeldingInterface{
 
@@ -63,14 +62,12 @@ public class ControllerRegistrerSoknad implements VisMeldingInterface{
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource().equals(vindu.getAksepter())){
-
                 new ControllerRegistrerLeietaker(personliste, annonseliste, soknadliste, annonse);
                 vindu.dispose();
             }
-            if(e.getSource().equals(vindu.getAvbryt())){
+            
+            if(e.getSource().equals(vindu.getAvbryt()))
                 vindu.dispose();
-            }
         }
-        
     }
 }

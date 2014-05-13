@@ -23,7 +23,7 @@ public abstract class Bolig implements Serializable,  Searchable{
     private String beskrivelse;
     private boolean erUtleid;
     private Calendar tilgjengeligForUtleie;
-    private String pathBildemappe; //Denne variabeln skal peke til en mappe med samme navn som biligID der vi lagrer bildene om boligen. Si at boligID er 1234 da vil den peke til "img/1234". Det er ikke sikket at vi trenger denne variabeln ettersom path i hvilken alt er lagret kan vi hente opp fra boligID
+    private String pathBildemappe; //Denne variabelen skal peke til en mappe med samme navn som biligID der vi lagrer bildene om boligen. Si at boligID er 1234 da vil den peke til "img/1234". Det er ikke sikket at vi trenger denne variabeln ettersom path i hvilken alt er lagret kan vi hente opp fra boligID
 
     /**
      * Konstruktør for oprettelse av en ny bolig.
@@ -194,28 +194,29 @@ public abstract class Bolig implements Serializable,  Searchable{
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        
+        if (getClass() != obj.getClass())
             return false;
-        }
+        
         final Bolig other = (Bolig) obj;
-        if (!Objects.equals(this.adresse, other.adresse)) {
+        
+        if (!Objects.equals(this.adresse, other.adresse))
             return false;
-        }
-        if (!Objects.equals(this.postnummer, other.postnummer)) {
+        
+        if (!Objects.equals(this.postnummer, other.postnummer))
             return false;
-        }
-        if (!Objects.equals(this.poststed, other.poststed)) {
+        
+        if (!Objects.equals(this.poststed, other.poststed))
             return false;
-        }
-        if (this.boAreal != other.boAreal) {
+        
+        if (this.boAreal != other.boAreal)
             return false;
-        }
-        if (this.byggeAr != other.byggeAr) {
+        
+        if (this.byggeAr != other.byggeAr)
             return false;
-        }
+        
         return true;
     }
 
@@ -230,10 +231,6 @@ public abstract class Bolig implements Serializable,  Searchable{
     public String toString() {
         return "Bolig{" + "boligID=" + boligID + " Adresse: " + adresse + ", personID=" + personID + '}';
     }
-//    @Override
-//    public String toString() {
-//        return "Bolig{" + "boligID=" + boligID + " Adresse: " + adresse + ", personID=" + personID + ", meglerID=" + meglerID + ", erUtleid=" + erUtleid + '}';
-//    }
 
     /**
      * Datafelt som blir returnert til fritekssøk for megler.
