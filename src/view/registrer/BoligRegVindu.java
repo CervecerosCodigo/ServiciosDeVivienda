@@ -152,8 +152,8 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
         harFellesVaskeri = new JLabel("Fellesvaskeri: ");
 
         etasjeNrField = new CustomJTextField("0", RegexTester.ETASJE, GuiSizes.FIELD_MEDIUM);
-        balkongArealField = new CustomJTextField("0", RegexTester.KVM_BOLIG, GuiSizes.FIELD_MEDIUM);
-        bodArealField = new CustomJTextField("0", RegexTester.KVM_BOLIG, GuiSizes.FIELD_MEDIUM);
+        balkongArealField = new CustomJTextField("0", RegexTester.KVM_BALKONG_BOD, GuiSizes.FIELD_MEDIUM);
+        bodArealField = new CustomJTextField("0", RegexTester.KVM_BALKONG_BOD, GuiSizes.FIELD_MEDIUM);
 
         harHeisCheckBox = new CustomJCheckBox();
         harGarasjeCheckBox = new CustomJCheckBox();

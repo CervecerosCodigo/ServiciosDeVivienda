@@ -132,7 +132,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
             //Setter opp datafelt for leilighet
             bRegVindu.getEtasjeNrField().setText(String.valueOf(((Leilighet) bolig).getEtasjeNr()));
             bRegVindu.getBalkongArealField().setText(String.valueOf(((Leilighet) bolig).getBalkongAreal()));
-            bRegVindu.getBoArealField().setText(String.valueOf(((Leilighet) bolig).getBodAreal()));
+            bRegVindu.getBodArealField().setText(String.valueOf(((Leilighet) bolig).getBodAreal()));
             bRegVindu.getHarHeisCheckBox().setSelected(((Leilighet) bolig).isHarHeis());
             bRegVindu.getHarGarasjeCheckBox().setSelected(((Leilighet) bolig).isHarGarsje());
             bRegVindu.getHarFellesVaskeriCheckbox().setSelected(((Leilighet) bolig).isHarFellesvaskeri());
@@ -275,7 +275,7 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
     public void getLeilighetData() {
         etasjeNr = Integer.parseInt(bRegVindu.getEtasjeNrField().getText());
         balkongAreal = Integer.parseInt(bRegVindu.getBalkongArealField().getText());
-        bodAreal = Integer.parseInt(bRegVindu.getBoArealField().getText());
+        bodAreal = Integer.parseInt(bRegVindu.getBodArealField().getText());
         harHeis = bRegVindu.getHarHeisCheckBox().isSelected();
         harGarasje = bRegVindu.getHarGarasjeCheckBox().isSelected();
         harFellesVaskeri = bRegVindu.getHarFellesVaskeriCheckbox().isSelected();
@@ -320,8 +320,8 @@ public class ControllerRegistrerBolig extends AbstractControllerRegister impleme
         boolean[] leilighetOK = new boolean[3];
 
         leilighetOK[0] = RegexTester.testEtasje(String.valueOf(etasjeNr));
-        leilighetOK[1] = RegexTester.testKVMbolig(String.valueOf(balkongAreal));
-        leilighetOK[2] = RegexTester.testKVMbolig(String.valueOf(bodAreal));
+        leilighetOK[1] = RegexTester.testKVMbalkogEllerBod(String.valueOf(balkongAreal));
+        leilighetOK[2] = RegexTester.testKVMbalkogEllerBod(String.valueOf(bodAreal));
 
         for (int i = 0; i < leilighetOK.length; i++) {
             if (!leilighetOK[i]) return false;
