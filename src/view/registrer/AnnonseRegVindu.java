@@ -34,10 +34,10 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel implements VisMe
     private CustomJButton avbrytButton, lagreButton;
     
     public AnnonseRegVindu(String tittel) {
-        super(800, 400, tittel);
-        venstrePanel = new CustomSubPanel("Boliginfo", 0, 350, new GridBagLayout());
+        super(850, 450, tittel);
+        venstrePanel = new CustomSubPanel("Boliginfo", 0, 400, new GridBagLayout());
         hoyrePanel = new CustomSubPanel("Annonseregistrering", 0, 450, new GridBagLayout());
-        bunnPanel = new CustomSubPanel("", 40, 0, new GridBagLayout());
+        bunnPanel = new CustomSubPanel("", 50, 0, new GridBagLayout());
         add(venstrePanel, BorderLayout.WEST);
         add(hoyrePanel, BorderLayout.EAST);
         add(bunnPanel, BorderLayout.SOUTH);
