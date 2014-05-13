@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 public class Melding {
 
     private String metode, melding, sporsmaal, overskrift, standardvalg;
-    private static String[] alternativer;
+    private static Object[] alternativer;
 
     public Melding(String metode, String melding) {
         this.metode = metode;
@@ -24,7 +24,7 @@ public class Melding {
         this.sporsmaal = sporsmaal;
         this.overskrift = overskrift;
         this.standardvalg = standardvalg;
-        Melding.alternativer = new String[]{"Ja", "Nei"};
+        Melding.alternativer = new Object[]{"Ja", "Nei"};
     }
 
 //    private void visMelding(String metode, String melding) {
@@ -52,7 +52,7 @@ public class Melding {
         int valg = JOptionPane.showOptionDialog(null,
                         sporsmaal, overskrift,
                         JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
-                        null, alternativer, standardvalg);
+                        null, Konstanter.VALG_JA_NEI, standardvalg);
         return valg;
     }
     

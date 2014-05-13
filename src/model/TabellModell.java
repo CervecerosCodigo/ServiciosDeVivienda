@@ -34,7 +34,7 @@ public abstract class TabellModell<E> extends DefaultTableModel {
         try {
             str = mottattArray.size();
         } catch (NullPointerException npe) {
-            System.out.println("TabellModell rapporterer NullPointer på getRowCount-metoden");
+            //System.out.println("TabellModell rapporterer NullPointer på getRowCount-metoden");
         }
         return str;
     }
