@@ -1,6 +1,4 @@
 package view;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
-
 
 import java.awt.GridLayout;
 import javax.swing.*;
@@ -12,7 +10,6 @@ import javax.swing.text.html.StyleSheet;
 /**
  * Dette er klassen som står for visning av alle objekter. Objektene kommer fra
  * ControllerTabell og blir så skrevet ut i HTML-format.
- * @author espen
  */
 public class SenterPanel extends AbstractPanel{
 
@@ -54,7 +51,4 @@ public class SenterPanel extends AbstractPanel{
     public StyleSheet getStyleSheet(){
         return css;
     }
-    
-
-    
 }

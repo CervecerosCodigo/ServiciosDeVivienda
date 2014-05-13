@@ -1,5 +1,4 @@
 package view;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import controller.VisMeldingInterface;
 import java.awt.BorderLayout;
@@ -27,18 +26,18 @@ public abstract class AbstraktArkfane extends AbstractPanel implements VisMeldin
                 VinduStorrelse.SENTERPANEL.getWIDTH());
 
         if (valgtToppanel.equals("megler")) {
-            toppanel = new TopPanelMegler("Søk",VinduStorrelse.TOPPANEL.getHEIGHT(), 
-                    VinduStorrelse.TOPPANEL.getWIDTH());
+            toppanel = new TopPanelMegler("Søk",VinduStorrelse.TOPPANEL.getHEIGHT(), VinduStorrelse.TOPPANEL.getWIDTH());
             add(toppanel, BorderLayout.NORTH);
-        } else{
-            toppanel = new TopPanelAnnonse("Søk",VinduStorrelse.TOPPANEL.getHEIGHT(), 
-                    VinduStorrelse.TOPPANEL.getWIDTH());
+        } 
+        
+        else{
+            toppanel = new TopPanelAnnonse("Søk",VinduStorrelse.TOPPANEL.getHEIGHT(), VinduStorrelse.TOPPANEL.getWIDTH());
             add(toppanel, BorderLayout.NORTH);
         }
+        
         add(venstrepanel, BorderLayout.WEST);
         add(senterpanel, BorderLayout.CENTER);
         add(bunnpanel, BorderLayout.SOUTH);
-
     }
 
     public TopPanelMegler getToppanelMegler() {
@@ -64,6 +63,4 @@ public abstract class AbstraktArkfane extends AbstractPanel implements VisMeldin
     public void visMelding(String overskrift, String melding) {
         Melding.visMelding(overskrift, melding);
     }
-
-    
 }

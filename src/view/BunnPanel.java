@@ -1,5 +1,4 @@
 package view;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -11,8 +10,6 @@ public class BunnPanel extends AbstractPanel {
 
     private CustomJButton multiKnapp, frem, tilbake;
 
-
-    
     /**'
      * Setter opp "usynlig" panel uten border og tittel.
      * @param dimHeight

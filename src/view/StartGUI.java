@@ -1,5 +1,4 @@
 package view;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.awt.Image;
 import javax.swing.*;
@@ -11,8 +10,6 @@ public class StartGUI extends JFrame {
 
     private final static int HEIGHT = VinduStorrelse.STOR.getHEIGHT();
     private final static int WIDTH = VinduStorrelse.STOR.getWIDTH();
-    
-
     private MainPanel innhold;
 
     public StartGUI( AbstraktArkfane megler, AbstraktArkfane annonse) {

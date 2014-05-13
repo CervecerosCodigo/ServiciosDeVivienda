@@ -7,7 +7,6 @@ import javax.swing.JTextField;
 /**
  * Denne klassen er en spesiallaget JTextField.
  * Den tar inn flere paramterere, blant annet et RegEx-pattern som klassen tester på.
- * @author espen
  */
 public class CustomJTextField extends AbstractPanel {
 
@@ -38,8 +37,9 @@ public class CustomJTextField extends AbstractPanel {
                         textField.setText("");
                         textField.setBackground(Color.WHITE);
                         textField.setForeground(Color.GRAY);
-                    } else {
-                        
+                    } 
+                    
+                    else {
                         //Feltet er ikke tomt. Feiler RegEx?
                         if (!testInput()) {
                             textField.setForeground(Color.white);
@@ -57,16 +57,18 @@ public class CustomJTextField extends AbstractPanel {
                         textField.setForeground(Color.GRAY);
                         textField.setBackground(Color.WHITE);
                         return;
-                    } else {
-                        
+                    } 
+                    
+                    else {
                         //Feltet er ikke blankt. Feiler Regex?
                         if (!testInput()) {
                             textField.setForeground(Color.white);
                             textField.setBackground(Color.RED);
-                        } else {
+                        } 
+                        
+                        else {
                             textField.setForeground(Color.GRAY);
                             textField.setBackground(Color.WHITE);
-
                         }
                     }
                 }//End focusLost
@@ -78,7 +80,6 @@ public class CustomJTextField extends AbstractPanel {
 
     private boolean testInput() {
         return textField.getText().matches(pattern);
-
     }
 
     /**
@@ -93,7 +94,6 @@ public class CustomJTextField extends AbstractPanel {
 
     /**
      * Gjør det mulig å deaktivere feltet etter behov.
-     *
      * @param isEnabled boolean
      */
     @Override
@@ -103,7 +103,6 @@ public class CustomJTextField extends AbstractPanel {
 
     /**
      * Setter en ny tekst i feltet.
-     *
      * @param text String
      */
     public void setText(String text) {

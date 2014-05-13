@@ -1,7 +1,5 @@
 package view;
 
-//Laget av Petter.
-//Editert av Lukas. Lagt til getters og lyttere for komponenter 26.04
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
