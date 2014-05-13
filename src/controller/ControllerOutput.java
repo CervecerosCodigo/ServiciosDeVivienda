@@ -1,31 +1,21 @@
 package controller;
 //Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import javax.swing.JEditorPane;
-import javax.swing.event.MouseInputAdapter;
+import java.util.*;
+import javax.swing.*;
 import javax.swing.text.html.StyleSheet;
-import lib.BildeFilSti;
-import lib.Konstanter;
-import model.Annonse;
-import model.Bolig;
-import model.Enebolig;
-import model.Kontrakt;
-import model.Leietaker;
-import model.Leilighet;
-import model.Megler;
-import model.Person;
-import model.Soknad;
+import lib.*;
+import model.*;
 import model.Utleier;
 import view.AbstraktArkfane;
-import view.MainPanel;
 
+/**
+ * Controller for Senterpanel, der alle data vises i HTML-format. 
+ * Denne klassen har bare statiske metoder som tar i mot data fra ControllerTabell
+ * og viser dem i "output".
+ * @author espen
+ */
 public class ControllerOutput {
-
     
     /**
      * Hjelpemetode som returnerer alle boliger registrert på en eier.

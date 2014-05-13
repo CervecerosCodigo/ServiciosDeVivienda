@@ -9,7 +9,11 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 
-
+/**
+ * Dette er klassen som står for visning av alle objekter. Objektene kommer fra
+ * ControllerTabell og blir så skrevet ut i HTML-format.
+ * @author espen
+ */
 public class SenterPanel extends AbstractPanel{
 
     private JEditorPane output;
@@ -17,8 +21,6 @@ public class SenterPanel extends AbstractPanel{
     private StyleSheet css;
     private JScrollPane scroll;
     private Document dok;
-
-
     
     public SenterPanel(String borderTitle, int dimHeight, int dimWidth) {
         super(borderTitle, dimHeight, dimWidth);

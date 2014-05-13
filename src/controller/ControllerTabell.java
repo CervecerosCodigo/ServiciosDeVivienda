@@ -1,27 +1,16 @@
 package controller;
 
 /**
- * Denne klassen inneholder statiske metoder for alt som har med "utskrift" av
- * objektene til visningsruten, samt tabellen som viser objektene i listeformat.
- * Metoden settOppTabell oppretter en lytter på Tabellen. Metoden
- * setInnDataITabell tar i mot datasettet som skal vises, og hvilket vindu de
- * skal vises i.
+ * Denne klassen spesifiserer funksjonaliteten til tabellen og kommunikasjonen
+ * mellom tabellen og andre komponenter i programmet. Metoden settOppTabell
+ * oppretter en lytter på Tabellen. Metoden setInnDataITabell tar i mot
+ * datasettet som skal vises, og hvilket vindu de skal vises i.
  */
-import controller.registrer.ControllerRegistrerAnnonse;
-import controller.registrer.ControllerRegistrerBolig;
-import controller.registrer.ControllerRegistrerSoknad;
-import controller.registrer.ControllerRegistrerUtleier;
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import controller.registrer.*;
+import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.table.*;
 import javax.swing.text.html.StyleSheet;
 import lib.*;
 import model.*;
@@ -75,9 +64,6 @@ public class ControllerTabell implements VisMeldingInterface {
         tabellModellKontrakt = new TabellModellKontrakt();
         tabellModellSoknad = new TabellModellSoknad();
 
-        
-
-
         tabellMeny = new JPopupMenu();
         menyvalgPerson = new JMenu("Person");
         menyvalgBolig = new JMenu("Bolig");
@@ -119,8 +105,9 @@ public class ControllerTabell implements VisMeldingInterface {
     }
 
     /**
-     * Tar i mot det vinduet tabellen skal settes for. 
-     * Det settes opp flere lyttere relatert til tabllens funksjonalitet.
+     * Tar i mot det vinduet tabellen skal settes for. Det settes opp flere
+     * lyttere relatert til tabllens funksjonalitet.
+     *
      * @param vindu Tar i mot det vinduet som metoden gjelder for.
      */
     public void settOppTabellLyttere(final AbstraktArkfane vindu) {
@@ -153,11 +140,11 @@ public class ControllerTabell implements VisMeldingInterface {
         actionMap.put("Slett", sletteknappFunksjon);
         //Slutt på sletteknappfunksjonalitet
         /////////////////////////////////////////////////////////////////
-        
-        
+
         /**
-         * Lytter på endring i valgt rad i tabellen og returnerer indexen til ArrayListen
-         * som danner grunnlaget for tabellens innhold (i valgt TabellModell).
+         * Lytter på endring i valgt rad i tabellen og returnerer indexen til
+         * ArrayListen som danner grunnlaget for tabellens innhold (i valgt
+         * TabellModell).
          */
         tabell.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
@@ -169,20 +156,18 @@ public class ControllerTabell implements VisMeldingInterface {
                 }
                 try {
                     int rad = tabell.getSelectedRow();
-                    System.out.println("Rad: " + rad);
                     if (rad > -1) {
                         rad = tabell.convertRowIndexToModel(rad);
 
                         //Lagrer raden i en variabel, som brukes i andre metoder.
                         valgtRadItabell = rad;
-                        System.out.println("ModellRad: " + valgtRadItabell);
                         sendObjektFraTabellTilOutput(objekttype);
                     }
 
                 } catch (ArrayIndexOutOfBoundsException aiobe) {
                     System.out.println("Tabell ConvertRowIndexToModel ArrayIndexOufOfBounds");
                 } catch (IndexOutOfBoundsException iobe) {
-                    System.out.println("Tabell ConvertEowIndexToModel IndexOufOfBounds");
+                    System.out.println("Tabell ConvertRowIndexToModel IndexOufOfBounds");
                 }
             }
         });
@@ -484,7 +469,7 @@ public class ControllerTabell implements VisMeldingInterface {
      * registrert som kontrakt skal alle andre søknader på samme annonse
      * avvises.
      */
-    private void registrerKontrakt() {
+    public void registrerKontrakt() {
         Soknad soknad = returnerSoknadObjekt();
 
         /**
@@ -497,43 +482,50 @@ public class ControllerTabell implements VisMeldingInterface {
             int annonseID = soknad.getAnnonseObjekt().getAnnonseID();
             Megler megler = returnererMeglerObjektFraSoknad(soknad);
 
-            //Finner alle søknader som gelder for samme Annonse
-            ArrayList<Soknad> soknaderPaaSammeAnnonse = returnerAlleSoknaderPaaSammeAnnonse(annonseID);
+            int valg = Melding.visBekreftelseDialog("Ønsker du godkjenne denne søknaden?",
+                    "Godkjenn søknad", "Nei");
+            if (valg == 0) {
+                
+                //Finner alle søknader som gelder for samme Annonse
+                ArrayList<Soknad> soknaderPaaSammeAnnonse = returnerAlleSoknaderPaaSammeAnnonse(annonseID);
 
-            //Finner dagens dato
-            Calendar dagensDato = new GregorianCalendar(
-                    Calendar.getInstance().get(Calendar.YEAR),
-                    Calendar.getInstance().get(Calendar.MONTH),
-                    Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+                //Finner dagens dato
+                Calendar dagensDato = new GregorianCalendar(
+                        Calendar.getInstance().get(Calendar.YEAR),
+                        Calendar.getInstance().get(Calendar.MONTH),
+                        Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
-            //Oppretter et kontraktobjekt basert på søknaden.
-            Kontrakt kontrakt = new Kontrakt(soknad.getAnnonseObjekt(), megler, soknad.getLeietakerObjekt(), 12, dagensDato);
+                //Oppretter et kontraktobjekt basert på søknaden.
+                Kontrakt kontrakt = new Kontrakt(soknad.getAnnonseObjekt(), megler, soknad.getLeietakerObjekt(), 12, dagensDato);
 
-            //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt annonse avvises.
-            if (kontraktliste.add(kontrakt)) {
-                if (personliste.add(soknad.getLeietakerObjekt())) {
+                //Hvis kontrakten legges inn i kontraktliste skal alle andre søknader på valgt annonse avvises.
+                if (kontraktliste.add(kontrakt)) {
+                    if (personliste.add(soknad.getLeietakerObjekt())) {
 
-                    soknad.setErBehandlet(true);
-                    soknad.setErGodkjent(true);
-                    //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
-                    soknaderPaaSammeAnnonse.remove(soknad);
+                        soknad.setErBehandlet(true);
+                        soknad.setErGodkjent(true);
+                        soknad.getAnnonseObjekt().getBolig().setErUtleid(true);
+                        //Sletter søknaden som er godkjent fra listen med søknader på samme annonse.
+                        soknaderPaaSammeAnnonse.remove(soknad);
 
-                    Iterator<Soknad> soknadIter = soknaderPaaSammeAnnonse.iterator();
-                    Soknad tempSoknad = null;
-                    while (soknadIter.hasNext()) {
-                        tempSoknad = soknadIter.next();
-                        tempSoknad.setErBehandlet(true);
-                        tempSoknad.setErGodkjent(false);
+                        Iterator<Soknad> soknadIter = soknaderPaaSammeAnnonse.iterator();
+                        Soknad tempSoknad = null;
+                        while (soknadIter.hasNext()) {
+                            tempSoknad = soknadIter.next();
+                            tempSoknad.setErBehandlet(true);
+                            tempSoknad.setErGodkjent(false);
+                        }
+                        //Setter annonsen "ikke aktiv"
+                        soknad.getAnnonseObjekt().setErSynlig(false);
+                        visMelding("Fullført!", "Kontrakten er opprettet!");
+                        tabellModellSoknad.fireTableDataChanged();
+                        vindu.getVenstrepanel().sorterTabellSoknadData();
                     }
 
-                    visMelding("Fullført!", "Kontrakten er opprettet!");
-                    tabellModellSoknad.fireTableDataChanged();
-                    vindu.getVenstrepanel().sorterTabellSoknadData();
+                } else {
+                    visMelding(null, "Kontrakten ble IKKE opprettet!");
                 }
-            } else {
-                visMelding(null, "Kontrakten ble IKKE opprettet!");
             }
-
         } else {
             visMelding("Leietaker finnes i registeret!", "Denne personen finnes i registeret.\n"
                     + "Personen kan dermed ikke registrere ny kontrakt.");
@@ -778,7 +770,7 @@ public class ControllerTabell implements VisMeldingInterface {
         }
     }
 
-   /**
+    /**
      * Oppretter en arraylist med lengde av mottatt datasett. Denne metoden er
      * avhengig av søkeresultatene og må få inn parametere fra toppanel.
      */

@@ -24,7 +24,7 @@ public class Melding {
         this.sporsmaal = sporsmaal;
         this.overskrift = overskrift;
         this.standardvalg = standardvalg;
-        this.alternativer = new String[]{"Ja", "Nei"};
+        Melding.alternativer = new String[]{"Ja", "Nei"};
     }
 
 //    private void visMelding(String metode, String melding) {

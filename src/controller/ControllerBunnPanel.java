@@ -24,7 +24,6 @@ public class ControllerBunnPanel {
     private HashSet<Bolig> boligliste;
     private HashSet<Annonse> annonseliste;
     private HashSet<Soknad> soknadliste;
-    private ArrayList<Object> tabellData;
     private TabellModell modellIBruk;
 
     public ControllerBunnPanel(HashSet<Bolig> boligliste, HashSet<Person> personliste, HashSet<Annonse> annonseliste, HashSet<Soknad> soknadliste) {
@@ -54,10 +53,6 @@ public class ControllerBunnPanel {
     public void settOppTabellData(TabellModell modell) {
         this.modellIBruk = modell;
     }
-//    public void settOppTabellData(ArrayList<Object> tabellData, TabellModell modell) {
-//        this.tabellData = tabellData;
-//        this.modell = modell;
-//    }
 
     /**
      * private lytteklasse for knappene i bunnpanelet.
