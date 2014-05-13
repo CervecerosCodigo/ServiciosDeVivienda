@@ -3,10 +3,7 @@ package lib;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * Klassen tester for vanligste reguljøre uttryck tværs over programmet. File:
- * RegexTester.java Package: model Project: ServiciosDeVivienda Mar 31, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * Klassen tester for vanligste reguljøre uttryck tværs over programmet. 
  */
 public class RegexTester {
 
@@ -14,6 +11,7 @@ public class RegexTester {
     public static final String EPOST_PATTERN = "^([a-zA-Z0-9])+([a-zA-Z0-9\\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\\._-]+)+$";
     public static final String GATE_NAVN_PATTERN = "^[A-ZÆØÅ]{1}[a-zæøå]{1,20}[\\s]?[A-ZÆØÅ]?[a-zæøå]*[\\s]?[A-ZÆØÅ]?[a-zæøå]*$";
     public static final String GATE_NR_PATTERN = "^[1-9]{1}[0-9]{0,2}$";
+    
     /**
      * Denne pattern tar for seg en gateadresse som begynner med stor bokstav og
      * kan bestå av opp til tre ord, deretter må det komme et nummer og

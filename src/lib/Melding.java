@@ -4,10 +4,7 @@ import javax.swing.JOptionPane;
 
 /**
  * Brukes til å rask vise meldinger. Brukes mye i samband med kontroll debugging
- * eller for å gi info til bruker. File: Melding.java Package: lib Project:
- * ServiciosDeVivienda Apr 22, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * eller for å gi info til bruker.
  */
 public class Melding {
 
@@ -17,7 +14,6 @@ public class Melding {
     public Melding(String metode, String melding) {
         this.metode = metode;
         this.melding = melding;
-//        visMelding(metode, melding);
     }
     
     public Melding(String sporsmaal, String overskrift, String standardvalg){
@@ -27,10 +23,6 @@ public class Melding {
         Melding.alternativer = new String[]{"Ja", "Nei"};
     }
 
-//    private void visMelding(String metode, String melding) {
-//        JOptionPane.showMessageDialog(null, melding, metode, JOptionPane.INFORMATION_MESSAGE);
-//    }
-    
     /**
      * En static metode for å vise meldinger.
      * @param metode String
