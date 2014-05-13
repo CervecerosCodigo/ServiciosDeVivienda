@@ -1,19 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controller;
 
 /**
- *
- * @author espen
+ * All GUI og controllere har implementert dette interface for å gi beskjed ut til bruker. 
  */
 public interface VisMeldingInterface {
-    
-    //public void visMelding(String melding);
-    
     public void visMelding(String overskrift, String melding);
     
 }

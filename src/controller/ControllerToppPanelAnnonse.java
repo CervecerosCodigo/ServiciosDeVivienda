@@ -22,11 +22,7 @@ import search.AnnonseFilter;
 import view.AbstraktArkfane;
 
 /**
- * Kontroller klasse for topp panel annonse søk. File:
- * ControllerToppPanelAnnonse.java Package: controller Project:
- * ServiciosDeVivienda Apr 26, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * Kontroller klasse for topp panel annonse søk.
  */
 public class ControllerToppPanelAnnonse {
 
@@ -57,9 +53,8 @@ public class ControllerToppPanelAnnonse {
         int antallBoliger = 0;
 
         for (Annonse annonseIterator : annonseliste) {
-            if (annonseIterator.getBolig().isErUtleid() == false) {
+            if (annonseIterator.getBolig().isErUtleid() == false)
                 antallLedigeBoliger++;
-            }
         }
 
         antallBoliger = annonseliste.size();
@@ -106,37 +101,35 @@ public class ControllerToppPanelAnnonse {
         String arealMinS = vindu.getToppanelAnnonse().getMinArealFelt().getText();
         String arealMaksS = vindu.getToppanelAnnonse().getMaksArealFelt().getText();
 
-        //TODO: Her må vi ha noe slik at vi kan gi tilbakemelding til GUI slik at feltet skifter farve
         boolean erPrisMinOK = RegexTester.testPris(prisMinS);
         boolean erPrisMaksOK = RegexTester.testPris(prisMaksS);
         boolean erArealMinOK = RegexTester.testKVMbolig(arealMinS);
         boolean erArealMaksOK = RegexTester.testKVMbolig(arealMaksS);
 
-//        Melding.visMelding("Regex", erPrisMinOK + "\n" + erPrisMaksOK + "\n" + erArealMinOK + "\n" + erArealMaksOK);
 
-        if (prisMinS.equals("min") || !erPrisMinOK) {
+        if (prisMinS.equals("min") || !erPrisMinOK)
             prisMin = 0;
-        } else if (erPrisMinOK) {
+        
+        else if (erPrisMinOK)
             prisMin = Integer.parseInt(prisMinS);
-        }
 
-        if (prisMaksS.equals("maks") || !erPrisMaksOK) {
+        if (prisMaksS.equals("maks") || !erPrisMaksOK)
             prisMaks = 0;
-        } else if (erPrisMaksOK) {
+        
+        else if (erPrisMaksOK)
             prisMaks = Integer.parseInt(prisMaksS);
-        }
 
-        if (arealMinS.equals("min") || !erArealMinOK) {
+        if (arealMinS.equals("min") || !erArealMinOK)
             arealMin = 0;
-        } else if (erArealMinOK) {
+        
+        else if (erArealMinOK)
             arealMin = Integer.parseInt(arealMinS);
-        }
 
-        if (arealMaksS.equals("maks") || !erArealMaksOK) {
+        if (arealMaksS.equals("maks") || !erArealMaksOK)
             arealMaks = 0;
-        } else if (erArealMaksOK) {
+        
+        else if (erArealMaksOK)
             arealMaks = Integer.parseInt(arealMaksS);
-        }
 
         HashSet<Annonse> annonser = afilter.filtrerEtterParametre(postSted, boligType, prisMin, prisMaks, arealMin, arealMaks, harBalkong, harFellesvask, harHage, harKjeller);
 

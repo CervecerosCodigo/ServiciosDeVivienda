@@ -13,6 +13,11 @@ import model.Person;
 import view.LoggInnDialog;
 import view.StartGUI;
 
+/**
+ * Kontroller klasse for innloggingsvindu, og brukerkontroll for
+ * innlogging til megler vinduet. 
+ */
+
 public class InnloggingController {
 	
 	private static boolean innlogget;

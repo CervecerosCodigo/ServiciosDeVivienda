@@ -1,5 +1,4 @@
 package controller;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.util.*;
 import javax.swing.*;
@@ -13,7 +12,6 @@ import view.AbstraktArkfane;
  * Controller for Senterpanel, der alle data vises i HTML-format. 
  * Denne klassen har bare statiske metoder som tar i mot data fra ControllerTabell
  * og viser dem i "output".
- * @author espen
  */
 public class ControllerOutput {
     
@@ -26,15 +24,15 @@ public class ControllerOutput {
         if (personID > 0) {
 
             Iterator<Bolig> iter2 = boligliste.iterator();
+            
             while (iter2.hasNext()) {
                 Bolig temp = iter2.next();
-                if (temp.getPersonID() == personID) {
+                if (temp.getPersonID() == personID)
                     boliger.add(temp);
-                }
-            }//End while
+            }
         }
         return boliger;
-    }//End method    
+    }  
 
     /**
      * Hjelpemetode for å finne informasjon om en boligeier.
@@ -45,17 +43,18 @@ public class ControllerOutput {
     public static Person finnPersonInformasjon(HashSet<Person> personliste, int personID) {
         Iterator<Person> iter = personliste.iterator();
         Person temp = null;
+        
         while (iter.hasNext()) {
             temp = iter.next();
-            if (temp.getPersonID() == personID) {
+            if (temp.getPersonID() == personID)
                 return temp;
-            }
         }
+        
         return null;
     }
 
     /**
-     * Hjelpemetode som finner alle annonser en bestem person har vist interesse
+     * Hjelpemetode som finner alle annonser en bestemt person har vist interesse
      * for
      *
      * @param personID
@@ -66,11 +65,11 @@ public class ControllerOutput {
 
         if (personID > 0) {
             Iterator<Soknad> iter = soknadsliste.iterator();
+            
             while (iter.hasNext()) {
                 Soknad temp = iter.next();
-                if (temp.getLeietakerID() == personID) {
+                if (temp.getLeietakerID() == personID)
                     annonseAvInteresse.add(temp.getAnnonseObjekt());
-                }
             }
             return annonseAvInteresse;
         }
@@ -92,18 +91,14 @@ public class ControllerOutput {
         Leietaker leietaker = null;
         Utleier utleier = null;
 
-        if (skalVises instanceof Megler) {
+        if (skalVises instanceof Megler)
             megler = (Megler) skalVises;
-        }
 
-        if (skalVises instanceof Leietaker) {
+        if (skalVises instanceof Leietaker)
             leietaker = (Leietaker) skalVises;
 
-        }
-
-        if (skalVises instanceof Utleier) {
+        if (skalVises instanceof Utleier)
             utleier = (Utleier) skalVises;
-        }
 
         StringBuilder html = new StringBuilder();
         html.append("<h1><u>".concat(skalVises.getClass().getSimpleName()).concat("</u></h1>"));
@@ -168,6 +163,7 @@ public class ControllerOutput {
             html.append(" har følgende boliger:</u></h3>");
             html.append("<table id='boligerPrPerson'>");
             Iterator<Bolig> iter = boliger.iterator();
+            
             while (iter.hasNext()) {
                 Bolig temp = iter.next();
 
@@ -845,7 +841,6 @@ public class ControllerOutput {
         html.append("<div id='soknadstekst'>");
         html.append(leietaker.getSoknadsTekst());
         html.append("</div>");
-//        html.append(leietaker.getSoknadsTekst());
 
         output.setText(html.toString());
     }
@@ -916,5 +911,4 @@ public class ControllerOutput {
         css.addRule("#annonserAvInteresseKol3 {width: 200px}");
 
     }
-
 }
