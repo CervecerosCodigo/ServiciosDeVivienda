@@ -31,7 +31,14 @@ public class RegexTester {
     public static final String YEAR = "^[1|2]{1}[0-9]{3}$";
     public static final String MONTH_NUMMER = "^([0]{1}[1-9]{1})|([1]{1}[0-2]{1})$";
     public static final String DAY_OF_MONTH_NUMMER = "^([0|1|2]{1}[0-9]{1})|([3]{1}[0|1]{1})$";
+    /**
+     * Boligstørrelse får ikke lov til å begynne på null.
+     */
     public static final String KVM_BOLIG = "^[1-9]{1}[0-9]{0,3}$";
+    /**
+     * Størrelse balkong eller bod. Kan være null.
+     */
+    public static final String KVM_BALKONG_BOD = "^[0-9]{1}[0-9]{0,3}$";
     public static final String KVM_TOMT = "^[1-9]{1}[0-9]{0,4}$";
     public static final String ETASJE = "^[1-9]{1}[0-9]{0,1}$";
     public static final String PRIS = "^[1-9]{1}[0-9]{0,5}$";
@@ -192,6 +199,15 @@ public class RegexTester {
     public static boolean testKVMbolig(String kvm) {
         return patternMatchOK(kvm, KVM_BOLIG);
     }
+    
+    /**
+     * Metode for å teste størrelse på balkong eller bod. Får lov å være null.
+     * @param kvm
+     * @return 
+     */
+    public static boolean testKVMbalkogEllerBod(String kvm) {
+        return patternMatchOK(kvm, KVM_BALKONG_BOD);
+    }
 
     /**
      * Tester på antall kvadratmeter for tomten. Får ikke begynne på 0 og kan
@@ -299,7 +315,7 @@ public class RegexTester {
     public static boolean testKunBokstaverBindestrekFStorbokstav(String kunBokstaverTallBindestrekFStorbokstav) {
         return patternMatchOK(kunBokstaverTallBindestrekFStorbokstav, KUN_BOKSTAVER_FSTORBOKSTAV);
     }
-
+    
     /**
      * Tester en input string mot en fordefiniert regex.
      *
