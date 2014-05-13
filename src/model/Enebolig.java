@@ -11,7 +11,7 @@ public class Enebolig extends Bolig {
     private int tomtAreal;
 
     /**
-     * Kontruktør for oprettesle av en enebolig.
+     * Kontruktør for opprettelse av en enebolig.
      * @param boligtype
      * @param antallEtasjer
      * @param harKjeller
@@ -65,9 +65,4 @@ public class Enebolig extends Bolig {
     public void setTomtAreal(int tomtAreal) {
         this.tomtAreal = tomtAreal;
     }
-
-//    @Override
-//    public String toString() {
-//        return super.toString() + "boligtype=" + boligtype + ", antallEtasjer=" + antallEtasjer + ", harKjeller=" + harKjeller + ", tomtAreal=" + tomtAreal + '}';
-//    }
 }

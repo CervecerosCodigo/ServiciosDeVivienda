@@ -1,5 +1,4 @@
 package model;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 public class TabellModellPerson extends TabellModell {
 

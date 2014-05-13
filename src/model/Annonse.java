@@ -130,10 +130,6 @@ public class Annonse implements Serializable, Searchable{
         this.eiersKrav = eiersKrav;
     }
 
-    @Override  //En "mini-toString" for testing
-//    public String toString(){
-//        return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", utlopsDato=" + df.format(utlopsDato.getTime()) + '}';
-//    }
     public String toString() {
         return "Annonse{" + "annonseID=" + annonseID + ", depositum=" + depositum + ", utleiepris=" + utleiepris + ", erSynlig=" + erSynlig + ", utlopsDato=" + Konstanter.df.format(utlopsDato.getTime()) + ", boligID=" + bolig.getBoligID() + '}';
     }
