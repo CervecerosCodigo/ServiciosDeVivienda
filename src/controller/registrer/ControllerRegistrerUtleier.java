@@ -13,11 +13,7 @@ import model.Utleier;
 import view.registrer.PersonRegVindu;
 
 /**
- * Klassen brukes kun til registrering og redigering av utleiere. File:
- * ControllerRegistrerUtleier.java Package: controller.registrer Project:
- * ServiciosDeVivienda May 6, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
+ * Klassen brukes kun til registrering og redigering av utleiere.
  */
 public class ControllerRegistrerUtleier extends AbstractControllerRegister implements VisMeldingInterface {
 
@@ -99,9 +95,9 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
         epost = vindu.getEpostField().getText();
         telnr = vindu.getTelefonField().getText();
         erRepresentant = vindu.getErRepresentantCheckBox().isSelected();
-        if (erRepresentant) {
+        
+        if (erRepresentant)
             representantNavn = vindu.getErRepresentantForField().getText();
-        }
     }
 
     /**
@@ -117,9 +113,9 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
         boolean epostOK = RegexTester.testEpost(epost);
         boolean telnrOK = RegexTester.testTelNummerNorsk(telnr);
         boolean representantNavnOK = true;
-        if (erRepresentant) {
+        
+        if (erRepresentant)
             representantNavnOK = RegexTester.testKunBokstaverEllerTall(representantNavn);
-        }
 
         return fnavnOK && enavnOK && epostOK && telnrOK && representantNavnOK;
     }
@@ -136,12 +132,12 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
             if (super.registrerObjekt((Utleier) utleier)) {
                 Melding.visMelding("Ny utleier", "Utleier:\n" + fnavn + " " + enavn + "\nEr registrert");
                 vindu.dispose();
-            } else {
-                Melding.visMelding("Ny utleier", "Feil ved registrering");
-            }
-        } else {
-            Melding.visMelding("Feil", "Feil i skjema");
-        }
+            } 
+            
+            else Melding.visMelding("Ny utleier", "Feil ved registrering");
+        } 
+        
+        else Melding.visMelding("Feil", "Feil i skjema");
     }
 
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
@@ -154,6 +150,7 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
         vindu.getEtternavnField().setText(utleier.getEtternavn());
         vindu.getEpostField().setText(utleier.getEpost());
         vindu.getTelefonField().setText(utleier.getTelefon());
+        
         if (utleier.isErRepresentant()) {
             vindu.getErRepresentantCheckBox().setSelected(true);
             vindu.getErRepresentantForField().setEnabled(true);
@@ -180,15 +177,15 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
                 if (super.registrerObjekt((Utleier) utleier)) {
                     Melding.visMelding("Oppdater utleier", "Oppdatering vellykket.");
                     vindu.dispose();
-                } else {
-                    Melding.visMelding("Oppdater utleier", "Oppdatering misslykkedes ved registrering.");
-                }
-            } else {
-                Melding.visMelding("Oppdater utleier", "Oppdatering misslykkedes ved sletting.");
-            }
-        } else {
-            Melding.visMelding("Feil", "Feil i skjema");
-        }
+                } 
+                
+                else Melding.visMelding("Oppdater utleier", "Oppdatering misslykkedes ved registrering.");
+            } 
+            
+            else Melding.visMelding("Oppdater utleier", "Oppdatering misslykkedes ved sletting.");
+        } 
+        
+        else Melding.visMelding("Feil", "Feil i skjema");
     }
 
     public void settTabellOppdateringsLytter(TabellFireDataChangedInterface lytter) {
@@ -210,17 +207,17 @@ public class ControllerRegistrerUtleier extends AbstractControllerRegister imple
                     if (tabellOppdateringLytter != null) {
                         tabellOppdateringLytter.oppdaterTabellEtterEndring();
                     }
-                } else {
+                } 
+                
+                else {
                     registrerOppdatering();
-                    if (tabellOppdateringLytter != null) {
+                    if (tabellOppdateringLytter != null)
                         tabellOppdateringLytter.oppdaterTabellEtterEndring();
-                    }
                 }
-            } else if (e.getSource().equals(vindu.getAvbrytButton())) {
+            } 
+            
+            else if (e.getSource().equals(vindu.getAvbrytButton()))
                 vindu.dispose();
-            }
         }
-
     }
-
 }

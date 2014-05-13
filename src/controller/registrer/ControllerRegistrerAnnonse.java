@@ -1,6 +1,4 @@
 package controller.registrer;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
-
 
 import controller.TabellFireDataChangedInterface;
 import controller.VisMeldingInterface;
@@ -15,7 +13,6 @@ import view.registrer.AnnonseRegVindu;
 /**
  * Controller for logikken til registreringsvindu for annonseobjektene. 
  * Her er det Konstruktører for både nyregistreringer og å endre eksisterende objekter.
- * @author espen
  */
 public class ControllerRegistrerAnnonse implements VisMeldingInterface{
 
@@ -121,9 +118,10 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
      */
     private boolean kontrollerDataForSletting(Annonse annonse) {
         getAnnonseDataFraGUI();
-        if(kontrollerDataAnnonse()){
+        
+        if(kontrollerDataAnnonse())
             return true;
-        }
+        
         return false;
     }
 
@@ -133,11 +131,10 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
      * @return 
      */
     private boolean slettAnnonseFraSet(Annonse annonse) {
-        if (kontrollerDataForSletting(annonse)) {
-            if(annonseliste.remove(annonse)){
+        if (kontrollerDataForSletting(annonse))
+            if(annonseliste.remove(annonse))
                 return true;
-            }
-        }
+        
         visMelding("", "Annonsen kunne ikke slettes!");
         return false;
     }
@@ -157,12 +154,12 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
                 vindu.getBoligEierEtternavnInfo().setText(etternavn);
                 vindu.getBoligEierEpostInfo().setText(epost);
                 vindu.getBoligEierTlfInfo().setText(tlf);
-            } else {
-                visMelding("", "Person finnes ikke!");
-            }
-        } else {
-            visMelding("", "Boligenobjektet finnes ikke!");
-        }
+            } 
+            
+            else visMelding("", "Person finnes ikke!");
+        } 
+        
+        else visMelding("", "Boligenobjektet finnes ikke!");
     }
 
     /**
@@ -204,31 +201,24 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
      */
     private boolean kontrollerDataAnnonse() {
 
-        
-
-        
-
         boolean[] annonseOK = new boolean[4];
         
-        if ((iDag.compareTo(utlopsDato)) <= 0) {
-            
+        if ((iDag.compareTo(utlopsDato)) <= 0)
             annonseOK[0] = true;
-        } else {
-            annonseOK[0] = false;
-        }
-        if ((iDag.compareTo(tilgjengligFraDato)) <= 0) {
-            
+        
+        else annonseOK[0] = false;
+        
+        if ((iDag.compareTo(tilgjengligFraDato)) <= 0)
             annonseOK[1] = true;
-        } else {
-            annonseOK[1] = false;
-        }
+        
+        else annonseOK[1] = false;
+            
         annonseOK[2] = RegexTester.testPris(String.valueOf(depositum));
         annonseOK[3] = RegexTester.testPris(String.valueOf(utleiepris));
 
         for (int i = 0; i < annonseOK.length; i++) {
-            if (!annonseOK[i]) {
+            if (!annonseOK[i])
                 return false;
-            }
         }
         return true;
     }
@@ -256,6 +246,7 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
     private boolean finnEierInfoOmBolig() {
         Person temp = null;
         Iterator<Person> iter = personliste.iterator();
+        
         while (iter.hasNext()) {
             temp = iter.next();
             if (temp.getPersonID() == bolig.getPersonID()) {
@@ -278,17 +269,19 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
         if(!kontrollerDataAnnonse()){
             visMelding("", "Vennligst sjekk alle feltene.");
             return false;
-        }else{
+        }
+        
+        else{
             Annonse annonse = new Annonse(depositum, utleiepris, tilgjengligFraDato, utlopsDato, bolig, eiersKrav);
             annonseSomEndres = annonse;
+            
             if(annonseliste.add(annonse)){
                 visMelding("Registrering fullført!", "Annonsen er registrert!");
                 datoAnnonseTasAvNett = iDag;
                 return true;
-            }else{
-                visMelding("Registrering feilet!","Greide ikke å legge annonsen inn i registeret!");
             }
             
+            else visMelding("Registrering feilet!","Greide ikke å legge annonsen inn i registeret!");
         }
         return false;
     }
@@ -318,7 +311,9 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
                     
                     annonseSomEndres.setErSynlig(true);
                     vindu.dispose();
-                }else{
+                }
+                
+                else {
                     if(slettAnnonseFraSet(annonseSomEndres)){
                         annonseSomEndres.setErSynlig(erSynligsomAnnonse);
                         skrivOppdateringtilAnnonseSet(annonseSomEndres);
@@ -326,10 +321,9 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
                     }
                 }
             }
-            if (e.getSource().equals(vindu.getAvbrytButton())) {
+            
+            if (e.getSource().equals(vindu.getAvbrytButton()))
                 vindu.dispose();
-            }
         }
-
     }
 }
