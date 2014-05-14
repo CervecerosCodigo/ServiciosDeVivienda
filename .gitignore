@@ -64,4 +64,4 @@ local.properties
 
 programdata/
 programdata/data.iso
-!programdata/img/default
+!programdata/img/default/*
