@@ -65,4 +65,5 @@ local.properties
 programdata/data.iso
 !programdata/img/boligbilder/README.txt
 programdata/img/boligbilder/*
+!programdata/img/boligbilder/README.txt
 
