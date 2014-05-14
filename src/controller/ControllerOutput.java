@@ -430,14 +430,12 @@ public class ControllerOutput {
         html.append("<td class='annonseText'><b>Depositum</b>");
         html.append("</td>");
         html.append("<td class='annonseData'>");
-        html.append("kr. ");
         html.append(Konstanter.nf.format(skalVises.getDepositum()));
         html.append(",-");
         html.append("</td>");
         html.append("<td class='annonseText'><b>Pris pr mnd</b>");
         html.append("</td>");
         html.append("<td class='annonseData'>");
-        html.append("kr. ");
         html.append(Konstanter.nf.format(skalVises.getUtleiepris()));
         html.append(",-");
         html.append("</td>");

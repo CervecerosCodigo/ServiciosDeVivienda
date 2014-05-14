@@ -2,8 +2,10 @@ package lib;
 
 import controller.ControllerTabell;
 import java.awt.Color;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.plaf.nimbus.NimbusStyle;
@@ -64,8 +66,8 @@ public class Konstanter {
      * Brukes i feks JOptionPane for å sette lokalisert melding i knapper.
      */
     public static final Object[] VALG_JA_NEI = {"Ja", "Nei"};
-
-    public static NumberFormat nf = NumberFormat.getIntegerInstance();
+    
+    public static NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("nb-no"));
     public static SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     
 

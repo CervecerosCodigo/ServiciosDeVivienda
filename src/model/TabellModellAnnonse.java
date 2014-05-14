@@ -1,12 +1,8 @@
 package model;
 
-import javax.swing.JLabel;
-import javax.swing.table.DefaultTableCellRenderer;
 import lib.Konstanter;
 
 public class TabellModellAnnonse extends TabellModell {
-
-
     
     public TabellModellAnnonse() {
         super.overskrift = new String[]{"AnnonseID", "Adresse", "Pris pr mnd", "Depositum"};
@@ -22,9 +18,11 @@ public class TabellModellAnnonse extends TabellModell {
             case 1:
                 return annonse.getBolig().getAdresse();
             case 2:
-                return Konstanter.nf.format(annonse.getUtleiepris());
+                String utleie = Konstanter.nf.format(annonse.getUtleiepris());
+                return utleie = utleie.substring(0, utleie.length()-3);
             case 3:
-                return Konstanter.nf.format(annonse.getDepositum());
+                String depo = Konstanter.nf.format(annonse.getDepositum());
+                return depo = depo.substring(0, depo.length()-3);
         }
         return null;
     }

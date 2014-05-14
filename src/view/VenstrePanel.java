@@ -2,9 +2,13 @@ package view;
 
 import model.*;
 import java.awt.*;
+import java.text.Collator;
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.*;
+import lib.Konstanter;
 
 /**
  * Denne klassen er et JPanel (arvet) som inneholder tabellen. Den definerer
