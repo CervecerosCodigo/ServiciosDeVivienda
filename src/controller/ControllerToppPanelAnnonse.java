@@ -46,21 +46,21 @@ public class ControllerToppPanelAnnonse {
         vindu.getToppanelAnnonse().addKnappLytter(new KnappeLytter());
         OppdaterStatistikk();
     }
-    
+
     private void OppdaterStatistikk() {
 
         int antallLedigeBoliger = 0;
         int antallBoliger = 0;
 
         for (Annonse annonseIterator : annonseliste) {
-            if (annonseIterator.getBolig().isErUtleid() == false)
+            if (annonseIterator.getBolig().isErUtleid() == false) {
                 antallLedigeBoliger++;
+            }
         }
 
         antallBoliger = annonseliste.size();
         vindu.getToppanelAnnonse().getStatistikkPanel().OppdaterStatistikk(antallLedigeBoliger, antallBoliger);
     }
-    
 
     /**
      * Laster inn alle poststeder i comboboksen ved initialisering.
@@ -106,30 +106,29 @@ public class ControllerToppPanelAnnonse {
         boolean erArealMinOK = RegexTester.testKVMbolig(arealMinS);
         boolean erArealMaksOK = RegexTester.testKVMbolig(arealMaksS);
 
-
-        if (prisMinS.equals("min") || !erPrisMinOK)
+        if (prisMinS.equals("min") || !erPrisMinOK) {
             prisMin = 0;
-        
-        else if (erPrisMinOK)
+        } else if (erPrisMinOK) {
             prisMin = Integer.parseInt(prisMinS);
+        }
 
-        if (prisMaksS.equals("maks") || !erPrisMaksOK)
+        if (prisMaksS.equals("maks") || !erPrisMaksOK) {
             prisMaks = 0;
-        
-        else if (erPrisMaksOK)
+        } else if (erPrisMaksOK) {
             prisMaks = Integer.parseInt(prisMaksS);
+        }
 
-        if (arealMinS.equals("min") || !erArealMinOK)
+        if (arealMinS.equals("min") || !erArealMinOK) {
             arealMin = 0;
-        
-        else if (erArealMinOK)
+        } else if (erArealMinOK) {
             arealMin = Integer.parseInt(arealMinS);
+        }
 
-        if (arealMaksS.equals("maks") || !erArealMaksOK)
+        if (arealMaksS.equals("maks") || !erArealMaksOK) {
             arealMaks = 0;
-        
-        else if (erArealMaksOK)
+        } else if (erArealMaksOK) {
             arealMaks = Integer.parseInt(arealMaksS);
+        }
 
         HashSet<Annonse> annonser = afilter.filtrerEtterParametre(postSted, boligType, prisMin, prisMaks, arealMin, arealMaks, harBalkong, harFellesvask, harHage, harKjeller);
 
@@ -145,12 +144,19 @@ public class ControllerToppPanelAnnonse {
     public void setListListener(ListListenerInterface listListener) {
         this.listListener = listListener;
     }
-    
+
     public void sendSokeResultat() {
         HashSet<Annonse> filterResultat = filtrerAnnonser();
-        
-        if (listListener != null)
+
+        if (listListener != null) {
             listListener.listReady(filterResultat, ObjektType.ANNONSEOBJ);
+        }
+    }
+
+    public void nullStillSokeResultat() {
+        if (listListener != null) {
+            listListener.listReady(annonseliste, ObjektType.ANNONSEOBJ);
+        }
     }
 
     class KnappeLytter implements ActionListener {
@@ -158,7 +164,9 @@ public class ControllerToppPanelAnnonse {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(vindu.getToppanelAnnonse().getSokeKnapp())) {
-            	sendSokeResultat();
+                sendSokeResultat();
+            } else if (e.getSource().equals(vindu.getToppanelAnnonse().getNullStillKnapp())) {
+                nullStillSokeResultat();
             }
         }
     }
