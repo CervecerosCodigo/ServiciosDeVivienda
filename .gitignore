@@ -63,4 +63,6 @@ local.properties
 .buildpath
 
 programdata/data.iso
+!programdata/img/boligbilder/README.txt
 programdata/img/boligbilder/*
+
