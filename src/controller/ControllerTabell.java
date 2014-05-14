@@ -278,10 +278,12 @@ public class ControllerTabell implements VisMeldingInterface {
                         } 
                         
                         else if (tabellModellAnnonse.equals((TabellModell) tabell.getModel())) {
-                            tabellMeny.add(menyvalgForesporsel);
-                            if (vindu instanceof ArkfaneMegler)
+                            if (vindu instanceof ArkfaneAnnonse)
+                                tabellMeny.add(menyvalgForesporsel);
+                            if (vindu instanceof ArkfaneMegler){
+                                tabellMeny.add(menyvalgPubliserToggle);
                                 tabellMeny.add(menyvalgSlettAnnonse);
-                            
+                            }
                         } 
                         
                         else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {

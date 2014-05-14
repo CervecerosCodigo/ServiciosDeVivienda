@@ -9,7 +9,7 @@ public class TabellModellAnnonse extends TabellModell {
 
     
     public TabellModellAnnonse() {
-        super.overskrift = new String[]{"AnnonseID", "Adresse", "Depositum", "Pris pr mnd"};
+        super.overskrift = new String[]{"AnnonseID", "Adresse", "Pris pr mnd", "Depositum"};
 
     }
 
@@ -22,9 +22,9 @@ public class TabellModellAnnonse extends TabellModell {
             case 1:
                 return annonse.getBolig().getAdresse();
             case 2:
-                return Konstanter.nf.format(annonse.getDepositum());
-            case 3:
                 return Konstanter.nf.format(annonse.getUtleiepris());
+            case 3:
+                return Konstanter.nf.format(annonse.getDepositum());
         }
         return null;
     }

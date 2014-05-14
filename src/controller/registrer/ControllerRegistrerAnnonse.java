@@ -11,10 +11,10 @@ import model.*;
 import view.registrer.AnnonseRegVindu;
 
 /**
- * Controller for logikken til registreringsvindu for annonseobjektene. 
- * Her er det Konstruktører for både nyregistreringer og å endre eksisterende objekter.
+ * Controller for logikken til registreringsvindu for annonseobjektene. Her er
+ * det Konstruktører for både nyregistreringer og å endre eksisterende objekter.
  */
-public class ControllerRegistrerAnnonse implements VisMeldingInterface{
+public class ControllerRegistrerAnnonse implements VisMeldingInterface {
 
     private AnnonseRegVindu vindu;
     private HashSet<Annonse> annonseliste;
@@ -27,15 +27,16 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
     private Calendar utlopsDato, tilgjengligFraDato, iDag, annonseRegistrertDato, datoAnnonseTasAvNett;
     private String eiersKrav;
     private boolean erSynligsomAnnonse;
-    
+
     private boolean erNyregistrering;
     TabellFireDataChangedInterface tabellOppdateringLytter;
 
     /**
      * Konstruktør for registrering av nye annonseobjekter.
+     *
      * @param annonseliste
      * @param personliste
-     * @param bolig 
+     * @param bolig
      */
     public ControllerRegistrerAnnonse(HashSet<Annonse> annonseliste, HashSet<Person> personliste, Bolig bolig) {
         this.annonseliste = annonseliste;
@@ -43,31 +44,33 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
         this.bolig = bolig;
         vindu = new AnnonseRegVindu("Registrering av annonser");
         vindu.addAnnonsePanelListener(new KnappLytter());
-        
+
         vindu.setIconImage(Ikoner.NY_BOLIG.getImage());
-        
+
         fyllUtBoliginfo();
         erNyregistrering = true;
-        
+
         finnDatoenIDag();
         annonseRegistrertDato = iDag;
-        
+
         vindu.getUtlopsDato().setDato(
-                iDag.get(Calendar.YEAR),
-                iDag.get(Calendar.MONTH)+1,
-                iDag.get(Calendar.DAY_OF_WEEK));
+                bolig.getTilgjengeligForUtleie().get(Calendar.YEAR),
+                bolig.getTilgjengeligForUtleie().get(Calendar.MONTH),
+                bolig.getTilgjengeligForUtleie().get(Calendar.DAY_OF_MONTH));
 
         vindu.getTilgjengligFraDato().setDato(
-                iDag.get(Calendar.YEAR),
-                iDag.get(Calendar.MONTH)+1,
-                iDag.get(Calendar.DAY_OF_WEEK));        
+                bolig.getTilgjengeligForUtleie().get(Calendar.YEAR),
+                bolig.getTilgjengeligForUtleie().get(Calendar.MONTH),
+                bolig.getTilgjengeligForUtleie().get(Calendar.DAY_OF_MONTH));
+
     }
 
     /**
      * Kontroller for endringer av eksisterende annonseobjekter.
+     *
      * @param annonseliste
      * @param personliste
-     * @param annonseSomEndres 
+     * @param annonseSomEndres
      */
     public ControllerRegistrerAnnonse(HashSet<Annonse> annonseliste, HashSet<Person> personliste, Annonse annonseSomEndres) {
         this.annonseliste = annonseliste;
@@ -75,15 +78,15 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
         this.bolig = annonseSomEndres.getBolig();
         this.annonseSomEndres = annonseSomEndres;
         vindu = new AnnonseRegVindu("Registrering av annonser");
-        
+
         vindu.setIconImage(Ikoner.EDIT.getImage());
-        
+
         vindu.addAnnonsePanelListener(new KnappLytter());
         fyllUtBoliginfo();
         erNyregistrering = false;
-        
+
         finnDatoenIDag();
-        
+
         //Setter inn data fra eksisterende annonse.
         vindu.getDepositum().setText(String.valueOf(this.annonseSomEndres.getDepositum()));
         vindu.getUtleiepris().setText(String.valueOf(this.annonseSomEndres.getUtleiepris()));
@@ -104,37 +107,40 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
 
     /**
      * Finner datoen i dag.
-     * @return 
+     *
+     * @return
      */
-    private Calendar finnDatoenIDag(){
-        return iDag = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));                
+    private Calendar finnDatoenIDag() {
+        return iDag = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
 
     }
-    
+
     /**
-     * Sjekker om innskrevede data er OK for å oppdatere tilsendt annnonse. 
+     * Sjekker om innskrevede data er OK for å oppdatere tilsendt annnonse.
+     *
      * @param annonse
-     * @return 
+     * @return
      */
     private boolean kontrollerDataForSletting(Annonse annonse) {
         getAnnonseDataFraGUI();
-        
-        if(kontrollerDataAnnonse())
-            return true;
-        
-        return false;
+
+        return kontrollerDataAnnonse();
     }
 
     /**
-     * Om annonsen skal oppdateres må eksisterende kopi av annonsen slettes fra annonselisten før redigert annonse kan settes inn.
+     * Om annonsen skal oppdateres må eksisterende kopi av annonsen slettes fra
+     * annonselisten før redigert annonse kan settes inn.
+     *
      * @param annonse
-     * @return 
+     * @return
      */
     private boolean slettAnnonseFraSet(Annonse annonse) {
-        if (kontrollerDataForSletting(annonse))
-            if(annonseliste.remove(annonse))
+        if (kontrollerDataForSletting(annonse)) {
+            if (annonseliste.remove(annonse)) {
                 return true;
-        
+            }
+        }
+
         visMelding("", "Annonsen kunne ikke slettes!");
         return false;
     }
@@ -154,21 +160,23 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
                 vindu.getBoligEierEtternavnInfo().setText(etternavn);
                 vindu.getBoligEierEpostInfo().setText(epost);
                 vindu.getBoligEierTlfInfo().setText(tlf);
-            } 
-            
-            else visMelding("", "Person finnes ikke!");
-        } 
-        
-        else visMelding("", "Boligenobjektet finnes ikke!");
+            } else {
+                visMelding("", "Person finnes ikke!");
+            }
+        } else {
+            visMelding("", "Boligenobjektet finnes ikke!");
+        }
     }
 
     /**
-     * Henter data fra Annonseregistreringsfeltene og legger inn i tilsendt annonse.
+     * Henter data fra Annonseregistreringsfeltene og legger inn i tilsendt
+     * annonse.
+     *
      * @param annonse
-     * @return 
+     * @return
      */
     private Annonse oppdaterAnnonseObjekt(Annonse annonse) {
-        
+
         getAnnonseDataFraGUI();
         annonse.setErSynlig(erSynligsomAnnonse);
         annonse.setTilgjengligFraDato(tilgjengligFraDato);
@@ -176,7 +184,7 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
         annonse.setDepositum(depositum);
         annonse.setUtleiepris(utleiepris);
         annonse.setEiersKrav(eiersKrav);
-        
+
         return annonse;
     }
 
@@ -197,28 +205,32 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
 
     /**
      * Kjører Regexsjekk på alle feltene.
-     * @return 
+     *
+     * @return
      */
     private boolean kontrollerDataAnnonse() {
 
         boolean[] annonseOK = new boolean[4];
-        
-        if ((iDag.compareTo(utlopsDato)) <= 0)
+
+        if ((iDag.compareTo(utlopsDato)) <= 0) {
             annonseOK[0] = true;
-        
-        else annonseOK[0] = false;
-        
-        if ((iDag.compareTo(tilgjengligFraDato)) <= 0)
+        } else {
+            annonseOK[0] = false;
+        }
+
+        if ((iDag.compareTo(tilgjengligFraDato)) <= 0) {
             annonseOK[1] = true;
-        
-        else annonseOK[1] = false;
-            
+        } else {
+            annonseOK[1] = false;
+        }
+
         annonseOK[2] = RegexTester.testPris(String.valueOf(depositum));
         annonseOK[3] = RegexTester.testPris(String.valueOf(utleiepris));
 
         for (int i = 0; i < annonseOK.length; i++) {
-            if (!annonseOK[i])
+            if (!annonseOK[i]) {
                 return false;
+            }
         }
         return true;
     }
@@ -234,19 +246,20 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
             tilgjengligFraDato = vindu.getTilgjengligFraDato().opprettKalenderobjekt();
             erSynligsomAnnonse = vindu.getErSynligSomAnnonse().isSelected();
             eiersKrav = vindu.getEiersKrav().getText();
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             visMelding("", "Greier ikke hente data fra alle feltene!");
         }
     }
 
     /**
      * Finner infor om eier av bolig. Brukes for informasjon.
-     * @return 
+     *
+     * @return
      */
     private boolean finnEierInfoOmBolig() {
         Person temp = null;
         Iterator<Person> iter = personliste.iterator();
-        
+
         while (iter.hasNext()) {
             temp = iter.next();
             if (temp.getPersonID() == bolig.getPersonID()) {
@@ -262,33 +275,30 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
 
     /**
      * Registrerer ny annonse
-     * @return 
+     *
+     * @return
      */
-    private boolean registrerNyAnnonse(){
+    private boolean registrerNyAnnonse() {
         getAnnonseDataFraGUI();
-        if(!kontrollerDataAnnonse()){
+        if (!kontrollerDataAnnonse()) {
             visMelding("", "Vennligst sjekk alle feltene.");
             return false;
-        }
-        
-        else{
+        } else {
             Annonse annonse = new Annonse(depositum, utleiepris, tilgjengligFraDato, utlopsDato, bolig, eiersKrav);
             annonseSomEndres = annonse;
-            
-            if(annonseliste.add(annonse)){
+
+            if (annonseliste.add(annonse)) {
                 visMelding("Registrering fullført!", "Annonsen er registrert!");
                 datoAnnonseTasAvNett = iDag;
                 return true;
+            } else {
+                visMelding("Registrering feilet!", "Greide ikke å legge annonsen inn i registeret!");
             }
-            
-            else visMelding("Registrering feilet!","Greide ikke å legge annonsen inn i registeret!");
         }
         return false;
     }
 
-
-    
-    public void settTabellOppdateringsLytter(TabellFireDataChangedInterface lytter){
+    public void settTabellOppdateringsLytter(TabellFireDataChangedInterface lytter) {
         tabellOppdateringLytter = lytter;
     }
 
@@ -296,34 +306,43 @@ public class ControllerRegistrerAnnonse implements VisMeldingInterface{
     public void visMelding(String overskrift, String melding) {
         vindu.visMelding(overskrift, melding);
     }
-    
-    
+
     class KnappLytter implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(vindu.getLagreButton())) {
-                if(erNyregistrering){
-                    
-                    registrerNyAnnonse();
-                    if(tabellOppdateringLytter != null)
-                        tabellOppdateringLytter.oppdaterTabellEtterEndring();
-                    
-                    annonseSomEndres.setErSynlig(true);
-                    vindu.dispose();
-                }
                 
-                else {
-                    if(slettAnnonseFraSet(annonseSomEndres)){
+                //Er de ny annonse?
+                if (erNyregistrering) {
+
+                    //Prøv å registrer ny å annonse
+                    if (registrerNyAnnonse()) {
+                        if (tabellOppdateringLytter != null) {
+                            tabellOppdateringLytter.oppdaterTabellEtterEndring();
+                        }
+                        annonseSomEndres.setErSynlig(true);
+                        vindu.dispose();
+                    }
+                //Det er ikke ny annonse    
+                } else {
+                    //Sender annonseSomEndres til oppdateringmetoden der den henter nye data
+                    annonseSomEndres = oppdaterAnnonseObjekt(annonseSomEndres);
+                    
+                    //Slett annonsen som skal endres fra settet først
+                    if (slettAnnonseFraSet(annonseSomEndres)) {
                         annonseSomEndres.setErSynlig(erSynligsomAnnonse);
+                        
+                        //Legg så annonsen tilbake
                         skrivOppdateringtilAnnonseSet(annonseSomEndres);
                         vindu.dispose();
                     }
                 }
             }
-            
-            if (e.getSource().equals(vindu.getAvbrytButton()))
+
+            if (e.getSource().equals(vindu.getAvbrytButton())) {
                 vindu.dispose();
+            }
         }
     }
 }
