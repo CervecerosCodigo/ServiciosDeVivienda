@@ -1,5 +1,4 @@
 package view.registrer;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
@@ -27,8 +26,6 @@ public class CustomSubPanel extends AbstractPanel {
         
         innerBorder = BorderFactory.createTitledBorder(borderNavn);
         setBorder(innerBorder);   
-
-             
     }
 
     /**
@@ -84,7 +81,6 @@ public class CustomSubPanel extends AbstractPanel {
     }
 
     void addUtleierPanelListener(ActionListener actionListener) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

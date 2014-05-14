@@ -1,5 +1,4 @@
 package view.registrer;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import controller.VisMeldingInterface;
 import java.awt.BorderLayout;
@@ -116,9 +115,8 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource().equals(getAvbrytButton())) {
+                if (e.getSource().equals(getAvbrytButton()))
                     dispose();
-                }
             }
         });
 
@@ -167,7 +165,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         senterPanel.add(etternavnLabel, gc);
 
         gc.gridx = 1;
-//        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(etternavnField, gc);
@@ -183,7 +180,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         senterPanel.add(epostLabel, gc);
 
         gc.gridx = 1;
-//        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(epostField, gc);
@@ -199,7 +195,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         senterPanel.add(telefonLabel, gc);
 
         gc.gridx = 1;
-//        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(telefonField, gc);
@@ -215,7 +210,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         senterPanel.add(erRepresntantLabel, gc);
 
         gc.gridx = 1;
-//        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(erRepresentantCheckBox, gc);
@@ -231,7 +225,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         senterPanel.add(erRepresentatnForLabel, gc);
 
         gc.gridx = 1;
-//        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(erRepresentatForField, gc);
@@ -248,7 +241,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         senterPanel.add(fodselsArLabel, gc);
 
         gc.gridx = 1;
-//        gc.gridy++;
         gc.insets = new Insets(0, 5, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(fodselsArCombo, gc);
@@ -264,7 +256,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         senterPanel.add(antPersonerHusholdLabel, gc);
 
         gc.gridx = 1;
-//        gc.gridy++;
         gc.insets = new Insets(0, 5, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(antPersonerHusholdCombo, gc);
@@ -280,7 +271,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         senterPanel.add(sivilStatusLabel, gc);
 
         gc.gridx = 1;
-//        gc.gridy++;
         gc.insets = new Insets(0, 5, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(sivilStatusCombo, gc);
@@ -296,7 +286,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         senterPanel.add(arbeidsForholdLabel, gc);
 
         gc.gridx = 1;
-//        gc.gridy++;
         gc.insets = new Insets(0, 5, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(arbeidsForholdCombo, gc);
@@ -312,7 +301,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         senterPanel.add(yrkeLabel, gc);
 
         gc.gridx = 1;
-//        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(yrkeField, gc);
@@ -328,7 +316,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
         senterPanel.add(soknadsTekstLabel, gc);
 
         gc.gridx = 1;
-//        gc.gridy++;
         gc.insets = new Insets(0, 0, 0, 0);
         gc.anchor = GridBagConstraints.LINE_START;
         senterPanel.add(soknadsScroll, gc);
@@ -458,8 +445,6 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
     }
 
     
-    
-    
     /**
      * Setter opp lytter
      * @param lytter 
@@ -473,5 +458,4 @@ public class PersonRegVindu extends AbstractRegistreringsPanel implements VisMel
     public void visMelding(String overskrift, String melding) {
         Melding.visMelding(overskrift, melding);
     }
-
 }

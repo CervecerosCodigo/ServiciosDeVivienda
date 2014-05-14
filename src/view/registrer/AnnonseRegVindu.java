@@ -1,5 +1,4 @@
 package view.registrer;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import controller.VisMeldingInterface;
 import java.awt.BorderLayout;
@@ -22,7 +21,7 @@ import view.CustomJCheckBox;
 import view.CustomJTextField;
 
 
-public class AnnonseRegVindu extends AbstractRegistreringsPanel implements VisMeldingInterface{
+public class AnnonseRegVindu extends AbstractRegistreringsPanel implements VisMeldingInterface {
 
     private JLabel boligIDLabel, boligAdresseLabel, boligPostNrLabel, boligPostStedLabel, boligEierFornavnLabel, boligEierEtternavnLabel, boligEierEpostLabel, boligEierTlfLabel;
     private CustomJTextField boligIDInfo, boligAdresseInfo, boligPostNrInfo, boligPostStedInfo, boligEierFornavnInfo, boligEierEtternavnInfo, boligEierEpostInfo, boligEierTlfInfo;
@@ -82,13 +81,12 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel implements VisMe
         avbrytButton = new CustomJButton("Avbryt");
         lagreButton = new CustomJButton("Lagre");
         
-        addAnnonsePanelListener(new ActionListener(){
+        addAnnonsePanelListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource().equals(getAvbrytButton())){
+                if(e.getSource().equals(getAvbrytButton()))
                     dispose();
-                }
             }
         });
         
@@ -96,7 +94,7 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel implements VisMe
         
     }//End Constructor
     
-    public void opprettLayout(){
+    public void opprettLayout() {
         GridBagConstraints gcVenstre = new GridBagConstraints();
         
         //Rad 1
@@ -414,5 +412,4 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel implements VisMe
     public void visMelding(String overskrift, String melding) {
         Melding.visMelding(overskrift, melding);
     }
-
 }

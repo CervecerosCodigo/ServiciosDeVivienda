@@ -1,5 +1,4 @@
 package view.registrer;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import controller.VisMeldingInterface;
 import java.awt.BorderLayout;

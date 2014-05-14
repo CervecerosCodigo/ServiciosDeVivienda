@@ -29,14 +29,8 @@ import view.CustomJCheckBox;
 import view.CustomJRadioButton;
 import view.CustomJTextField;
 
-/**
- *
- * File: BoligRegVindu.java Package: view.registrer Project: ServiciosDeVivienda
- * Apr 29, 2014
- *
- * @author Lukas David Larsed, s198569@stud.hioa.no
- */
-public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeldingInterface{
+
+public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeldingInterface {
 
     ///PANELER///
     private CustomSubPanel boligPanel, leilighetPanel, eneboligPanel, bildePanel;
@@ -121,7 +115,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
 
         eierField = new CustomJTextField("#####", RegexTester.PRIS, GuiSizes.FIELD_MEDIUM);
         meglerField = new CustomJTextField("10001", RegexTester.PRIS, GuiSizes.FIELD_MEDIUM);
-        adresseField = new CustomJTextField("Gate vei 10 B", RegexTester.GATE_ADRESSE_ENKEL, GuiSizes.FIELD_MEDIUM);//TODO: Her må det endres til gateadresse + husnummer regex
+        adresseField = new CustomJTextField("Gate vei 10 B", RegexTester.GATE_ADRESSE_ENKEL, GuiSizes.FIELD_MEDIUM);
         postNrField = new CustomJTextField("XXXX", RegexTester.POST_NUMMER_PATTERN, GuiSizes.FIELD_MEDIUM);
         postStedField = new CustomJTextField("Oslo", RegexTester.POSTORT_NAVN, GuiSizes.FIELD_MEDIUM);
         boArealField = new CustomJTextField("XX(X)", RegexTester.KVM_BOLIG, GuiSizes.FIELD_MEDIUM);
@@ -130,7 +124,6 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
         datoVelger = new ComboDatoVelger();
         erUtleidCheckBox = new CustomJCheckBox();
         beskrivelseTextArea = new JTextArea(GuiSizes.TEXTAREA_ROW_MEDIUM, GuiSizes.TEXTAREA_COL_MEDIUM);
-//        beskrivelseTextArea.setPreferredSize(new Dimension(200, 200));
         beskrivelseTextArea.setLineWrap(true);
         beskrivelseTextArea.setWrapStyleWord(true);
         beskrivelseTextArea.setMargin(new Insets(3, 3, 3, 3));
@@ -253,7 +246,6 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
         gcBolig.anchor = GridBagConstraints.FIRST_LINE_START;
         boligPanel.add(beskrivelseLabel, gcBolig);
         gcBolig.gridx++;
-//        gcBolig.gridy++;
         boligPanel.add(beskrivelseScroll, gcBolig);
 
         //Rad 11 BILDER
@@ -412,12 +404,15 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
         for (Component comp1 : compBolig) {
             comp1.setEnabled(false);
         }
+        
         for (Component comp1 : compLeilighet) {
             comp1.setEnabled(false);
         }
+        
         for (Component comp1 : compEnebolig) {
             comp1.setEnabled(false);
         }
+        
         beskrivelseTextArea.setEditable(false);
         lagreButton.setEnabled(false);
     }
@@ -427,6 +422,7 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
         for (Component comp1 : compBolig) {
             comp1.setEnabled(true);
         }
+        
         eierField.setEnabled(false);
         meglerField.setEnabled(false);
         beskrivelseTextArea.setEditable(true);
@@ -752,6 +748,4 @@ public class BoligRegVindu extends AbstractRegistreringsPanel implements VisMeld
     public void visMelding(String overskrift, String melding) {
         Melding.visMelding(overskrift, melding);
     }
-
-    
 }

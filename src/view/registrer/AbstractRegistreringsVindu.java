@@ -1,5 +1,4 @@
 package view.registrer;
-//Laget av Espen Zaal, studentnummer 198599 i klasse Informasjonsteknologi.
 
 import java.awt.GridLayout;
 import javax.swing.JFrame;
@@ -7,7 +6,6 @@ import javax.swing.JFrame;
 
 /**
  * Denne klassen utgjør rammen for alle registreringsvinduene i pakken view\register.
- * @author espen
  */
 public class AbstractRegistreringsVindu extends JFrame{
 
@@ -23,7 +21,5 @@ public class AbstractRegistreringsVindu extends JFrame{
         this.setLocationRelativeTo(null);
         
         setLayout(new GridLayout(1, 1));
-        
-        
     }
 }
