@@ -22,6 +22,7 @@ public class Ikoner {
     
     //Følgende har 8px padding
     public final static ImageIcon SEARCH = new ImageIcon(ikonerSti + "Search-32.png");
+    public final static ImageIcon RESET = new ImageIcon(ikonerSti + "Command-Reset-32.png");
     public final static ImageIcon ATTACH_IMAGE = new ImageIcon(ikonerSti + "Attach-Image-32.png");
     public final static ImageIcon IMAGES = new ImageIcon(ikonerSti + "Images-32.png");
 
