@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
  */
 public class Ikoner {
 
-    private final static String ikonerSti = new BildeFilSti().getAbsoluteGalleryPath() + "/default/ico/";
+    private final static String ikonerSti = new BildeFilSti().getAbsoluteIconPath();
 
     //Ikoner er hentet fra: http://flaticons.net/
     //Valg farve er 606060

@@ -34,13 +34,33 @@ public class BildeFilSti {
     }
 
     /**
+     * Brukes for å hente opp sti til ikoner.
+     * @return 
+     */
+    public String getAbsoluteIconPath() {
+        Path currentPath = Paths.get("");
+        String filsti = currentPath.toAbsolutePath().toString();
+        return filsti + "/" + Konstanter.PROGRAMDATA + "/img/default/ico/";
+    }
+
+    /**
+     * Bruker for å hente opp absolut sti til bildemappen.
+     * @return 
+     */
+    public String getAbsoluteDefaultPath() {
+        Path currentPath = Paths.get("");
+        String filsti = currentPath.toAbsolutePath().toString();
+        return filsti + "/" + Konstanter.PROGRAMDATA + "/img/default/";
+    }
+
+    /**
      * Returnerer filsti til standardbilde ved opprettelse av ny bolig. Denne
      * brukes dersom brukeren ikke laster opp egne bilder.
      *
      * @return String med filsti
      */
     public String getAbsolutePathToStandardBilde() {
-        return getAbsoluteGalleryPath() + "default" + "/" + "1.jpg";
+        return getAbsoluteDefaultPath() + "1.jpg";
     }
 
     /**
@@ -88,9 +108,10 @@ public class BildeFilSti {
      * @return String
      */
     public String getBoligFremsideBildeHTML(Bolig bolig) {
-        if (erGalleriMappeTom(bolig))
+        if (erGalleriMappeTom(bolig)) {
             return "file:" + getAbsolutePathToStandardBilde();
-            
+        }
+
         return "file:" + getBoligFremsideBilde(bolig);
     }
 

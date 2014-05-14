@@ -44,7 +44,7 @@ public class TopPanelMegler extends AbstractPanel {
         nyUtleierItem = new CustomJButton("Ny utleier", BREDDE, HOYDE);
         nyBoligItem = new CustomJButton("Ny bolig", BREDDE, HOYDE);
         nyAnnonseItem = new CustomJButton("Ny annonse", BREDDE, HOYDE);
-        bilde = new ImageIcon(new BildeFilSti().getAbsoluteGalleryPath() + "/default/boligLogo.png");
+        bilde = new ImageIcon(new BildeFilSti().getAbsoluteDefaultPath() + "boligLogo.png");
         bildeLabel = new JLabel(bilde);
 
         add(new CustomSubPanel(100, 30));

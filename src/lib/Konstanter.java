@@ -41,7 +41,7 @@ public class Konstanter {
      * samme mappenavn som vi har på boligId som kjennetegner til hvilken bolig
      * bildene tilhører.
      */
-    public static final String BILDEGALLERIER = Konstanter.PROGRAMDATA + "/img";
+    public static final String BILDEGALLERIER = Konstanter.PROGRAMDATA + "/img/boligbilder";
 
     /**
      * Hver enkel bolig har et standardbilde som blir vist i annonsens fremside.

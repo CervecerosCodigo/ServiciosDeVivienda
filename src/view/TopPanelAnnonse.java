@@ -32,7 +32,7 @@ public class TopPanelAnnonse extends AbstractPanel {
         checkBoxKnappeGruppe = new CheckBoxKnappeGruppe();
         sokeKnapp = new CustomJButton(Ikoner.SEARCH);
         nullStillKnapp = new CustomJButton(Ikoner.RESET);
-        bilde = new ImageIcon(new BildeFilSti().getAbsoluteGalleryPath()+"/default/boligLogo.png");
+        bilde = new ImageIcon(new BildeFilSti().getAbsoluteDefaultPath() + "boligLogo.png");
         bildeLabel = new JLabel(bilde);
         statistikkPanel = new StatistikkPanel();
         
