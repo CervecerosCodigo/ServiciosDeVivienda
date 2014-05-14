@@ -21,7 +21,7 @@ public class TopPanelAnnonse extends AbstractPanel {
 
     private KnappeGruppeHoyre knappeGruppeHoyre;
     private CheckBoxKnappeGruppe checkBoxKnappeGruppe;
-    private CustomJButton sokeKnapp;
+    private CustomJButton sokeKnapp, nullStillKnapp;
     private ImageIcon bilde;
     private JLabel bildeLabel;
     private StatistikkPanel statistikkPanel;
@@ -31,16 +31,18 @@ public class TopPanelAnnonse extends AbstractPanel {
         knappeGruppeHoyre = new KnappeGruppeHoyre();
         checkBoxKnappeGruppe = new CheckBoxKnappeGruppe();
         sokeKnapp = new CustomJButton(Ikoner.SEARCH);
+        nullStillKnapp = new CustomJButton(Ikoner.RESET);
         bilde = new ImageIcon(new BildeFilSti().getAbsoluteGalleryPath()+"/default/boligLogo.png");
         bildeLabel = new JLabel(bilde);
         statistikkPanel = new StatistikkPanel();
         
         setVisible(true);
-        setLayout(new FlowLayout(FlowLayout.LEFT, 30, 20));
+        setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
         
         add(checkBoxKnappeGruppe);
         add(knappeGruppeHoyre);
         add(sokeKnapp);
+        add(nullStillKnapp);
         add(statistikkPanel);
         add(bildeLabel);
         
@@ -62,6 +64,10 @@ public class TopPanelAnnonse extends AbstractPanel {
 
     public CustomJButton getSokeKnapp() {
         return sokeKnapp;
+    }
+
+    public CustomJButton getNullStillKnapp() {
+        return nullStillKnapp;
     }
 
     public CustomJTextField getMinPrisFelt() {
@@ -115,6 +121,7 @@ public class TopPanelAnnonse extends AbstractPanel {
     
     public void addKnappLytter(ActionListener lytter) {
         sokeKnapp.addActionListener(lytter);
+        nullStillKnapp.addActionListener(lytter);
     }
 
     private class KnappeGruppeHoyre extends AbstractPanel {

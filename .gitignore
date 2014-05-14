@@ -61,3 +61,7 @@ local.properties
 #    
 #    # PDT-specific
 .buildpath
+
+./programdata/
+./programdata/data.iso
+!./programdata/img/default
