@@ -40,7 +40,7 @@ public class ControllerTabell implements VisMeldingInterface {
     private JMenuItem menyvalgNyPerson, menyvalgEndrePerson, menyvalgSlettPerson,
             menyvalgNyBolig, menyvalgEndreBolig, menyvalgSlettBolig, menyvalgPubliserToggle, menyvalgSlettAnnonse,
             menyvalgForesporsel,
-            menyvalgAksepter, menyvalgAvvis;
+            menyvalgAksepter, menyvalgAvvis, menyvalgSlettSoknad;
 
     private int valgtRadItabell;    //Viser til en hver tid hvilken rad som er valgt i tabellen
     private InputMap inputMap;
@@ -78,6 +78,7 @@ public class ControllerTabell implements VisMeldingInterface {
         menyvalgForesporsel = new JMenuItem("Send forespørsel");
         menyvalgAksepter = new JMenuItem("Aksepter søknad");
         menyvalgAvvis = new JMenuItem("Avvis søknad");
+        menyvalgSlettSoknad = new JMenuItem("Slett søknad");
         menyvalgPubliserToggle = new JMenuItem("Endre publiseringsstatus");
         menyvalgSlettAnnonse = new JMenuItem("Slett annonse");
 
@@ -98,6 +99,9 @@ public class ControllerTabell implements VisMeldingInterface {
             }
             if (modellIBruk instanceof TabellModellAnnonse) {
                 slettAnnonseFraRegisteret();
+            }
+            if (modellIBruk instanceof TabellModellSoknad) {
+                slettSoknad(returnerSoknadObjekt());
             }
         } catch (ClassCastException cce) {
             System.out.println("ClassCastException ved sletting med deleteknapp");
@@ -308,6 +312,7 @@ public class ControllerTabell implements VisMeldingInterface {
             } else if (tabellModellSoknad.equals((TabellModell) tabell.getModel())) {
                 tabellMeny.add(menyvalgAksepter);
                 tabellMeny.add(menyvalgAvvis);
+                tabellMeny.add(menyvalgSlettSoknad);
             }
 
         } catch (ClassCastException cce) {
@@ -430,6 +435,13 @@ public class ControllerTabell implements VisMeldingInterface {
                 avvisSoknad(returnerSoknadObjekt());
             }
         });
+        //Slett søknad
+        menyvalgSlettSoknad.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                slettSoknad(returnerSoknadObjekt());
+            }
+        });
 
         //Registrer ny annonse eller endrer annonse. Er det en aktiv annonse 
         //så gjøres den innaktiv.
@@ -456,7 +468,7 @@ public class ControllerTabell implements VisMeldingInterface {
      * @param soknad
      * @return
      */
-    private Megler returnererMeglerObjektFraSoknad(Soknad soknad) {
+    public Megler returnererMeglerObjektFraSoknad(Soknad soknad) {
         //Finner megler-objektet 
         Iterator<Person> personIter = personliste.iterator();
         Person tempPerson = null;
@@ -477,7 +489,7 @@ public class ControllerTabell implements VisMeldingInterface {
      * @param annonseID
      * @return
      */
-    private ArrayList<Soknad> returnerAlleSoknaderPaaSammeAnnonse(int annonseID) {
+    public ArrayList<Soknad> returnerAlleSoknaderPaaSammeAnnonse(int annonseID) {
 
         ArrayList<Soknad> soknaderPaaSammeAnnonse = new ArrayList<>();
         Iterator<Soknad> soknadIter = soknadsliste.iterator();
@@ -571,10 +583,23 @@ public class ControllerTabell implements VisMeldingInterface {
      *
      * @param soknad
      */
-    private void avvisSoknad(Soknad soknad) {
+    public void avvisSoknad(Soknad soknad) {
         soknad.setErBehandlet(true);
         soknad.setErGodkjent(false);
         tabellModellSoknad.fireTableStructureChanged();
+    }
+    
+    /**
+     * Sletter valgt søknad
+     * @param soknad 
+     */
+    public void slettSoknad(Soknad soknad) {
+        if(soknadsliste.remove(soknad)){
+            visMelding("Sletting fullført", "Søknaden er slettet!");
+            tabellModellSoknad.fireTableDataChanged();
+        }else{
+            visMelding("Feil ved sletting", "Noe gikk galt. Søknaden ble IKKE slettet");
+        }
     }
 
     /**
@@ -712,7 +737,7 @@ public class ControllerTabell implements VisMeldingInterface {
      * @param person
      * @return
      */
-    private boolean harUtleierBoligerRegistrert(Person person) {
+    public boolean harUtleierBoligerRegistrert(Person person) {
 
         ArrayList<Bolig> registrerteBoliger = new ArrayList<>();
         Iterator<Bolig> iter = boligliste.iterator();
