@@ -83,13 +83,12 @@ public class MainController implements Serializable {
 
 
         /**
-         * Fyller inn data med søkeresultat som kommer fra
-         * ControllerToppPanelMegler
+         * Fyller inn data med søkeresultat som kommer fra ControllerToppPanelMegler
          */
         toppPanelControllerMegler.setListListener(new ListListenerInterface() {
 
             @Override
-            public void listReady(ArrayList liste, ObjektType objekttype) {
+            public void listReady(HashSet liste, ObjektType objekttype) {
                 switch (objekttype) {
                     case BOLIGOBJ:
                         tabellControllerMegler.tomTabellOgKlargjorForNyttDatasett();
@@ -113,19 +112,9 @@ public class MainController implements Serializable {
                         break;
                 }
             }
-
-            @Override
-            public void listReady(HashSet liste, ObjektType obj) {
-                //Brukes ikke her
-            }
         });
 
         toppPanelControllerAnnonse.setListListener(new ListListenerInterface() {
-
-            @Override
-            public void listReady(ArrayList liste, ObjektType obj) {
-                //Brukes ikke her
-            }
 
             @Override
             public void listReady(HashSet liste, ObjektType objekttype) {

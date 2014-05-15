@@ -18,12 +18,7 @@ public interface ListListenerInterface<E> {
      * @param liste
      * @param obj 
      */
-    public void listReady(ArrayList<E> liste, ObjektType obj);
-    
-    /**
-     * Brukes mellom TopPanelAnnonse og ControllerToppPanelAnnonse
-     * @param liste
-     * @param obj 
-     */
     public void listReady(HashSet<E> liste, ObjektType obj);
+    
 }
+

@@ -214,7 +214,7 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
      *
      * @param sokeResultat
      */
-    public void sendSokeResultat(ArrayList<E> sokeResultat) {
+    public void sendSokeResultat(HashSet<E> sokeResultat) {
     	String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
 
     	fsearch = new FreeTextSearch();
@@ -289,7 +289,7 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
      */
     class KnappeLytter implements ActionListener {
 
-        private ArrayList<E> sokeResultat;
+        private HashSet<E> sokeResultat;
         private String utskrift;
 
         @Override

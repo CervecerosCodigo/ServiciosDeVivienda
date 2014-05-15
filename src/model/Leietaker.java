@@ -78,5 +78,5 @@ public class Leietaker extends Person {
     public String toString() {
         return super.toString() + " (Leietaker)";
     }
-
+    
 }

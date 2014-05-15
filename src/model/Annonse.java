@@ -137,7 +137,7 @@ public class Annonse implements Serializable, Searchable{
     @Override
     public String[] toSearch() {
         //Denne metoden sørger for meglerens sine søkeparemetre. Metode som sørger for søkning til boligsøkende kommer til å være mer spesifikk.
-        String[] searchFields = {String.valueOf(annonseID), String.valueOf(bolig.getBoligID())};
+        String[] searchFields = {String.valueOf(annonseID), String.valueOf(bolig.getBoligID()), bolig.getAdresse(), String.valueOf(bolig.getPostnummer()), bolig.getPoststed()};
         return searchFields;
     }
     

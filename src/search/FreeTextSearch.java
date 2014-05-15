@@ -12,11 +12,11 @@ import model.Utleier;
  */
 public class FreeTextSearch<T extends Searchable> {
 
-    private final ArrayList<T> resultList;
+    private final HashSet<T> resultList;
     private String[] checkMeForResults;
 
     public FreeTextSearch() {
-        resultList = new ArrayList<>();
+        resultList = new HashSet<>();
     }
 
     /**
@@ -28,7 +28,7 @@ public class FreeTextSearch<T extends Searchable> {
      * @param pattern
      * @return
      */
-    public ArrayList<T> searchForPattern(HashSet<? extends Searchable> liste, String pattern) {
+    public HashSet<T> searchForPattern(HashSet<? extends Searchable> liste, String pattern) {
 
         pattern = pattern.trim();
         pattern = pattern.toLowerCase();
@@ -70,7 +70,7 @@ public class FreeTextSearch<T extends Searchable> {
      * @param pattern
      * @return
      */
-    public ArrayList<T> searchForPatternIUtleier(HashSet<? extends Searchable> liste, String pattern) {
+    public HashSet<T> searchForPatternIUtleier(HashSet<? extends Searchable> liste, String pattern) {
 
         pattern = pattern.trim();
         pattern = pattern.toLowerCase();
@@ -116,7 +116,7 @@ public class FreeTextSearch<T extends Searchable> {
      * @param pattern
      * @return
      */
-    public ArrayList<T> searchForPatternILeietaker(HashSet<? extends Searchable> liste, String pattern) {
+    public HashSet<T> searchForPatternILeietaker(HashSet<? extends Searchable> liste, String pattern) {
 
         pattern = pattern.trim();
         pattern = pattern.toLowerCase();
