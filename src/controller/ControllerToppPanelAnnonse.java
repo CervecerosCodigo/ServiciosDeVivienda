@@ -24,7 +24,7 @@ import view.AbstraktArkfane;
 /**
  * Kontroller klasse for topp panel annonse søk.
  */
-public class ControllerToppPanelAnnonse {
+public class ControllerToppPanelAnnonse implements VisMeldingInterface{
 
     AbstraktArkfane vindu;
     private HashSet<Annonse> annonseliste;
@@ -147,8 +147,9 @@ public class ControllerToppPanelAnnonse {
 
     public void sendSokeResultat() {
         HashSet<Annonse> filterResultat = filtrerAnnonser();
-
-        if (listListener != null) {
+       if (filterResultat.isEmpty()) {
+            visMelding("Søkeresultat", "Søket gav ingen resultat.");
+        }else if (listListener != null) {
             listListener.listReady(filterResultat, ObjektType.ANNONSEOBJ);
         }
     }
@@ -157,6 +158,11 @@ public class ControllerToppPanelAnnonse {
         if (listListener != null) {
             listListener.listReady(annonseliste, ObjektType.ANNONSEOBJ);
         }
+    }
+
+    @Override
+    public void visMelding(String overskrift, String melding) {
+        Melding.visMelding(overskrift, melding);
     }
 
     class KnappeLytter implements ActionListener {

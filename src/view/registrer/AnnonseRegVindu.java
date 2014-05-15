@@ -78,6 +78,9 @@ public class AnnonseRegVindu extends AbstractRegistreringsPanel implements VisMe
         utleiepris = new CustomJTextField("Pris pr mnd", RegexTester.PRIS, 10);
         erSynligSomAnnonse = new CustomJCheckBox();
         eiersKrav = new JTextArea(5, 25);
+        eiersKrav.setLineWrap(true);
+        eiersKrav.setWrapStyleWord(true);
+        eiersKrav.setMargin(new Insets(3, 3, 3, 3));
         avbrytButton = new CustomJButton("Avbryt");
         lagreButton = new CustomJButton("Lagre");
         

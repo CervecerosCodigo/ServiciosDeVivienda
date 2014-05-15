@@ -26,9 +26,9 @@ import view.CustomJButton;
 
 /**
  * Kontroller klasse for topp panel til megler
+ *
  * @param <E>
  */
-
 public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
 
     AbstraktArkfane vindu;
@@ -46,12 +46,11 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
     private Object valgtObjekt;
     private int valgtRadItabell;
     private JTable tabell;
-    
+
     private CustomJButton nyBolig;
     private CustomJButton nyUtleier;
     private CustomJButton nyAnnonse;
     private CustomJButton nyKontrakt;
-    
 
     private ListListenerInterface listListener;
     private NyKontraktInterface kontraktLytter;
@@ -68,7 +67,7 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
         nyBolig = vindu.getToppanelMegler().getNyBoligItem();
         nyUtleier = vindu.getToppanelMegler().getNyUtleierItem();
         nyAnnonse = vindu.getToppanelMegler().getNyAnnonseItem();
-        nyKontrakt = vindu.getToppanelMegler().getNyKontraktItem();        
+        nyKontrakt = vindu.getToppanelMegler().getNyKontraktItem();
 
         //Setter lyttere i Toppanelet.
         vindu.getToppanelMegler().leggTilRadioLytter(new RadioLytter());
@@ -93,16 +92,18 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
         Integer dagensAar = dagsDato.get(dagsDato.YEAR);
 
         for (Bolig boligIterator : boligliste) {
-            if (boligIterator.isErUtleid() == false)
+            if (boligIterator.isErUtleid() == false) {
                 antallLedigeBoliger++;
+            }
         }
 
         for (Kontrakt kontraktIterator : kontraktliste) {
             Calendar dato = kontraktIterator.getDatoOpprettet();
             int kontraktOpprettetAar = dato.get(dato.YEAR);
 
-            if (kontraktOpprettetAar == dagensAar)
+            if (kontraktOpprettetAar == dagensAar) {
                 antallKontrakter++;
+            }
         }
 
         vindu.getToppanelMegler().getStatistikkPanel().OppdaterStatistikk(antallLedigeBoliger, antallKontrakter);
@@ -185,9 +186,10 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting())
+                if (e.getValueIsAdjusting()) {
                     return;
-                
+                }
+
                 try {
                     int rad = tabell.getSelectedRow();
                     if (rad != -1) {
@@ -215,75 +217,76 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
      * @param sokeResultat
      */
     public void sendSokeResultat(HashSet<E> sokeResultat) {
-    	String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
+        String soketekst = vindu.getToppanelMegler().getSokeFelt().getText();
 
-    	fsearch = new FreeTextSearch();
+        fsearch = new FreeTextSearch();
 
-    	switch (radioTypeValgt2) {
-    	case Bolig:
-    		sokeResultat = fsearch.searchForPattern(boligliste, soketekst);
-    		break;
-    	case Utleier:
-    		sokeResultat = fsearch.searchForPatternIUtleier(personliste, soketekst);
-    		break;
-    	case Leietaker:
-    		sokeResultat = fsearch.searchForPatternILeietaker(personliste, soketekst);
-    		break;
-    	case Annonse:
-    		sokeResultat = fsearch.searchForPattern(annonseliste, soketekst);
-    		break;
-    	case Kontrakt:
-    		sokeResultat = fsearch.searchForPattern(kontraktliste, soketekst);
-    		break;
-    	case Soknad:
-    		sokeResultat = fsearch.searchForPattern(soknadsliste, soketekst);
-    		break;
-    	default:
-    		visMelding("Søk", "Mangler valg");
-    	}
+        switch (radioTypeValgt2) {
+            case Bolig:
+                sokeResultat = fsearch.searchForPattern(boligliste, soketekst);
+                break;
+            case Utleier:
+                sokeResultat = fsearch.searchForPatternIUtleier(personliste, soketekst);
+                break;
+            case Leietaker:
+                sokeResultat = fsearch.searchForPatternILeietaker(personliste, soketekst);
+                break;
+            case Annonse:
+                sokeResultat = fsearch.searchForPattern(annonseliste, soketekst);
+                break;
+            case Kontrakt:
+                sokeResultat = fsearch.searchForPattern(kontraktliste, soketekst);
+                break;
+            case Soknad:
+                sokeResultat = fsearch.searchForPattern(soknadsliste, soketekst);
+                break;
+            default:
+                visMelding("Søk", "Mangler valg");
+        }
 
-    	if (sokeResultat.isEmpty())
-    		visMelding("Søkeresultat", "Søket gav ingen resultat.");
-
-    	else if (listListener != null)
-    		listListener.listReady(sokeResultat, radioTypeValgt);
+        if (sokeResultat.isEmpty()) {
+            visMelding("Søkeresultat", "Søket gav ingen resultat.");
+        } else if (listListener != null) {
+            listListener.listReady(sokeResultat, radioTypeValgt);
+        }
     }
 
     /**
-     * Hjelpemetode som dfinerer hvilke knapper som skal være aktivert til et hvert
-     * tidspunkt. En Skal ikke kunne lage ny Annonse uten å ha valgt en bolig først.
+     * Hjelpemetode som dfinerer hvilke knapper som skal være aktivert til et
+     * hvert tidspunkt. En Skal ikke kunne lage ny Annonse uten å ha valgt en
+     * bolig først.
      */
     public void aktivereDeaktivereKnapperEtterObjektType() {
-        
-        if(valgtObjekt instanceof Bolig){
+
+        if (valgtObjekt instanceof Bolig) {
             nyBolig.setEnabled(false);
             nyUtleier.setEnabled(true);
             nyAnnonse.setEnabled(true);
             nyKontrakt.setEnabled(false);
         }
-        
-        if(valgtObjekt instanceof Utleier) {
+
+        if (valgtObjekt instanceof Utleier) {
             nyBolig.setEnabled(true);
             nyUtleier.setEnabled(true);
             nyAnnonse.setEnabled(false);
-            nyKontrakt.setEnabled(false);            
+            nyKontrakt.setEnabled(false);
         }
-        
-        if(valgtObjekt instanceof Annonse) {
+
+        if (valgtObjekt instanceof Annonse) {
             nyBolig.setEnabled(false);
             nyUtleier.setEnabled(true);
             nyAnnonse.setEnabled(false);
-            nyKontrakt.setEnabled(false);            
+            nyKontrakt.setEnabled(false);
         }
-        
-        if(valgtObjekt instanceof Soknad) {
+
+        if (valgtObjekt instanceof Soknad) {
             nyBolig.setEnabled(false);
             nyUtleier.setEnabled(true);
             nyAnnonse.setEnabled(false);
-            nyKontrakt.setEnabled(true);            
+            nyKontrakt.setEnabled(true);
         }
     }
-            
+
     /**
      * Lytteklasse for knappene i TopPanelMegler.java
      */
@@ -295,25 +298,30 @@ public class ControllerToppPanelMegler<E> implements VisMeldingInterface {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(vindu.getToppanelMegler().getNyAnnonseItem())) {
-                if (valgtObjekt instanceof Bolig)
+                if (valgtObjekt instanceof Bolig) {
                     new ControllerRegistrerAnnonse(annonseliste, personliste, (Bolig) valgtObjekt);
+                }
             }
-            
+
             if (e.getSource().equals(vindu.getToppanelMegler().getNyBoligItem())) {
-                if (valgtObjekt instanceof Utleier)
+                if (valgtObjekt instanceof Utleier) {
                     new ControllerRegistrerBolig(boligliste, (Utleier) valgtObjekt);
+                }
             }
-            
-            if (e.getSource().equals(vindu.getToppanelMegler().getNyUtleierItem()))
+
+            if (e.getSource().equals(vindu.getToppanelMegler().getNyUtleierItem())) {
                 new ControllerRegistrerUtleier(personliste);
-            
-            if (e.getSource().equals(vindu.getToppanelMegler().getNyKontraktItem())) {
-                if (valgtObjekt instanceof Soknad)
-                    kontraktLytter.runNyKontraktMetodeIControllerTabell();
             }
-            
-            if (e.getSource().equals(vindu.getToppanelMegler().getSokeKnapp()))
+
+            if (e.getSource().equals(vindu.getToppanelMegler().getNyKontraktItem())) {
+                if (valgtObjekt instanceof Soknad) {
+                    kontraktLytter.runNyKontraktMetodeIControllerTabell();
+                }
+            }
+
+            if (e.getSource().equals(vindu.getToppanelMegler().getSokeKnapp())) {
                 sendSokeResultat(sokeResultat);
+            }
         }
     }//End KnappeLytter
 }
